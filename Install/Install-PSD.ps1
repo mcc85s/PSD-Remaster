@@ -3260,7 +3260,7 @@ Function Wrap-Action
 
         Default = @{
 
-            DeployRoot         = "http://$($r[2]),\\$($ENV:ComputerName)\$($psDeploymentShare)"
+            DeployRoot         = "http://$($r[2]),\\$( $ENV:ComputerName )\$( $r[1] )"
             UserID             = "$( $r[3] )"
             UserPassword       = "$( $dccred.GetNetworkCredential().Password )"
             UserDomain         = "$( $r[15] )"
