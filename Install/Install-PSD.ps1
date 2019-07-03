@@ -12,85 +12,17 @@
 
 <#
 .SYNOPSIS
-	Installation of all dependencies and components needed to deploy a *working PSD-MDT Server with BITS ( it's not complete yet )
-
-    Imaging process for the server to deploy working installation images. ( Works in regular MDT with default templates )
+	Installation for the PSD toolkit for MDT, AKA a more efficient 'Hydration Kit'
+    Includes a switch for the imaging process
 
 .DESCRIPTION
+    Performs a GUI installation of an MDT share without needing the MDT GUI to begin a new deployment share
     
-    - Loads a GUI switch for whether you are installing to a new share, or updating the imaging process
-    
-    # Installation #
-    - Loads a GUI that asks for the following information 
-        -Root   ( URI Location )
-        -Share  ( SMB Location )
-        -Drive  ( PSDrive Name )
-        -Info   ( Description  )
+    Includes whatever the Hydration kit is trying to do in a much simpler manner ( AKA, checks for minimum requirements
+    and if they're not installed, it pulls the installation files directly from Microsoft's website and then proceeds
+    to install them silently and automatically.
 
-    - Once that information is submitted, it will check if those items exist, if so it skips, if not it creates it.
-    - The process then checks for install components such as WinPE, WADK, and MDT, if found displays whether it meets 
-    the minimum version number, and whether it finds and the version is out of date, or it does not find it at all, 
-    it will source the install files from the internet and then install those dependencies, silently, and automatically.
-
-    - Once that part is complete it will begin to install the actual script files and create an MDT persistent drive,
-    once all of the script files are loaded it then installs the PSD-Install and puts every module where it should go.
-
-    - Once that part is complete, it will ask to install my Hybrid Desired State Controller modification into the MDT share
-    that was just made. I'm looking to get these files sourced on the internet, but a switch will be available to download an
-    ISO from the Media Creation Tool itself, silently and automatically, and then it will split those images so that DISM++
-    can be used to make customizations and remove unnecessary components.
-
-    - Once Hybrid is installed, it will then proceed to launch the IIS/BITS configuration, it will create the site, create
-    the virtual folder, and then make changes to the IIS Config and Web Configuration files so that it automatically is ready
-    to go right out of the gate, however, there is one glaring issue that I'm experiencing even with verbatim settings from
-    Johan and crew's actual 'Install-PSDWebInstance' script. I'm not entirely sure why, but I am researching a way to fix 
-    that problem.
-
-    - There are some dependencies and settings to which I've yet to create a GUI for correct allocation, those dependencies
-    and settings revolve around the necessary reboot that the machine will need after a fresh installation to apply a Computer
-    Name, and apply Active Directory Domain Services, then reboot in addition to various other tools like BITS, RSAT, and WDS.
-
-    - I have a script that installs the features as needed, but configuration is a bit trickier since 'you have to generate
-    rules for Active Directory to be allocated correctly in addition to Group Policy Management Configuration, and DNS, and DHCP.
-    Those variables are extremely difficult to populate automatically, but I will make a GUI tool that specifically targets 
-    the correct functions and settings to get this project working automatically.
-
-    - Essentially it means 'I've wanted to shoot myself in the face' in my attempts to get all of those things working 
-    automatically AND securely. 
-
-    - Despite my best attempts, the PSDStart / PSDGather modules aren't pulling the other necessary modules in order to deploy
-    in the PXE Environment. Hence my great frustration. At any rate, that's what the 'Installation' does so far.
-
-    # Imaging #
-    - Loads the GUI interface for my project Hybrid - Desired State Controller. This process will load a GUI that asks for
-    pertinent details like "Your OEM/Company Name", "Your Server Share name", "your server computer name", etc. Launch the GUI
-    to see for yourself.
-
-    - That process will automatically pull the operating system WIM files from the WIM file store that Hybrid will install. It
-    then concatenates those images into their corresponding unit WIM files, ( Server WIM's go into it's own build, Client WIM's
-    go into it's own build ), and then once DISM builds those images, it sends them over to the MDT Share that was generated or
-    selected with the GUI tool I've mentioned above.
-
-    - Once those Operating Systems are imported into MDT, it will then pull the OSGUID's and insert the freshly generated GUID's
-    into the task sequence template. It originally used a static method, it is now utilizing a much more infallible 'Regex' command
-    to define which lines of the templates require the updated GUID's.
-
-    - It then creates a task sequence for each of the files you have fed it, or however many child operating systems were imported
-    from the DISM concatenated WIM files.
-
-    - Once it completes all of these steps it will then update the Bootstrap.INI file and CustomSettings.INI files and 
-    encode them with strict UTF8 no BOM encoding.
-
-    - It will also ask whether you want to update the MDT Deployment Image/Boot Image, as a switch.
-
-    - Once it completes this process, it will automatically send the images over to WDS to replace whatever is currently there,
-    or if it's a fresh installation, it will just update WDS automatically. I've still yet to get to populating WDS with settings
-    automatically, but hey, I'm just one guy with a very clear idea on what I'd like to do.
-
-    - Once the WDS images are sent over to WDS, you can then attempt to launch a virtual or physical machine to boot from WDS.
-
-    - It should in theory work, but my testing has shown that something isn't configured correctly, and so I'm only posting 
-    this as an artificial update so that I don't have to redo some of my testing or research / AKA, writing the scripts.
+    . . . this should all have been part of the main script anyway.
 
 .LINK
 	  https://github.com/Secure-Digits-Plus-LLC
@@ -100,14 +32,13 @@
           Author: Michael C. 'Boss Mode' Cook Sr.
           Contact: @mcc85s
           Primary: @mcc85s 
-          Created: 2019-06-30
-          Modified: 2019-06-30
+          Created: 2019-06-29
+          Modified: 2019-06-29
 
-          Version - 0.0.0 - ( 2019-06-29 ) - Version 0.0.0 is an alpha build. Functionality is not guaranteed, so use at 
-          your own discretion.
+          Version - 0.0.0 - ( 2019-06-29 ) - Finalized functional version 1.
 
 .USAGE
-    Use in either basic PowerShell or the ISE Window.
+    Either in PowerShell natively, or . . . Pst. Like a real man would. In the ISE Window. XD
 
 #>
 
@@ -115,9 +46,7 @@
 #\\ - - [ Elevate-Script ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
 # # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
 
-# If the currently used account has Administrator access, and the window is not running as such, this block fixes that.
-# You may notice that it doesn't use the standard method of [Security.Principal.WindowsPrincipal] etc, because that method
-# is a bit old and I felt like doing things 'differently'.  
+# If the currently used account has Administrator access, and the window is not running as such, this block fixes that   
 
 Function Elevate-Script
 {  
@@ -136,10 +65,9 @@ Elevate-Script
 #\\ - - [ Wrapper-Modules]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
 # # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
                        
-# Loads the Echo Wrappers, all of these wrappers calculate and stylize the messages you'll see within this script, so that
-# the messages are commandlet based rather than 'redundant as hell'
-
-# You could call a lot of this 'Algebra' or perhaps 'Calculus'
+# Loads the Echo Wrappers, which stylize the messages. No need for so much logging when you are in the script.
+# When you're in a target environment, that's a different story, that's where you need a lot of logging.
+# But the server should be doing some logging too... just saying.
 
 $fs = " // " ; $bs = " \\ " ; $Content = "$home\Desktop\Content.txt"
     
@@ -147,9 +75,9 @@ Function Wrap-Top { Echo @( " " * 108 ; $fs + "_-" * 52 + $bs ; $bs + " -" * 52 
     
 Function Wrap-Bot { Echo @( $bs + " -" * 52 + $fs ; $fs + "_-" * 52 + $bs ; " " * 108 ) }
     
-Function Wrap-Out { Echo @( $fs + "  " * 52 + $bs ) }
+Function Wrap-Out { Echo ( $fs + "  " * 52 + $bs ) }
     
-Function Wrap-In  { Echo @( $bs + "  " * 52 + $fs ) }
+Function Wrap-In  { Echo ( $bs + "  " * 52 + $fs ) }
     
 Function Wrap-Title
 { 
@@ -163,7 +91,7 @@ Function Wrap-Title
             if ( $x % 4 -ge 2 ) { $x  = $x - 2 ; $y  = $th.replace( "[" , " [ " ) ; $th = $y }
             if ( $x % 2 -ge 1 ) { $x  = $x - 1 ; $y  = $th.replace( "]" , " ]" )  ; $th = $y ; $z  = 0 }
             if ( $z = 1 ) { $z = " -" } else { $z = "- " } $y = $z * ( $x / 4 ) ; $x = "- " * ( $x / 4 )
-            Wrap-Top ; Echo @( $fs + $x + $th + $y + $bs )
+            Wrap-Top ; Echo "$( $fs + $x + $th + $y + $bs )"
 }
 
 Function Wrap-Function 
@@ -174,12 +102,12 @@ Function Wrap-Function
 
             [ String ] $ID )
 
-            $th = "[ $ID ]" ; $y = $th.Length ; $x = 104 - $y ; 
-            if ( $x % 4 -ge 2 ) { $x = $x - 2 ; $y = $th.Replace( "[" , " [ " ) ; $th = $y }
-            if ( $x % 2 -ge 1 ) { $x = $x - 1 ; $y = $th.Replace( "]" , " ]" )  ; $th = $y ; $z = 0 }
+            $th = "[ $ID ]" ; $y = $th.length ; $x = 104 - $y ; 
+            if ( $x % 4 -ge 2 ) { $x = $x - 2 ; $y = $th.replace( "[" , " [ " ) ; $th = $y }
+            if ( $x % 2 -ge 1 ) { $x = $x - 1 ; $y = $th.replace( "]" , " ]" )  ; $th = $y ; $z = 0 }
             if ( $z = 1 ) { $z = " -" } else { $z = "- " } $y = $z * ( $x / 4 ) ; $x = "- " * ( $x / 4 )
         
-            Wrap-Top ; Echo @( $fs + $x + $th + $y + $bs ) ; Wrap-Bot
+            Wrap-Top ; Echo "$( $fs + $x + $th + $y + $bs )" ; Wrap-Bot
 }
 
 Function Wrap-Section
@@ -190,9 +118,9 @@ Function Wrap-Section
 
             [ String ] $Section )
 
-            $z = $Section.Length ; $x = " " * 10 ; $y = " " * ( 94 - $z )
+            $z = $Section ; $x = " " * 10 ; $y = " " * ( 94 - $z.Length )
 
-            Wrap-In ; Echo @( $fs + $x + $Section + $y + $bs ) ; Wrap-In
+            Wrap-In ; Echo "$( $fs + $x + $z + $y + $bs )" ; Wrap-In
 }
 
 Function Wrap-ItemIn
@@ -209,7 +137,7 @@ Function Wrap-ItemIn
         
             $x = " " * ( 23 - $Type.Length ) ; $y = " " * ( 78 - $Info.Length )
 
-            Echo @( $bs + $x + $Type + " : " + $Info + $y + $fs )
+            Echo "$( $bs + $x + $Type ) : $( $Info + $y + $fs )"
 }
 
 Function Wrap-ItemOut
@@ -227,7 +155,7 @@ Function Wrap-ItemOut
             $x = " " * ( 23 - $Type.Length ) 
             $y = " " * ( 78 - $Info.Length )
 
-            Echo @( $fs + $x + $Type + " : " + $Info + $y + $bs )
+            echo ( $fs + $x + $Type + " : " + $Info + $y + $bs )
 }
 
 Function Wrap-Array
@@ -238,7 +166,9 @@ Function Wrap-Array
 
             [ Array ] $Block )
         
-            Wrap-Top ; Echo $Block ; Wrap-Bot ;
+            Wrap-Top
+            echo $Block
+            Wrap-Bot
 }
 
 Function Wrap-Action 
@@ -256,9 +186,9 @@ Function Wrap-Action
             $x = " " * ( 23 - $Type.Length )
             $y = " " * ( 78 - $Info.Length )
         
-            Echo @( " " * 108 ; $fs + "_-" * 52 + $bs ; $bs + " -" * 52 + $fs )
-                 @( $fs + $x + $Type + " : " + $Info + $y + $bs ) +
-                 @( $bs + " -" * 52 + $fs ; $fs + "_-" * 52 + $bs ; " " * 108 )
+            echo @( " " * 108 ; $fs + "_-" * 52 + $bs ; $bs + " -" * 52 + $fs )
+            echo @( $fs + $x + $Type +" : " + $Info + $y + $bs )
+            echo @( $bs + " -" * 52 + $fs ; $fs + "_-" * 52 + $bs ; " " * 108 )
         
 }
 
@@ -266,350 +196,46 @@ Function Wrap-Action
 #\\ - - [ GUI-Modules ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
 # # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
 
-# Functions that dynamically create a XAML Window based on a $Xaml variable/array
+# Loads the GUI that allows anyone to quickly and accurately build a new PSD share, whether for plain MDT, or for
+# the PSD project.
+
+# Function that dynamically creates a XAML Window based on a $Xaml variable
 
     Function Convert-XAMLToWindow 
     { 
-        Param ( 
-            
-            [ Parameter ( Mandatory ) ] 
-            
-                [ String ]                                                               $XAML , 
-                [ String [] ]                                            $NamedElement = $Null , 
-                [ Switch ]                                                           $PassThru )
+        Param ( [ Parameter ( Mandatory ) ] [ String ] $XAML , [ String [] ] $NamedElement = $Null , [ Switch ] $PassThru )
 
         $AssemblyName = @( "Presentation" | % { "$_`Framework" ; "$_`Core" } ) + "WindowsBase" `
-        | % { 
-                Add-Type                                                                       `
-                    -AssemblyName                                                           $_ }
+        | % { Add-Type -AssemblyName $_ }
 
-        $Reader = [ XML.XMLReader ]::Create( 
-            
-               [ IO.StringReader ]                                                       $XAML )
-        
-        $Output = [ Windows.Markup.XAMLReader ]::Load(                                 $Reader )
+        $Reader = [ XML.XMLReader ]::Create([ IO.StringReader ] $XAML )
+        $Output = [ Windows.Markup.XAMLReader ]::Load( $Reader )
     
-        $NamedElement                                                                          `
-        | % { 
-                $Output                                                                        `
-                | Add-Member                                                                   `
-                    -MemberType                                                   NoteProperty `
-                    -Name                                                                   $_ `
-                    -Value                                              $Output.FindName( $_ ) `
-                    -Force                                                                     }
+        $NamedElement | % { $Output | Add-Member -MemberType NoteProperty -Name $_ -Value $Output.FindName( $_ ) -Force }
 
         If ( $PassThru )  { $Output }
 
         Else 
         {
-            $Null   =                                               $GUI.Dispatcher.InvokeAsync{
-             
-            $Output =                                                          $GUI.ShowDialog()            
-                                                    Set-Variable                               `
-                                                        -Name                           Output `
-                                                        -Value                         $Output `
-                                                        -Scope                               1 `
-                                                                                        }.Wait()
+            $Null = $GUI.Dispatcher.InvokeAsync{ $Output = $GUI.ShowDialog()            
+                Set-Variable -Name Output -Value $Output -Scope 1 }.Wait()
         
-        $Output                                                                                }
+        $Output }
     }
 
 # Second Function that actually throws the $Xaml content into the previously declared window, and then displays it on the screen
 
     Function Show-WPFWindow
     {
-        Param ( 
-        
-            [ Parameter (                                                          Mandatory ) ] 
-            
-            [ Windows.Window ]                                                            $GUI )
+        Param ( [ Parameter ( Mandatory ) ] [ Windows.Window ] $GUI )
 
-        $Output   =                                                                        $Null
-
-        $Null     = $GUI.Dispatcher.InvokeAsync{ 
-                                                    $Output =                  $GUI.ShowDialog()
-                                                    Set-Variable                               `
-                                                        -Name                           Output `
-                                                        -Value                         $Output `
-                                                        -Scope                               1 `
-                                                                                        }.Wait()
+        $Output = $Null
+                  $Null   = $GUI.Dispatcher.InvokeAsync{ $Output = $GUI.ShowDialog()
+                        Set-Variable -Name Output -Value $Output -Scope 1 }.Wait()
         $Output 
     }
 
-
-#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-#\\ - - [ Select-Process ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-
-    $Sw = 'Installation or Imaging ?'                              ,
-          'Are you installing the program or provisioning images?' ,
-          '&Installing'                                            ,
-          '&Imaging'
-
-    Switch( $host.UI.PromptForChoice( $Sw[0] , $Sw[1] , 
-    [ System.Management.Automation.Host.ChoiceDescription[] ]@( $Sw[2] , $Sw[3] ) , [ Int ] 1 )  )
-    {
-        0
-        {   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - # 
-            # Installation of the PSD Tool                                                  #
-            # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - # 
-
-            # Declaring XAML prefetch injections
-
-            $Info     = "Deployment Share Installation"     ,
-                        "Deployment Configuration Settings" ,
-                        "This tool will be able to assist you with the installation of MDT for PowerShell." ,
-                        "You can make desired configuration changes from here, but if you are installing this for the 
-                        first time, please be wary that this tool is still under development."
-                
-            $Block     = ""                                                    ,
-                         "Deployment Root, Ex. 'C:\Secured'"                   ,
-                         "Deployment Share, Ex. 'Secured$'"                    ,
-                         "PSDrive Name, Ex. 'DS001'"                           ,
-                         "Share Description, Ex. 'Hybrid [ Development ]'"
-
-            $Label     = ""      ,
-                         "Root"  ,
-                         "Share" ,
-                         "Name"  ,
-                         "Info"
-
-            $TextBoxes = 1..4 | % { "<TextBlock 
-                                        Grid.Row          =      '$_' 
-                                        Grid.Column       =      '0' 
-                                        TextAlignment     =  'Right' 
-                                        VerticalAlignment = 'Center' 
-                                        FontSize          =     '10' >
-                                        $( $Block[$_] )
-                                     </TextBlock>
-                                     <TextBox   
-                                        Grid.Row          =      '$_' 
-                                        Grid.Column       =      '1' 
-                                        VerticalAlignment = 'Center' 
-                                        Height            =     '24' 
-                                        Width             =    '200' 
-                                        Name              =   '$( $Label[$_] )' >
-                                    </TextBox>" }
-
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - # 
-        # Dynamic XAML                                                                  #
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - # 
-
-            $Xaml = @"
-            <Window 
-                xmlns                   = "http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                xmlns:x                 = "http://schemas.microsoft.com/winfx/2006/xaml" 
-                Title                   = "Secure Digits Plus LLC | Hybrid @ $( $Info[0] )" 
-                Width                   = "480" 
-                Height                  = "380" 
-                HorizontalAlignment     = "Center" 
-                ResizeMode              = "NoResize" 
-                WindowStartupLocation   = "CenterScreen" 
-                Topmost                 = "True" >
-                <GroupBox 
-                    Header              = "$( $Info[1] )" 
-                    HorizontalAlignment = "Center" 
-                    Height              = "320" 
-                    Margin              = " 10 , 10 , 10 , 10 " 
-                    VerticalAlignment   = "Center" 
-                    Width               = "450" >
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="80"/>
-                            <RowDefinition Height="40"/>
-                            <RowDefinition Height="40"/>
-                            <RowDefinition Height="40"/>
-                            <RowDefinition Height="40"/>
-                            <RowDefinition Height="55"/>
-                        </Grid.RowDefinitions>
-                            <TextBlock 
-                                Grid.ColumnSpan         =      "2" 
-                                TextAlignment           = "Center" 
-                                Margin                  = " 5 , 5 , 5 , 5 " TextWrapping="Wrap">
-                                $( $Info[2] )<LineBreak/><LineBreak/>
-                                $( $Info[3] )
-                            </TextBlock>
-                            $TextBoxes
-                            <Button  
-                                Grid.Row     =      "5" 
-                                Grid.Column  =      "0" 
-                                Name         =  "Start"     
-                                Content      =  "Start"     
-                                Height       =     "40" 
-                                Width        =    "200" />
-                            <Button  
-                                Grid.Row     =      "5" 
-                                Grid.Column  =      "1" 
-                                Name         = "Cancel" 
-                                Content      = "Cancel" 
-                                Height       =     "40" 
-                                Width        =    "200" />
-                        </Grid>
-                    </GroupBox>
-                </Window>
-"@
-    
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - # 
-        # Loads the Deployment Share Creation GUI                                       #
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - # 
-    
-        $GUI = Convert-XAMLtoWindow                                                             `
-                -Xaml                                                                     $Xaml `
-                -NamedElement             'Root', 'Share' , 'Name' , 'Info' , 'Start', 'Cancel' `
-                -PassThru
-
-        $GUI.Cancel.Add_Click( { $GUI.DialogResult = $False } )
-
-        $GUI.Start.Add_Click({
-
-            $0 = @( "Root Folder" ; "Network Share Name" ; "PSDrive Name" ; "Share Description" ) 
-            $1 = $0 | % { "You must enter a $_" }
-            $2 = $0 | % { "$_ Missing" }
-        
-            $Message = ( 0..3 | % { [ Type ] "System.Windows.MessageBox" } )
-
-            If     (  $GUI.Root.Text -eq "" ) { ( $Message[0] )::Show( $1[0] , $2[0] ) }
-            ElseIf ( $GUI.Share.Text -eq "" ) { ( $Message[1] )::Show( $1[1] , $2[1] ) }
-            ElseIf (  $GUI.Name.Text -eq "" ) { ( $Message[2] )::Show( $1[2] , $2[2] ) }
-            ElseIf (  $GUI.Info.Text -eq "" ) { ( $Message[3] )::Show( $1[3] , $2[3] ) }
-
-            Else { $GUI.DialogResult = $True } })
-
-        $Output = Show-WPFWindow `
-                    -GUI $GUI
-
-        If ( $Output -eq $True )
-        {   
-            $Prov = $GUI.Root.Text  ,
-                    $GUI.Share.Text ,
-                    $GUI.Name.Text  ,
-                    $GUI.Info.Text 
-
-                    Set-Content                                                         `
-                        -Path                                                  $Content `
-                        -Value                                              $Prov[0..3]
-        }
-
-        Else
-        {
-            Wrap-Action                                                                 `
-                -Type                                                       "Exception" `
-                -Info                                    "The user exited the dialogue"
-
-            Read-Host                                             "Press Enter to Exit"
-            Exit
-        }
-
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - # 
-        # Uses the XAML Declarations to proceed                                         #
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-
-        $Pull    = @( Get-Content $Content   )
-        $Prov    = @( 0..3 | % { $Pull[$_] } )
-
-        Read-Host "Stuff"
-
-        If ( $Prov[2] -eq "" ) { $Prov[2] =                                "PXD-Hybrid" }
-        If ( $Prov[3] -eq "" ) { $Prov[3] =                       "PXD [ Development ]" } 
-
-        ( $URI , $SMB , $PXD , $Info ) =                                    $Prov[0..3]
-
-        $Sw =   'Upgrade Share'                              ,
-                'Is this a new or legacy Deployment share ?' ,
-                '&New'                                       ,
-                '&Upgrade'                                   
-
-        Switch ( $host.UI.PromptForChoice( $Sw[0] , $Sw[1] , 
-        [ System.Management.Automation.Host.ChoiceDescription [] ]@( $Sw[2] , $Sw[3] ) , 
-        [ Int ] 1 ) )
-        {
-            0
-            {
-                Wrap-Action                                                             `
-                    -Type                                                    "Selected" `
-                    -Info                                 "Create new Deployment Share"
-
-                $Upgrade = 0
-
-                Wrap-Action                                                             `
-                    -Type                                                "Provisioning" `
-                    -Info                                           "Deployment Folder"
-            
-                If ( ( Test-Path $URI ) -eq $False )
-                {
-                    New-Item                                                            `
-                        -Path                                                      $URI `
-                        -ItemType                                             Directory
-
-                    If ( $? -eq $True ) 
-                    { 
-                        Wrap-Action                                                     `
-                            -Type                                             "Created" `
-                            -Info                    "[+] URI Root / Deployment Folder"
-                    }
-
-                    Else
-                    {
-                        Wrap-Action                                                     `
-                            -Type                                           "Exception" `
-                            -Info                                         "[!] Failure"
-                    
-                    Read-Host   "An error prevented root creation, Press Enter to Exit"
-
-                    Exit
-                }
-            }
-
-            Wrap-Action                                                                 `
-                -Type                                                    "Provisioning" `
-                -Info                                                "Deployment Share"
-            
-            If ( ( Get-SmbShare | ? { $_.Path -eq $URI } -EA 0 ) -eq $Null )
-            {     
-                New-SmbShare                                                            `
-                    -Name                                                          $SMB `
-                    -Path                                                          $URI `
-                    -FullAccess                                          Administrators `
-                    -Description                                                  $Info
-
-                If ( $? -eq $True )
-                {
-                    Wrap-Action                                                         `
-                        -Type                                                 "Created" `
-                        -Info                        "[+] SMB Share / Deployment Share"
-                }
-
-                Else
-                {
-                    Wrap-Action `
-                        -Type                                               "Exception" `
-                        -Info                             "[!] PSD-URI Creation failed"
-
-                    Read-Host  "An error prevented share creation, Press Enter to Exit"
-
-                    Exit
-                }
-            }
-        }
-
-        1
-        {
-            Wrap-Action `
-                -Type                                                        "Selected" `
-                -Info                                        "Upgrade Deployment Share"
-            
-            $Upgrade = 1
-        }
-    }
-
-# Left in Mike's old school method of copying the files. Not using this function currently, since I'm a new school 
-# badass who uses 'Robocopy'. Robocopy isn't new either, but it'll show far more details than 'Copy-Item $_ -VB' 
-# would or does. Hence, no need to log everything when you use different tools that do the same thing, if not more. 
-# Anyway... pardon my digression.
+# Mike's old school method of copying the files. Not using this function currently, but left in for legacy reasons
 
     Function Copy-PXDFolder
     {
@@ -619,7 +245,7 @@ Function Wrap-Action
 
                 [ Parameter ( Mandatory = $True , Position = 0 ) ]
 
-                    [ String ] $Source,
+                    [ string ] $Source,
         
             [ ValidateNotNullOrEmpty () ]
                 
@@ -627,29 +253,23 @@ Function Wrap-Action
 
                     [ String ] $Destination )
 
-        $s =                                                                    $Source
-        $d =                                                               $Destination
+        $s = $Source
+        $d = $Destination
 
-        Wrap-Action                                                                     `
-            -Type                                                             "Copying" `
-            -Info                                                 "$s to $d with xCopy"
+        Wrap-Action -Type "Copying" -Info "$s to $d with xCopy"
 
-        & xcopy                                                    $s $d /s /e /v /y /i
+        & xcopy $s $d /s /e /v /y /i
 
         If ( $? -eq $True )
         {
-            Wrap-Action                                                                 `
-                -Type                                                      "Successful" `
-                -Info                     "[+] Files were copied from source to target"
+            Wrap-Action -Type "Successful" -Info "[+] Files were copied from source to target"
         }
 
         Else
         {
-            Wrap-Action `
-                -Type                                                       "Exception" `
-                -Info                                                     "[!] Failure"
+            Wrap-Action -Type "Exception" -Info "[!] Failure"
 
-            Read-Host   "MDT Files failed to be sourced correctly, Press Enter to exit"
+            Read-Host "MDT Files failed to be sourced correctly, Press Enter to exit"
             Exit
         }
     }
@@ -659,8 +279,7 @@ Function Wrap-Action
 
 # If the versions that are installed don't meet minimum requirements, it will create a folder
 # within the installation folder and then proceed to download the tools from Microsoft.
-# It then automatically installs those applications and then proceed with the script. If any of
-# these fail, it will exit the script. It's that simple.
+# It then automatically installs those applications and proceeds.
 
     Function Provision-Dependency 
     {
@@ -712,13 +331,40 @@ Function Wrap-Action
                 -ItemType                                                                       Directory `
                 -Value                                                                              $Path
 
-            Echo                                                                   "[+] Directory created"
+            Wrap-Action                                                                                   `
+                -Type                                                                           "Created" `
+                -Info                                                            "[+] Directory @: $Path"
 
         }
 
-        Invoke-WebRequest                                                                                 `
-            -Uri                                                                                     $URL `
-            -OutFile                                                                          $Path\$File `
+        If ( ( Test-Path "$Path\$File" -ne $True ) )
+        {
+            Invoke-WebRequest                                                                             `
+                -Uri                                                                                 $URL `
+                -OutFile                                                                      $Path\$File `
+
+            If ( $? -eq $True )
+            {
+                Wrap-Action                                                                               `
+                    -Type "Successful"                                                                    `
+                    -Info "[+] $File Downloaded"                                                          }
+            Else
+            {
+                Wrap-Action                                                                               `
+                    -Type "Exception"                                                                     `
+                    -Info "[!] $File not saved"
+
+                Break                                                                                     }
+
+        }
+
+        Wrap-Action                                                                                       `
+            -Type                                                                            "Installing" `
+            -Info                                                                                    $ID
+
+        Wrap-Action                                                                                       `
+            -Type                                                                            "Processing" `
+            -Info                 "This might take a while. Grab a cookie or a salad. You'll feel better"
 
         $Dependency = Start-Process                                                                       `
             -FilePath                                                                               $File `
@@ -744,7 +390,6 @@ Function Wrap-Action
                 Return
             }
         }
-        Echo                                                                     "$ID has been installed"
     }
 
 #//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
@@ -765,159 +410,345 @@ Function Wrap-Action
 
     $Req     = "Minimum Requirements"
     $DLX     = "Download and install, or Exit ?"
-    $DL      = "&Download" 
-    $EX      = "&Exit"
+    $DL      = "Download" 
+    $EX      = "Exit"
     $Install = "C:\Hybrid-Installation"
     $DC      = "*Kit - Windows 10*" , "*Kit Windows Pre*" , "*Microsoft Deployment Toolkit*"
 
-#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-#\\ - - [ Check-WinADK ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
 
-    $Reg | ? { $_.DisplayName -like "$( $DC[0] )" } `
-         | % {
-                $Item = "WinADK"
-                If ( $_.DisplayVersion -ge 10.1.17763.1 )
-                { 
-                    Wrap-Action                                                                           `
-                        -Type                                                        "Dependency / $Item" `
-                        -Info                                       "@ $( $_.DisplayVersion ) meets $Req" 
-                } 
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+        $Item = "WinADK"                                                        # WinADK #
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
-                Else 
-                {
-                    Switch ( $host.UI.PromptForChoice( "$Item does not meet $Req" , "$DL" , 
-                    [ System.Management.Automation.Host.ChoiceDescription [] ]@( "$DL" , "$EX" ) ,        `
-                    [ Int ] 0 ) )
-                    {
-                        0
-                        {   Wrap-Action                                                                   `
-                                -Type                                                       "Downloading" `
-                                -Info                                                              $Item
-
-                            Provision-Dependency                                                          `
-                                    -ID                           "Windows Assessment and Deployment Kit" `
-                                    -Path                                                "$Install\$Item" `
-                                    -File                                                "winadk1903.exe" `
-                                    -URL                "https://go.microsoft.com/fwlink/?linkid=2086042" `
-                                    -Args      "/quiet /norestart /log $env:temp\win_adk.log /features +" 
-                
-                            Wrap-Action                                                                   `
-                                -Type                                                             "$Item" `
-                                -Info                                                       "[+] Updated"
-                        }
-
-                        1
-                        {   Read-Host                                             "Press any key to exit"
-                            Exit
-                        }
-                    }
-                }
-            }
-
-#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-#\\ - - [ Check-WinPE ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-
-    $Reg | ? { $_.DisplayName -like "$( $DC[1] )" } `
-         | % {  
-                $Item = "WinPE"
-                If ( $_.DisplayVersion -ge 10.1.17763.1  ) 
-                { 
-                    Wrap-Action                                                                           `
-                        -Type                                                        "Dependency / $Item" `
-                        -Info                                             "@ $( $_.DisplayVersion ) $Req" }  
-
-                Else 
-                {
-                    Switch ( $host.UI.PromptForChoice( "$Item does not meet $Req" , "$DLX" , 
-                    [ System.Management.Automation.Host.ChoiceDescription [] ]@( "$DL" , "$EX" ) ,        `
-                    [ Int ] 0 ) )
-                    {
-                        0
-                        {   Wrap-Action                                                                   `
-                                -Type                                                       "Downloading" `
-                                -Info                                                              $Item
-
-                            Provision-Dependency                                                          `
-                                    -ID                        " Windows ADK Preinstallation Environment" `
-                                    -Path                                                "$Install\$Item" `
-                                    -File                                                 "winpe1903.exe" `
-                                    -URL                "https://go.microsoft.com/fwlink/?linkid=2087112" `
-                                    -Args      "/quiet /norestart /log $env:temp\win_adk.log /features +" }
-                        1
-                        {   Read-Host                                             "Press any key to exit"
-                            Exit                                                                          }
-                    }
-                }
-            }
-
-#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-#\\ - - [ Check-MDT]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-
-    $Reg | ? { $_.DisplayName -like "$( $DC[2] )" } `
-         | % {
-                $Item = "MDT"
-                If ( $_.DisplayVersion -ge 6.3.8450.0000 )
-                { 
-                    Wrap-Action                                                                           `
-                        -Type                                                        "Dependency / $Item" `
-                        -Info                                             "@ $( $_.DisplayVersion ) $Req" } 
-
-                Else 
-                {
-                    Switch ( $host.UI.PromptForChoice( "$Item does not meet $Req" , "$DLX" , 
-                    [ System.Management.Automation.Host.ChoiceDescription [] ]@( "$DL" , "$EX" ) ,        `
-                    [ Int ] 0 ) )
-                    {
-                        0
-                        {   Wrap-Action                                                                   `
-                                -Type                                                       "Downloading" `
-                                -Info                                                              $Item
-                        
-                            $MDTURL =                    "https://download.microsoft.com/download/3/3/9/" +
-                                                                   "339BE62D-B4B8-4956-B58D-73C4685FC492" +
-                                                                          "/MicrosoftDeploymentToolkit_x"
-
-                            If ( $CPU -eq "AMD64" ) { $MDTURL =                          "$MDTURL`64.msi" }
-                            Else                    { $MDTURL =                          "$MDTURL`86.msi" }
-
-                            Provision-Dependency                                                          `
-                                    -ID                                    "Microsoft Deployment Toolkit" `
-                                    -Path                                                "$Install\$Item" `
-                                    -File                                "MicrosoftDeploymentToolkit.msi" `
-                                    -URL                                                        $MDTURL   `
-                                    -Args                                             "/quiet /norestart" 
-                    
-                            Wrap-Action                                                                   `
-                                -Type                                                             "$Item" `
-                                -Info                                                       "[+] Updated" }
-
-                        1
-                        {   Read-Host "Press any key to exit"
-                            Exit                                                                          }
-                    }
-                }
-            }
-
-
-#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-#\\ - - [ Provision-PXDShare] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-
-# This is where the installation files are then placed into the directory/share that was just made.
-# I've been working on a process that cleans up the modules these guys are using, but... there's just a lot to go through.
-# For now, it does the same thing Michael Niehaus's script said for 2 years, only, I modified it quite a bit.
-
-        $MDTDir = ( ( GP "HKLM:\SOFTWARE\Microsoft\Deployment 4" ).Install_Dir ).TrimEnd( '\' )
-        
-        Import-Module "$MDTDir\Bin\MicrosoftDeploymentToolkit.psd1"
-
-        # If it's not an upgrade, create a new New-PSDrive with info from the GUI
-
-        If ( $Upgrade -eq 0 )
+        If ( $Reg | ? { $_.DisplayName -like "$( $DC[0] )" -and  $_.DisplayVersion -ge 10.1.17763.1 } )
         {
+            Wrap-Action                                                                                `
+                -Type                                                             "Dependency / $Item" `
+                -Info                                                                     "meets $Req" }
+                             
+        Else 
+        {   
+            Switch ( $host.UI.PromptForChoice( "$Item does not meet $Req" , $DLX , 
+            [ System.Management.Automation.Host.ChoiceDescription [] ]@( "&$DL" , "&$EX" ) ,           `
+            [ Int ] 0 ) )
+            {
+                0
+                {   Wrap-Action                                                                        `
+                        -Type                                                            "Downloading" `
+                        -Info                                                                   $Item
+
+                    Provision-Dependency                                                               `
+                    -ID                                        "Windows Assessment and Deployment Kit" `
+                    -Path                                                             "$Install\$Item" `
+                    -File                                                             "winadk1903.exe" `
+                    -URL                             "https://go.microsoft.com/fwlink/?linkid=2086042" `
+                    -Args                   "/quiet /norestart /log $env:temp\win_adk.log /features +" 
+                
+                Wrap-Action                                                                            `
+                    -Type                                                                      "$Item" `
+                    -Info                                                                "[+] Updated" }
+
+            1
+            {   Read-Host                                                      "Press any key to exit"
+                Exit                                                                                   }
+            }
+        }
+
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+            $Item = "WinPE"                                                     # WinADK #
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+        If ( $Reg | ? { $_.DisplayName -like "$( $DC[1] )" -and  $_.DisplayVersion -ge 10.1.17763.1 } ) 
+        { 
+            Wrap-Action                                                                                `
+                -Type                                                             "Dependency / $Item" `
+                -Info                                                                     "meets $Req" }
+
+        Else 
+        {
+            Switch ( $host.UI.PromptForChoice( "$Item does not meet $Req" , $DLX ,                     `
+            [ System.Management.Automation.Host.ChoiceDescription [] ]@( "&$DL" , "&$EX" ) ,           `
+            [ Int ] 0 ) )
+            {
+                0
+                {   Wrap-Action                                                                        `
+                        -Type                                                            "Downloading" `
+                        -Info                                                                   $Item
+
+                    Provision-Dependency                                                               `
+                        -ID                                  "Windows ADK Preinstallation Environment" `
+                        -Path                                                         "$Install\$Item" `
+                        -File                                                          "winpe1903.exe" `
+                        -URL                         "https://go.microsoft.com/fwlink/?linkid=2087112" `
+                        -Args               "/quiet /norestart /log $env:temp\win_adk.log /features +" }
+                1
+                {   Read-Host                                                  "Press any key to exit"
+                    Exit                                                                               }
+            }
+        }
+
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+            $Item = "MDT"                                                          # MDT #
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+        If ( $Reg | ? { $_.DisplayName -like "$( $DC[2] )" -and $_.DisplayVersion -ge 6.3.8450.0000 } )
+        { 
+            Wrap-Action                                                                                `
+                -Type                                                             "Dependency / $Item" `
+                -Info                                                                     "meets $Req" } 
+
+        Else 
+        {
+            Switch ( $host.UI.PromptForChoice( "$Item does not meet $Req" , $DLX ,                     `
+            [ System.Management.Automation.Host.ChoiceDescription [] ]@( "$DL" , "$EX" ) ,             `
+            [ Int ] 0 ) )
+            {
+                0
+                {   Wrap-Action                                                                        `
+                        -Type                                                            "Downloading" `
+                        -Info                                                                  $Item
+                        
+                    $MDTURL =                         "https://download.microsoft.com/download/3/3/9/" +
+                                                                "339BE62D-B4B8-4956-B58D-73C4685FC492" +
+                                                                       "/MicrosoftDeploymentToolkit_x"
+
+                    If ( $CPU -eq "AMD64" ) { $MDTURL =                               "$MDTURL`64.msi" }
+                    Else                    { $MDTURL =                               "$MDTURL`86.msi" }
+
+                    Provision-Dependency                                                               `
+                        -ID                                             "Microsoft Deployment Toolkit" `
+                        -Path                                                         "$Install\$Item" `
+                        -File                                         "MicrosoftDeploymentToolkit.msi" `
+                        -URL                                                                 $MDTURL   `
+                        -Args                                                      "/quiet /norestart" 
+                    
+                    Wrap-Action                                                                        `
+                        -Type                                                                  "$Item" `
+                        -Info                                                            "[+] Updated" 
+                    
+                    $MDTInstall =                                                                    0 }
+
+                1
+                {   Read-Host "Press any key to exit"
+                    Exit                                                                               }
+            }
+        }
+
+    Switch ( $host.UI.PromptForChoice( 'Installation or Imaging ?' , 'Are you installing the program or provisioning images?' , 
+    [ System.Management.Automation.Host.ChoiceDescription[] ]@( '&Installing' , '&Imaging' ) , 
+    [ Int ] 1 )  )
+    {
+        0
+        { 
+    
+    $XML       = 
+    @{  Title  = "Deployment Share Installation"
+        Header = "Deployment Configuration Settings"
+        HInfo1 = "This tool will be able to assist you with the installation of MDT for PowerShell."
+        HInfo2 = "You can make desired configuration changes from here, but if you are installing this for the 
+                 first time, please be wary that this tool is still under development." }
+                
+    $Block     = ""                                                    ,
+                 "Deployment Root, Ex. 'C:\Secured'"                   ,
+                 "Deployment Share, Ex. 'Secured$'"                    ,
+                 "PSDrive Name, Ex. 'DS001'"                           ,
+                 "Share Description, Ex. 'PXD/Hybrid [ Development ]'"
+
+    $Label     = ""      ,
+                 "Root"  ,
+                 "Share" ,
+                 "Name"  ,
+                 "Info"
+
+    $TextBoxes = 1..4 | % { "<TextBlock 
+                                Grid.Row          =      '$_' 
+                                Grid.Column       =      '0' 
+                                TextAlignment     =  'Right' 
+                                VerticalAlignment = 'Center' 
+                                FontSize          =     '10' >
+                                $( $Block[$_] )
+                             </TextBlock>
+                             <TextBox   
+                                Grid.Row          =      '$_' 
+                                Grid.Column       =      '1' 
+                                VerticalAlignment = 'Center' 
+                                Height            =     '24' 
+                                Width             =    '200' 
+                                Name              =   '$( $Label[$_] )' >
+                            </TextBox>" }
+
+$Xaml = @"
+<Window 
+    xmlns                   = "http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x                 = "http://schemas.microsoft.com/winfx/2006/xaml" 
+    Title                   = "Secure Digits Plus LLC | Hybrid @ $( $XML.Title )" 
+    Width                   = "480" 
+    Height                  = "374" 
+    HorizontalAlignment     = "Center" 
+    ResizeMode              = "NoResize" 
+    WindowStartupLocation   = "CenterScreen" 
+    Topmost                 = "True" >
+    <GroupBox Header="$( $XML.Header)" HorizontalAlignment="Center" Height="320" Margin="10,10,10,10" VerticalAlignment="Center" Width="450">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="55"/>
+        </Grid.RowDefinitions>
+            <TextBlock Grid.ColumnSpan="2" TextAlignment="Center" Margin="5,5,5,5" TextWrapping="Wrap">
+                $( $XML.HInfo1 )<LineBreak/><LineBreak/>
+                $( $XML.HInfo2 )
+            </TextBlock>
+            $TextBoxes
+            <Button  
+                Grid.Row     =      "5" 
+                Grid.Column  =      "0" 
+                Name         =  "Start"     
+                Content      =  "Start"     
+                Height       =     "40" 
+                Width        =    "200" />
+            <Button  
+                Grid.Row     =      "5" 
+                Grid.Column  =      "1" 
+                Name         = "Cancel" 
+                Content      = "Cancel" 
+                Height       =     "40" 
+                Width        =    "200" />
+        </Grid>
+    </GroupBox>
+</Window>
+"@
+
+    $GUI = Convert-XAMLtoWindow -Xaml $Xaml -NamedElement 'Root', 'Share' , 'Name' , 'Info' , 'Start', 'Cancel' -PassThru
+
+    $GUI.Cancel.Add_Click( { $GUI.DialogResult = $False } )
+
+    $GUI.Start.Add_Click({
+
+        $0 = @( "Root Folder" ; "Network Share Name" ; "PSDrive Name" ; "Share Description" ) 
+        $1 = $0 | % { "You must enter a $_" }
+        $2 = $0 | % { "$_ Missing" }
+        
+        $Message = ( 0..3 | % { [ Type ] "System.Windows.MessageBox" } )
+
+        If     (  $GUI.Root.Text -eq "" ) { ( $Message[0] )::Show( $1[0] , $2[0] ) }
+        ElseIf ( $GUI.Share.Text -eq "" ) { ( $Message[1] )::Show( $1[1] , $2[1] ) }
+        ElseIf (  $GUI.Name.Text -eq "" ) { ( $Message[2] )::Show( $1[2] , $2[2] ) }
+        ElseIf (  $GUI.Info.Text -eq "" ) { ( $Message[3] )::Show( $1[3] , $2[3] ) }
+
+        Else { $GUI.DialogResult = $True }
+
+    })    
+
+    $Output = Show-WPFWindow -GUI $GUI
+
+    If ( $Output -eq $True )
+    {   
+        $Prov = $GUI.Root.Text  ,
+                $GUI.Share.Text ,
+                $GUI.Name.Text  ,
+                $GUI.Info.Text 
+
+                Set-Content                                                                                               `
+                    -Path                                                                                        $Content `
+                    -Value                                                                                    $Prov[0..3]
+    }
+
+    Else
+    {
+        Wrap-Action                                                                                                       `
+            -Type                                                                                             "Exception" `
+            -Info                                                                          "The user exited the dialogue"
+
+        Read-Host                                                                                   "Press Enter to Exit"
+        Exit
+    }
+
+    $Pull    = @( Get-Content $Content   )
+    $Prov    = @( 0..3 | % { $Pull[$_] } )
+    Remove-Item $Content -Force
+    $Content = ""
+    $Pull    = ""
+
+    If ( $Prov[2] -eq "" ) { $Prov[2] = "PXD-Hybrid" } ; If ( $Prov[3] -eq "" ) { $Prov[3] = "PXD [ Development ]" } 
+
+    ( $URI , $SMB , $PXD , $Info ) = $Prov[0..3]
+
+    $MDTDir = ( ( GP "HKLM:\SOFTWARE\Microsoft\Deployment 4" ).Install_Dir ).TrimEnd( '\' )
+        
+    Import-Module "$MDTDir\Bin\MicrosoftDeploymentToolkit.psd1"
+
+    Switch ( $host.UI.PromptForChoice( 'Upgrade Share' , 'Is this a new or legacy Deployment share ?' , 
+    [ System.Management.Automation.Host.ChoiceDescription [] ]@( '&New' , '&Upgrade' ) , [ Int ] 1 ) )
+    {
+        0
+        {
+            Wrap-Action                                                                                                   `
+                -Type                                                                                          "Selected" `
+                -Info                                                                       "Create new Deployment Share"
+
+            $Upgrade = 0
+
+            Wrap-Action                                                                                                   `
+                -Type                                                                                      "Provisioning" `
+                -Info                                                                                 "Deployment Folder"
+                                                                                                                        #
+            
+            If ( ( Test-Path $URI ) -eq $False )
+            {
+                New-Item                                                                                                  `
+                    -Path                                                                                            $URI `
+                    -ItemType                                                                                   Directory
+
+                If ( $? -eq $True ) 
+                { 
+                    Wrap-Action                                                                                           `
+                        -Type                                                                                   "Created" `
+                        -Info                                                          "[+] URI Root / Deployment Folder"
+                }
+                                                                                                                        #
+                Else
+                {
+                    Wrap-Action -Type "Exception" -Info "[!] Failure"
+                    
+                    Read-Host "An error prevented root creation, Press Enter to Exit"
+
+                    Exit
+                }
+            }
+
+            Wrap-Action -Type "Provisioning" -Info "Deployment Share"
+            
+            If ( ( Get-SmbShare | ? { $_.Path -eq $URI } -EA 0 ) -eq $Null )
+            {     
+                New-SmbShare `
+                    -Name                                                           $SMB `
+                    -Path                                                           $URI `
+                    -FullAccess                                           Administrators `
+                    -Description                                                   $Info
+
+                If ( $? -eq $True )
+                {
+                    Wrap-Action -Type "Created" -Info "[+] SMB Share / Deployment Share"
+                }
+
+                Else
+                {
+                    Wrap-Action -Type "Exception" -Info "[!] PSD-URI Creation failed"
+
+                    Read-Host "An error prevented share creation, Press Enter to Exit"
+
+                    Exit
+                }
+            }
+
             If ( ( Get-PSDrive -Name $PXD -EA 0 ) -eq $Null )
             {
                 New-PSDrive `
@@ -927,11 +758,33 @@ Function Wrap-Action
                     -Description                                                   $Info `
                     -NetworkPath                                                  "$SMB" `
                     |                                             Add-MDTPersistentDrive
+                
+                If ( $? -eq $True )
+                {
+                    Wrap-Action -Type "Created" -Info "[+] PSDrive / Deployment Drive"
+                }
+
+                Else
+                {
+                    Wrap-Action -Type "Exception" -Info "[!] PSDrive Creation failed"
+
+                    Read-Host "An error prevented drive creation, Press Enter to Exit"
+
+                    Exit
+                }
             }
         }
 
+        1
+        {
+            Wrap-Action -Type "Selected" -Info "Upgrade Deployment Share"
+            
+            $Upgrade = 1
+        }
+    }
+
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-            $Scripts = "Scripts"                                               # Scripts #
+        $Scripts = "Scripts"                                                   # Scripts #
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
         
         @( gci                          "$Install\$Scripts" -Filter "*.ps1" -EA 0 ).Name `
@@ -941,9 +794,8 @@ Function Wrap-Action
                 Dir                                                   "$URI\$Scripts\$_" `
                 |                                                           Unblock-File }
 
-
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-            $Templates = "Templates"                                         # Templates #
+        $Templates = "Templates"                                             # Templates #
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
         
         @( gci                                              "$Install\$Templates" ).Name `
@@ -953,7 +805,7 @@ Function Wrap-Action
                 |                                                           Unblock-File }
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-            $Modules = "Tools\Modules"                                         # Modules #
+        $Modules = "Tools\Modules"                                             # Modules #
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
         "PSDGather", "PSDDeploymentShare", "PSDUtility", "PSDWizard" `
@@ -980,7 +832,7 @@ Function Wrap-Action
                 |                                                            Unblock-File }
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-            $BDD = "Microsoft.BDD"                                           # PSSnapIns #
+        $BDD = "Microsoft.BDD"                                               # PSSnapIns #
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
         Wrap-Action                                                                       `
@@ -1098,6 +950,59 @@ Function Wrap-Action
                 -AccountName                                            "CREATOR OWNER" `
                 -Force
         }
+
+        Switch ( $host.UI.PromptForChoice( 'Some stuff just happened' , 'Would you like a report on the stuff that just happened?' , 
+        [ System.Management.Automation.Host.ChoiceDescription [] ]@( '&Nah, Im good' , '&Yeah I like reading stuff' ) , [ Int ] 1 ) )
+        {
+            0
+            {    Echo "Alright, way to keep it real then" }
+
+            1
+            {    
+                Read-Host "
+
+                [ Obnoxious Breakdown Part 1 ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                Alright, the dependency checker just scoped out the registry to see if the MDT dependencies were there, and if they 
+                were? Pst. It scoped out the version numbers to see if they met the minimum requirements. If they, like, didn't meet 
+                the requirements ? Or, like, the program wasn't found ? Pst. It said 'I'm gonna make a folder called Tools, and then 
+                the script made out like a bandit... went out to the internet to ask Microsoft for the install files. Sorta like a 
+                guy askin' a girl out on a date. Microsoft  was like 'Ok. That request sounds good to me, lets do it'. So the script 
+                was like sweet, and it got what we needed to proceed. It did that for each of the programs ? And then like, installed 
+                them, like automatically. Pst. That's how real the script kept it, but I'm not even like, close to done with this 
+                description. Good so far? 
+
+                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - [ Press Enter to Continue ]" 
+                 
+                Read-Host "
+
+                [ Obnoxious Breakdown Part 2 ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                Alright. Then, it said 'Hey, MDT module, I need to access you to do some more stuff... So it was like, alright, 
+                fine. I like doing stuff.' So then the script was like 'Alright, now I've got things up on deck like I needed. Time 
+                to make some magic happen now. The script said hey, you makin' a new share here, or like upgrading an older one? Of 
+                course, you clicked on one or the other, so that's what it did. If you clicked new share ? Pst. It like, loaded a GUI 
+                where you put all that info in... like a boss or somethin. That's cool. So the script was like alright, now I know 
+                what I gotta do, so then it made a folder for the share, then it made a samba share tied to that folder, then it told 
+                MDT to make a new persistent drive share, and then even gave it a description. Sorta like this synopsis. Sorta like 
+                seasoning on food. Makes it taste even better. Anyway, still not done. Good so far?
+
+                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - [ Press Enter to Continue ]" 
+
+                Read-Host "
+
+                [ Obnoxious Breakdown Part 3 ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                Alright, last thing it did? Pst. It like, loaded all of the modules that MDT needs into the share you just like, made.
+                Then it copied all of the files to that folder, all of the scripts, modules, templates, and like, when it was all done?
+                Pst. It set some permissions on the shares like a boss. That's basically the long round-about way of explaining what 
+                the script did...Sometimes things happen. Sometimes they don't. But so far? Pst. You just told this script how to 
+                execute. Like a boss.
+
+                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - [ Press Enter to Continue ]" 
+            }
+        }
+
 
 #//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
 #\\ - - [ Install-Hybrid ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
@@ -1676,35 +1581,33 @@ Function Wrap-Action
     }
 
         1
-        {   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -# # #
-            # - - - [ Initialize-Hybrid ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-            # # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+        {
 
-            #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-            # [ Default Settings ] - You may change these settings as you wish, but if you respect my work,  #
-            #                        then a little credit from you will go a long way. -MC                   #
-            #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -# # #
+# - - - [ Initialize-Hybrid ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
-              $Hybrid =                "Initialize-Hybrid.ps1" ; 
-                  $fs =                                 " // " ; 
-                  $bs =                                 " \\ " ; 
-         $RootVar_INI =            "$home\Desktop\RootVar.ini" ;
-             $Default = @(            "Secure Digits Plus LLC" ;     
-                           "\\$( $Env:Computername )\Secured$" ; 
-                                      "$( $Env:Computername )" ; 
-                                                      "Hybrid" ;  
-                                                "Power`$hell!" ; 
-                            "https://www.securedigitsplus.com" ;       
-                                              "(802) 447-8528" ; 
-                                      "24h/d, 7d/w, 365.25d/y" ; 
-                               @( "OEM"  | % { "$($_)logo.bmp" ;  
-                                                 "$($_)bg.jpg" } ) ; 
-                                        "securedigitsplus.com" ; 
-                                               "Administrator" ;   
-                                                "Power`$hell!" ;
-                                                     "Vermont" ; 
-                                                  "C:\Secured" )
-          
+        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+        # [ Default Settings ] - You may change these settings as you wish, but if you respect my work,  #
+        #                        then a little credit from you will go a long way. -MC                   #
+        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+         $hybrid      =     "Initialize-Hybrid.ps1" ; $fs = " // " ; $bs = " \\ " ; 
+         $RootVar_ini = "$home\Desktop\RootVar.ini" ;
+        $Default = @(      "Secure Digits Plus LLC" ;     
+                                  "\\DSC0\Secured$" ; 
+                                             "DSC0" ; 
+                                           "Hybrid" ;  
+                                     "Power`$hell!" ; 
+                 "https://www.securedigitsplus.com" ;       
+                                   "(802) 447-8528" ; 
+                           "24h/d, 7d/w, 365.25d/y" ; 
+                    @( "OEM"  | % { "$($_)logo.bmp" ;  "$($_)bg.jpg" } ) ; 
+                             "securedigitsplus.com" ; 
+                                    "Administrator" ;   
+                                     "Power`$hell!" ; `
+                                          "Vermont" ; 
+                                       "C:\Secured" )
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
      
@@ -1883,15 +1786,14 @@ Function Wrap-Action
     "$bs      \\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //        $fs";
     "$fs      //                                                                                      \\        $bs";
     "$bs      \\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//        $fs";
-    "$fs      //         What you are seeing is the beginning, of security that doesn't 'suck'.       \\        $bs";
+    "$fs      //   What you are seeing is the beginning, of 'no stone unturned' security provisions.  \\        $bs";
     "$bs      \\______________________________________________________________________________________//        $fs";
     "$fs                                                                                                        $bs";
     "$bs      Special Thanks to Michael Niehaus, Damien Van Robaeys, and Shane Young for the inspiration        $fs";
     "$fs      and the education to design this software solution. At this time, this product is far from        $bs";
     "$bs      complete. However.. what it achieves is a 100% purity of your operating system deployment.        $fs";
-    "$fs      What you do after this process ? That's totally up to you. Be mindful of your software.           $bs";
-    "$bs                                                                                                        $fs";
-    "$fs                                                                                                        $bs")
+    "$fs                                                                                                        $bs";
+    )
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
@@ -1978,10 +1880,6 @@ Function Wrap-Action
                                        "webproxy.securedigitsplus.com" ;
                                                              "Vermont" ; 
                                                           "C:\Secured" )
-
-    If ( ( Test-Path $Content ) -eq $True )
-    {
-        
     
    $Label      = @(                     "Organization (Provisionary):" ;  
                      @( "Provisional" | % { "Network Path ($_ Share):" ; 
@@ -3260,7 +3158,7 @@ Function Wrap-Action
 
         Default = @{
 
-            DeployRoot         = "http://$($r[2]),\\$( $ENV:ComputerName )\$( $r[1] )"
+            DeployRoot         = "http://$($r[2]),\\$($ENV:ComputerName)\$($psDeploymentShare)"
             UserID             = "$( $r[3] )"
             UserPassword       = "$( $dccred.GetNetworkCredential().Password )"
             UserDomain         = "$( $r[15] )"
@@ -3503,5 +3401,3 @@ Function Wrap-Action
 
     }
 }
-
-    }
