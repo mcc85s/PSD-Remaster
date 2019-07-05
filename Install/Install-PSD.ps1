@@ -1712,7 +1712,7 @@ $Xaml = @"
 
                         Add-Content                       `
                             -Path                $OutFile `
-                            -Value "$( $InputObject[$q][$j] )" `
+                            -Value "$( $InputObject[$q][$z] )" `
                             -Encoding           $Encoding 
                     }
 
