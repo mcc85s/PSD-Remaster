@@ -652,11 +652,11 @@
                     URL =                  "https://go.microsoft.com/fwlink/?linkid=2087112"
                    Args =         "/quiet /norestart /log $env:temp\win_adk.log /features +" }
 
-        2 =   @{  Regex =                                                 "*$Deploy Tool*"
+        2 =   @{  Regex =                                                  "$Deploy Toolkit"
                    Full =                                                             "$MDT"
                     Min =                                                    '6.3.8450.0000'
                     Tag =                                                              "MDT" 
-                     ID =                                     "Microsoft Deployment Toolkit"
+                     ID =                                        "Microsoft $Deploy Toolkit"
                    Path =                                                     "$Install\MDT"
                    File =                                                         "$MDTFile" 
                     URL =                                                 "$MDTURL/$MDTFile" 
