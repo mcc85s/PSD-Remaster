@@ -16,10 +16,10 @@
 
     using namespace System.Security.Principal
 
-    $dccred = Get-Credential
-
     Function Elevate-Script
-    {   ( [ WindowsPrincipal ] [ WindowsIdentity ]::GetCurrent() ).IsInRole( "Administrators" ) | % {
+    {   
+        ( [ WindowsPrincipal ] [ WindowsIdentity ]::GetCurrent() ).IsInRole( "Administrators" ) | % {
+        
         If ( ( $_ -eq $False ) -and ( ( [ Int ]( gcim Win32_OperatingSystem ).BuildNumber -ge 6000 ) -eq $True ) )
         {   Echo "Attempting [~] Script Elevation" ; Start-Process -FilePath PowerShell.exe -Verb Runas `
         -Args "-File $PSCommandPath $( $MyInvocation.UnboundArguments )"
@@ -27,9 +27,9 @@
             Else                { Echo "[!] Elevation Failed" ; Read-Host "[!] Access Denied"  ;   Exit } }
         ElseIf ( $_ -eq $True )
         {   Echo "Access [+] Granted" ; Set-ExecutionPolicy Bypass -Scope Process -Force } }
-    }  
-    
-    Elevate-Script
+    }
+
+    $Message = [ Type ] "System.Windows.MessageBox"
 
 #\\ - - [ Echo/Write-Output Wrappers ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
 
@@ -151,6 +151,89 @@
             echo @( $bs + " -" * 52 + $fs ; $fs + "_-" * 52 + $bs ; " " * 108 )
     }
 
+    Function Test-Credential
+    {
+        [ CmdLetBinding () ][ OutputType ( [ String ] ) ] Param ( 
+        
+            [ Parameter ( Mandatory = $False , ValueFromPipeLine = $True , ValueFromPipelineByPropertyName = $True ) ] 
+        
+                [ Alias ( 'PSCredential' ) ] [ ValidateNotNull () ] 
+                
+                [ System.Management.Automation.PSCredential ][ System.Management.Automation.Credential () ] $Credentials )
+    
+        $Domain , $Root , $Username , $Password = @( 0..3 | % { $Null } )
+
+        If ( $Credentials -eq $null )
+        {
+            Try
+            {
+                $Credentials = Get-Credential "domain\$env:username" -EA 4
+            }
+
+            Catch
+            {
+                $ErrorMsg = $_.Exception.Message
+                Wrap-Action -Type "Exception" -Info "[!] Service Account Validation Failure"
+                Read-Host "Press Enter to Exit"
+                Exit
+            }
+        }
+        
+        Try
+        {
+            $Username = $Credentials.Username
+            $Password = $Credentials.GetNetworkCredential().Password
+            $Root     = "LDAP://$( ( [ ADSI ]'').distinguishedName )"
+            $Domain   = New-Object System.DirectoryServices.DirectoryEntry( $Root , $UserName , $Password )
+        }
+
+        Catch
+        {
+        
+            $_.Exception.Message
+            Continue
+        }
+  
+        If ( ! $Domain )
+        {
+            Wrap-Action -Type "Exception" -Info "[!] Domain does not exist" 
+
+            # Should not occur in really any scenario, but if it does ? 
+            # Pst. It'll be 'handled'. BEFORE it even causes a problem . . .
+            # Like a Boss who tells people what to do . . ? Pst. 'This' boss sees problems before they even happen . . .
+            # That's . . . like . . . some top notch 'upper level management' right there . . .
+            
+            # Hope I kept my 'upper level management' to a minimum.
+            # And if I didn't . . ? Pst . . . Then I'm probably as obnoxious as you think I am, basically.
+             
+            Wrap-Action -Type "Install" -Info "Active Directory Domain Services to proceed"
+            Read-Host "Press Enter to Exit"
+            Exit
+        }
+    
+        Else
+        {
+            If ( $Domain.Name -ne $Null )
+            {
+                Return "Authenticated"
+            }
+        
+            Else
+            {
+                Wrap-Action -Type "Exception" -Info "[!] Service Account was not Authenticated"
+                Read-Host "Press Enter to Exit"
+                Exit
+            }
+        }
+    }
+
+    $Message::Show( "Enter Hybrid Service Account Credential" )
+    $DCCred = Get-Credential "$( $Env:UserDomain )\Hybrid"
+    If ( ( $DCCred | Test-Credential ) -ne "Authenticated" )
+    {
+        Exit
+    }
+
     Function Convert-XAMLToWindow 
     { 
         Param ( [ Parameter ( Mandatory ) ] [ String ] $XAML , [ String [] ] $NamedElement = $Null , [ Switch ] $PassThru )
@@ -216,7 +299,7 @@
 
     }
 
-        Function Get-WIMName 
+    Function Get-WIMName 
     {
         [ CmdLetBinding () ] Param (
 
@@ -235,7 +318,6 @@
         ( Get-WindowsImage -ImagePath $IP ).ImageName 
     
     }
-
 
     Function Get-WIMBuild 
     {
@@ -295,7 +377,7 @@
 
     Function Import-NewTask 
     {
-        [ CmdLetBinding () ] Param(
+        [ CmdLetBinding () ] Param (
 
             [ ValidateNotNullOrEmpty () ]
 
@@ -386,19 +468,9 @@
 
                     [ String ] $LMCred )
 
-        Import-MDTTaskSequence `
-            -Path                   $PSP `
-            -Name                $Formal `
-            -Template               $XML `
-            -Comments              $Info `
-            -ID                      $ID `
-            -Version                $Ver `
-            -OperatingSystemPath    $SIP `
-            -FullName            $TSName `
-            -OrgName                $Org `
-            -HomePage               $WWW `
-            -AdminPassword       $lmcred `
-            -Verbose
+        Import-MDTTaskSequence -Path $PSP -Name $Formal -Template $XML -Comments $Info `
+            -ID $ID -Version $Ver -OperatingSystemPath $SIP -FullName $TSName -OrgName $Org -HomePage $WWW `
+            -AdminPassword $LMCred -VB
     }
 
     Function Provision-Dependency 
@@ -417,50 +489,26 @@
 
             If ( ( Test-Path $Path ) -ne $True )
             {
-                NI                                                                       $Path `
-                -ItemType                                                            Directory `
-                -Value                                                                   $Path
-
-            Wrap-Action                                                                        `
-                -Type                                                                "Created" `
-                -Info                                                 "[+] Directory @: $Path"
-
-        }
-        
-        IWR -Uri $URL -OutFile "$Path\$File" `
-
-        Wrap-Action                                                                            `
-            -Type                                                                 "Installing" `
-            -Info                                                                          $ID
-
-        Wrap-Action                                                                            `
-            -Type                                                                 "Processing" `
-            -Info                                                    "This could take a while"
-
-        $Dependency = Start-Process                                                            `
-            -FilePath                                                                    $File `
-            -Args                                                                        $Args `
-            -WorkingDirectory                                                            $Path `
-            -PassThru 
-
-        For ( $j = 0 ; $j -le 100 ; $j = ( $j + 1 ) % 100 )
-        {
-            Write-Progress                                                                                `
-                -Activity                                                           " [ Installing ] $ID" `
-                -PercentComplete                                                                      $j  `
-                -Status                                                               "$( $j )% Complete"
-            
-            Start-Sleep -Milliseconds 250
-                                
-            If ( $Dependency.HasExited ) 
-            {
-                Write-Progress                                                                            `
-                    -Activity                                                             "[ Installed ]" `
-                    -Completed
-
-                Return
+                NI $Path -ItemType Directory -Value $Path
+                Wrap-Action -Type "Created" -Info "[+] Directory @: $Path"
             }
-        }
+        
+            IWR -Uri $URL -OutFile "$Path\$File"
+            Wrap-Action -Type "Installing" -Info $ID
+            Wrap-Action -Type "Processing" -Info "This could take a while. Grab a salad or somethin'"
+            $Dependency = SAPS -FilePath $File -Args $Args -WorkingDirectory $Path -PassThru 
+
+            For ( $j = 0 ; $j -le 100 ; $j = ( $j + 1 ) % 100 )
+            {
+                Write-Progress -Activity " [ Installing ] $ID" -PercentComplete $j -Status "$( $j )% Complete"
+                Sleep -Milliseconds 250 # Putting computers AND people to sleep since ... 
+                                
+                If ( $Dependency.HasExited ) 
+                {
+                    Write-Progress -Activity "[ Installed ]" -Completed
+                    Return
+                }
+            }
     }
 
     Function Export-Ini 
@@ -475,7 +523,11 @@
         Begin   { Wrap-Action -Type "Processing" -Info "$( $MyInvocation.MyCommand.Name )" }
         Process { Wrap-Action -Type    "Writing" -Info "$( $FilePath )"
             If ( $Append ) { $Outfile = Get-Item $FilePath }
-            Else { $OutFile = NI -ItemType File -Path $FilePath -Force:$Force }
+            Else { $OutFile = NI -ItemType File -Path $FilePath -Force:$Force } 
+
+            # Using 'force' parameters is generally well received by females . . . but, be sure to use them appropriately.
+            # Don't roll your eyes at my script . . . 
+
             If ( ! ( $OutFile ) ) { Wrap-Action -Type "Exception" -Info "Unable to access file" }
             ForEach ( $q in $InputObject.Keys )
             { 
@@ -505,8 +557,9 @@
                         AC -Path $OutFile -Value "$z=$( $InputObject[$q][$z] )" -Encoding $Encoding
                     }
                 }
-            
-            AC -Path $OutFile -Value "" -Encoding $Encoding }
+
+                AC -Path $OutFile -Value "" -Encoding $Encoding 
+            }
 
             Wrap-Action -Type "Completed" -Info "$( $MyInvocation.MyCommand.Name ): $FilePath"
 
@@ -570,7 +623,7 @@
         " //                                                                                                          \\ " )
         Read-Host "Press Enter to exit" 
     }
- 
+
  Function Load-GUIModule
  {
     [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
@@ -587,40 +640,54 @@
 
     $T0_List  = @{
 
-    RowDef    = @( 0..16 | % { 
-    "<RowDefinition Height   =                                                 '*' />"})
+    RowDef    = @( 0..16 | % {
 
-    TextBlock = @(  2..6 + 9..11 + 14..16 | % { 
-                                    "<TextBlock 
-                                               Grid.Row             =                                '$_' 
-                                               Grid.Column          =                                '0' 
-                                               Margin               =                                '5' 
-                                               FontSize             =                               '12' 
-                                               HorizontalAlignment  =                           'Center'
-                                               Foreground           =                             'Cyan' >
-                                               <TextBlock.Effect>
-                                               <DropShadowEffect/>
-                                               </TextBlock.Effect>
-                                               $( $T0_Tags[$_] )
-                                               </TextBlock>
-                                               "})
-    TextBoxes = @( 2..6 + 9..11 + 14..16 | % { 
-                                    "<TextBox 
+    "                            <RowDefinition Height                    =                               '*' />
+    "})
+
+    TextBlock = @( 2..6 + 9..11 + 14..16 | % {
+
+    "                      <TextBlock 
+                                                Grid.Row             =                                '$_' 
+                                                Grid.Column          =                                '0' 
+                                                Margin               =                                '5' 
+                                                FontSize             =                               '12' 
+                                                HorizontalAlignment  =                           'Center'
+                                                Foreground           =                             'Black' >
+                                                <TextBlock.Effect>
+                                                    <DropShadowEffect
+                                                        ShadowDepth  =                                '3' 
+                                                        Color        =                             'Cyan' />
+                                                </TextBlock.Effect>
+                                                    $( $T0_Tags[$_] )
+                           </TextBlock>
+    "
+    })
+
+    TextBoxes = @( 2..6 + 9..11 + 14..15 | % { 
+
+    "                       <TextBox  
                                                 Name                 =                               '$( $T0_Offs[$_] )' 
                                                 Grid.Row             =                               '$_' 
                                                 Grid.Column          =                                '1' 
                                                 Margin               =                                '5' 
                                                 Height               =                               '20' 
-                                                FontSize             =                               '10' />"}) +
-                @( 16 `
-                         | % { "<PasswordBox 
+                                                FontSize             =                               '10' />
+    "
+    }) +
+                @( 16 | % { 
+
+    "                       <PasswordBox 
                                                 Name                 =                               '$( $T0_Offs[$_] )'
                                                 Grid.Row             =                               '$_' 
-                                                Grid.Column          =                                '1'
+                                                Grid.Column          =                                '1' 
                                                 Margin               =                                '5' 
                                                 Height               =                               '20' 
-                                                FontSize             =                               '10'
-                                                PasswordChar         =                                '*' />"})}
+                                                FontSize             =                               '10' 
+                                                PasswordChar         =                                '*' >
+                            </PasswordBox>
+    "
+    })}
 
     $T1_Tags  = @( "" ; "Company Name" ; @( "Website" , "Phone" , "Hours" | % { "Support $_" ; } ) + "" ; `
                 "Logo [ 120x120.bmp ]" ; "Background" ; "" ; "Branch / FQDN" )
@@ -628,31 +695,39 @@
     $T1_Offs  = @( "" ; @( $Named[11..14] ) + "" ; @( $Named[15..16] ) + "" ; $( $Named[17] ) )
 
     $T1_List  = @{
-    RowDef    = @( 0..10 | % { "<RowDefinition Height                    =                               '32' />
-    "})
-    TextBlock = @( 1..4 + 6 , 7 , 9 `
-                         | % { "<TextBlock 
+
+    RowDef    = @( 0..10 | % { 
+    "                            <RowDefinition Height                    =                               '32' /> " })
+
+    TextBlock = @( 1..4 + 6 , 7 , 9 | % {  
+    "                      <TextBlock 
                                                 Grid.Row             =                                '$_' 
-                                                Grid.Column          =                                '0'  
-                                                HorizontalAlignment  =                           'Center'
-                                                VerticalAlignment    =                           'Center'
-                                                Foreground           =                            'Cyan' 
-                                                FontSize             =                               '12'
-                                                Margin               =                                '5' >
+                                                Grid.Column          =                                '0' 
+                                                HorizontalAlignment  =                           'Center' 
+                                                VerticalAlignment    =                           'Center' 
+                                                FontSize             =                               '12' 
+                                                Margin               =                                '5'
+                                                Foreground           =                             'Lime' >
                                                 <TextBlock.Effect>
-                                                    <DropShadowEffect/>
+                                                    <DropShadowEffect
+                                                        ShadowDepth  =                                '2' 
+                                                        Color        =                             'Cyan' />
                                                 </TextBlock.Effect>
-                                                $( $T1_Tags[$_] )
-                                                </TextBlock>"})
-    TextBoxes = @( 1..4 + 6 , 7 , 9 `
-                         | % { "<TextBox 
+                                                    $( $T1_Tags[$_] )
+                           </TextBlock>
+    "})
+
+    TextBoxes = @( 1..4 + 6 , 7 , 9 | % { 
+
+    "                       <TextBox 
                                                 Name                 =                               '$( $T1_Offs[$_] )'
                                                 Grid.Row             =                                '$_' 
                                                 Grid.Column          =                                '1' 
                                                 Height               =                               '20' 
                                                 FontSize             =                               '10' 
                                                 Margin               =                                '5' />
-                                                "})}
+    "
+    })}
 
     $XAMLRoot = @"
 <Window
@@ -706,7 +781,7 @@
                             <ColumnDefinition Width =                                              '0.5*' />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                        $( $T0_List.RowDef )
+                            $( $T0_List.RowDef )
                         </Grid.RowDefinitions>
                         <TextBlock 
                                                 Grid.Row             =                                '0'
@@ -778,7 +853,7 @@
                             </TextBlock.Effect>
                         # - - - - - - - - [ BITS / IIS Config ] - - - - - - - - #
                         </TextBlock>
-                        $( $T0_List.TextBlock[6..8] )
+                        $( $T0_List.TextBlock[5..7] )
                         <RadioButton 
                                                 x:Name               =                            'IIS_I'
                                                 Grid.Row             =                               '12'
@@ -821,7 +896,7 @@
                             </TextBlock.Effect>
                         # - - [ Network and Source Credentials ]  - - #
                         </TextBlock>
-                        $( $T0_List.TextBlock[9..11] )
+                        $( $T0_List.TextBlock[8..10] )
                         $( $T0_List.TextBoxes[0..10] )
                     </Grid>
                 </TabItem>
@@ -923,34 +998,31 @@
 
         $GUI.Start.Add_Click({
 
-
         $0 = @( "File System/Drive" ;       "Root Folder" ;    "Network Share Name" ;      "PSDrive Name" ; 
                 "Share Description" ;         "Site Name" ; "Application Pool Name" ; "Virtual Directory" ;
                      "NetBIOS Name" ; "Target/LM Admin User" ; "Target/LM Admin Pass" )
 
         $1 = $0 | % { "You must enter a $_" }
         $2 = $0 | % { "$_ Missing" }
-        
-        $Message = ( 0..17 | % { [ Type ] "System.Windows.MessageBox" } )
 
-        If     (    $GUI.r0.Text -eq "" ) { ( $Message[ 0] )::Show( $1[ 0] , $2[ 0] ) }
-        ElseIf (    $GUI.r1.Text -eq "" ) { ( $Message[ 1] )::Show( $1[ 1] , $2[ 1] ) }
-        ElseIf (    $GUI.r2.Text -eq "" ) { ( $Message[ 2] )::Show( $1[ 2] , $2[ 2] ) }
-        ElseIf (    $GUI.r3.Text -eq "" ) { ( $Message[ 3] )::Show( $1[ 3] , $2[ 3] ) }
-        ElseIf (    $GUI.r4.Text -eq "" ) { ( $Message[ 4] )::Show( $1[ 1] , $2[ 4] ) }
-        ElseIf (  $GUI.iis0.Text -eq "" ) { ( $Message[ 5] )::Show( $1[ 2] , $2[ 5] ) }
-        ElseIf (  $GUI.iis1.Text -eq "" ) { ( $Message[ 6] )::Show( $1[ 3] , $2[ 6] ) }
-        ElseIf (  $GUI.iis2.Text -eq "" ) { ( $Message[ 7] )::Show( $1[ 1] , $2[ 7] ) }
-        ElseIf (   $GUI.dc0.Text -eq "" ) { ( $Message[ 8] )::Show( $1[ 2] , $2[ 8] ) }
-        ElseIf (   $GUI.dc1.Text -eq "" ) { ( $Message[ 9] )::Show( $1[ 3] , $2[ 9] ) }
-        ElseIf (   $GUI.dc2.Password -eq "" ) { ( $Message[10] )::Show( $1[10] , $2[10] ) }
-        ElseIf (    $GUI.p0.Text -eq "" ) { ( $Message[11] )::Show( $1[11] , $2[11] ) }
-        ElseIf (    $GUI.p1.Text -eq "" ) { ( $Message[12] )::Show( $1[12] , $2[12] ) }
-        ElseIf (    $GUI.p2.Text -eq "" ) { ( $Message[13] )::Show( $1[13] , $2[14] ) }
-        ElseIf (    $GUI.p3.Text -eq "" ) { ( $Message[14] )::Show( $1[14] , $2[14] ) }
-        ElseIf (  $GUI.img0.Text -eq "" ) { ( $Message[15] )::Show( $1[15] , $2[15] ) }
-        ElseIf (  $GUI.img1.Text -eq "" ) { ( $Message[16] )::Show( $1[16] , $2[16] ) }
-        ElseIf (    $GUI.n0.Text -eq "" ) { ( $Message[17] )::Show( $1[17] , $2[17] ) }
+        If     (      $GUI.r0.Text -eq "" ) { ( $Message )::Show( $1[ 0] , $2[ 0] ) }
+        ElseIf (      $GUI.r1.Text -eq "" ) { ( $Message )::Show( $1[ 1] , $2[ 1] ) }
+        ElseIf (      $GUI.r2.Text -eq "" ) { ( $Message )::Show( $1[ 2] , $2[ 2] ) }
+        ElseIf (      $GUI.r3.Text -eq "" ) { ( $Message )::Show( $1[ 3] , $2[ 3] ) }
+        ElseIf (      $GUI.r4.Text -eq "" ) { ( $Message )::Show( $1[ 1] , $2[ 4] ) }
+        ElseIf (    $GUI.iis0.Text -eq "" ) { ( $Message )::Show( $1[ 2] , $2[ 5] ) }
+        ElseIf (    $GUI.iis1.Text -eq "" ) { ( $Message )::Show( $1[ 3] , $2[ 6] ) }
+        ElseIf (    $GUI.iis2.Text -eq "" ) { ( $Message )::Show( $1[ 1] , $2[ 7] ) }
+        ElseIf (     $GUI.dc0.Text -eq "" ) { ( $Message )::Show( $1[ 2] , $2[ 8] ) }
+        ElseIf (     $GUI.dc1.Text -eq "" ) { ( $Message )::Show( $1[ 3] , $2[ 9] ) }
+        ElseIf ( $GUI.dc2.Password -eq "" ) { ( $Message )::Show( $1[10] , $2[10] ) }
+        ElseIf (      $GUI.p0.Text -eq "" ) { ( $Message )::Show( $1[11] , $2[11] ) }
+        ElseIf (      $GUI.p1.Text -eq "" ) { ( $Message )::Show( $1[12] , $2[12] ) }
+        ElseIf (      $GUI.p2.Text -eq "" ) { ( $Message )::Show( $1[13] , $2[14] ) }
+        ElseIf (      $GUI.p3.Text -eq "" ) { ( $Message )::Show( $1[14] , $2[14] ) }
+        ElseIf (    $GUI.img0.Text -eq "" ) { ( $Message )::Show( $1[15] , $2[15] ) }
+        ElseIf (    $GUI.img1.Text -eq "" ) { ( $Message )::Show( $1[16] , $2[16] ) }
+        ElseIf (      $GUI.n0.Text -eq "" ) { ( $Message )::Show( $1[17] , $2[17] ) }
 
         Else { $GUI.DialogResult = $True }
 
@@ -959,43 +1031,31 @@
 
         If ( $Output -eq $True )
         {   
-            # - [ Convert GUI to Usable Variables ] - - - - - - - - - - - - - - - - - - - - - - - #
+            # - [ Convert GUI to Usable Variables ] - - - - - - - - - - - - - - - - - - - #
 
-            # - - - [ Share Settings ] - - - #
+            $LMCRED = New-Object -TypeName System.Management.Automation.PSCredential `
+                        -Args "$( $GUI.dc1.Text )" , "$( $GUI.dc2.Password )"
 
-            $FSD      = "$( $GUI.r0.Text.TrimEnd('\') )"
-            $URI      = "$FSD\$( $GUI.r1.Text )"
-            $SMB      = "$( $GUI.r2.Text.TrimEnd('$') )$"
-            $PSD      = "$( $GUI.r3.Text )"
-            $TAG      = "$( $GUI.r4.Text )" 
-            
-            # - - - [ BITS/IIS Settings ] - - - #
-
-            $SiteName = "$( $GUI.iis0.Text )"
-            $SitePool = "$( $GUI.iis1.Text )"
-            $VHost    = "$( $GUI.iis2.Text )"
-            
-            # - - - [ Target Credentials ] - - - #
-
-            $DCR      = "$( $GUI.dc0.Text )"
-            $LMCRED = New-Object -TypeName System.Management.Automation.PSCredential -Args ( $GUI.dc1.Text ) , ( $GUI.dc2.Password )
-            
-            # - - - [ Provisional Information ] - - - #
-
-            $PNAME    = "$( $GUI.p0.Text )"
-            $PWWW     = "$( $GUI.p1.Text )"
-            $PPhone   = "$( $GUI.p2.Text )"
-            $PHours   = "$( $GUI.p3.Text )"
-            
-            # - - - [ Provisional Graphics ] - - - #
-
-            $PLogo    = "$( $GUI.img0.Text )"
-            $PBG      = "$( $GUI.img1.Text )"
-            
-            # - - - [ Provisional Network ] - - - #
-
-            $PBranch  = "$( $GUI.n0.Text )"
-
+            $DSC = [ Ordered ]@{   
+                        R0_Company     = "$( $GUI.p0.Text )"
+                        R1_UNCRoot     = "\\$Env:ComputerName\$SMB"
+                        R2_Hostname    = "$Env:ComputerName"
+                        R3_DC_User     = "$( $DCCred.Username )"
+                        R4_DC_Pass     = "[!] A Password"
+                        R5_WWW_Site    = "$( $GUI.p1.Text )"
+                        R6_Phone       = "$( $GUI.p2.Text )"
+                        R7_Hours       = "$( $GUI.p3.Text )"
+                        R8_Logo        = "$( $GUI.img0.Text )"
+                        R9_Background  = "$( $GUI.img1.Text )"
+                        R10_Branch     = "$( $GUI.n0.Text )"
+                        R11_Domain     = "$env:USERDNSDOMAIN"
+                        R12_LM_User    = "$( $LMCRED.Username )"
+                        R13_LM_Pass    = "$( $LMCRED.GetNetworkCredential().Password )"
+                        R14_Proxy      = "$Env:ComputerName"
+                        R15_NetBIOS    = "$Env:UserDomain"
+                        R16_DSC_Folder = "$( $GUI.r0.Text.TrimEnd('\') )$( ( $GUI.r1.Text ) )" }
+        
+            0..( $DSC.Count - 1 ) | % { echo "[  $_ ] Key/Value $( $DSC.Keys[$_] ) $( $DSC.Values[$_] )" }
         }
 
         Else
@@ -1006,32 +1066,38 @@
         }
 }
             
-    # Check Dependencies [ WinADK , WinPE , MDT ]
+        # Dependency Checks
 
-    $CPU     = $env:PROCESSOR_ARCHITECTURE 
-    $SRV     = $env:COMPUTERNAME
-    $Install = "C:\Hybrid-Installation"
+        $CPU     = $env:PROCESSOR_ARCHITECTURE 
+        $SRV     = $env:COMPUTERNAME
+        $Install = "C:\Hybrid-Installation"
 
-    $Deploy  = "Deployment"
-    $MDTFile = "Microsoft$Deploy`Toolkit_x"
-    $MDTURL  = "https://download.microsoft.com/download/3/3/9/339BE62D-B4B8-4956-B58D-73C4685FC492"
-    $ADK     = "Windows Assessment and $Deploy Kit"
-    $MDT     = "Microsoft $Deploy Toolkit"
+        $Deploy  = "Deployment"
 
-    $Path = "" , "\WOW6432Node" `
-    | % { "HKLM:\Software$_\Microsoft\Windows\CurrentVersion\Uninstall" }
+        $MDTFile = "Microsoft$Deploy`Toolkit_x"
+        $MDTURL  = "https://download.microsoft.com/download/3/3/9/339BE62D-B4B8-4956-B58D-73C4685FC492"
+
+        $ADK     = "Windows Assessment and $Deploy Kit"
+
+        $MDT     = "Microsoft $Deploy Toolkit"
+
+        $7zip    = "https://www.7-zip.org/a/7z1900"
+
+        $Path = "" , "\WOW6432Node" | % { "HKLM:\Software$_\Microsoft\Windows\CurrentVersion\Uninstall" }
     
-    If ( $CPU -eq "x86" )
-    { 
-        $Reg = $Path[    0 ] | % { GP "$_\*" }   
-        $MDTFile = "$MDTFile`86.msi"
-    }
+        If ( $CPU -eq "x86" )
+        { 
+            $Reg     = $Path[    0 ] | % { GP "$_\*" }   
+            $MDTFile = "$MDTFile`86.msi"
+            $7zip    = "7Z1900.exe"
+        }
 
-    Else                      
-    { 
-        $Reg = $Path[ 0..1 ] | % { GP "$_\*" } 
-        $MDTFile = "$MDTFile`64.msi"
-    }
+        Else                      
+        { 
+            $Reg     = $Path[ 0..1 ] | % { GP "$_\*" } 
+            $MDTFile = "$MDTFile`64.msi"
+            $7zip    = "7z1900-x64.exe"
+        }
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
         $List = @{     
@@ -1056,7 +1122,7 @@
                     URL =                  "https://go.microsoft.com/fwlink/?linkid=2087112"
                    Args =         "/quiet /norestart /log $env:temp\win_adk.log /features +" }
 
-        2 =   @{  Regex =                                                 "*$Deploy Tool*"
+        2 =   @{  Regex =                                                     "$Deploy Tool"
                    Full =                                                             "$MDT"
                     Min =                                                    '6.3.8450.0000'
                     Tag =                                                              "MDT" 
@@ -1065,7 +1131,17 @@
                    File =                                                         "$MDTFile" 
                     URL =                                                 "$MDTURL/$MDTFile" 
                    Args =                                                "/quiet /norestart" }
+
+        3 =   @{  Regex =                                                            '7-Zip'
+                   Full =                                                            '7-Zip'
+                    Min =                                                            '19.00'
+                    Tag =                                                            '7-Zip'
+                   Path =                                                   "$Install\7-Zip"
+                   File =                                                            "$7zip"
+                    URL =                                    "https://www.7-zip.org/a/$7zip"
+                   Args =                                                               "/S" }
         }
+
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
         $Req     = "Minimum Requirements"
@@ -1073,12 +1149,12 @@
         $EX      = "Exit"
         $DLX     = "$DL and install, or $EX"
 
-        Foreach ( $i in 0..2 )
+        Foreach ( $i in 0..3 )
         {
             $Item = $Reg | ? { $_.DisplayName -like "*$( $List[$i].Regex )*" } | Select DisplayName , DisplayVersion
             If ( ( $Item -ne $Null ) -and ( $Item.DisplayVersion -ge $List[$i].Min ) )
             {
-                Wrap-Action -Type "Dependency / $( $List[$i].Tag )" -Info "meets $Req"
+                Wrap-Action -Type "Dependency" -Info "$( $List[$i].Tag ) meets $Req"
             }
 
             Else
@@ -1126,93 +1202,106 @@
             }
         }
 
+        # Create the Base Deployment Share
+    
+        $MDTDir = ( ( GP "HKLM:\SOFTWARE\Microsoft\Deployment 4" ).Install_Dir ).TrimEnd( '\' )
+        IPMO "$MDTDir\Bin\MicrosoftDeploymentToolkit.psd1"
 
+        # - [ Create Folder ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
-            $MDTDir = ( ( GP "HKLM:\SOFTWARE\Microsoft\Deployment 4" ).Install_Dir ).TrimEnd( '\' )
-            IPMO "$MDTDir\Bin\MicrosoftDeploymentToolkit.psd1"
+        If ( ( Test-Path $URI ) -eq $False )
+        {
+            NI -Path $URI -ItemType Directory
+            If ( $? -eq $True ) { Wrap-Action -Type "Success"   -Info "[+] '$URI' Created" }
+            Else                { Read-Host "Exception [!] '$URI' creation failed. Press Enter to Exit" ; Exit }
+        }
 
-            # - [ Create Folder ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+        # - [ Generate Share ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
-            If ( ( Test-Path $URI ) -eq $False )
-            {
-                NI -Path $URI -ItemType Directory
-                If ( $? -eq $True ) { Wrap-Action -Type "Success"   -Info "[+] '$URI' Created" }
-                Else                { Read-Host "Exception [!] '$URI' creation failed. Press Enter to Exit" ; Exit }
-            }
-
-            # - [ Generate Share ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-
-            If ( ( GSMBS | ? { $_.Path -eq $URI } -EA 0 ) -eq $Null )
-            {     
-                NSMBS -Name $SMB -Path $URI -Description $TAG -FullAccess Administrators
-                If ( $? -eq $True ) { Wrap-Action -Type "Created" -Info "[+] SMB Share"       }
-                Else                { Wrap-Action -Type "Exception" -Info "[!] New-SMBShare '$SMB' failed"
+        If ( ( GSMBS | ? { $_.Path -eq $URI } -EA 0 ) -eq $Null )
+        {     
+            NSMBS -Name $SMB -Path $URI -Description $TAG -FullAccess Administrators
+            If ( $? -eq $True ) { Wrap-Action -Type "Created" -Info "[+] SMB Share"       }
+            Else                { Wrap-Action -Type "Exception" -Info "[!] New-SMBShare '$SMB' failed"
                                       Read-Host "Press Enter to Exit" ; Exit }
-            }
+        }
         
-            # - [ Generate PSDrive ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+        # - [ Generate PSDrive ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
-            If ( ( GDR -Name $PSD -EA 0 ) -eq $Null )
-            {
-                NDR `
-                    -Name                                                                    $PSD `
-                    -PSProvider                                                       MDTProvider `
-                    -Root                                                                    $URI `
-                    -Description                                                             $TAG `
-                    -NetworkPath                                                             $SMB `
-                    |                                                      Add-MDTPersistentDrive
+        If ( ( GDR -Name $PSD -EA 0 ) -eq $Null )
+        {
+            NDR `
+                -Name                                                                    $PSD `
+                -PSProvider                                                       MDTProvider `
+                -Root                                                                    $URI `
+                -Description                                                             $TAG `
+                -NetworkPath                                            "$( $Network.Share )" `
+                |                                                      Add-MDTPersistentDrive
                 
-                If ( $? -eq $True ) { Wrap-Action -Type "Created" -Info "[+] New-PSDrive '$PSD'" }
-                Else { Read-Host "Exception [!] New-PSDrive '$PSD' failed, Press Enter to Exit" ; Exit   }
-            }
+            If ( $? -eq $True ) { Wrap-Action -Type "Created" -Info "[+] New-PSDrive '$PSD'" }
+            Else { Read-Host "Exception [!] New-PSDrive '$PSD' failed, Press Enter to Exit" ; Exit   }
+        }
 
-            # - [ Update Registry ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+        # - [ Update Registry ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
-            $RegRoot     =                                               'HKLM:\SOFTWARE\Policies'
-            $RegFull     =           "Secure Digits Plus LLC\Hybrid\Desired State Controller\$PSD"
-            $RegRecurse  =                                                   $RegFull.Split( '\' )
+        $RegRoot     =                                               'HKLM:\SOFTWARE\Policies'
+        $RegFull     =    "Secure Digits Plus LLC\Hybrid\Desired State Controller\$PName\$PSD"
+        $RegRecurse  =                                                   $RegFull.Split( '\' )
 
-            0 | % { 
-                If ( ( Test-Path "$RegRoot\$( $RegRecurse[0] )" ) -ne $True )
-                {
-                    $Null =                                                                    NI `
-                        -Path                                                            $RegRoot `
-                        -Name                                                      $RegRecurse[0]
-                }
-            }
-
-            $RegPath = "$RegRoot\$( $RegRecurse[0] )"
-                
-            1..3 | % {
-                If ( ( Test-Path "$RegPath\$( $RegRecurse[$_] )" ) -ne $True )
-                {
-                    $Null =                                                                   NI `
-                        -Path                                                           $RegPath `
-                        -Name                                                    $RegRecurse[$_] 
-                }
-                $RegPath = "$RegPath\$( $RegRecurse[$_] )"
-            }
-
-            $RegFull =                                                        "$RegRoot\$RegFull"
-
-            If ( ( Test-Path $RegFull ) -eq $True )
+        0 | % { 
+            If ( ( Test-Path "$RegRoot\$( $RegRecurse[0] )" ) -ne $True )
             {
-                $Hybrid  = @{   Date    = "$( Get-Date -UFormat "%m-%d-%y %H:%M:%S")"
-                                Root    = $URI
-                                Share   = $SMB
-                                PSDrive = $PSD
-                                Tag     = $TAG }
-
-                $RegName  = @( $Hybrid.Keys   )
-                $RegValue = @( $Hybrid.Values ) 
-
-                0..3 | % {
-                $Null =                                                                   SP `
-                    -Path                                                         "$RegFull" `
-                    -Name                                                       $RegName[$_] `
-                    -Value                                                     $RegValue[$_] `
-                    -Force                                                                     }
+                $Null =                                                                    NI `
+                    -Path                                                            $RegRoot `
+                    -Name                                                      $RegRecurse[0]
             }
+        }
+
+        $RegPath = "$RegRoot\$( $RegRecurse[0] )"
+                
+        1..4 | % {
+            If ( ( Test-Path "$RegPath\$( $RegRecurse[$_] )" ) -ne $True )
+            {
+                $Null =                                                                   NI `
+                    -Path                                                           $RegPath `
+                    -Name                                                    $RegRecurse[$_] 
+            }
+            
+            $RegPath = "$RegPath\$( $RegRecurse[$_] )"
+        }
+
+        $RegFull =                                                        "$RegRoot\$RegFull"
+
+        If ( ( Test-Path $RegFull ) -eq $True )
+        {
+            $Hybrid  = @{   Date    = "$( Get-Date -UFormat "%m-%d-%y %H:%M:%S")"
+                            Root    =                                        $URI
+                            Share   =                                        $SMB
+                            PSDrive =                                        $PSD
+                            Tag     =                                        $TAG }
+
+            $RegName  = @( $Hybrid.Keys   )
+            $RegValue = @( $Hybrid.Values ) 
+
+            0..4 | % {
+            $Null =                                                                   SP `
+                -Path                                                         "$RegFull" `
+                -Name                                                       $RegName[$_] `
+                -Value                                                     $RegValue[$_] `
+                -Force                                                                     }
+
+            $Share , $BITS , $Company , $Network | % {
+
+            $RegName  = @( $_.Keys   )
+            $RegValue = @( $_.Values )
+            $i = $RegName.Count - 1
+
+            $Null =                                                                    SP `
+                -Path                                                          "$RegFull" `
+                -Name                                                        $RegName[$i] `
+                -Value                                                      $RegValue[$i] `
+                -Force                                                                     }
+        }
 
         Else
         {
@@ -1420,7 +1509,7 @@
 
         If ( ( Test-Path $SiteRoot ) -eq $False )
         {
-            New-Item -Path $SiteRoot -ItemType Directory -Name $SiteRoot
+            NI -Path $SiteRoot -ItemType Directory -Name $SiteRoot
 
             If ( $? -eq $True )
             {
@@ -1492,7 +1581,7 @@
 
         $WebSvc | % { Echo "[ $_ ]" ; Install-WindowsFeature -Name $_ }
 
-        Import-Module WebAdministration
+        IPMO WebAdministration
 
         $Default = "Default Web Site"
 
@@ -1526,7 +1615,7 @@
             }
         }
         
-        New-WebAppPool `
+        New-WebAppPool                                                                   `
             -Name                                                              $SitePool `
             -Force
 
@@ -1674,7 +1763,19 @@
 # - - - [ Provisional Root ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 # # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
-    Wrap-Function -ID "Provisional-Root"
+
+    # - [ Hybrid Installation / Initial Imaging Process ] - #
+
+    Wrap-Function -ID "Provision-HybridDSC"
+
+    # TODO: Test/Pull from "gp $RegPath" to prevent this
+
+    If ( ( Test-Path $URI ) -eq $Null )
+    {
+        Wrap-Action -Type "Exception" -Info "There is no root folder defined"
+        Read-Host "Press Enter to Exit"
+        Exit
+    }
 
     If ( ( Test-Path "$URI\$PName" ) -ne $True )
     {
@@ -1691,18 +1792,20 @@
         }
     }
 
-    $Bridge =  '(0)Resources'    , 
-               '(1)Tools'        , 
-               '(2)Images'       , 
-               '(3)Profiles'     , 
-               '(4)Certificates' , 
-               '(5)Applications'
+    $Bridge =  'Resources'    , 
+               'Tools'        , 
+               'Images'       , 
+               'Profiles'     , 
+               'Certificates' , 
+               'Applications'
 
-    $Bridge | % { 
+    0..5 | % { 
         
-        If ( ( Test-Path "$URI\$PName\$_" ) -ne $True )
+        $Current = "$URI\$PName\($_)$( $Bridge[$_] )"
+
+        If ( ( Test-Path "$Current" ) -ne $True )
         {
-            NI -Path "$URI\$PName\$_" -ItemType Directory
+            NI -Path "$Current" -ItemType Directory
             If ( $? -eq $True )
             {
                 Wrap-Action -Type "Directory" -Info "[+] $_ created"
@@ -1713,11 +1816,48 @@
             }
         }
 
-        $lm = $env:ComputerName , $env:Processor_Architecture , "$env:SystemDrive\" , $env:SystemRoot , 
-            "$env:SystemRoot\System32" , $env:programdata , $env:ProgramFiles
+    # TODO: Get this working in entirety with 7-zip and automatically extract contents to destination folders
+    #If ( ( gci $Current ) -eq $Null )
+    #{
+    #   IWR -URI "location" -OutFile "$Install\$PName\($_)$( $Bridge[$_] )"
+    #
+    #}
 
-        If ( $lm[0] -eq $r[2] ) { $dr = $r[16] } 
-        Else                    { $dr =  $r[1] } 
+    }
+
+        $LMV = @{    # - [ Local Machine Variables ] - - #
+                     HN =              $env:ComputerName # 
+                      X =    $env:Processor_Architecture #
+                      D =            "$env:SystemDrive\" #
+                      W =                $env:SystemRoot #
+                    S32 =     "$env:SystemRoot\System32" #
+                     PD =               $env:programdata #
+                     PF =              $env:ProgramFiles #
+                     # - - - - - - - - - - - - - - - - - #
+               }
+
+        $LM = @( $LMV | % { $_.HN , $_.X , $_.D , $_.W , $_.S32 , $_.PD , $_.PF }) 
+
+        $HybridDSC    = "HKLM:\SOFTWARE\Policies\Secure Digits Plus LLC\Hybrid\Desired State Controller"
+        If ( ( Test-Path $HybridDSC ) -ne $Null )
+        {
+            $Provisionary = gci $HybridDSC -EA 0
+            If ( ( $Provisionary.Name ) -ne $Null )
+            {
+                       $Split = $Provisionary.Name.Split( '\' )
+                       $Count = $Split.Count - 1
+                $Provisionary = $Split[$Count]
+            }
+        }
+        
+        If ( $LM[0] -eq $R[2] ) # If the current machine is the deployment server, target the local path
+        { 
+            $DR = $URI
+        } 
+        Else                    # If it isn't, target it's network path/share
+        { 
+            $dr = $
+        }
 
         $DS = "$DR\$( $R[0] )"
         
@@ -1727,11 +1867,15 @@
             
             1 = $Bridge | % { "$( $lm[2] + $r[0] )\$_" }
 
-            2 = "( Domain State Controller @ Source )" , "( Current Machine @ Variables )" , 
+            2 = "( Domain State Controller @ Source )" , 
+                "( Current Machine @ Variables )"      , 
                 "( Provision Index @ Bridge Control )"
 
-            3 = "Provisionary" ,      "(DSC) Share" , "(DSC) Controller" , "Resources" , "Tools / Drivers" , 
-                      "Images" ,         "Profiles" ,            "Certs" ,      "Apps"
+            3 =                         "Provisionary" ,      
+                                         "(DSC) Share" , 
+                                    "(DSC) Controller" +
+                                 @( $Bridge | % { $_ } ) 
+                                     
 
             4 =   "(DSC) Host" , "Current Hostname" , "CPU Architecture" , "System Drive" , "Windows Root" , 
                     "System32" ,     "Program Data"
@@ -1748,9 +1892,9 @@
 
         Wrap-Title -Title "Provisional-Root" 
         Wrap-Section -Section $Root[2][0]
-        Wrap-ItemOut -Type $Root[3][0] -Info $r[0]
-        Wrap-ItemIn  -Type $Root[3][1] -Info $r[1]
-        Wrap-ItemOut -Type $Root[3][2] -Info $r[2]
+        Wrap-ItemOut -Type $Root[3][0] -Info $r[0]        # Provisionary Name $PName
+        Wrap-ItemIn  -Type $Root[3][1] -Info $r[1]        # Deployment Server Hostname 
+        Wrap-ItemOut -Type $Root[3][2] -Info $r[2]        # Deployment Share Name / $SMB
         Wrap-ItemIn  -Type $Root[3][3] -Info $Root[0][0]
         Wrap-ItemOut -Type $Root[3][4] -Info $Root[0][1]
         Wrap-ItemIn  -Type $Root[3][5] -Info $Root[0][2]
@@ -2827,3 +2971,4 @@
 
 
 }
+
