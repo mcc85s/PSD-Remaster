@@ -1005,24 +1005,26 @@
         $1 = $0 | % { "You must enter a $_" }
         $2 = $0 | % { "$_ Missing" }
 
-        If     (      $GUI.r0.Text -eq "" ) { ( $Message )::Show( $1[ 0] , $2[ 0] ) }
-        ElseIf (      $GUI.r1.Text -eq "" ) { ( $Message )::Show( $1[ 1] , $2[ 1] ) }
-        ElseIf (      $GUI.r2.Text -eq "" ) { ( $Message )::Show( $1[ 2] , $2[ 2] ) }
-        ElseIf (      $GUI.r3.Text -eq "" ) { ( $Message )::Show( $1[ 3] , $2[ 3] ) }
-        ElseIf (      $GUI.r4.Text -eq "" ) { ( $Message )::Show( $1[ 1] , $2[ 4] ) }
-        ElseIf (    $GUI.iis0.Text -eq "" ) { ( $Message )::Show( $1[ 2] , $2[ 5] ) }
-        ElseIf (    $GUI.iis1.Text -eq "" ) { ( $Message )::Show( $1[ 3] , $2[ 6] ) }
-        ElseIf (    $GUI.iis2.Text -eq "" ) { ( $Message )::Show( $1[ 1] , $2[ 7] ) }
-        ElseIf (     $GUI.dc0.Text -eq "" ) { ( $Message )::Show( $1[ 2] , $2[ 8] ) }
-        ElseIf (     $GUI.dc1.Text -eq "" ) { ( $Message )::Show( $1[ 3] , $2[ 9] ) }
-        ElseIf ( $GUI.dc2.Password -eq "" ) { ( $Message )::Show( $1[10] , $2[10] ) }
-        ElseIf (      $GUI.p0.Text -eq "" ) { ( $Message )::Show( $1[11] , $2[11] ) }
-        ElseIf (      $GUI.p1.Text -eq "" ) { ( $Message )::Show( $1[12] , $2[12] ) }
-        ElseIf (      $GUI.p2.Text -eq "" ) { ( $Message )::Show( $1[13] , $2[14] ) }
-        ElseIf (      $GUI.p3.Text -eq "" ) { ( $Message )::Show( $1[14] , $2[14] ) }
-        ElseIf (    $GUI.img0.Text -eq "" ) { ( $Message )::Show( $1[15] , $2[15] ) }
-        ElseIf (    $GUI.img1.Text -eq "" ) { ( $Message )::Show( $1[16] , $2[16] ) }
-        ElseIf (      $GUI.n0.Text -eq "" ) { ( $Message )::Show( $1[17] , $2[17] ) }
+        $MSG = 0..16 | % { [ Type ] $Message }
+
+        If     (      $GUI.r0.Text -eq "" ) { ( $MSG[ 0] )::Show( $1[ 0] , $2[ 0] ) }
+        ElseIf (      $GUI.r1.Text -eq "" ) { ( $MSG[ 1] )::Show( $1[ 1] , $2[ 1] ) }
+        ElseIf (      $GUI.r2.Text -eq "" ) { ( $MSG[ 2] )::Show( $1[ 2] , $2[ 2] ) }
+        ElseIf (      $GUI.r3.Text -eq "" ) { ( $MSG[ 3] )::Show( $1[ 3] , $2[ 3] ) }
+        ElseIf (      $GUI.r4.Text -eq "" ) { ( $MSG[ 4] )::Show( $1[ 4] , $2[ 4] ) }
+        ElseIf (    $GUI.iis0.Text -eq "" ) { ( $MSG[ 5] )::Show( $1[ 5] , $2[ 5] ) }
+        ElseIf (    $GUI.iis1.Text -eq "" ) { ( $MSG[ 6] )::Show( $1[ 6] , $2[ 6] ) }
+        ElseIf (    $GUI.iis2.Text -eq "" ) { ( $MSG[ 7] )::Show( $1[ 7] , $2[ 7] ) }
+        ElseIf (     $GUI.dc0.Text -eq "" ) { ( $MSG[ 8] )::Show( $1[ 8] , $2[ 8] ) }
+        ElseIf (     $GUI.dc1.Text -eq "" ) { ( $MSG[ 9] )::Show( $1[ 9] , $2[ 9] ) }
+        ElseIf ( $GUI.dc2.Password -eq "" ) { ( $MSG[10] )::Show( $1[10] , $2[10] ) }
+        ElseIf (      $GUI.p0.Text -eq "" ) { ( $MSG[11] )::Show( $1[11] , $2[11] ) }
+        ElseIf (      $GUI.p1.Text -eq "" ) { ( $MSG[12] )::Show( $1[12] , $2[12] ) }
+        ElseIf (      $GUI.p2.Text -eq "" ) { ( $MSG[13] )::Show( $1[13] , $2[14] ) }
+        ElseIf (      $GUI.p3.Text -eq "" ) { ( $MSG[14] )::Show( $1[14] , $2[14] ) }
+        ElseIf (    $GUI.img0.Text -eq "" ) { ( $MSG[15] )::Show( $1[15] , $2[15] ) }
+        ElseIf (    $GUI.img1.Text -eq "" ) { ( $MSG[16] )::Show( $1[16] , $2[16] ) }
+        ElseIf (      $GUI.n0.Text -eq "" ) { ( $MSG[17] )::Show( $1[17] , $2[17] ) }
 
         Else { $GUI.DialogResult = $True }
 
