@@ -756,6 +756,9 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
                         $SitePool      =                                        "$( $GUI.iis1.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
                         $Vhost         =                                        "$( $GUI.iis2.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
                         $PName         =                                          "$( $GUI.p0.Text )" } # - - - - - - - - - - - - - - - - - - - - - //#
+
+
+
     Else { Wrap-Action -Type "Exception" -Info "[!] The dialog has failed you sir/ma'am" ; Read-Host "Press Enter to Exit" ; Exit } } # - - - - - - \\#
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 #// -[ / Declare-Functions ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
@@ -780,32 +783,29 @@ If ( ( $DCCred | Test-Credential ) -ne "Authenticated" ) { Exit } # - - - - - - 
 Elevate-Script ; Display-TrueColors # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
 
 
-Switch ( $host.UI.PromptForChoice( 'PowerShell Deployment' , 'Standard MDT, or Upgrade to PSD-Development?' , #- - - - - - - - - - - - - - - - - - -\\#
-[ System.Management.Automation.Host.ChoiceDescription [] ]@( '&Standard MDT' , '&PSD-Development' ) , [ Int ] 1 ) ) # - - - - - - - - - - - - - - - //#    
-{   0 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-      #// - [ Common Variables ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-      #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-    {   $CPU     =                                                            $env:PROCESSOR_ARCHITECTURE    # CPU Arch                             //#
-        $SRV     =                                                                      $env:COMPUTERNAME    # Server Name                          \\#
-        $Install =                                                                "C:\Hybrid-Installation"   # Install Folder                       //#
-        $Deploy  =                                                                            "Deployment"   # Deploy String                        \\#
-        $MDTFile =                                                            "Microsoft$Deploy`Toolkit_x"   # MDT File                             //#
-        $MDTURL  =    "https://download.microsoft.com/download/3/3/9/339BE62D-B4B8-4956-B58D-73C4685FC492"   # MDT Base URL                         \\#
-        $ADK     =                                                    "Windows Assessment and $Deploy Kit"   # ADK String                           //#
-        $MDT     =                                                             "Microsoft $Deploy Toolkit"   # MDT String                           \\#
-        $7zip    =                                                        "https://www.7-zip.org/a/7z1900"   # 7 Zip Base URL                       //#
-      #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-      #// - [ Registry Checker ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-      #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        $Path = "" , "\WOW6432Node" | % { "HKLM:\Software$_\Microsoft\Windows\CurrentVersion\Uninstall" } # - - - - - - - - - - - - - - - - - - - - //#
-        If ( $CPU -eq "x86" ) { $Reg = $Path[   0] | % { GP "$_\*" } ; $MDTFile = "$MDTFile`86.msi" ; $7zip = "7Z1900.exe"    }# - - - - - - - - - -\\#
-        Else                  { $Reg = $Path[0..1] | % { GP "$_\*" } ; $MDTFile = "$MDTFile`64.msi" ; $7zip = "7z1900-x64.exe"}#- - - - - - - - - - //#
-      #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-      #// - [ Real men use arrays ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-      #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        $List = @{ #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-        # - [ Windows ADK ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        0 =                                                                     "$Deploy Kit - Windows 10" , # Regex String                         //#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// - [ Common Variables ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $CPU     =                                                            $env:PROCESSOR_ARCHITECTURE    # CPU Arch                             \\#
+        $SRV     =                                                                      $env:COMPUTERNAME    # Server Name                          //#
+        $Install =                                                                "C:\Hybrid-Installation"   # Install Folder                       \\#
+        $Deploy  =                                                                            "Deployment"   # Deploy String                        //#
+        $MDTFile =                                                            "Microsoft$Deploy`Toolkit_x"   # MDT File                             \\#
+        $MDTURL  =    "https://download.microsoft.com/download/3/3/9/339BE62D-B4B8-4956-B58D-73C4685FC492"   # MDT Base URL                         //#
+        $ADK     =                                                    "Windows Assessment and $Deploy Kit"   # ADK String                           \\#
+        $MDT     =                                                             "Microsoft $Deploy Toolkit"   # MDT String                           //#
+        $7zip    =                                                        "https://www.7-zip.org/a/7z1900"   # 7 Zip Base URL                       \\#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    #// - [ Registry Checker ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $Path = "" , "\WOW6432Node" | % { "HKLM:\Software$_\Microsoft\Windows\CurrentVersion\Uninstall" } # - - - - - - - - - - - - - - - - - - - - \\#
+        If ( $CPU -eq "x86" ) { $Reg = $Path[   0] | % { GP "$_\*" } ; $MDTFile = "$MDTFile`86.msi" ; $7zip = "7Z1900.exe"     } # - - - - - - - - -//#
+        Else                  { $Reg = $Path[0..1] | % { GP "$_\*" } ; $MDTFile = "$MDTFile`64.msi" ; $7zip = "7z1900-x64.exe" } #- - - - - - - - - \\#
+        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $List = @{ # - [ Because real men use hash tables with arrays in them ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        0 = # - [ Windows ADK ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                                                                                "$Deploy Kit - Windows 10" , # Regex String                         //#
                                                                                             "10.1.17763.1" , # Minimum Version                      \\#
                                                                                                   "WinADK" , # ID                                   //#
                                                                    "Windows Assessment and Deployment Kit" , # Title                                \\#
@@ -813,8 +813,8 @@ Switch ( $host.UI.PromptForChoice( 'PowerShell Deployment' , 'Standard MDT, or U
                                                                                           "winadk1903.exe" , # Target File                          \\#
                                                          "https://go.microsoft.com/fwlink/?linkid=2086042" , # URL                                  //#
                                                 "/quiet /norestart /log $env:temp\win_adk.log /features +"   # Silent Arguments                     \\#
-        # - [ Windows PE ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-        1 =                                                                              "Preinstallation" , # Regex String                         \\#
+        1 = # - [ Windows PE ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                                                                                         "Preinstallation" , # Regex String                         \\#
                                                                                             "10.1.17763.1" , # Minimum Version                      //#
                                                                                                    "WinPE" , # ID                                   \\#
                                                                  "Windows ADK Preinstallation Environment" , # Title                                //#
@@ -822,8 +822,8 @@ Switch ( $host.UI.PromptForChoice( 'PowerShell Deployment' , 'Standard MDT, or U
                                                                                            "winpe1903.exe" , # Target File                          //#
                                                          "https://go.microsoft.com/fwlink/?linkid=2087112" , # URL                                  \\#
                                                 "/quiet /norestart /log $env:temp\win_adk.log /features +"   # Silent Arguments                     //#
-        # - [ Microsoft Deployment Toolkit ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-        2 =                                                                                 "$Deploy Tool" , # Regex String                         //#
+        2 = # - [ Microsoft Deployment Toolkit ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                                                                                            "$Deploy Tool" , # Regex String                         //#
                                                                                            "6.3.8450.0000" , # Minimum Version                      \\#
                                                                                                      "MDT" , # ID                                   //#
                                                                             "Microsoft Deployment Toolkit" , # Title                                \\#
@@ -831,8 +831,8 @@ Switch ( $host.UI.PromptForChoice( 'PowerShell Deployment' , 'Standard MDT, or U
                                                                                                 "$MDTFile" , # Target File                          \\#
                                                                                         "$MDTURL/$MDTFile" , # URL                                  //#
                                                                                        "/quiet /norestart"   # Silent Arguments                     \\#
-        # - [ 7-Zip ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-        3 =                                                                                        "7-Zip" , # Regex String                         \\#
+        3 = # - [ 7-Zip ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                                                                                                   "7-Zip" , # Regex String                         \\#
                                                                                                    "19.00" , # Minimum Version                      //#
                                                                                                    "7-Zip" , # ID                                   \\#
                                                                                  "7-Zip Archiving Utility" , # Title                                //#
@@ -840,265 +840,235 @@ Switch ( $host.UI.PromptForChoice( 'PowerShell Deployment' , 'Standard MDT, or U
                                                                                                    "$7zip" , # Target File                          //#
                                                                            "https://www.7-zip.org/a/$7zip" , # URL                                  \\#
                                                                                                       "/S" } # Silent Arguments                     //#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    #// - [ Variables Declared, Run the loop ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Foreach ( $i in 0..3 ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        {   $Item = $Reg | ? { $_.DisplayName -like "*$( $List[$i][0] )*" } | Select DisplayName , DisplayVersion #- - - - - - - - - - - - - - - - -\\#
+            If ( ( $Item -ne $Null ) -and ( $Item.DisplayVersion -ge $List[$i][1] ) ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+            {   Wrap-Action -Type "Dependency"  -Info "$( $List[$i][2] ) meets $Req" } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+            Else #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+            {   Wrap-Action -Type "Dependency"  -Info "$( $List[$i][2] ) does not meet $Req" # - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                Wrap-Action -Type "Downloading" -Info "$( $List[$i][2] )" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                Provision-Dependency -ID $List[$i][3] -Path  $List[$i][4] -File $List[$i][5] -URL $List[$i][6] -Args $List[$i][7] #- - - - - - - - -\\# 
+                If ( $? -eq $True ) { Wrap-Action -Type  "Successful" -Info "[+] $( $List[$i][2] ) Updated"          } #- - - - - - - - - - - - - - //#
+                Else                { Wrap-Action -Type   "Exception" -Info "[!] $( $List[$i][2] ) Failed to update" # - - - - - - - - - - - - - - -\\#
+                                      Read-Host "Press Enter to Exit" ; Exit } } } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    #// - [ Create the Base Deployment Share ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $MDTID = ( ( GP "HKLM:\SOFTWARE\Microsoft\Deployment 4" ).Install_Dir ).TrimEnd( '\' ) ; IPMO "$MDTID\Bin\MicrosoftDeploymentToolkit.psd1" #//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #//- [ Create URI Folder ]-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        If ( ( Test-Path $URI ) -eq $False ) { NI -Path $URI -ItemType Directory # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                                               If ( $? -eq $True ) { Wrap-Action -Type "Success" -Info "[+] '$URI' Created" } # - - - - - - - - - - \\#
+                                               Else { Read-Host "Exception [!] '$URI' creation failed. Press Enter to Exit" ; Exit } } # - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #//- [ Generate SMB Share ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        If ( ( GSMBS | ? { $_.Path -eq $URI } -EA 0 ) -eq $Null ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        {   NSMBS -Name $SMB -Path $URI -Description $TAG -FullAccess Administrators #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            If ( $? -eq $True ) { Wrap-Action -Type     "Created" -Info "[+] SMB Share" } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            Else                { Wrap-Action -Type   "Exception" -Info "[!] New-SMBShare '$SMB' failed" #- - - - - - - - - - - - - - - - - - - - - \\#
+                                  Read-Host "Press Enter to Exit" ; Exit } } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #//- [ Generate PSDrive ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        If ( ( GDR -Name $PSD -EA 0 ) -eq $Null ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//# 
+        {   NDR -Name $PSD -PSProvider MDTProvider -Root $URI -Description $TAG -NetworkPath "$NRoot" | Add-MDTPersistentDrive #- - - - - - - - - - \\#
+            If ( $? -eq $True ) { Wrap-Action -Type "Created" -Info "[+] New-PSDrive '$PSD'" } # - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            Else { Read-Host "Exception [!] New-PSDrive '$PSD' failed, Press Enter to Exit" ; Exit } } #- - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #//- [ Declare Registry Paths ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        $RegRoot     =                                               'HKLM:\SOFTWARE\Policies' #- - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $RegFull     =    "Secure Digits Plus LLC\Hybrid\Desired State Controller\$PName\$PSD" # - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $RegRecurse  =                                                   $RegFull.Split( '\' ) #- - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #//- [ Create Registry Path ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        0 | % { If ( ( Test-Path "$RegRoot\$( $RegRecurse[0] )" ) -ne $True ) { $Null = NI -Path $RegRoot -Name $RegRecurse[0] } } #- - - - - - - - \\#
+        $RegPath = "$RegRoot\$( $RegRecurse[0] )" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        1..4 | % {  If ( ( Test-Path "$RegPath\$( $RegRecurse[$_] )" ) -ne $True ) { $Null = NI -Path $RegPath -Name $RegRecurse[$_] } #- - - - - - \\#
+                    $RegPath = "$RegPath\$( $RegRecurse[$_] )" } ; $RegFull = "$RegRoot\$RegFull" #- - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #//- [ Create Registry Key/Value Pairs ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        If ( ( Test-Path $RegFull ) -eq $True ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        {   $RegName = @( $DSC.Keys ) ; $RegValue = @( $DSC.Values ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            0..23 | % { $Null = SP -Path "$RegFull" -Name $RegName[$_] -Value $RegValue[$_] -Force } # - - - - - - - - - - - - - - - - - - - - - - -//#
+            0..( $DSC.Count - 1 ) | % {  $RegName = @( $_.Keys ) ; $RegValue = @( $_.Values ) ; $i = ( $RegName.Count - 1 ) # - - - - - - - - - - - \\#
+                                            $Null = SP -Path "$RegFull" -Name $RegName[$i] -Value $RegValue[$i] -Force } } # - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #//- [ Error Handling ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Else { Wrap-Action -Type "Exception" -Info "The user exited the dialogue" ; Read-Host "Press Enter to Exit" ; Exit } # - - - - - - - - - - -//#
+        #\\/\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/\\#
+        #//\/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #//- -[ Switch It Up ( Legacy / PowerShell ) ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Switch ( $host.UI.PromptForChoice( 'PowerShell Deployment' , 'Standard MDT, or Upgrade to PSD-Development?' , #- - - - - - - - - - - - - - -//#
+        [ System.Management.Automation.Host.ChoiceDescription [] ]@( '&Standard MDT' , '&PSD-Development' ) , [ Int ] 1 ) ) # - - - - - - - - - - - \\#
+        {   0   #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                #// - [ What sissies will choose ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            {   Wrap-Action -Type "Selected" -Info "MDT [Deployment] Share created" } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            1   #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                #// - [ What real men will choose ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            {   Wrap-Action -Type "Creating" -Info "PowerShell [Deployment/Development] Share" #- - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                #// - [ PSD-Scripts ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                @( gci "$Install\$( $Scripts = "Scripts" )" -Filter "*.ps1" -EA 0 ).Name | % { #- - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                Robocopy   "$Install\$Scripts"   "$URI\$Scripts" $_ ; Dir   "$URI\$Scripts\$_" | Unblock-File } #- - - - - - - - - - - - - - - - - -//#
+                #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                #// [ PSD-Templates ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                @( gci "$Install\$( $Templates = "Templates" )").Name | % { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                Robocopy "$Install\$Templates" "$URI\$Templates" $_ ; Dir "$URI\$Templates\$_" | Unblock-File } # - - - - - - - - - - - - - - - - - \\#
+                #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                #// - [ PSD-Modules ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                "PSDGather", "PSDDeploymentShare", "PSDUtility", "PSDWizard" | % { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                $ModPath  = "$URI\$($Modules="Tools\Modules")\$_" ; #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                If ( ( Test-Path "$ModPath" ) -eq $False ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                {   $Null = NI "$ModPath" -ItemType Directory ; Wrap-Action -Type "Created" -Info "[+] Directory $_" } # - - - - - - - - - - - - - -//#
+                Wrap-Action -Type "Copying" -Info "Module $_ to $ModPath" ; Robocopy "$Install\$Scripts" "$ModPath" "$_.psm1" # - - - - - - - - - - \\#
+                Dir "$ModPath" | Unblock-File } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                #//- [ PSD-SnapIns ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                Wrap-Action -Type "Copying" -Info "[+] $URI\$Modules" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                If ( ( Test-Path "$URI\$Modules\$($BDD="Microsoft.BDD").PSSnapin" ) -ne $True ) # - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                {   $Null = NI "$URI\$Modules\$BDD.PSSnapIn" -ItemType Directory # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                    Wrap-Action -Type "Created" -Info "[+] Directory" } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                $PSSnapIn = ( ( "" , ".config" , "-help.xml" | % { ".dll$_" } ) + ( ".Format" , ".Types" | % { "$_.ps1xml" } ) | % { ` #- - - - - - //#
+                "PSSnapIn$_" } ) + ( "" , ".config" | % { "Core.dll$_" } ) + "ConfigManager.dll" | % { # - - - - - - - - - - - - - - - - - - - - - -\\#
+                CP "$MDTDir\Bin\$BDD.$_" "$URI\$Modules\$BDD.PSSnapIn" } ; Wrap-Action -Type "Copying" -Info "[+] $URI\$Templates" #- - - - - - - - //#
+                If ( ( Test-Path "$URI\$Templates" ) -eq $False ) { $Null = NI "$URI\$Templates" } # - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                "Groups" , "Medias" , "OperatingSystems" , "Packages" , "SelectionProfiles" , "TaskSequences" , "Applications" , "Drivers" , #- - - //#
+                "LinkedDeploymentShares" | % { "$_.xsd" } | % { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                CP "$MDTDir\$Templates\$_" "$URI\$Templates" ; Wrap-Action -Type "Copying" -Info "[+] $URI\$Templates" } #- - - - - - - - - - - - - //#
+                #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                #// - [ "0" Touching - Applies to Pedophiles too, for instance, Mark Z. or Johan A. ] - - - - - - - - - - - - - - - - - - - - - - - //#
+                #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                Wrap-Action -Type "Sending" -Info "[+] ZTIGather.XML to correct folder" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                ( gci $MDTDir\Templates\Distribution\Scripts -Filter "*Gather.xml" -EA 0 ) | % { CP $_.FullName "$URI\$Modules\PSDGather" } #- - - -\\#
+                #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                #//- [ Random Crap I'll likely replace ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                $MsgType  = "Logs" , "Dynamics Logs Sub" , "DriverSources" , "DriverPackages" | % { "$_ Folder" } #- - - - - - - - - - - - - - - - -\\#
+                $DirType  = "Logs" ,          "Logs\Dyn" , "DriverSources" , "DriverPackages" # - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                0..3 | % { Wrap-Action -Type "Creating" -Info "$( $Message[$_] ) in $URI\$( $Path[$_] )" # - - - - - - - - - - - - - - - - - - - - -\\#
+                    $Null = NI -ItemType Directory -Path "$URI\$( $Path[$_] )" -Force } } } # - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        #// - [ Variables Declared, Run the loop ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        Foreach ( $i in 0..3 ) 
-        {   $Item = $Reg | ? { $_.DisplayName -like "*$( $List[$i][0] )*" } | Select DisplayName , DisplayVersion
-            If ( ( $Item -ne $Null ) -and ( $Item.DisplayVersion -ge $List[$i][1] ) )
-            {   Wrap-Action -Type "Dependency"  -Info "$( $List[$i][2] ) meets $Req" }
-            Else
-            {   Wrap-Action -Type "Dependency"  -Info "$( $List[$i][2] ) does not meet $Req"
-                Wrap-Action -Type "Downloading" -Info "$( $List[$i][2] )"
-                Provision-Dependency -ID $List[$i][3] -Path  $List[$i][4] -File $List[$i][5] -URL $List[$i][6] `
-                    -Args $List[$i][7] 
-                If ( $? -eq $True ) { Wrap-Action -Type  "Successful" -Info "[+] $( $List[$i][2] ) Updated"          }
-                Else                { Wrap-Action -Type   "Exception" -Info "[!] $( $List[$i][2] ) Failed to update"
-                                      Read-Host "Press Enter to Exit" ; Exit                                         } } }
-        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        #- [ Create the Base Deployment Share ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - [ Import MDT Module ] - #
-        $MDTDir = ( ( GP "HKLM:\SOFTWARE\Microsoft\Deployment 4" ).Install_Dir ).TrimEnd( '\' )
-        IPMO "$MDTDir\Bin\MicrosoftDeploymentToolkit.psd1"
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - [ Create Folder ] - #
-        If ( ( Test-Path $URI ) -eq $False )
-        {   NI -Path $URI -ItemType Directory
-            If ( $? -eq $True ) { Wrap-Action -Type "Success" -Info "[+] '$URI' Created" }
-            Else                { Read-Host "Exception [!] '$URI' creation failed. Press Enter to Exit" ; Exit } }
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - [ Generate Share ]- #
-        If ( ( GSMBS | ? { $_.Path -eq $URI } -EA 0 ) -eq $Null )
-        {   NSMBS -Name $SMB -Path $URI -Description $TAG -FullAccess Administrators
-            If ( $? -eq $True ) { Wrap-Action -Type     "Created" -Info "[+] SMB Share" }
-            Else                { Wrap-Action -Type   "Exception" -Info "[!] New-SMBShare '$SMB' failed"
-                                  Read-Host "Press Enter to Exit" ; Exit } }
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - [ Generate PSDrive ]- #
-        If ( ( GDR -Name $PSD -EA 0 ) -eq $Null )
-        {   NDR -Name $PSD -PSProvider MDTProvider -Root $URI -Description $TAG -NetworkPath "$NRoot" `
-            | Add-MDTPersistentDrive
-            If ( $? -eq $True ) { Wrap-Action -Type "Created" -Info "[+] New-PSDrive '$PSD'" }
-            Else { Read-Host "Exception [!] New-PSDrive '$PSD' failed, Press Enter to Exit" ; Exit } }
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - [ Declare Registry Paths ]- #
-        $RegRoot     =                                               'HKLM:\SOFTWARE\Policies'
-        $RegFull     =    "Secure Digits Plus LLC\Hybrid\Desired State Controller\$PName\$PSD"
-        $RegRecurse  =                                                   $RegFull.Split( '\' )
-        # -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - [ Create Registry Paths ]- #
-        0 | % { If ( ( Test-Path "$RegRoot\$( $RegRecurse[0] )" ) -ne $True ) { $Null = NI -Path $RegRoot -Name $RegRecurse[0] } }
-        $RegPath = "$RegRoot\$( $RegRecurse[0] )"
-        1..4 | % `
-        {   If ( ( Test-Path "$RegPath\$( $RegRecurse[$_] )" ) -ne $True ) 
-            { $Null    = NI -Path $RegPath -Name $RegRecurse[$_] }
-              $RegPath = "$RegPath\$( $RegRecurse[$_] )" }
-        $RegFull = "$RegRoot\$RegFull"
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -[ Create Registry Key/Value Pairs ]- #
-        If ( ( Test-Path $RegFull ) -eq $True )
-        {   $RegName = @( $DSC.Keys ) ; $RegValue = @( $DSC.Values ) 
-            0..23 | % { $Null = SP -Path "$RegFull" -Name $RegName[$_] -Value $RegValue[$_] -Force }
-            0..( $DSC.Count - 1 ) | % `
-            {   $RegName  = @( $_.Keys ) ; $RegValue = @( $_.Values ) ; $i = ( $RegName.Count - 1 )
-                $Null = SP -Path "$RegFull" -Name $RegName[$i] -Value $RegValue[$i] -Force } }
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - [ Error Handling ]- #
-        Else { Wrap-Action -Type "Exception" -Info "The user exited the dialogue" ; Read-Host "Press Enter to Exit" ; Exit }
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -[ Switchin' It Up ]- #
-        Switch ( $host.UI.PromptForChoice( 'PowerShell Deployment' , 'Standard MDT, or Upgrade to PSD-Development?' , 
-        [ System.Management.Automation.Host.ChoiceDescription [] ]@( '&Standard MDT' , '&PSD-Development' ) , [ Int ] 1 ) )
-        {   0   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                # - [ What sissies will choose ] - - - - - - - - - - - - - - - - - - - - - - - - #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-            {   Wrap-Action -Type "Selected" -Info "MDT [Deployment] Share created" }            #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-            1   # - [ What real men will choose ]- - - - - - - - - - - - - - - - - - - - - - - - #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-            {   Wrap-Action -Type "Creating" -Info "PowerShell [Deployment/Development] Share"   #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                # - [ PSD-Scripts ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                @( gci "$Install\$( $Scripts = "Scripts" )" -Filter "*.ps1" -EA 0 ).Name | % {   #//#
-                    Robocopy "$Install\$Scripts" "$URI\$Scripts" $_                              #\\#
-                    Dir "$URI\$Scripts\$_" | Unblock-File }                                      #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                # - [ PSD-Templates ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                @( gci "$Install\$( $Templates = "Templates" )").Name | % {                      #//#
-                    Robocopy "$Install\$Templates" "$URI\$Templates" $_                          #\\#
-                    Dir "$URI\$Templates\$_" | Unblock-File }                                    #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                # - [ PSD-Modules ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                "PSDGather", "PSDDeploymentShare", "PSDUtility", "PSDWizard" | % {               #//#
-                    $ModPath  = "$URI\$($Modules="Tools\Modules")\$_"                            #\\#
-                    If ( ( Test-Path "$ModPath" ) -eq $False )                                   #//#
-                    {   $Null = NI "$ModPath" -ItemType Directory                                #\\#
-                        Wrap-Action -Type "Created" -Info "[+] Directory $_" }                   #//#
-                    Wrap-Action -Type "Copying" -Info "Module $_ to $ModPath"                    #\\#
-                    Robocopy "$Install\$Scripts" "$ModPath" "$_.psm1"                            #//#
-                    Dir "$ModPath" | Unblock-File }                                              #\\#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#//#
-                # - [ PSD-SnapIns ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #\\#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#//#
-                Wrap-Action -Type "Copying" -Info "[+] $URI\$Modules"                            #\\#
-                If ( ( Test-Path "$URI\$Modules\$($BDD="Microsoft.BDD").PSSnapin" ) -ne $True )  #//#
-                {   $Null = NI "$URI\$Modules\$BDD.PSSnapIn" -ItemType Directory                 #\\#
-                    Wrap-Action -Type "Created" -Info "[+] Directory" }                          #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                # - [ PSD-SnapIns ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                $PSSnapIn = ( ( "" , ".config" , "-help.xml" | % { ".dll$_" } ) +                #//#
-                  ( ".Format" , ".Types" | % {   "$_.ps1xml" } ) | % { "PSSnapIn$_" } ) + `      #\\#
-                  ( "" , ".config" | % { "Core.dll$_" } ) + "ConfigManager.dll"                  #//#
-                $PSSnapIn | % { CP "$MDTDir\Bin\$BDD.$_" "$URI\$Modules\$BDD.PSSnapIn" }         #\\#
-                Wrap-Action -Type "Copying" -Info "[+] $URI\$Templates"                          #//#
-                If ( ( Test-Path "$URI\$Templates" ) -eq $False )                                #\\#
-                { $Null = NI "$URI\$Templates" }                                                 #//#
-                "Groups" , "Medias" , "OperatingSystems" , "Packages" , "SelectionProfiles" ,    #\\#
-                "TaskSequences" , "Applications" , "Drivers" , "Groups" ,                        #//#
-                "LinkedDeploymentShares" | % { "$_.xsd" } | % {                                  #\\#
-                    CP "$MDTDir\$Templates\$_" "$URI\$Templates"                                 #//#
-                    Wrap-Action -Type "Copying" -Info "[+] $URI\$Templates" }                    #\\#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#//#
-                # - [ I'mma save this magic for another day - like a jerk would ]- - - - - - - - #\\#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#//#
-                # If ( $Upgrade -eq 0 )                                                          #\\#
-                # {  Wrap-Action -Type "Update" -Info "[+] PSD ISO properties"                   #//#
-                # $Name  = 86 , 64 | % {                           "Boot.x$_.LiteTouchISOName" ; #\\#
-                #                                           "Boot.x$_.LiteTouchWIMDescription" } #//#
-                # $Value = 86 , 64 | % {                                "PSDLiteTouch_x$_.iso" ; #\\#
-                #                                     "PowerShell Deployment Boot Image (x$_)" } #//#
-                # 0..3 | % { SP ${PXD}: -Name $Name[$_] -Value $Value[$_] }                      #\\#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#//#
-                # - [ "0" Touching - Applies to Pedophiles too ] - - - - - - - - - - - - - - - - #\\#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#//#
-                Wrap-Action -Type "Sending" -Info "[+] ZTIGather.XML to correct folder"          #\\#
-                ( gci $MDTDir\Templates\Distribution\Scripts -Filter "*Gather.xml" -EA 0 ) | % { #//#
-                CP $_.FullName "$URI\$Modules\PSDGather" }                                       #\\#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#//#
-                # - [ Random Crap I'll likely replace ]- - - - - - - - - - - - - - - - - - - - - #\\#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#//#
-                $Message  = "Logs" , "Dynamics Logs Sub" , "DriverSources" ,                     #\\#
-                "DriverPackages" | % { "$_ Folder" }                                             #//#
-                $Path = "Logs" , "Logs\Dyn" , "DriverSources" , "DriverPackages"                 #\\#
-                0..3 | % {                                                                       #//#
-                    Wrap-Action -Type "Creating" -Info "$( $Message[$_] ) in $URI\$( $Path[$_] )"#\\#
-                    $Null = NI -ItemType Directory -Path "$URI\$( $Path[$_] )" -Force }          #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                # - [ Set-Permissions ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                If ( ! ( $Upgrade ) )                                                            #//#
-                {   Wrap-Action -Type "Reducing" -Info "[~] Permissions Hardening on $SMB"       #\\#
-                    $Target = "Users" , "Administrators" , "SYSTEM" | % { "$_`:(OI)(CI)(RX)" }   #//#
-                    $Target | % { $null = icacls $URI /grant "$_" }                              #\\#
-                    GRSMBA -Name $SMB -AccountName "EVERYONE" -AccessRight Change -Force         #//#
-                    RKSMBA -Name $SMB -AccountName "CREATOR OWNER" -Force } } }                  #\\#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#//#
-                # - [ /End Switch ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-                 
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - [ Designate-SSLTLS ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        $SSLTLS = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols" ; $Types = "Client" , "Server"
-        $SK2V   = ( 0..7 | % { 0 } ) + ( 8..9 | % { 1 } ) ; $Protocols = @( 2..3 | % { "SSL $_.0" } ) + @( 0..2 | % { "TLS 1.$_" } )
-        $Protocols | % { 
-        $Path   = "$SSLTLS\$_"
-            If ( ( Test-Path $Path ) -ne $True ) { NI -Path "$SSLTLS" -Name "$_" } 
-            $Types | % { If ( ( Test-Path "$Path\$_" ) -ne $True ) { NI -Path "$Path" -Name "$_" } } }
-        $Path   = @( $Protocols | % { "$SSLTLS\$_\Client" ; "$SSLTLS\$_\Server" } )
-        0..( $Path.Count - 1 ) | % { 
-            If ( ( gci $Path ) -eq $Null ) 
-            {   SP -Path ( $Path[$_] ) -Name "DisabledByDefault" -Type "DWORD" -Value "0"
-                SP -Path ( $Path[$_] ) -Name           "Enabled" -Type "DWORD" -Value ( $SK2V[$_] ) } }
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - [ Deploy-Website ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        (  $SD , $Date , $LogPath , $Server ) = ( $env:SystemDrive , ( Get-Date -UFormat "%m-%d-%Y" ) , "$Home\Desktop\ACL" , $Env:ComputerName )    #
-        ( $PSP ,  $DWS ,     $SWS ,    $WSS ) = ( "Machine/Webroot/AppHost" , "$SiteName" , "System.WebServer" , "Security/Authentication" )         #
-                                        $Full = "IIS:\Sites\$SiteName\$VHost"                                                                        #
-        If ( ( Test-Path $SiteRoot ) -eq $False )
-        {   NI -Path $SiteRoot -ItemType Directory -Name $SiteRoot
-            If ( $? -eq $True ) { Wrap-Action -Type "Successful" -Info "[+] '$SiteRoot' Created" }
-            Else                { Wrap-Action -Type "Exception"  -Info "[!] '$SiteRoot' not created" ; Read-Host "Press Enter to Exit" ; Exit } }
-        Else { Wrap-Action -Type "Detected" -Info "[+] '$SiteRoot' already exists. Continuing . . ." }
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - [ Declare-WindowsFeatures ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        $WebSvc = @(                "Web-Server" ; # Installs the base 'Web Server functions ... ( $SE = Self Explanatory )                          #
-                                   "DSC-Service" ; # Installs the Desired State Configuration Service                                                #
-                                      "FS-SMBBW" ; # Updates the file system to allow for Samba Bandwidth to be differentially allocated             #
-                               "ManagementOData" ; # Creates an ASP.NET Web Service end point that exposes your management data ( Raw Doggin' it )   #
-                    "WindowsPowerShellWebAccess" ; # Allows for access to PS API over the web. Falls under $SE                                       #
-                             "WebDAV-Redirector" ; # Allows for Web Server to use reverse/forward proxies, useful for security AND trolling people   #
-        @( "BITS" | % {                     "$_" ; # Background Intelligent Transfer Service - Sends/Receives files without being annoying           #
-                                    "$_-IIS-Ext" ; # Extension for BITS to be used in Internet Information Services                                  #
-                                "RSAT-$_-Server" } ) ; # Allows for the remote administration of BITS, but in a less cool way than RDP               #
-        @(  "Net" | % { "$_-Framework-45-ASPNET" ; # It's what you need to run any ASP.Net webpage in IIS                                            #
-                      "$_-WCF-HTTP-Activation45" } ) ; # It's the Windows Communication Foundation's way of attempting to be important               #
-        @(                         @(  "App-Dev" ; # Application Development Module for IIS/Web                                                      #
-                                       "AppInit" ; # Initializes any WPF/C#/ASP applications for instance, MVC, or what have you.                    #
-                                     "Asp-Net45" ; # Another Module for ASP                                                                          #
-                                    "Basic-Auth" ; # Allows for authentication that could be considered 'Basic'                                      #
-                                   "Common-Http" ; # A bunch of functions that the 'machine/operating system' converts into 'visual objects'         #
-                                "Custom-Logging" ; # Allows for customized logging of whatever happens on your web server                            #
-                                "DAV-Publishing" ; # Publishes WebDAV modules to use/distribute to other machines/systems                            #
-                                   "Default-Doc" ; # Falls under $SE                                                                                 #
-                                   "Digest-Auth" ; # More advanced than Basic authentication, but still pretty fkin basic...                         #
-                                  "Dir-Browsing" ; # Allows any authenticated user to browse the contents of the web directory                       #
-                                     "Filtering" ; # Mime Types and things of that nature                                                            #
-                                        "Health" ; # If you don't understand how $SE this is... Go outside. Stop trying to program or read scripts.  #
-                    @( "HTTP" | % {  "$_-Errors" ; # Falls under the above entry                                                                     #
-                                    "$_-Logging" ; # Also falls under that same entry                                                                #
-                                   "$_-Redirect" ; # Works with WebDAV to keep people on the outside guessing what the hell is happening             #
-                                    "$_-Tracing" } ) ; # Like tracert but for 'tracking the IP addresses attempting to access the site'              #
-                                      "Includes" ; # It allows static content to be more dynamic, without messing up the content                     #
-                   @( "ISAPI" | % {     "$_-Ext" ; # APPCMD.EXE ... and WebConfig, basically.                                                        #
-                                     "$_-Filter" } ) ; # Allows 'Shell or VBScript to look through the content of WebConfig data. Similar to XML.    #
-                                 "Log-Libraries" ; # Pretty $SE if you ask me                                                                        #
-                                      "Metabase" ; # Like a database, but for business or server side analytics... It's like CEIP without the OS     #
-                                  "Mgmt-Console" ; # Also rather $SE                                                                                 #
-                                     "Net-Ext45" ; # Yet another extension for ASP.Net to work with your website. Probably for turning C# into html  #
-                                   "Performance" ; # $SE continued                                                                                   #
-                               "Request-Monitor" ; # An analytical logbook that specifically logs SSI requests, pretty sure anyway                   #
-                                      "Security" ; # What every website should use, but, may not unless you've studied how to use it.                #
-                              "Stat-Compression" ; # Takes statistics and zips em up                                                                 #
-                                "Static-Content" ; # Works with Web-Includes                                                                         #
-                                      "Url-Auth" ; # Similar to when you log into Gmail                                                              #
-                                     "WebServer" ; # The service that is nearly an exact replica of Apache                                           #
-                                  "Windows-Auth" ) | % { "Web-$_" } ) ; # Allows the WebSite to use NTLM/Kerberos authentication ( Most Secure )     #
-        @( "WAS" | % {                      "$_" ; # Series of services that takes HTTP and says "You don't need HTTP. You can use whatever we tell  #
-                              "$_-Process-Model" ; # you to use, cause that's what Windows Process Activation Services means, it's just turning      #
-                                "$_-Config-APIs" } ) ) # HTML into XML and vice versa. Like $Magic = @( David | % { $_ Blaine ; $_ Copperfield } )   # 
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - [ Install-WindowsFeatures using "0" XML files - What a "Desired State Controller" appears to be ]- - - - - - - - - - - - - - - - - - - - #
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        $WebSvc | % { Echo "[ $_ ]" ; Install-WindowsFeature -Name $_ } ; IPMO WebAdministration ; $Default = "Default Web Site"                 
-        $DWSite  = ( Get-Website -Name $Default -EA 0 )
-        If ( $DWSite -ne $Null ) 
-        {   If ( $DWSite.State -eq 'Running' )
-            {   Stop-Website | SP "IIS:\Sites\$Default" ServerAutoStart False } }
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - [ Check-WebServices ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        "MRxDAV" , "WebClient" | % { $Check = ( Get-Service -ComputerName $Server -Name $_ -EA 0 ) 
-            If ( ( $Check ).Status -ne "Running" ) { Set-Service -ComputerName $Server -StartupType Automatic -EA 4 -Status Start -Name $_ } }
-        New-WebAppPool -Name $SitePool -Force
-        $Name  = "Enable32BitAppOnWin64" , "ManagedRuntimeVersion" , "ManagedPipelineMode" ; $Value = "True" , "v4.0" , "Integrated"
-        0..2 | % { SP -Path "$( IIS:\AppPools\$SitePool )" -Name "$( $Name[$_] )" -Value "$( $Value[$_] )" }
-        Restart-WebAppPool -Name $SitePool
-        New-Website        -Name $SiteName -ApplicationPool $SitePool -PhysicalPath $SiteRoot -Force
-        Start-Website      -Name $SiteName
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - [ Create-VHost ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        New-WebVirtualDirectory -Site "$SiteName" -Name "$Vhost" -PhysicalPath "$SiteRoot" -Force
-        ( $MWA , $SWS , $WSS , $STC ) = ( "MACHINE/WEBROOT/APPHOST" , "System.WebServer" , "Security/Authentication" , "StaticContent" )
-        Set-WebConfigurationProperty -PSPath "$MWA" -Location "$SiteName" -Filter "$SWS/webdav/authoring" -Name "Enabled" -Value "True" ; $DAV = @"
-		Set Config "$SiteName/$Vhost" /Section:$SWS/Webdav/AuthoringRules /+[Users='*',Path='*',Access='Read,Source'] /Commit:AppHost
-"@     
-        $Sys32 = "$SD\Windows\System32"
-		$Results = SAPS "$Sys32\inetsrv\AppCMD.EXE" -Args $DAV -NoNewWindow -PassThru | Out-Null
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - [ Set-WebConfiguration ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+        #// - [ /End Switch ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #///\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \///#
+        #\\\/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\\\#
+        #//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - [ Set-Permissions ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Wrap-Action -Type "Reducing" -Info "[~] Permissions Hardening on $SMB" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $Target = "Users" , "Administrators" , "SYSTEM" | % { "$_`:(OI)(CI)(RX)" } ; $Target | % { $null = icacls $URI /grant "$_" } # - - - - - - -//#
+        GRSMBA -Name $SMB -AccountName "EVERYONE" -AccessRight Change -Force ; RKSMBA -Name $SMB -AccountName "CREATOR OWNER" -Force #- - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// -[ Designate-SSLTLS ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $SSLTLS = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols" ; $Types = "Client" , "Server" #- - - - - - - - - - \\#
+        $SK2V   = ( 0..7 | % { 0 } ) + ( 8..9 | % { 1 } ) ; $Protocols = @( 2..3 | % { "SSL $_.0" } ) + @( 0..2 | % { "TLS 1.$_" } ) # - - - - - - -//#
+        $Protocols | % { $Path = "$SSLTLS\$_" ; If ( ( Test-Path $Path ) -ne $True ) { NI -Path "$SSLTLS" -Name "$_" } #- - - - - - - - - - - - - - \\#
+                                                $Types | % { If ( ( Test-Path "$Path\$_" ) -ne $True ) { NI -Path "$Path" -Name "$_" } } } # - - - -//#
+        $Path   = @( $Protocols | % { "$SSLTLS\$_\Client" ; "$SSLTLS\$_\Server" } ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        0..( $Path.Count - 1 ) | % { If ( ( gci $Path ) -eq $Null ) { SP -Path ( $Path[$_] ) -Name "DisabledByDefault" -Type DWORD -Value 0 #- - - -//#
+                                                                      SP -Path ( $Path[$_] ) -Name "Enabled" -Type DWORD -Value ( $SK2V[$_] ) } } # \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// - [ Deploy-Website ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        (  $SD , $Date , $LogPath , $Server ) = ( $env:SystemDrive , ( Get-Date -UFormat "%m-%d-%Y" ) , "$Home\Desktop\ACL" , $Env:ComputerName ) # \\#
+        ( $PSP ,  $DWS ,     $SWS ,    $WSS ) = ( "Machine/Webroot/AppHost" , "$SiteName" , "System.WebServer" , "Security/Authentication" ) # - - -//#
+                                        $Full = "IIS:\Sites\$SiteName\$VHost" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        If ( ( Test-Path $SiteRoot ) -eq $False ) { NI -Path $SiteRoot -ItemType Directory -Name $SiteRoot # - - - - - - - - - - - - - - - - - - - -//#
+            If ( $? -eq $True ) { Wrap-Action -Type "Successful" -Info "[+] '$SiteRoot' Created" } #- - - - - - - - - - - - - - - - - - - - - - - - \\#
+            Else { Wrap-Action -Type "Exception"  -Info "[!] '$SiteRoot' failed to be created." ; Read-Host "Press Enter to Exit" ; Exit } } # - - -//#
+        Else {     Wrap-Action -Type  "Detected"  -Info "[+] '$SiteRoot' already exists. . ." } # - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// [ Declare-WindowsFeatures ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $WebSvc = @(                "Web-Server" ; # Installs the base 'Web Server functions ... ( $SE = Self Explanatory )                         \\#
+                                   "DSC-Service" ; # Installs the Desired State Configuration Service                                               //#
+                                      "FS-SMBBW" ; # Updates the file system to allow for Samba Bandwidth to be differentially allocated            \\#
+                               "ManagementOData" ; # Creates an ASP.NET Web Service end point that exposes your management data ( Raw Doggin' it )  //#
+                    "WindowsPowerShellWebAccess" ; # Allows for access to PS API over the web. Falls under $SE                                      \\#
+                             "WebDAV-Redirector" ; # Allows for Web Server to use reverse/forward proxies, useful for security AND trolling people  //#
+        @( "BITS" | % {                     "$_" ; # Background Intelligent Transfer Service - Sends/Receives files without being annoying          \\#
+                                    "$_-IIS-Ext" ; # Extension for BITS to be used in Internet Information Services                                 //#
+                                "RSAT-$_-Server" } ) ; # Allows for the remote administration of BITS, but in a less cool way than RDP              \\#
+        @(  "Net" | % { "$_-Framework-45-ASPNET" ; # It's what you need to run any ASP.Net webpage in IIS                                           //#
+                      "$_-WCF-HTTP-Activation45" } ) ; # It's the Windows Communication Foundation's way of attempting to be important              \\#
+        @(                         @(  "App-Dev" ; # Application Development Module for IIS/Web                                                     //#
+                                       "AppInit" ; # Initializes any WPF/C#/ASP applications for instance, MVC, or what have you.                   \\#
+                                     "Asp-Net45" ; # Another Module for ASP                                                                         //#
+                                    "Basic-Auth" ; # Allows for authentication that could be considered 'Basic'                                     \\#
+                                   "Common-Http" ; # A bunch of functions that the 'machine/operating system' converts into 'visual objects'        //#
+                                "Custom-Logging" ; # Allows for customized logging of whatever happens on your web server                           \\#
+                                "DAV-Publishing" ; # Publishes WebDAV modules to use/distribute to other machines/systems                           //#
+                                   "Default-Doc" ; # Falls under $SE                                                                                \\#
+                                   "Digest-Auth" ; # More advanced than Basic authentication, but still pretty fkin basic...                        //#
+                                  "Dir-Browsing" ; # Allows any authenticated user to browse the contents of the web directory                      \\#
+                                     "Filtering" ; # Mime Types and things of that nature                                                           //#
+                                        "Health" ; # If you don't understand how $SE this is... Go outside. Stop trying to program or read scripts. \\#
+                    @( "HTTP" | % {  "$_-Errors" ; # Falls under the above entry                                                                    //#
+                                    "$_-Logging" ; # Also falls under that same entry                                                               \\#
+                                   "$_-Redirect" ; # Works with WebDAV to keep people on the outside guessing what the hell is happening            //#
+                                    "$_-Tracing" } ) ; # Like tracert but for 'tracking the IP addresses attempting to access the site'             \\#
+                                      "Includes" ; # It allows static content to be more dynamic, without messing up the content                    //#
+                   @( "ISAPI" | % {     "$_-Ext" ; # APPCMD.EXE ... and WebConfig, basically.                                                       \\#
+                                     "$_-Filter" } ) ; # Allows 'Shell or VBScript to look through the content of WebConfig data. Similar to XML.   //#
+                                 "Log-Libraries" ; # Pretty $SE if you ask me                                                                       \\#
+                                      "Metabase" ; # Like a database, but for business or server side analytics... It's like CEIP without the OS    //#
+                                  "Mgmt-Console" ; # Also rather $SE                                                                                \\#
+                                     "Net-Ext45" ; # Yet another extension for ASP.Net to work with your website. Probably for turning C# into html //#
+                                   "Performance" ; # $SE continued                                                                                  \\#
+                               "Request-Monitor" ; # An analytical logbook that specifically logs SSI requests, pretty sure anyway                  //#
+                                      "Security" ; # What every website should use, but, may not unless you've studied how to use it.               \\#
+                              "Stat-Compression" ; # Takes statistics and zips em up                                                                //#
+                                "Static-Content" ; # Works with Web-Includes                                                                        \\#
+                                      "Url-Auth" ; # Similar to when you log into Gmail                                                             //#
+                                     "WebServer" ; # The service that is nearly an exact replica of Apache                                          \\#
+                                  "Windows-Auth" ) | % { "Web-$_" } ) ; # Allows the WebSite to use NTLM/Kerberos authentication ( Most Secure )    //#
+        @( "WAS" | % {                      "$_" ; # Series of services that takes HTTP and says "You don't need HTTP. You can use whatever we tell \\#
+                              "$_-Process-Model" ; # you to use, cause that's what Windows Process Activation Services means, it's just turning     //#
+                                "$_-Config-APIs" } ) ) # HTML into XML and vice versa. Like $Magic = @( David | % { $_ Blaine ; $_ Copperfield } )  \\# 
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// - [ Install-WindowsFeatures using "0" XML files - What a "Desired State Controller" appears to be ] - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $WebSvc | % { Echo "[ $_ ]" ; Install-WindowsFeature -Name $_ } ; IPMO WebAdministration ; $Default = "Default Web Site" #- - - - - - - - - \\#                 
+        $DWSite  = ( Get-Website -Name $Default -EA 0 ) ; If ( $DWSite -ne $Null ) {   If ( $DWSite.State -eq 'Running' ) #- - - - - - - - - - - - -//#
+                                                          { Stop-Website | SP "IIS:\Sites\$Default" ServerAutoStart False } } # - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// - [ Check-WebServices ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        "MRxDAV" , "WebClient" | % { $Check = ( Get-Service -ComputerName $Server -Name $_ -EA 0 ) #- - - - - - - - - - - - - - - - - - - - - - - - \\#
+            If ( ( $Check ).Status -ne "Running" ) { Set-Service -ComputerName $Server -StartupType Automatic -EA 4 -Status Start -Name $_ } } # - -//#
+        New-WebAppPool -Name $SitePool -Force # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $Name  = "Enable32BitAppOnWin64" , "ManagedRuntimeVersion" , "ManagedPipelineMode" ; $Value = "True" , "v4.0" , "Integrated" # - - - - - - -//#
+        0..2 | % { SP -Path "$( IIS:\AppPools\$SitePool )" -Name "$( $Name[$_] )" -Value "$( $Value[$_] )" } ; Restart-WebAppPool -Name $SitePool # \\#
+        New-Website -Name $SiteName -ApplicationPool $SitePool -PhysicalPath $SiteRoot -Force ; Start-Website -Name $SiteName #- - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #//- [ Create-VHost ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        New-WebVirtualDirectory -Site "$SiteName" -Name "$Vhost" -PhysicalPath "$SiteRoot" -Force #- - - - - - - - - - - - - - - - - - - - - - - - -//#
+        ( $MWA , $SWS , $WSS , $STC ) = ( "MACHINE/WEBROOT/APPHOST" , "System.WebServer" , "Security/Authentication" , "StaticContent" ) #- - - - - \\#
+        Set-WebConfigurationProperty -PSPath "$MWA" -Location "$SiteName" -Filter "$SWS/webdav/authoring" -Name "Enabled" -Value "True" #- - - - - -//#
+        $DAV = "Set Config '$SiteName/$Vhost' /Section:$SWS/Webdav/AuthoringRules /+[Users='*',Path='*',Access='Read,Source'] /Commit:AppHost" #- - \\#
+        $Sys32 = "$SD\Windows\System32" ; $Results = SAPS "$Sys32\inetsrv\AppCMD.EXE" -Args $DAV -NoNewWindow -PassThru | Out-Null # - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #//- [ Set-WebConfiguration ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         If ( ! ( ( Get-WebConfigurationProperty -PSPath "$MWA" -Filter "$SWS/$STC" -Name "." ).Collection | ? { $_.FileExtension -eq ".*" } ) ) `
         {   $MimeResults = Add-WebConfigurationProperty -PSPath "IIS:\Sites\$SiteName\$Vhost" -Filter "$SWS/StaticContent" -Name "." `
                 -Value @{  FileExtension = '.*' ; MimeType = 'Text/Plain' } }
