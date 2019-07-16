@@ -1,339 +1,358 @@
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-#// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
-#\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
-#// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-#\\                                                                                                                   //#
-#//   <@[ Script-Initialization ]@>                        "Script Magistration by Michael C. 'Boss Mode' Cook Sr."   \\#
-#\\                                                                                                                   //#
-#//                        [ Secure Digits Plus LLC | Hybrid ] [ Desired State Controller ]                           \\#
-#\\                                                                                                                   //#
-#//                  [ https://www.securedigitsplus.com | Server/Client | Seedling/Spawning Script ]                  \\#
-#\\                                                                                                                   //#
-#//                                                                                                                   \\#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-#// -[ Declare-Functions ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-    using namespace System.Security.Principal # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-    Function Elevate-Script # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-    { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-        ( [ WindowsPrincipal ] [ WindowsIdentity ]::GetCurrent() ).IsInRole( "Administrators" ) | % { # - - - - - - -#\\#
-        If ( ( $_ -eq $False ) -and ( ( [ Int ]( gcim Win32_OperatingSystem ).BuildNumber -ge 6000 ) -eq $True ) ) # #//#
-        {   Echo "Attempting [~] Script Elevation" ; #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-            SAPS -FilePath PowerShell.exe -Verb Runas -Args "-File $PSCommandPath $($MyInvocation.UnboundArguments)" #//#
-            If ( $? -eq $True ) { Echo "[+] Elevation Successful" ;  Echo "[+] Access Granted" ; Return } # - - - - -#\\#
-            Else                { Echo "[!] Elevation Failed" ; Read-Host "[!] Access Denied"  ;   Exit } } #- - - - #//#
-        ElseIf ( $_ -eq $True ) { Echo "Access [+] Granted" ; Set-ExecutionPolicy Bypass -Scope Process -Force } } } #\\#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-#// -[ Write-Output Wrappers ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-    ( $fs , $bs , $Message ) = ( " // " , " \\ " , "System.Windows.MessageBox" ) #- - - - - - - - - - - - - - - - - -#\\#
-    Function Wrap-Top   { Echo "$( " " * 108 ; $fs + "_-" * 52 + $bs ; $bs + " -" * 52 + $fs )" } #- - - - - - - - - #//#
-    Function Wrap-Bot   { Echo "$( $bs + " -" * 52 + $fs ; $fs + "_-" * 52 + $bs ; " " * 108 )" } # - - - - - - - - -#\\#
-    Function Wrap-Out   { Echo "$(  $fs + "  " * 52 + $bs )" } # - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-    Function Wrap-In    { Echo "$(  $bs + "  " * 52 + $fs )" } #- - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-    Function Wrap-Title #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-    { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-        [ CmdLetBinding () ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] #- - - - - - - - - - - - - - - - -#\\#
-                [ String ] $Title ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-            $th = "[ $Title ]" ; $y  = $th.length ; $x  = 104 - $y # - - - - - - - - - - - - - - - - - - - - - - - - #//#
-            If ( $x % 4 -ge 2 ) { $x  = $x - 2 ; $y  = $th.replace( "[" , " [ " ) ; $th = $y } #- - - - - - - - - - -#\\#
-            If ( $x % 2 -ge 1 ) { $x  = $x - 1 ; $y  = $th.replace( "]" , " ]" )  ; $th = $y ; $z  = 0 } # - - - - - #//#
-            If ( $z = 1 ) { $z = " -" } Else { $z = "- " } $y = $z * ( $x / 4 ) ; $x = "- " * ( $x / 4 ) #- - - - - -#\\#
-            Wrap-Top ; Echo "$( $fs + $x + $th + $y + $bs )" } # - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-    Function Wrap-Function # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-    { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-        [ CmdLetBinding () ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] #- - - - - - - - - - - - - - - - -#\\#
-                [ String ] $ID ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-            $th = "[ $ID ]" ; $y = $th.length ; $x = 104 - $y ; #- - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-            if ( $x % 4 -ge 2 ) { $x = $x - 2 ; $y = $th.replace( "[" , " [ " ) ; $th = $y } #- - - - - - - - - - - -#\\#
-            if ( $x % 2 -ge 1 ) { $x = $x - 1 ; $y = $th.replace( "]" , " ]" )  ; $th = $y ; $z = 0 } #- - - - - - - #//#
-            if ( $z = 1 ) { $z = " -" } else { $z = "- " } $y = $z * ( $x / 4 ) ; $x = "- " * ( $x / 4 ) #- - - - - -#\\#
-            Wrap-Top ; Echo "$( $fs + $x + $th + $y + $bs )" ; Wrap-Bot } #- - - - - - - - - - - - - - - - - - - - - #//#
-      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-    Function Wrap-Section #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-    { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-        [ CmdLetBinding () ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-            [Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] # - - - - - - - - - - - - - - - - -#\\#
-                [ String ] $Section ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-            $z = $Section ; $x = " " * 10 ; $y = " " * ( 94 - $z.Length ) #- - - - - - - - - - - - - - - - - - - - - #//#
-            Wrap-In ; Echo "$( $fs + $x + $z + $y + $bs )" ; Wrap-In } #- - - - - - - - - - - - - - - - - - - - - - -#\\#
-      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-    Function Wrap-ItemIn #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-    { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-        [ CmdLetBinding () ] Param ( #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] # - - - - - - - - - - - - - - - - #//#
-                [ String ] $Type , #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-            [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ] # - - - - - - - - - - - - - - - - #//#
-                [ String ] $Info ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-            $x = " " * ( 23 - $Type.Length ) ; $y = " " * ( 78 - $Info.Length ) # - - - - - - - - - - - - - - - - - -#\\#
-            Echo "$( $bs + $x + $Type ) : $( $Info + $y + $fs )" } # - - - - - - - - - - - - - - - - - - - - - - - - #//#
-      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-    Function Wrap-ItemOut #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-    { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-        [ CmdLetBinding () ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] #- - - - - - - - - - - - - - - - -#\\#
-                [ String ] $Type , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-            [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ] #- - - - - - - - - - - - - - - - -#\\#
-                [ String ] $Info ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-            $x = " " * ( 23 - $Type.Length ) ; $y = " " * ( 78 - $Info.Length ) #- - - - - - - - - - - - - - - - - - #//#
-            Echo "$( $fs + $x + $Type ) : $( $Info + $y + $bs )" } #- - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-    Function Wrap-Array # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-    { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-        [ CmdletBinding () ] Param ( #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] # - - - - - - - - - - - - - - - - #//#
-                [ Array ] $Block ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                Wrap-Top ; Echo $Block ; Wrap-Bot } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-    Function Wrap-Action # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-    { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-        [ CmdletBinding () ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] #- - - - - - - - - - - - - - - - -#\\#
-                [ String ] $Type , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//# 
-            [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ] #- - - - - - - - - - - - - - - - -#\\#
-                [ String ] $Info ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-            $x = " " * ( 23 - $Type.Length ) ; $y = " " * ( 78 - $Info.Length ) #- - - - - - - - - - - - - - - - - - #//#
-            Echo @( " " * 108 ; $fs + "_-" * 52 + $bs ; $bs + " -" * 52 + $fs ) # - - - - - - - - - - - - - - - - - -#\\#
-            Echo "$( $fs + $x + $Type ) : $( $Info + $y + $bs )" # - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-            Echo @( $bs + " -" * 52 + $fs ; $fs + "_-" * 52 + $bs ; " " * 108 ) } # - - - - - - - - - - - - - - - - -#\\#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-#// -[ Test-Credential ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-    Function Test-Credential
-    {   [ CmdLetBinding () ][ OutputType ( [ String ] ) ] Param (
-            [ Parameter ( ValueFromPipeLine = $True , ValueFromPipelineByPropertyName = $True ) ] 
-                [ Alias ( 'PSCredential' ) ] [ ValidateNotNull () ][ System.Management.Automation.PSCredential ]
-                [ System.Management.Automation.Credential () ] $Credentials )
-        ( $Domain , $Root , $Username , $Password ) = @( 0..3 | % { $Null } )
-
-        If ( $Credentials -eq $null ) {   Try   { $Credentials = Get-Credential "domain\$env:username" -EA 4 }
-                                          Catch { $ErrorMsg = $_.Exception.Message
-                                                  Wrap-Action -Type "Failure" -Info "[!] Account Validation"
-                                                  Read-Host "Press Enter to Exit" ; Exit } }
-        Try       { $Domain   = New-Object System.DirectoryServices.DirectoryEntry( 
-                                      "LDAP://$( ( [ ADSI ]'').distinguishedName )" , 
-                                                       "$( $Credentials.Username )" , 
-                                "$( $Credentials.GetNetworkCredential().Password )" ) }
-        Catch     { $_.Exception.Message ; Continue }
-        If ( ! $Domain ) {   Wrap-Action -Type "Exception" -Info        "[!] Domain does not exist" 
-                             Wrap-Action -Type   "Install" -Info "Active Directory Domain Services" 
-                             Read-Host "Press Enter to Exit" ; Exit }
-        Else             {   If ( $Domain.Name -ne $Null ) { Return "Authenticated" }
-                             Else                          { Wrap-Action -Type "Authentication" -Info "[!] Failure"
-                                                             Read-Host "Press Enter to Exit" ; Exit } } }
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-#// -[ Convert-XAMLToWindow ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-    Function Convert-XAMLToWindow # XAMLTo, prolly 'Waldo's bro. Don't front, you spent hours lookin for Waldo too.  #\\#
-    {   Param ( [ Parameter ( Mandatory ) ] [ String ]                    $XAML ,
-                                            [ String [] ] $NamedElement = $Null , 
-                                            [ Switch ]                $PassThru )
-        @( "Presentation" | % { "$_`Framework" ; "$_`Core" } ) + "WindowsBase" | % { Add-Type -AssemblyName $_ }
-        $Reader       = [ XML.XMLReader ]::Create([ IO.StringReader ] $XAML )
-        $Output       = [ Windows.Markup.XAMLReader ]::Load( $Reader )
-        $NamedElement | % { 
-            $Output | Add-Member -MemberType NoteProperty -Name $_ -Value $Output.FindName( $_ ) -Force }
-        If ( $PassThru )  { $Output }
-        Else 
-        {   $Null = $GUI.Dispatcher.InvokeAsync{ $Output = $GUI.ShowDialog() ; 
-            SV -Name Output -Value $Output -Scope 1 }.Wait() ; $Output } }
-
-    Function Show-WPFWindow
-    {   Param ( [ Parameter ( Mandatory ) ] [ Windows.Window ] $GUI )
-        $Output = $Null
-                  $Null   = $GUI.Dispatcher.InvokeAsync{ $Output = $GUI.ShowDialog()
-                        SV -Name Output -Value $Output -Scope 1 }.Wait()
-        $Output }
-
-    Function Add-ACL
-    {   [ CmdletBinding () ] Param (
-            [ String ] $Path ,
-                [ System.Security.AccessControl.FileSystemAccessRule ] $AceObject )
-            $OBJACL =  Get-ACL -Path $SiteRoot
-            $OBJACL.AddAccessRule( $AceObject )       
-            Set-ACL -Path $Path -AclObject $OBJACL }
-
-    Function New-ACLObject
-    {   [ CmdletBinding () ] Param (
-            [ String ] $SamAccountName ,
-                [ System.Security.AccessControl.FileSystemRights  ]               $Permission ,
-                [ System.Security.AccessControl.AccessControlType ]  $AccessControl = 'Allow' ,
-                [ System.Security.AccessControl.InheritanceFlags  ]    $Inheritance =  'None' ,
-                [ System.Security.AccessControl.PropagationFlags  ]    $Propagation =  'None' )
-            New-Object -TypeName System.Security.AccessControl.FileSystemAccessRule( 
-                $SamAccountName , $Permission , $Inheritance , $Propagation , $AccessControl ) }
-
-    Function Get-WIMName 
-    {   [ CmdLetBinding () ] Param (
-            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ][ String ]    $IP ,
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ][ String ]    $ID )
-        ( Get-WindowsImage -ImagePath $IP ).ImageName }
-
-    Function Get-WIMBuild 
-    {   [ CmdLetBinding () ] Param(
-            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ][ String ]    $IP ,
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ][ String ]    $ID )
-        ( Get-WindowsImage -ImagePath $IP -Index $ID ).Version }
-
-    Function Import-NewOSImage 
-    {   [ CmdLetBinding () ] Param (
-            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ][ String ] $IP ,
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ][ String ] $SF ,
-            [ Parameter ( Position = 2 , ValueFromPipeline = $True ) ][ String ] $DF )
-
-        Import-MDTOperatingSystem -Path $IP -SourceFile $SF -DestinationFolder $DF -Move -VB }
-
-    Function Import-NewTask 
-    {   [ CmdLetBinding () ] Param (
-            [ Parameter ( Position =  0 , ValueFromPipeline = $True ) ][ String ]    $PSP ,
-            [ Parameter ( Position =  1 , ValueFromPipeline = $True ) ][ String ] $Formal ,
-            [ Parameter ( Position =  2 , ValueFromPipeline = $True ) ][ String ]    $XML ,
-            [ Parameter ( Position =  3 , ValueFromPipeline = $True ) ][ String ]   $Info ,
-            [ Parameter ( Position =  4 , ValueFromPipeline = $True ) ][ String ]     $ID ,
-            [ Parameter ( Position =  5 , ValueFromPipeline = $True ) ][ String ]    $Ver ,
-            [ Parameter ( Position =  6 , ValueFromPipeline = $True ) ][ String ]    $SIP ,
-            [ Parameter ( Position =  7 , ValueFromPipeline = $True ) ][ String ] $TSName ,
-            [ Parameter ( Position =  8 , ValueFromPipeline = $True ) ][ String ]    $Org ,
-            [ Parameter ( Position =  9 , ValueFromPipeline = $True ) ][ String ]    $WWW ,
-            [ Parameter ( Position = 10 , ValueFromPipeline = $True ) ][ String ] $LMCred )
-
-            Import-MDTTaskSequence -Path $PSP -Name $Formal -Template $XML -Comments $Info `
-                -ID $ID -Version $Ver -OperatingSystemPath $SIP -FullName $TSName `
-                -OrgName $Org -HomePage $WWW -AdminPassword $LMCred -VB }
-
-    Function Provision-Dependency 
-    {   [ CmdLetBinding () ] Param (
-            [ Parameter ( Position =  0 , ValueFromPipeline = $True ) ][ String ]     $ID ,
-            [ Parameter ( Position =  1 , ValueFromPipeline = $True ) ][ String ]   $Path ,
-            [ Parameter ( Position =  2 , ValueFromPipeline = $True ) ][ String ]   $File ,
-            [ Parameter ( Position =  3 , ValueFromPipeline = $True ) ][ String ]    $URL ,
-            [ Parameter ( Position =  4 , ValueFromPipeline = $True ) ][ String ]   $Args )
-
-        If ( ( Test-Path $Path ) -ne $True )
-        {   NI $Path -ItemType Directory -Value $Path 
-            Wrap-Action -Type "Created" -Info "[+] Directory @: $Path" }
-
-        IWR -Uri $URL -OutFile "$Path\$File"
-        Wrap-Action -Type "Installing" -Info $ID
-        Wrap-Action -Type "Processing" -Info "This could take a while."
-        $Dependency = SAPS -FilePath $File -Args $Args -WorkingDirectory $Path -PassThru 
-
-        For ( $j = 0 ; $j -le 100 ; $j = ( $j + 1 ) % 100 )
-        {
-            Write-Progress -Activity " [ Installing ] $ID" -PercentComplete $j -Status "$( $j )% Complete"
-            Sleep -Milliseconds 250
-            If ( $Dependency.HasExited ) { Write-Progress -Activity "[ Installed ]" -Completed ; Return } } }
-
-    Function Export-Ini 
-    {   [ CmdletBinding () ] Param (                                                                    [     Switch ]      $Append , 
-            [ ValidateSet ( "Unicode" , "UTF7" ,    "UTF8" , "UTF32" , "ASCII" , "BigEndianUnicode" , "Default" , "OEM" ) ]
-            [ Parameter () ]                                                                            [     String ]    $Encoding ,
-            [ ValidateNotNullOrEmpty () ][ ValidatePattern ( '^([a-zA-Z]\:)?.+\.ini$' ) ]
-            [ Parameter ( Mandatory = $True ) ]                                  [ String ] $FilePath , [     Switch ]       $Force ,
-            [ ValidateNotNullOrEmpty () ][ Parameter ( ValueFromPipeline = $True , Mandatory = $True ) ][  Hashtable ] $InputObject ,
-                                                                                                        [     Switch ]    $Passthru )
-        Begin   { Wrap-Action -Type "Processing" -Info "$( $MyInvocation.MyCommand.Name )" }
-        Process { Wrap-Action -Type    "Writing" -Info "$( $FilePath )" # - [ Begin Process ] - - - - - - - #
-            If ( $Append ) { $Outfile = Get-Item $FilePath }
-            Else { $OutFile = NI -ItemType File -Path $FilePath -Force:$Force } 
-
-            # Using 'force' parameters is generally well received by females . . . but, be sure to use them appropriately.
-            # Don't roll your eyes at my script . . . 
-
-            If ( ! ( $OutFile ) ) { Wrap-Action -Type "Exception" -Info "Unable to access file" }
-            ForEach ( $q in $InputObject.Keys )
-            {   If ( ! ( $( $InputObject[$q].GetType().Name ) -eq "Hashtable" ) ) 
-                {   Wrap-Action -Type "Key" -Info "[+] $q" ; AC -Path $OutFile -Value "$q=$( $InputObject[$q] )" -Encoding $Encoding }
-                Else 
-                {   Wrap-Action -Type "Section" -Info "[+] $q" ; AC -Path $OutFile -Value "[$q]" -Encoding $Encoding }
-                ForEach ( $z in $( $InputObject[$q].Keys | Sort-Object ) )
-                {   If ( $z -Match "^Comment[\d]+" ) 
-                    {   Wrap-Action -Type "Property" -Info "[+] $z" ; AC -Path $OutFile -Value "$( $InputObject[$q][$z] )" -Encoding $Encoding }
-                    Else
-                    {   Wrap-Action -Type "Key" -Info "[+] $z" ; AC -Path $OutFile -Value "$z=$( $InputObject[$q][$z] )" -Encoding $Encoding } }
-                AC -Path $OutFile -Value "" -Encoding $Encoding }
-            Wrap-Action -Type "Completed" -Info "$( $MyInvocation.MyCommand.Name ): $FilePath"
-            If ( $PassThru ) { Return $OutFile } } # - [ End Process ] - - - - - - - - - - - - - - - - - - -#
-        End     { Wrap-Action -Type "Exiting" -Info "$( $MyInvocation.MyCommand.Name )" } }
-
-    Function Display-TrueColors 
-    {   Wrap-Array -Block @(
-        " //                                                                                                          \\ " ; #\\#
-        " \\        ________________________________________________________________________________________          // " ; #//#
-        " //       //                                     |                                                \\         \\ " ; #\\#
-        " \\       \\   *     *     *     *     *     *   - - - - - - - - - - - - - - - - - - - - - - - - -//         // " ; #//#
-        " //       //      *     *     *     *     *      |                                                \\         \\ " ; #\\#
-        " \\       \\   *     *     *     *     *     *    - - - - - - - - - - - - - - - - - - - - - - - - //         // " ; #//#
-        " //       //      *     *     *     *     *      |  [ Dynamically Engineered Digital Security ]   \\         \\ " ; #\\#
-        " \\       \\   *     *     *     *     *     *   - - - - - - - - - - - - - - - - - - - - - - - - -//         // " ; #//#
-        " //       //      *     *     *     *     *      |                                                \\         \\ " ; #\\#
-        " \\       \\   *     *     *     *     *     *    - - - - - - - - - - - - - - - - - - - - - - - - //         // " ; #//#
-        " //       //      *     *     *     *     *      | [ Application Development - Virtualization ]   \\         \\ " ; #\\#
-        " \\       \\   *     *     *     *     *     *   - - - - - - - - - - - - - - - - - - - - - - - - -//         // " ; #//#
-        " //       //      *     *     *     *     *      |      [ Network & Hardware Magistration ]       \\         \\ " ; #\\#
-        " \\       \\   *     *     *     *     *     *    - - - - - - - - - - - - - - - - - - - - - - - - //         // " ; #//#
-        " //       //                                     |                                                \\         \\ " ; #\\#
-        " \\       \\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//         // " ; #//#
-        " //       //                                   {_______________}                                  \\         \\ " ; #\\#
-        " \\       \\- - - - - - - - - - - - - - - - - - \             / - - - - - - - - - - - - - - - - - //         // " ; #//#
-        " //       //                   { __________{ _ _]             [_ _ }__________ }                  \\         \\ " ; #\\#
-        " \\       \\ - - - - - - - - - - - - - {_______/  H Y B R I D  \______}- - - - - - - - - - - - - -//         // " ; #//#
-        " //       //               { _ _ _ _ { _ _ _ _ \               / _ _ _ _ } _ _ _ _ }              \\         \\ " ; #\\#
-        " \\       \\- - - - - - - - - - - { _ _ _ _ _ _]      B Y      [_ _ _ _ _ _ } - - - - - - - - - - //         // " ; #//#
-        " //       //                                                                                      \\         \\ " ; #\\#
-        " \\       \\ - - - - - - - - - [  S E C U R E   D I G I T S   P L U S   L L C  ] - - - - - - - - -//         // " ; #//#
-        " //       //                                                                                      \\         \\ " ; #\\#
-        " \\       \\- - - - - - - - - -\_______________________________________________/- - - - - - - - - //         // " ; #//#
-        " //       //                                                                                      \\         \\ " ; #\\#
-        " \\       \\ - - - - - -[  0 7 / 1 4 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R . ]- - - - - - -//         // " ; #//#
-        " //       //                                                                                      \\         \\ " ; #\\#
-        " \\       \\______________________________________________________________________________________//         // " ; #//#
-        " //                                                                                                          \\ " ; #\\#
-        " \\                                                                                                          // " ; #//#
-        " //                                   [ A heightened sense of security ]                                     \\ " ) #\\#
-    Sleep -Seconds 2 }                                                                                                       #//#
-
-    Function Display-Foot 
-    {   Wrap-Array -Block @(
-        " //                                                                                                          \\ " ; #\\#
-        " \\  <@[ Script-Complete ]@>                                                                                 // " ;
-        " //                                                                                                          \\ " ; #\\#
-        " \\                          You've just deployed 'A heightened sense of security.'                          // " ;
-        " //                                                                                                          \\ " ; #\\#
-        " \\                      [ Secure Digits Plus LLC | Hybrid ] [ Desired State Controller ]                    // " ;
-        " //                                                                                                          \\ " ; #\\#
-        " \\                                   [ https://www.securedigitsplus.com ]                                   // " ;
-        " //                                                                                                          \\ " ) #\\#
-        Read-Host "Press Enter to exit" }
-
-    Function Load-GUIModule
-    {   [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
-
-    ( $Background , $Banner ) = ( "sdp-bg.jpg" , "banner.png" | % { "$Home\Downloads\$_" } )
-
-    $Named = @( 0..4 | % { "r$_" } ; 0..2 | % { "iis$_" } ; 0..2 | % { "dc$_" } ; 0..3 | % { "p$_" } ; 0..1 | % { "img$_" } ; 0 | % { "n$_" } )
-
-    $T0_Tags  = @( "" ; "" ; "System Root 'C:\'" ; @( "Secured" | % { "Deploy Folder '$_'" , "SMB Name '$_$'" , "PSDrive '$_`:'" } ) + "Share Description '[Dev]'" ;
-                   "" ; "" ; "BITS / IIS Name 'Hybrid'" ; "IIS App Pool 'SecureApp'" ; "Virtual Host / Proxy" ; "" ; "" ; "NetBIOS Domain" ; 
-                   @( "User" , "P/W" | % { "Child Admin $_" } ) )
-
-    $T0_Offs  = @( "" ; "" ; @( $Named[0..4] ) + "" ; "" ; @( $Named[5..7] ) + "" ; "" ; @( $Named[8..10] ) )
-
-    $T0_List  = @{ 
-    RowDef    = @( 0..16                 | % {
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
+#\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
+#// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\                                                                                                                                                 //#
+#//    <@[ Initialize-Hybrid ]@>                                                                                           "Michael C. Cook Sr."    \\#
+#\\                                                                                                                                                 //#
+#//                                       [ Secure Digits Plus LLC | Hybrid ] [ Desired State Controller ]                                          \\#
+#\\                                                                                                                                                 //#
+#//                                [ https://www.securedigitsplus.com | Server/Client | Seedling/Spawning Script ]                                  \\#
+#\\                                                                                                                                                 //#
+#//                                                                                                                                                 \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
+#\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
+#// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// -[ Declare-Functions ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    using namespace System.Security.Principal # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Elevate-Script # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        ( [ WindowsPrincipal ] [ WindowsIdentity ]::GetCurrent() ).IsInRole( "Administrators" ) | % { # - - - - - - - - - - - - - - - - - - - - - - \\#
+        If ( ( $_ -eq $False ) -and ( ( [ Int ]( gcim Win32_OperatingSystem ).BuildNumber -ge 6000 ) -eq $True ) ) # - - - - - - - - - - - - - - - -//#
+        {   Echo "Attempting [~] Script Elevation" ; #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            SAPS -FilePath PowerShell.exe -Verb Runas -Args "-File $PSCommandPath $($MyInvocation.UnboundArguments)" # - - - - - - - - - - - - - - -//#
+            If ( $? -eq $True ) { Echo "[+] Elevation Successful" ;  Echo "[+] Access Granted" ; Return } # - - - - - - - - - - - - - - - - - - - - \\#
+            Else                { Echo "[!] Elevation Failed" ; Read-Host "[!] Access Denied"  ;   Exit } } #- - - - - - - - - - - - - - - - - - - -//#
+        ElseIf ( $_ -eq $True ) { Echo "Access [+] Granted" ; Set-ExecutionPolicy Bypass -Scope Process -Force } } } #- - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// -[ Write-Output Wrappers ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    ( $fs , $bs , $Message ) = ( " // " , " \\ " , "System.Windows.MessageBox" ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Wrap-Top   { Echo "$( " " * 108 ; $fs + "_-" * 52 + $bs ; $bs + " -" * 52 + $fs )" } #- - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Wrap-Bot   { Echo "$( $bs + " -" * 52 + $fs ; $fs + "_-" * 52 + $bs ; " " * 108 )" } # - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Wrap-Out   { Echo "$(  $fs + "  " * 52 + $bs )" } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Wrap-In    { Echo "$(  $bs + "  " * 52 + $fs )" } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Wrap-Title #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        [ CmdLetBinding () ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                [ String ] $Title ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            $th = "[ $Title ]" ; $y  = $th.length ; $x  = 104 - $y # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            If ( $x % 4 -ge 2 ) { $x  = $x - 2 ; $y  = $th.replace( "[" , " [ " ) ; $th = $y } #- - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            If ( $x % 2 -ge 1 ) { $x  = $x - 1 ; $y  = $th.replace( "]" , " ]" )  ; $th = $y ; $z  = 0 } # - - - - - - - - - - - - - - - - - - - - -//#
+            If ( $z = 1 ) { $z = " -" } Else { $z = "- " } $y = $z * ( $x / 4 ) ; $x = "- " * ( $x / 4 ) #- - - - - - - - - - - - - - - - - - - - - \\#
+            Wrap-Top ; Echo "$( $fs + $x + $th + $y + $bs )" } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Wrap-Function # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        [ CmdLetBinding () ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                [ String ] $ID ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            $th = "[ $ID ]" ; $y = $th.length ; $x = 104 - $y ; #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            if ( $x % 4 -ge 2 ) { $x = $x - 2 ; $y = $th.replace( "[" , " [ " ) ; $th = $y } #- - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            if ( $x % 2 -ge 1 ) { $x = $x - 1 ; $y = $th.replace( "]" , " ]" )  ; $th = $y ; $z = 0 } #- - - - - - - - - - - - - - - - - - - - - - -//#
+            if ( $z = 1 ) { $z = " -" } else { $z = "- " } $y = $z * ( $x / 4 ) ; $x = "- " * ( $x / 4 ) #- - - - - - - - - - - - - - - - - - - - - \\#
+            Wrap-Top ; Echo "$( $fs + $x + $th + $y + $bs )" ; Wrap-Bot } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Wrap-Section #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        [ CmdLetBinding () ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                [ String ] $Section ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            $z = $Section ; $x = " " * 10 ; $y = " " * ( 94 - $z.Length ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            Wrap-In ; Echo "$( $fs + $x + $z + $y + $bs )" ; Wrap-In } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Wrap-ItemIn #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        [ CmdLetBinding () ] Param ( #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                [ String ] $Type , #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                [ String ] $Info ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            $x = " " * ( 23 - $Type.Length ) ; $y = " " * ( 78 - $Info.Length ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            Echo "$( $bs + $x + $Type ) : $( $Info + $y + $fs )" } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Wrap-ItemOut #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        [ CmdLetBinding () ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                [ String ] $Type , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                [ String ] $Info ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            $x = " " * ( 23 - $Type.Length ) ; $y = " " * ( 78 - $Info.Length ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            Echo "$( $fs + $x + $Type ) : $( $Info + $y + $bs )" } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Wrap-Array # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        [ CmdletBinding () ] Param ( #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                [ Array ] $Block ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                Wrap-Top ; Echo $Block ; Wrap-Bot } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Wrap-Action # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        [ CmdletBinding () ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                [ String ] $Type , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//# 
+            [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                [ String ] $Info ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            $x = " " * ( 23 - $Type.Length ) ; $y = " " * ( 78 - $Info.Length ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            Echo @( " " * 108 ; $fs + "_-" * 52 + $bs ; $bs + " -" * 52 + $fs ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            Echo "$( $fs + $x + $Type ) : $( $Info + $y + $bs )" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            Echo @( $bs + " -" * 52 + $fs ; $fs + "_-" * 52 + $bs ; " " * 108 ) } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// -[ Test-Credential ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Test-Credential #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    {   [ CmdLetBinding () ][ OutputType ( [ String ] ) ] Param ( #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( ValueFromPipeLine = $True , ValueFromPipelineByPropertyName = $True ) ] # - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                [ Alias ( 'PSCredential' ) ] [ ValidateNotNull () ][ System.Management.Automation.PSCredential ] # - - - - - - - - - - - - - - - - -//#
+                [ System.Management.Automation.Credential () ] $Credentials ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        ( $Domain , $Root , $Username , $Password ) = @( 0..3 | % { $Null } ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        If ( $Credentials -eq $null ) {   Try   { $Credentials = Get-Credential "domain\$env:username" -EA 4 } # - - - - - - - - - - - - - - - - - -//#
+                                          Catch { $ErrorMsg = $_.Exception.Message #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                                                  Wrap-Action -Type "Failure" -Info "[!] Account Validation" # - - - - - - - - - - - - - - - - - - -//#
+                                                  Read-Host "Press Enter to Exit" ; Exit } } #- - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Try       { $Domain   = New-Object System.DirectoryServices.DirectoryEntry( #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                                      "LDAP://$( ( [ ADSI ]'').distinguishedName )" , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                                                       "$( $Credentials.Username )" , #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                                "$( $Credentials.GetNetworkCredential().Password )" ) } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Catch     { $_.Exception.Message ; Continue } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        If ( ! $Domain ) {   Wrap-Action -Type "Exception" -Info        "[!] Domain does not exist" # - - - - - - - - - - - - - - - - - - - - - - - \\#
+                             Wrap-Action -Type   "Install" -Info "Active Directory Domain Services" #- - - - - - - - - - - - - - - - - - - - - - - -//#
+                             Read-Host "Press Enter to Exit" ; Exit } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Else {   If ( $Domain.Name -ne $Null ) { Return "Authenticated" ; Elevate-Script } # - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                 Else { Wrap-Action -Type "Authentication" -Info "[!] Failure" ; Sleep -Seconds 2 ; Exit } } } #- - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// -[ Convert-XAMLToWindow ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Convert-XAMLToWindow # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    {   Param ( [ Parameter ( Mandatory ) ] [ String ]                    $XAML , #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                                            [ String [] ] $NamedElement = $Null , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                                            [ Switch ]                $PassThru ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        @( "Presentation" | % { "$_`Framework" ; "$_`Core" } ) + "WindowsBase" | % { Add-Type -AssemblyName $_ } #- - - - - - - - - - - - - - - - - \\#
+        $Reader       = [ XML.XMLReader ]::Create([ IO.StringReader ] $XAML ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $Output       = [ Windows.Markup.XAMLReader ]::Load( $Reader ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $NamedElement | % { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            $Output | Add-Member -MemberType NoteProperty -Name $_ -Value $Output.FindName( $_ ) -Force } # - - - - - - - - - - - - - - - - - - - - \\#
+        If ( $PassThru )  { $Output } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Else #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        {   $Null = $GUI.Dispatcher.InvokeAsync{ $Output = $GUI.ShowDialog() # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            SV -Name Output -Value $Output -Scope 1 }.Wait() ; $Output } } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// -[ Show-WPFWindow ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Show-WPFWindow # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\# 
+    {   Param ( [ Parameter ( Mandatory ) ] [ Windows.Window ] $GUI ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $Output = $Null # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                  $Null = $GUI.Dispatcher.InvokeAsync{ $Output = $GUI.ShowDialog() # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                        SV -Name Output -Value $Output -Scope 1 }.Wait() #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $Output } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//# 
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#//- [ Add-ACL ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Add-ACL # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    {   [ CmdletBinding () ] Param ( #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ String ] $Path , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                [ System.Security.AccessControl.FileSystemAccessRule ] $AceObject ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            $OBJACL =  Get-ACL -Path $SiteRoot # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            $OBJACL.AddAccessRule( $AceObject ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            Set-ACL -Path $Path -AclObject $OBJACL } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#//- [ New-ACLObject ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function New-ACLObject # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    {   [ CmdletBinding () ] Param ( #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ String ] $SamAccountName , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                [ System.Security.AccessControl.FileSystemRights  ]               $Permission , # - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                [ System.Security.AccessControl.AccessControlType ]  $AccessControl = 'Allow' , #- - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                [ System.Security.AccessControl.InheritanceFlags  ]    $Inheritance =  'None' , # - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                [ System.Security.AccessControl.PropagationFlags  ]    $Propagation =  'None' ) #- - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            New-Object -TypeName System.Security.AccessControl.FileSystemAccessRule( #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                $SamAccountName , $Permission , $Inheritance , $Propagation , $AccessControl ) } # - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#//- [ Get-WIMName ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Get-WIMName # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    {   [ CmdLetBinding () ] Param ( #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ][ String ]    $IP , #- - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ][ String ]    $ID ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        ( Get-WindowsImage -ImagePath $IP ).ImageName } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#//- [ Get-WIMBuild ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Get-WIMBuild #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    {   [ CmdLetBinding () ] Param ( #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ][ String ]    $IP , #- - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ][ String ]    $ID ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        ( Get-WindowsImage -ImagePath $IP -Index $ID ).Version } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#//- [ Import-NewOSImage ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Import-NewOSImage # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    {   [ CmdLetBinding () ] Param ( #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ][ String ] $IP , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ][ String ] $SF , #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True ) ][ String ] $DF ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Import-MDTOperatingSystem -Path $IP -SourceFile $SF -DestinationFolder $DF -Move -VB } #- - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// -[ Import-NewTask ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Import-NewTask # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    {   [ CmdLetBinding () ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position =  0 , ValueFromPipeline = $True ) ][ String ]    $PSP , # - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Position =  1 , ValueFromPipeline = $True ) ][ String ] $Formal , #- - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position =  2 , ValueFromPipeline = $True ) ][ String ]    $XML , # - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Position =  3 , ValueFromPipeline = $True ) ][ String ]   $Info , #- - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position =  4 , ValueFromPipeline = $True ) ][ String ]     $ID , # - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Position =  5 , ValueFromPipeline = $True ) ][ String ]    $Ver , #- - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position =  6 , ValueFromPipeline = $True ) ][ String ]    $SIP , # - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Position =  7 , ValueFromPipeline = $True ) ][ String ] $TSName , #- - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position =  8 , ValueFromPipeline = $True ) ][ String ]    $Org , # - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Position =  9 , ValueFromPipeline = $True ) ][ String ]    $WWW , #- - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position = 10 , ValueFromPipeline = $True ) ][ String ] $LMCred ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Import-MDTTaskSequence -Path $PSP -Name $Formal -Template $XML -Comments $Info -ID $ID -Version $Ver ` # - - - - - - - - - - - - - - - - - -//#
+            -OperatingSystemPath $SIP -FullName $TSName -OrgName $Org -HomePage $WWW -AdminPassword $LMCred -VB } # - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// -[ Provision-Dependency ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Provision-Dependency # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    {   [ CmdLetBinding () ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position =  0 , ValueFromPipeline = $True ) ][ String ]     $ID , # - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Position =  1 , ValueFromPipeline = $True ) ][ String ]   $Path , #- - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position =  2 , ValueFromPipeline = $True ) ][ String ]   $File , # - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Position =  3 , ValueFromPipeline = $True ) ][ String ]    $URL , #- - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            [ Parameter ( Position =  4 , ValueFromPipeline = $True ) ][ String ]   $Args ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        If ( ( Test-Path $Path ) -ne $True ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        {   NI $Path -ItemType Directory -Value $Path # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            Wrap-Action -Type "Created" -Info "[+] Directory @: $Path" } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        IWR -Uri $URL -OutFile "$Path\$File" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Wrap-Action -Type "Installing" -Info $ID # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Wrap-Action -Type "Processing" -Info "This could take a while." # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $Dependency = SAPS -FilePath $File -Args $Args -WorkingDirectory $Path -PassThru # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        For ( $j = 0 ; $j -le 100 ; $j = ( $j + 1 ) % 100 ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        {   Write-Progress -Activity " [ Installing ] $ID" -PercentComplete $j -Status "$( $j )% Complete" # - - - - - - - - - - - - - - - - - - - -//#
+            Sleep -Milliseconds 250 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            If ( $Dependency.HasExited ) { Write-Progress -Activity "[ Installed ]" -Completed ; Return } } } #- - - - - - - - - - - - - - - - - - -//#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#//- [ Export-Ini ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Export-Ini #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    {   [ CmdletBinding () ] Param ( #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                                                                                           [ Switch ]      $Append , # - - - - - - - - - - - - - - -//#
+            [ ValidateSet ("Unicode","UTF7","UTF8","UTF32","ASCII","BigEndianUnicode","Default","OEM") ] #- - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter (                   ) ]                                            [ String ]    $Encoding , # - - - - - - - - - - - - - - -//#
+            [ ValidateNotNullOrEmpty () ][ ValidatePattern ( '^([a-zA-Z]\:)?.+\.ini$' ) ] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            [ Parameter ( Mandatory = $True ) ]                                            [ String ]    $FilePath , # - - - - - - - - - - - - - - -//#
+                                                                                           [ Switch ]       $Force , #- - - - - - - - - - - - - - - \\#
+            [ ValidateNotNullOrEmpty () ][ Parameter ( ValueFromPipeline = $True , Mandatory = $True ) ] # - - - - - - - - - - - - - - - - - - - - -//#
+                                                                                        [ Hashtable ] $InputObject , #- - - - - - - - - - - - - - - \\#
+                                                                                           [ Switch ]    $Passthru ) # - - - - - - - - - - - - - - -//#
+        Begin   { Wrap-Action -Type "Processing" -Info "$( $MyInvocation.MyCommand.Name )" } #- - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Process { Wrap-Action -Type    "Writing" -Info "$( $FilePath )" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            If ( $Append ) { $Outfile = Get-Item $FilePath } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            Else { $OutFile = NI -ItemType File -Path $FilePath -Force:$Force } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            If ( ! ( $OutFile ) ) { Wrap-Action -Type "Exception" -Info "Unable to access file" } # - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            ForEach ( $q in $InputObject.Keys ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            {   If ( ! ( $( $InputObject[$q].GetType().Name ) -eq "Hashtable" ) ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                {   Wrap-Action -Type "Key" -Info "[+] $q" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                    AC -Path $OutFile -Value "$q=$( $InputObject[$q] )" -Encoding $Encoding } # - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                Else # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                {   Wrap-Action -Type "Section" -Info "[+] $q" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                    AC -Path $OutFile -Value "[$q]" -Encoding $Encoding } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                ForEach ( $z in $( $InputObject[$q].Keys | Sort-Object ) ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                {   If ( $z -Match "^Comment[\d]+" ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                    {   Wrap-Action -Type "Property" -Info "[+] $z" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                        AC -Path $OutFile -Value "$( $InputObject[$q][$z] )" -Encoding $Encoding } # - - - - - - - - - - - - - - - - - - - - - - - -//#
+                    Else #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                    {   Wrap-Action -Type "Key" -Info "[+] $z" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                        AC -Path $OutFile -Value "$z=$( $InputObject[$q][$z] )" -Encoding $Encoding } } # - - - - - - - - - - - - - - - - - - - - - \\#
+                AC -Path $OutFile -Value "" -Encoding $Encoding } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            Wrap-Action -Type "Completed" -Info "$( $MyInvocation.MyCommand.Name ): $FilePath" #- - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            If ( $PassThru ) { Return $OutFile } } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        End     { Wrap-Action -Type "Exiting" -Info "$( $MyInvocation.MyCommand.Name )" } } # - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// -[ Display-TrueColors ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Display-TrueColors # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    {   Wrap-Array -Block @( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+" //                                                                                                          \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\        ________________________________________________________________________________________          // " ; # - - - - - - - - - - - - - - -//#
+" //       //                                     |                                                \\         \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\       \\   *     *     *     *     *     *   - - - - - - - - - - - - - - - - - - - - - - - - -//         // " ; # - - - - - - - - - - - - - - -//#
+" //       //      *     *     *     *     *      |                                                \\         \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\       \\   *     *     *     *     *     *    - - - - - - - - - - - - - - - - - - - - - - - - //         // " ; # - - - - - - - - - - - - - - -//#
+" //       //      *     *     *     *     *      |  [ Dynamically Engineered Digital Security ]   \\         \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\       \\   *     *     *     *     *     *   - - - - - - - - - - - - - - - - - - - - - - - - -//         // " ; # - - - - - - - - - - - - - - -//#
+" //       //      *     *     *     *     *      |                                                \\         \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\       \\   *     *     *     *     *     *    - - - - - - - - - - - - - - - - - - - - - - - - //         // " ; # - - - - - - - - - - - - - - -//#
+" //       //      *     *     *     *     *      | [ Application Development - Virtualization ]   \\         \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\       \\   *     *     *     *     *     *   - - - - - - - - - - - - - - - - - - - - - - - - -//         // " ; # - - - - - - - - - - - - - - -//#
+" //       //      *     *     *     *     *      |      [ Network & Hardware Magistration ]       \\         \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\       \\   *     *     *     *     *     *    - - - - - - - - - - - - - - - - - - - - - - - - //         // " ; # - - - - - - - - - - - - - - -//#
+" //       //                                     |                                                \\         \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\       \\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//         // " ; # - - - - - - - - - - - - - - -//#
+" //       //                                   {_______________}                                  \\         \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\       \\- - - - - - - - - - - - - - - - - - \             / - - - - - - - - - - - - - - - - - //         // " ; # - - - - - - - - - - - - - - -//#
+" //       //                   { __________{ _ _]             [_ _ }__________ }                  \\         \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\       \\ - - - - - - - - - - - - - {_______/  H Y B R I D  \______}- - - - - - - - - - - - - -//         // " ; # - - - - - - - - - - - - - - -//#
+" //       //               { _ _ _ _ { _ _ _ _ \               / _ _ _ _ } _ _ _ _ }              \\         \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\       \\- - - - - - - - - - - { _ _ _ _ _ _]      B Y      [_ _ _ _ _ _ } - - - - - - - - - - //         // " ; # - - - - - - - - - - - - - - -//#
+" //       //                                                                                      \\         \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\       \\ - - - - - - - - - [  S E C U R E   D I G I T S   P L U S   L L C  ] - - - - - - - - -//         // " ; # - - - - - - - - - - - - - - -//#
+" //       //                                                                                      \\         \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\       \\- - - - - - - - - -\_______________________________________________/- - - - - - - - - //         // " ; # - - - - - - - - - - - - - - -//#
+" //       //                                                                                      \\         \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\       \\ - - - - - -[  0 7 / 1 5 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R . ]- - - - - - -//         // " ; # - - - - - - - - - - - - - - -//#
+" //       //                                                                                      \\         \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\       \\______________________________________________________________________________________//         // " ; # - - - - - - - - - - - - - - -//#
+" //                                                                                                          \\ " ; #- - - - - - - - - - - - - - - \\#
+" \\                                    [ A heightened sense of security ]                                    // " ; # - - - - - - - - - - - - - - -//#
+" //                                                                                                          \\ " ) #- - - - - - - - - - - - - - - \\#
+Sleep -Seconds 2 } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#//- [ Display-Foot ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Display-Foot #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    {   Wrap-Array -Block @( #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+" //                                                                                                          \\ " ; # - - - - - - - - - - - - - - -//#
+" \\  <@[ Script-Complete ]@>                                                                                 // " ; #- - - - - - - - - - - - - - - \\#
+" //                                                                                                          \\ " ; # - - - - - - - - - - - - - - -//#
+" \\                      [ Secure Digits Plus LLC | Hybrid ] [ Desired State Controller ]                    // " ; #- - - - - - - - - - - - - - - \\#
+" //                                                                                                          \\ " ; # - - - - - - - - - - - - - - -//#
+" \\                                   [ https://www.securedigitsplus.com ]                                   // " ; #- - - - - - - - - - - - - - - \\#
+" //                                                                                                          \\ " ; # - - - - - - - - - - - - - - -//#
+" \\                                    [ A heightened sense of security ]                                    // " ; #- - - - - - - - - - - - - - - \\#
+" //                                                                                                          \\ " ) # - - - - - - - - - - - - - - -//#
+Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// -[ Load-GUIModule ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Load-GUIModule # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    {   [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12 #- - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    ( $Background , $Banner ) = ( "sdp-bg.jpg" , "banner.png" | % { "$Home\Downloads\$_" } ) # - - - - - - - - - - - #- - - - - - - - - - - - - - - \\#
+    $Named = @( 0..4 | % { "r$_" } ; 0..2 | % { "iis$_" } ; 0..2 | % { "dc$_" } ; 0..3 | % { "p$_" } ; 0..1 | % { "img$_" } ; 0 | % { "n$_" }) # - -//#
+    $T0_Tags  = @( "" ; "" ; "System Root 'C:\'" ; #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    @( "Secured" | % { "Deploy Folder '$_'" , "SMB Name '$_$'" , "PSDrive '$_`:'" } ) + "Share Description '[Dev]'" ;# - - - - - - - - - - - - - - -//#
+    "";"";"BITS / IIS Name 'Hybrid'" ; "IIS App Pool 'SecureApp'" ; "Virtual Host / Proxy" ;"";""; "NetBIOS Domain" ;#- - - - - - - - - - - - - - - \\#
+    @( "User" , "P/W" | % { "Child Admin $_" } ) ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    $T0_Offs  = @( "" ; "" ; @( $Named[0..4] ) + "" ; "" ; @( $Named[5..7] ) + "" ; "" ; @( $Named[8..10] ) ) #- - - #- - - - - - - - - - - - - - - \\#
+    $T0_List  = @{ # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    RowDef    = @( 0..16                 | % { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
     "                            <RowDefinition Height                    =                               '*' />
-    "})
-    TextBlock = @( 2..6 + 9..11 + 14..16 | % {
+    "}) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    TextBlock = @( 2..6 + 9..11 + 14..16 | % { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
     "                      <TextBlock 
                                                 Grid.Row             =                                '$_' 
                                                 Grid.Column          =                                '0' 
@@ -348,8 +367,8 @@
                                                 </TextBlock.Effect>
                                                     $( $T0_Tags[$_] )
                            </TextBlock>
-    "})
-    TextBoxes = @( 2..6 + 9..11 + 14..15 | % { 
+    "}) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    TextBoxes = @( 2..6 + 9..11 + 14..15 | % { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
     "                       <TextBox  
                                                 Name                 =                               '$( $T0_Offs[$_] )' 
                                                 Grid.Row             =                               '$_' 
@@ -357,7 +376,7 @@
                                                 Margin               =                                '5' 
                                                 Height               =                               '20' 
                                                 FontSize             =                               '10' />
-    "}) + @( 16 | % { 
+    "}) + @( 16                          | % { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
     "                       <PasswordBox 
                                                 Name                 =                               '$( $T0_Offs[$_] )'
                                                 Grid.Row             =                               '$_' 
@@ -367,14 +386,14 @@
                                                 FontSize             =                               '10' 
                                                 PasswordChar         =                                '*' >
                             </PasswordBox>
-    "})}
-    $T1_Tags  = @( "" ; "Company Name" ; @( "Website" , "Phone" , "Hours" | % { "Support $_" ; } ) + "" ; "Logo [ 120x120.bmp ]" ; "Background" ; "" ; "Branch / FQDN" )
-    $T1_Offs  = @( "" ; @( $Named[11..14] ) + "" ; @( $Named[15..16] ) + "" ; $( $Named[17] ) )
-    $T1_List  = @{
-    RowDef    = @( 0..10 | % { 
+    "})} # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    $T1_Tags  = ""; "Company Name" ; @( "Website" , "Phone" , "Hours" | % { "Support $_" ; } ) + #- - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    ""; "Logo [ 120x120.bmp ]" ; "Background" ;""; "Branch / FQDN" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    $T1_Offs  = @( "" ; @( $Named[11..14] ) + "" ; @( $Named[15..16] ) + "" ; $( $Named[17] ) ) # - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    $T1_List  = @{ RowDef    = @( 0..10 | % { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
     "                            <RowDefinition Height                    =                               '32' /> 
-    "})
-    TextBlock = @( 1..4 + 6 , 7 , 9 | % {  
+    "}) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                   TextBlock = @( 1..4 + 6 , 7 , 9 | % { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
     "                      <TextBlock 
                                                 Grid.Row             =                                '$_' 
                                                 Grid.Column          =                                '0' 
@@ -390,8 +409,8 @@
                                                 </TextBlock.Effect>
                                                     $( $T1_Tags[$_] )
                            </TextBlock>
-    "})
-    TextBoxes = @( 1..4 + 6 , 7 , 9 | % { 
+    "}) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    TextBoxes = @( 1..4 + 6 , 7 , 9 | % { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
     "                       <TextBox 
                                                 Name                 =                               '$( $T1_Offs[$_] )'
                                                 Grid.Row             =                                '$_' 
@@ -399,433 +418,431 @@
                                                 Height               =                               '20' 
                                                 FontSize             =                               '10' 
                                                 Margin               =                                '5' />
-    "})}
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - [ Installation-GUI XAML ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        $XAMLRoot = @"
-        <Window
-                        xmlns                 =       'http://schemas.microsoft.com/winfx/2006/xaml/presentation'
-                        xmlns:x               =                    'http://schemas.microsoft.com/winfx/2006/xaml'
-                        Title                 =    '[ Secure Digits Plus LLC | Hybrid ] Desired State Controller' 
-                        Width                 =                                                             '640' 
-                        Height                =                                                             '850' 
-                        WindowStartupLocation =                                                    'CenterScreen'
-                        Topmost               =                                                            'True' 
-                        HorizontalAlignment   =                                                          'Center'
-                        ResizeMode            =                                                        'NoResize'  >
-            <StackPanel>
-                <StackPanel.Background>
-                    <ImageBrush ImageSource   =                                                     '$Background' 
-                                Stretch       =                                                   'UniformToFill' />
-                </StackPanel.Background>
-                <StackPanel
-                        Height                =                                                             '250'  >
-                    <Image 
-                        Width                 =                                                             '640' 
-                        Height                =                                                             '240' 
-                        Source                =                                                         '$Banner' 
-                        HorizontalAlignment   =                                                          'Center' 
-                        Margin                =                                                             '10' />
-                </StackPanel>
-                <StackPanel 
-                        Height                =                                                             '515'  >
-                    <TabControl 
-                        Height                =                                                             '515' 
-                        HorizontalContentAlignment =                                                     'Center' 
-                        HorizontalAlignment   =                                                          'Center' 
-                        VerticalAlignment     =                                                          'Center' 
-                        Background            =                                                        '{x:Null}' 
-                        BorderBrush           =                                                        '{x:Null}' 
-                        Foreground            =                                                        '{x:Null}' 
-                        Margin="10,0">
-                        <TabItem 
-                            Header            =                                         'Stage Deployment Server' 
-                            HorizontalAlignment =                                                        'Center' 
-                            Width             =                                                             '160' 
-                            BorderBrush       =                                                        '{x:Null}'  >
-                            <TabItem.Effect>
-                                <DropShadowEffect/>
-                            </TabItem.Effect>
-                            <Grid 
-                                Height            =                                                         '480' 
-                                VerticalAlignment =                                                         'Top'  >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width =                                              '0.5*' />
-                                    <ColumnDefinition Width =                                              '0.5*' />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    $( $T0_List.RowDef )
-                                </Grid.RowDefinitions>
-                                <TextBlock 
-                                                        Grid.Row             =                                '0'
-                                                        Grid.Column          =                                '0'
-                                                        Grid.ColumnSpan      =                                '2'
-                                                        Margin               =                                '5' 
-                                                        FontSize             =                               '14' 
-                                                        HorizontalAlignment  =                           'Center'
-                                                        TextAlignment        =                           'Center'
-                                                        Foreground           =                             'Lime'  >
-                                    # - - - - - [ MDT Base Share Settings ] - - - - - #
-                                    <TextBlock.Effect>
-                                        <DropShadowEffect/>
-                                    </TextBlock.Effect>
-                                </TextBlock>
-                                <TextBlock 
-                                                        Grid.Row             =                                '1'
-                                                        Grid.Column          =                                '0'
-                                                        Grid.ColumnSpan      =                                '2'
-                                                        Margin               =                                '5' 
-                                                        FontSize             =                               '12' 
-                                                        HorizontalAlignment  =                           'Center'
-                                                        TextAlignment        =                           'Center'
-                                                        Foreground           =                             'Cyan' >
-                                    <TextBlock.Effect>
-                                        <DropShadowEffect/>
-                                    </TextBlock.Effect>
-                                    These settings will generate a new MDT share
-                                </TextBlock>
-                                $( $T0_List.TextBlock[0..4] )
-                                <RadioButton            x:Name              =                            'Legacy' 
-                                                        Grid.Row            =                                 '7'
-                                                        Grid.Column         =                                 '0' 
-                                                        Margin              =                                 '5' 
-                                                        Content             =                          'Disabled' 
-                                                        HorizontalAlignment =                            'Center' 
-                                                        VerticalAlignment   =                            'Center'
-                                                        Foreground          =                              'Cyan' 
-                                                        IsEnabled           =                             'False' >
-                                    <RadioButton.Effect>
-                                        <DropShadowEffect/>
-                                    </RadioButton.Effect>
-                                </RadioButton>
-                                <RadioButton            x:Name              =                        'PowerShell' 
-                                                        Grid.Row            =                                 '7' 
-                                                        Grid.Column         =                                 '1' 
-                                                        Margin              =                                 '5' 
-                                                        Content             =                          'Disabled' 
-                                                        HorizontalAlignment =                            'Center' 
-                                                        VerticalAlignment   =                            'Center' 
-                                                        Foreground          =                              'Cyan'
-                                                        IsEnabled           =                             'False' >
-                                    <RadioButton.Effect>
-                                        <DropShadowEffect/>
-                                    </RadioButton.Effect>
-                                </RadioButton>
-                                <!-- # - - - - [ BITS / IIS Config ] - - - - #  -->
-                                <TextBlock 
-                                                        Grid.Row             =                                '8'
-                                                        Grid.Column          =                                '0'
-                                                        Grid.ColumnSpan      =                                '2' 
-                                                        Margin               =                                '5' 
-                                                        FontSize             =                               '14'
-                                                        HorizontalAlignment  =                           'Center'
-                                                        TextAlignment        =                           'Center'
-                                                        Foreground           =                             'Lime' >
-                                    <TextBlock.Effect>
-                                        <DropShadowEffect/>
-                                    </TextBlock.Effect>
-                                # - - - - - - - - [ BITS / IIS Config ] - - - - - - - - #
-                                </TextBlock>
-                                $( $T0_List.TextBlock[5..7] )
-                                <RadioButton 
-                                                        x:Name               =                            'IIS_I'
-                                                        Grid.Row             =                               '12'
-                                                        Grid.Column          =                                '0'
-                                                        Margin               =                                '5' 
-                                                        Content              =                         'Disabled' 
-                                                        HorizontalAlignment  =                           'Center'
-                                                        VerticalAlignment    =                           'Center' 
-                                                        Foreground           =                             'Cyan' 
-                                                        IsEnabled            =                            'False' >
-                                    <RadioButton.Effect>
-                                        <DropShadowEffect/>
-                                    </RadioButton.Effect>
-                                </RadioButton>
-                                <RadioButton 
-                                                        x:Name               =                            'IIS_X'
-                                                        Grid.Row             =                               '12'
-                                                        Grid.Column          =                                '1'
-                                                        Margin               =                                '5'
-                                                        Content              =                         'Disabled'
-                                                        HorizontalAlignment  =                           'Center'
-                                                        VerticalAlignment    =                           'Center'
-                                                        Foreground           =                             'Cyan'
-                                                        IsEnabled            =                            'False' >
-                                    <RadioButton.Effect>
-                                        <DropShadowEffect/>
-                                    </RadioButton.Effect>
-                                </RadioButton>
-                                <TextBlock 
-                                                        Grid.Row             =                               '13'
-                                                        Grid.Column          =                                '0' 
-                                                        Grid.ColumnSpan      =                                '2' 
-                                                        Margin               =                                '5'
-                                                        FontSize             =                               '14'
-                                                        HorizontalAlignment  =                           'Center'
-                                                        TextAlignment        =                           'Center'
-                                                        Foreground           =                             'Lime' >
-                                    <TextBlock.Effect>
-                                        <DropShadowEffect/>
-                                    </TextBlock.Effect>
-                                # - - [ Network and Source Credentials ]  - - #
-                                </TextBlock>
-                                $( $T0_List.TextBlock[8..10] )
-                                $( $T0_List.TextBoxes[0..10] )
-                            </Grid>
-                        </TabItem>
-                        <TabItem 
-                            Header                                           =                       'Image Info' 
-                            HorizontalAlignment                              =                           'Center' 
-                            Width                                            =                              '150' 
-                            BorderBrush                                      =                         '{x:Null}' >
-                            <TabItem.Effect>
-                                <DropShadowEffect/>
-                            </TabItem.Effect>
-                            <Grid 
-                                Height                                       =                              '400' 
-                                VerticalAlignment                            =                              'Top' >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width                  =                             '0.5*' />
-                                    <ColumnDefinition Width                  =                             '0.5*' />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                $( $T1_List.RowDef )
-                                </Grid.RowDefinitions>
-                                <TextBlock 
-                                                        Grid.Row             =                                '0'
-                                                        Grid.Column          =                                '0' 
-                                                        Grid.ColumnSpan      =                                '2' 
-                                                        Margin               =                                '5'
-                                                        FontSize             =                               '14'
-                                                        HorizontalAlignment  =                           'Center'
-                                                        TextAlignment        =                           'Center'
-                                                        Foreground           =                             'Lime' >
-                                    <TextBlock.Effect>
-                                        <DropShadowEffect/>
-                                    </TextBlock.Effect>
-                                # - - [ Company Information ]  - - #
-                                </TextBlock>
-                                $( $T1_List.TextBlock[0..3] )
-                                <TextBlock 
-                                                        Grid.Row             =                                '5'
-                                                        Grid.Column          =                                '0' 
-                                                        Grid.ColumnSpan      =                                '2' 
-                                                        Margin               =                                '5'
-                                                        FontSize             =                               '14'
-                                                        HorizontalAlignment  =                           'Center'
-                                                        TextAlignment        =                           'Center'
-                                                        Foreground           =                             'Lime' >
-                                    <TextBlock.Effect>
-                                        <DropShadowEffect/>
-                                    </TextBlock.Effect>
-                                # - - [ Custom Graphics ]  - - #
-                                </TextBlock>
-                                $( $T1_List.TextBlock[ 4..5 ] )
-                                <TextBlock 
-                                                        Grid.Row             =                                '8'
-                                                        Grid.Column          =                                '0' 
-                                                        Grid.ColumnSpan      =                                '2' 
-                                                        Margin               =                                '5'
-                                                        FontSize             =                               '14'
-                                                        HorizontalAlignment  =                           'Center'
-                                                        TextAlignment        =                           'Center'
-                                                        Foreground           =                             'Lime' >
-                                    <TextBlock.Effect>
-                                        <DropShadowEffect/>
-                                    </TextBlock.Effect>
-                                # - - [ Network Definitions ]  - - #
-                                </TextBlock>
-                                $( $T1_List.TextBlock[ 6 ] )
-                                $( $T1_List.TextBoxes )
-                            </Grid>
-                        </TabItem>
-                    </TabControl>
-                </StackPanel>
-                <StackPanel 
-                        Orientation                                          =                       'Horizontal' 
-                        FlowDirection                                        =                      'LeftToRight' 
-                        VerticalAlignment                                    =                           'Bottom' 
-                        HorizontalAlignment                                  =                           'Center' 
-                        Height                                               =                               '40' 
-                        Margin                                               =                      '150,0,150,0' >
-                    <Button 
-                        Name                                                 =                            'Start'  
-                        Content                                              =                            'Start'  
-                        HorizontalAlignment                                  =                             'Left'  
-                        Height                                               =                               '20' 
-                        Width                                                =                              '170' />
-                    <Button 
-                        Name                                                 =                           'Cancel' 
-                        Content                                              =                           'Cancel' 
-                        HorizontalAlignment                                  =                            'Right' 
-                        Height                                               =                               '20' 
-                        Width                                                =                              '170' />
-                </StackPanel>
+    "})} #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    #// - [ Installation-GUI XAML ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    $XAMLRoot = @"
+    <Window
+                    xmlns                 =       'http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+                    xmlns:x               =                    'http://schemas.microsoft.com/winfx/2006/xaml'
+                    Title                 =    '[ Secure Digits Plus LLC | Hybrid ] Desired State Controller' 
+                    Width                 =                                                             '640' 
+                    Height                =                                                             '850' 
+                    WindowStartupLocation =                                                    'CenterScreen'
+                    Topmost               =                                                            'True' 
+                    HorizontalAlignment   =                                                          'Center'
+                    ResizeMode            =                                                        'NoResize'  >
+        <StackPanel>
+            <StackPanel.Background>
+                <ImageBrush ImageSource   =                                                     '$Background' 
+                            Stretch       =                                                   'UniformToFill' />
+            </StackPanel.Background>
+            <StackPanel
+                    Height                =                                                             '250'  >
+                <Image 
+                    Width                 =                                                             '640' 
+                    Height                =                                                             '240' 
+                    Source                =                                                         '$Banner' 
+                    HorizontalAlignment   =                                                          'Center' 
+                    Margin                =                                                             '10' />
             </StackPanel>
-        </Window>
+            <StackPanel 
+                    Height                =                                                             '515'  >
+                <TabControl 
+                    Height                =                                                             '515' 
+                    HorizontalContentAlignment =                                                     'Center' 
+                    HorizontalAlignment   =                                                          'Center' 
+                    VerticalAlignment     =                                                          'Center' 
+                    Background            =                                                        '{x:Null}' 
+                    BorderBrush           =                                                        '{x:Null}' 
+                    Foreground            =                                                        '{x:Null}' 
+                    Margin="10,0">
+                    <TabItem 
+                        Header            =                                         'Stage Deployment Server' 
+                        HorizontalAlignment =                                                        'Center' 
+                        Width             =                                                             '160' 
+                        BorderBrush       =                                                        '{x:Null}'  >
+                        <TabItem.Effect>
+                            <DropShadowEffect/>
+                        </TabItem.Effect>
+                        <Grid 
+                            Height            =                                                         '480' 
+                            VerticalAlignment =                                                         'Top'  >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width =                                              '0.5*' />
+                                <ColumnDefinition Width =                                              '0.5*' />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                $( $T0_List.RowDef )
+                            </Grid.RowDefinitions>
+                            <TextBlock 
+                                                    Grid.Row             =                                '0'
+                                                    Grid.Column          =                                '0'
+                                                    Grid.ColumnSpan      =                                '2'
+                                                    Margin               =                                '5' 
+                                                    FontSize             =                               '14' 
+                                                    HorizontalAlignment  =                           'Center'
+                                                    TextAlignment        =                           'Center'
+                                                    Foreground           =                             'Lime'  >
+                                # - - - - - [ MDT Base Share Settings ] - - - - - #
+                                <TextBlock.Effect>
+                                    <DropShadowEffect/>
+                                </TextBlock.Effect>
+                            </TextBlock>
+                            <TextBlock 
+                                                    Grid.Row             =                                '1'
+                                                    Grid.Column          =                                '0'
+                                                    Grid.ColumnSpan      =                                '2'
+                                                    Margin               =                                '5' 
+                                                    FontSize             =                               '12' 
+                                                    HorizontalAlignment  =                           'Center'
+                                                    TextAlignment        =                           'Center'
+                                                    Foreground           =                             'Cyan' >
+                                <TextBlock.Effect>
+                                    <DropShadowEffect/>
+                                </TextBlock.Effect>
+                                These settings will generate a new MDT share
+                            </TextBlock>
+                            $( $T0_List.TextBlock[0..4] )
+                            <RadioButton            x:Name              =                            'Legacy' 
+                                                    Grid.Row            =                                 '7'
+                                                    Grid.Column         =                                 '0' 
+                                                    Margin              =                                 '5' 
+                                                    Content             =                          'Disabled' 
+                                                    HorizontalAlignment =                            'Center' 
+                                                    VerticalAlignment   =                            'Center'
+                                                    Foreground          =                              'Cyan' 
+                                                    IsEnabled           =                             'False' >
+                                <RadioButton.Effect>
+                                    <DropShadowEffect/>
+                                </RadioButton.Effect>
+                            </RadioButton>
+                            <RadioButton            x:Name              =                        'PowerShell' 
+                                                    Grid.Row            =                                 '7' 
+                                                    Grid.Column         =                                 '1' 
+                                                    Margin              =                                 '5' 
+                                                    Content             =                          'Disabled' 
+                                                    HorizontalAlignment =                            'Center' 
+                                                    VerticalAlignment   =                            'Center' 
+                                                    Foreground          =                              'Cyan'
+                                                    IsEnabled           =                             'False' >
+                                <RadioButton.Effect>
+                                    <DropShadowEffect/>
+                                </RadioButton.Effect>
+                            </RadioButton>
+                            <!-- # - - - - [ BITS / IIS Config ] - - - - #  -->
+                            <TextBlock 
+                                                    Grid.Row             =                                '8'
+                                                    Grid.Column          =                                '0'
+                                                    Grid.ColumnSpan      =                                '2' 
+                                                    Margin               =                                '5' 
+                                                    FontSize             =                               '14'
+                                                    HorizontalAlignment  =                           'Center'
+                                                    TextAlignment        =                           'Center'
+                                                    Foreground           =                             'Lime' >
+                                <TextBlock.Effect>
+                                    <DropShadowEffect/>
+                                </TextBlock.Effect>
+                            # - - - - - - - - [ BITS / IIS Config ] - - - - - - - - #
+                            </TextBlock>
+                            $( $T0_List.TextBlock[5..7] )
+                            <RadioButton 
+                                                    x:Name               =                            'IIS_I'
+                                                    Grid.Row             =                               '12'
+                                                    Grid.Column          =                                '0'
+                                                    Margin               =                                '5' 
+                                                    Content              =                         'Disabled' 
+                                                    HorizontalAlignment  =                           'Center'
+                                                    VerticalAlignment    =                           'Center' 
+                                                    Foreground           =                             'Cyan' 
+                                                    IsEnabled            =                            'False' >
+                                <RadioButton.Effect>
+                                    <DropShadowEffect/>
+                                </RadioButton.Effect>
+                            </RadioButton>
+                            <RadioButton 
+                                                    x:Name               =                            'IIS_X'
+                                                    Grid.Row             =                               '12'
+                                                    Grid.Column          =                                '1'
+                                                    Margin               =                                '5'
+                                                    Content              =                         'Disabled'
+                                                    HorizontalAlignment  =                           'Center'
+                                                    VerticalAlignment    =                           'Center'
+                                                    Foreground           =                             'Cyan'
+                                                    IsEnabled            =                            'False' >
+                                <RadioButton.Effect>
+                                    <DropShadowEffect/>
+                                </RadioButton.Effect>
+                            </RadioButton>
+                            <TextBlock 
+                                                    Grid.Row             =                               '13'
+                                                    Grid.Column          =                                '0' 
+                                                    Grid.ColumnSpan      =                                '2' 
+                                                    Margin               =                                '5'
+                                                    FontSize             =                               '14'
+                                                    HorizontalAlignment  =                           'Center'
+                                                    TextAlignment        =                           'Center'
+                                                    Foreground           =                             'Lime' >
+                                <TextBlock.Effect>
+                                    <DropShadowEffect/>
+                                </TextBlock.Effect>
+                            # - - [ Network and Source Credentials ]  - - #
+                            </TextBlock>
+                            $( $T0_List.TextBlock[8..10] )
+                            $( $T0_List.TextBoxes[0..10] )
+                        </Grid>
+                    </TabItem>
+                    <TabItem 
+                        Header                                           =                       'Image Info' 
+                        HorizontalAlignment                              =                           'Center' 
+                        Width                                            =                              '150' 
+                        BorderBrush                                      =                         '{x:Null}' >
+                        <TabItem.Effect>
+                            <DropShadowEffect/>
+                        </TabItem.Effect>
+                        <Grid 
+                            Height                                       =                              '400' 
+                            VerticalAlignment                            =                              'Top' >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width                  =                             '0.5*' />
+                                <ColumnDefinition Width                  =                             '0.5*' />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                            $( $T1_List.RowDef )
+                            </Grid.RowDefinitions>
+                            <TextBlock 
+                                                    Grid.Row             =                                '0'
+                                                    Grid.Column          =                                '0' 
+                                                    Grid.ColumnSpan      =                                '2' 
+                                                    Margin               =                                '5'
+                                                    FontSize             =                               '14'
+                                                    HorizontalAlignment  =                           'Center'
+                                                    TextAlignment        =                           'Center'
+                                                    Foreground           =                             'Lime' >
+                                <TextBlock.Effect>
+                                    <DropShadowEffect/>
+                                </TextBlock.Effect>
+                            # - - [ Company Information ]  - - #
+                            </TextBlock>
+                            $( $T1_List.TextBlock[0..3] )
+                            <TextBlock 
+                                                    Grid.Row             =                                '5'
+                                                    Grid.Column          =                                '0' 
+                                                    Grid.ColumnSpan      =                                '2' 
+                                                    Margin               =                                '5'
+                                                    FontSize             =                               '14'
+                                                    HorizontalAlignment  =                           'Center'
+                                                    TextAlignment        =                           'Center'
+                                                    Foreground           =                             'Lime' >
+                                <TextBlock.Effect>
+                                    <DropShadowEffect/>
+                                </TextBlock.Effect>
+                            # - - [ Custom Graphics ]  - - #
+                            </TextBlock>
+                            $( $T1_List.TextBlock[ 4..5 ] )
+                            <TextBlock 
+                                                    Grid.Row             =                                '8'
+                                                    Grid.Column          =                                '0' 
+                                                    Grid.ColumnSpan      =                                '2' 
+                                                    Margin               =                                '5'
+                                                    FontSize             =                               '14'
+                                                    HorizontalAlignment  =                           'Center'
+                                                    TextAlignment        =                           'Center'
+                                                    Foreground           =                             'Lime' >
+                                <TextBlock.Effect>
+                                    <DropShadowEffect/>
+                                </TextBlock.Effect>
+                            # - - [ Network Definitions ]  - - #
+                            </TextBlock>
+                            $( $T1_List.TextBlock[ 6 ] )
+                            $( $T1_List.TextBoxes )
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </StackPanel>
+            <StackPanel 
+                    Orientation                                          =                       'Horizontal' 
+                    FlowDirection                                        =                      'LeftToRight' 
+                    VerticalAlignment                                    =                           'Bottom' 
+                    HorizontalAlignment                                  =                           'Center' 
+                    Height                                               =                               '40' 
+                    Margin                                               =                      '150,0,150,0' >
+                <Button 
+                    Name                                                 =                            'Start'  
+                    Content                                              =                            'Start'  
+                    HorizontalAlignment                                  =                             'Left'  
+                    Height                                               =                               '20' 
+                    Width                                                =                              '170' />
+                <Button 
+                    Name                                                 =                           'Cancel' 
+                    Content                                              =                           'Cancel' 
+                    HorizontalAlignment                                  =                            'Right' 
+                    Height                                               =                               '20' 
+                    Width                                                =                              '170' />
+            </StackPanel>
+        </StackPanel>
+    </Window>
 "@
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - [ Installation-GUI Launcher ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        $GUI = Convert-XAMLtoWindow -Xaml $XAMLRoot -NamedElement @( $Named ; "Start" ; "Cancel" ) -PassThru
-        $GUI.Cancel.Add_Click({ $GUI.DialogResult = $False })
-        $GUI.Start.Add_Click({
-        $0 = @( "File System/Drive" ;          "Root Folder" ;    "Network Share Name" ;      "PSDrive Name" ; 
-                "Share Description" ;            "Site Name" ; "Application Pool Name" ; "Virtual Directory" ;
-                     "NetBIOS Name" ; "Target/LM Admin User" ;  "Target/LM Admin Pass" )
-        $1 = $0 | % { "You must enter a $_" } ; $2 = $0 | % { "$_ Missing" } ; $MSG = 0..16 | % { [ Type ] $Message }
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    #// -[ Installation-GUI Launcher ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    $GUI = Convert-XAMLtoWindow -Xaml $XAMLRoot -NamedElement @( $Named ; "Start" ; "Cancel" ) -PassThru #- - - - - - - - - - - - - - - - - - - - - //#
+    $GUI.Cancel.Add_Click({ $GUI.DialogResult = $False }) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    $GUI.Start.Add_Click({ #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    $0 = @( "File System/Drive" ;          "Root Folder" ;    "Network Share Name" ;      "PSDrive Name" ; # - - - - - - - - - - - - - - - - - - - -\\#
+            "Share Description" ;            "Site Name" ; "Application Pool Name" ; "Virtual Directory" ; #- - - - - - - - - - - - - - - - - - - - //#
+                 "NetBIOS Name" ; "Target/LM Admin User" ;  "Target/LM Admin Pass" ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    $1 = $0 | % { "You must enter a $_" } ; $2 = $0 | % { "$_ Missing" } ; $MSG = 0..16 | % { [ Type ] $Message } # - - - - - - - - - - - - - - - - //#
+    If     (      $GUI.r0.Text -eq "" ) { ( $MSG[ 0] )::Show( $1[ 0] , $2[ 0] ) } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    ElseIf (      $GUI.r1.Text -eq "" ) { ( $MSG[ 1] )::Show( $1[ 1] , $2[ 1] ) } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    ElseIf (      $GUI.r2.Text -eq "" ) { ( $MSG[ 2] )::Show( $1[ 2] , $2[ 2] ) } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    ElseIf (      $GUI.r3.Text -eq "" ) { ( $MSG[ 3] )::Show( $1[ 3] , $2[ 3] ) } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    ElseIf (      $GUI.r4.Text -eq "" ) { ( $MSG[ 4] )::Show( $1[ 4] , $2[ 4] ) } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    ElseIf (    $GUI.iis0.Text -eq "" ) { ( $MSG[ 5] )::Show( $1[ 5] , $2[ 5] ) } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    ElseIf (    $GUI.iis1.Text -eq "" ) { ( $MSG[ 6] )::Show( $1[ 6] , $2[ 6] ) } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    ElseIf (    $GUI.iis2.Text -eq "" ) { ( $MSG[ 7] )::Show( $1[ 7] , $2[ 7] ) } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    ElseIf (     $GUI.dc0.Text -eq "" ) { ( $MSG[ 8] )::Show( $1[ 8] , $2[ 8] ) } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    ElseIf (     $GUI.dc1.Text -eq "" ) { ( $MSG[ 9] )::Show( $1[ 9] , $2[ 9] ) } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    ElseIf ( $GUI.dc2.Password -eq "" ) { ( $MSG[10] )::Show( $1[10] , $2[10] ) } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    ElseIf (      $GUI.p0.Text -eq "" ) { ( $MSG[11] )::Show( $1[11] , $2[11] ) } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    ElseIf (      $GUI.p1.Text -eq "" ) { ( $MSG[12] )::Show( $1[12] , $2[12] ) } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    ElseIf (      $GUI.p2.Text -eq "" ) { ( $MSG[13] )::Show( $1[13] , $2[14] ) } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    ElseIf (      $GUI.p3.Text -eq "" ) { ( $MSG[14] )::Show( $1[14] , $2[14] ) } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    ElseIf (    $GUI.img0.Text -eq "" ) { ( $MSG[15] )::Show( $1[15] , $2[15] ) } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    ElseIf (    $GUI.img1.Text -eq "" ) { ( $MSG[16] )::Show( $1[16] , $2[16] ) } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    ElseIf (      $GUI.n0.Text -eq "" ) { ( $MSG[17] )::Show( $1[17] , $2[17] ) } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    Else { $GUI.DialogResult = $True }}) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    #//- [ Turning Variables into 'The GUI' ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    $Output = Show-WPFWindow -GUI $GUI # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    If ( $Output -eq $True ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    {   $SP = $GUI.dc2.SecurePassword #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $LMCRED = New-Object -TypeName System.Management.Automation.PSCredential -Args $GUI.dc1.Text , $SP #- - - - - - - - - - - - - - - - - - - - //#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    #//- [ Exporting the variables to a hash table ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    $DSC = [ Ordered ]@{R0_Company     =                                          "$( $GUI.p0.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        R1_UNCRoot     = "\\$( $Env:ComputerName )\$( $GUI.r2.Text.TrimEnd( '$' ) )$" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        R2_Hostname    =                                     "$( $Env:ComputerName )" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        R3_DC_User     =                                      "$( $DCCred.Username )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        R4_DC_Pass     =                                      "$( $DCCred.Password )" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        R5_WWW_Site    =                                          "$( $GUI.p1.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        R6_Phone       =                                          "$( $GUI.p2.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        R7_Hours       =                                          "$( $GUI.p3.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        R8_Logo        =                                        "$( $GUI.img0.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        R9_Background  =                                        "$( $GUI.img1.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        R10_Branch     =                                          "$( $GUI.n0.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        R11_Domain     =                                    "$( $env:USERDNSDOMAIN )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        R12_LM_User    =                                      "$( $LMCRED.Username )" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        R13_LM_Pass    =                                      "$( $LMCRED.Password )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        R14_Proxy      =                                     "$( $Env:ComputerName )" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        R15_NetBIOS    =                                       "$( $Env:UserDomain )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        R16_DSC_Folder =     "$( $GUI.r0.Text.TrimEnd( '\' ) )\$( ( $GUI.r1.Text ) )" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        R17_PSDrive    =                          "$( $GUI.r3.Text.TrimEnd( ':' ) ):" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        R18_PSDrive_ID =                                          "$( $GUI.r4.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        R19_BITS_Name  =                                        "$( $GUI.iis0.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        R20_BITS_Pool  =                                        "$( $GUI.iis1.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        R21_BITS_Host  =                                        "$( $GUI.iis2.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        R22_BITS_Root  =                            "https://$( $Env:USERDNSDOMAIN )" } # - - - - - - - - - - - - - - - - - - - - - //#
+                        $NRoot         = "\\$( $Env:ComputerName )\$( $GUI.r2.Text.TrimEnd( '$' ) )$" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        $URI           =     "$( $GUI.r0.Text.TrimEnd( '\' ) )\$( ( $GUI.r1.Text ) )" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        $SMB           =                          "$( $GUI.r2.Text.TrimEnd( '$' ) )$" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        $PSD           =                          "$( $GUI.r3.Text.TrimEnd( ':' ) ):" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        $TAG           =                                          "$( $GUI.r4.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        $SiteRoot      =                                                  "$( $URI )" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        $SiteName      =                                        "$( $GUI.iis0.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        $SitePool      =                                        "$( $GUI.iis1.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
+                        $Vhost         =                                        "$( $GUI.iis2.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+                        $PName         =                                          "$( $GUI.p0.Text )" } # - - - - - - - - - - - - - - - - - - - - - //#
+    Else { Wrap-Action -Type "Exception" -Info "[!] The dialog has failed you sir/ma'am" ; Read-Host "Press Enter to Exit" ; Exit } } # - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// -[ / Declare-Functions ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
+#\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
+#// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\                                                                                                                                                 //#
+#//    <@[ Execute-Script ]@>                                                                                                                       \\#
+#\\                                                                                                                                                 //#
+#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ //#
+#// \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \\#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+#// [ Initialize Service Account Credential ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+$Message::Show( "Enter Hybrid Service Account Credential" ) ; $DCCred = Get-Credential "$( $Env:UserDomain )\Hybrid" # - - - - - - - - - - - - - - -\\#
+If ( ( $DCCred | Test-Credential ) -ne "Authenticated" ) { Exit } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#// - [ Elevate, Show True Colors , Launch Installation / Imaging Switch ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+Elevate-Script ; Display-TrueColors # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
 
-        If     (      $GUI.r0.Text -eq "" ) { ( $MSG[ 0] )::Show( $1[ 0] , $2[ 0] ) }
-        ElseIf (      $GUI.r1.Text -eq "" ) { ( $MSG[ 1] )::Show( $1[ 1] , $2[ 1] ) }
-        ElseIf (      $GUI.r2.Text -eq "" ) { ( $MSG[ 2] )::Show( $1[ 2] , $2[ 2] ) }
-        ElseIf (      $GUI.r3.Text -eq "" ) { ( $MSG[ 3] )::Show( $1[ 3] , $2[ 3] ) }
-        ElseIf (      $GUI.r4.Text -eq "" ) { ( $MSG[ 4] )::Show( $1[ 4] , $2[ 4] ) }
-        ElseIf (    $GUI.iis0.Text -eq "" ) { ( $MSG[ 5] )::Show( $1[ 5] , $2[ 5] ) }
-        ElseIf (    $GUI.iis1.Text -eq "" ) { ( $MSG[ 6] )::Show( $1[ 6] , $2[ 6] ) }
-        ElseIf (    $GUI.iis2.Text -eq "" ) { ( $MSG[ 7] )::Show( $1[ 7] , $2[ 7] ) }
-        ElseIf (     $GUI.dc0.Text -eq "" ) { ( $MSG[ 8] )::Show( $1[ 8] , $2[ 8] ) }
-        ElseIf (     $GUI.dc1.Text -eq "" ) { ( $MSG[ 9] )::Show( $1[ 9] , $2[ 9] ) }
-        ElseIf ( $GUI.dc2.Password -eq "" ) { ( $MSG[10] )::Show( $1[10] , $2[10] ) }
-        ElseIf (      $GUI.p0.Text -eq "" ) { ( $MSG[11] )::Show( $1[11] , $2[11] ) }
-        ElseIf (      $GUI.p1.Text -eq "" ) { ( $MSG[12] )::Show( $1[12] , $2[12] ) }
-        ElseIf (      $GUI.p2.Text -eq "" ) { ( $MSG[13] )::Show( $1[13] , $2[14] ) }
-        ElseIf (      $GUI.p3.Text -eq "" ) { ( $MSG[14] )::Show( $1[14] , $2[14] ) }
-        ElseIf (    $GUI.img0.Text -eq "" ) { ( $MSG[15] )::Show( $1[15] , $2[15] ) }
-        ElseIf (    $GUI.img1.Text -eq "" ) { ( $MSG[16] )::Show( $1[16] , $2[16] ) }
-        ElseIf (      $GUI.n0.Text -eq "" ) { ( $MSG[17] )::Show( $1[17] , $2[17] ) }
-        Else { $GUI.DialogResult = $True }})
 
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - [ Turning Variables into 'The GUI' ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        $Output = Show-WPFWindow -GUI $GUI
-        If ( $Output -eq $True )
-        {   $SP = $GUI.dc2.SecurePassword
-            $LMCRED = New-Object `
-                -TypeName System.Management.Automation.PSCredential -Args $GUI.dc1.Text , $SP
-
-            # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-            # - [ Exporting the variables to a hash table ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-            # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-            $DSC = [ Ordered ]@{   
-                        R0_Company     =                                          "$( $GUI.p0.Text )"
-                        R1_UNCRoot     = "\\$( $Env:ComputerName )\$( $GUI.r2.Text.TrimEnd( '$' ) )$"
-                        R2_Hostname    =                                     "$( $Env:ComputerName )"
-                        R3_DC_User     =                                      "$( $DCCred.Username )"
-                        R4_DC_Pass     =                                      "$( $DCCred.Password )"
-                        R5_WWW_Site    =                                          "$( $GUI.p1.Text )"
-                        R6_Phone       =                                          "$( $GUI.p2.Text )"
-                        R7_Hours       =                                          "$( $GUI.p3.Text )"
-                        R8_Logo        =                                        "$( $GUI.img0.Text )"
-                        R9_Background  =                                        "$( $GUI.img1.Text )"
-                        R10_Branch     =                                          "$( $GUI.n0.Text )"
-                        R11_Domain     =                                    "$( $env:USERDNSDOMAIN )"
-                        R12_LM_User    =                                      "$( $LMCRED.Username )"
-                        R13_LM_Pass    =                                      "$( $LMCRED.Password )"
-                        R14_Proxy      =                                     "$( $Env:ComputerName )"
-                        R15_NetBIOS    =                                       "$( $Env:UserDomain )"
-                        R16_DSC_Folder =     "$( $GUI.r0.Text.TrimEnd( '\' ) )\$( ( $GUI.r1.Text ) )"
-                        R17_PSDrive    =                          "$( $GUI.r3.Text.TrimEnd( ':' ) ):"
-                        R18_PSDrive_ID =                                          "$( $GUI.r4.Text )" 
-                        R19_BITS_Name  =                                        "$( $GUI.iis0.Text )" 
-                        R20_BITS_Pool  =                                        "$( $GUI.iis1.Text )" 
-                        R21_BITS_Host  =                                        "$( $GUI.iis2.Text )" 
-                        R22_BITS_Root  =                            "https://$( $Env:USERDNSDOMAIN )" }
-                        $NRoot         = "\\$( $Env:ComputerName )\$( $GUI.r2.Text.TrimEnd( '$' ) )$"
-                        $URI           =     "$( $GUI.r0.Text.TrimEnd( '\' ) )\$( ( $GUI.r1.Text ) )"
-                        $SMB           =                          "$( $GUI.r2.Text.TrimEnd( '$' ) )$"
-                        $PSD           =                          "$( $GUI.r3.Text.TrimEnd( ':' ) ):"
-                        $TAG           =                                          "$( $GUI.r4.Text )"
-                        $SiteRoot      =                                                  "$( $URI )"
-                        $SiteName      =                                        "$( $GUI.iis0.Text )"
-                        $SitePool      =                                        "$( $GUI.iis1.Text )"
-                        $Vhost         =                                        "$( $GUI.iis2.Text )" 
-                        $PName         =                                          "$( $GUI.p0.Text )" }
-
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - [ Turning Variables into 'The GUI' ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        Else { Wrap-Action -Type "Exception" -Info "[!] The dialog has failed you sir/ma'am" ; Read-Host "Press Enter to Exit" ; Exit }
-    }
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-    # - [ Initialize Service Account Credential ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-    $Message::Show( "Enter Hybrid Service Account Credential" ) ; $DCCred = Get-Credential "$( $Env:UserDomain )\Hybrid"
-
-    If ( ( $DCCred | Test-Credential ) -ne "Authenticated" ) { Exit }
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-    # - [ Elevate, then Show True Colors ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-    Elevate-Script ; Display-TrueColors
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-    # - [ Dependency Check/Installer ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        # - [ Common Variables ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        $CPU     =                                                            $env:PROCESSOR_ARCHITECTURE    # CPU Arch         //#
-        $SRV     =                                                                      $env:COMPUTERNAME    # Server Name      \\#
-        $Install =                                                                "C:\Hybrid-Installation"   # Install Folder   //#
-        $Deploy  =                                                                            "Deployment"   # Deploy String    \\#
-        $MDTFile =                                                            "Microsoft$Deploy`Toolkit_x"   # MDT File         //#
-        $MDTURL  =    "https://download.microsoft.com/download/3/3/9/339BE62D-B4B8-4956-B58D-73C4685FC492"   # MDT Base URL     \\#
-        $ADK     =                                                    "Windows Assessment and $Deploy Kit"   # ADK String       //#
-        $MDT     =                                                             "Microsoft $Deploy Toolkit"   # MDT String       \\#
-        $7zip    =                                                        "https://www.7-zip.org/a/7z1900"   # 7 Zip Base URL   //#
-        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        # - [ Registry Checker ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        $Path = "" , "\WOW6432Node" | % { "HKLM:\Software$_\Microsoft\Windows\CurrentVersion\Uninstall" }    #                  //#
-        If ( $CPU -eq "x86" ) { $Reg = $Path[   0] | % { GP "$_\*" } ; $MDTFile = "$MDTFile`86.msi" ; $7zip = "7Z1900.exe"    }#\\#
-        Else                  { $Reg = $Path[0..1] | % { GP "$_\*" } ; $MDTFile = "$MDTFile`64.msi" ; $7zip = "7z1900-x64.exe"}#//#
-        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        #- [ Real men use arrays ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        $List = @{ # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        # - [ Windows ADK ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-        0 =                                                                     "$Deploy Kit - Windows 10" , # Regex String     //#
-                                                                                            "10.1.17763.1" , # Minimum Version  \\#
-                                                                                                  "WinADK" , # ID               //#
-                                                                   "Windows Assessment and Deployment Kit" , # Title            \\#
-                                                                                         "$Install\WinADK" , # Target Path      //#
-                                                                                          "winadk1903.exe" , # Target File      \\#
-                                                         "https://go.microsoft.com/fwlink/?linkid=2086042" , # URL              //#
-                                                "/quiet /norestart /log $env:temp\win_adk.log /features +"   # Silent Arguments \\#
-        # - [ Windows PE ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-        1 =                                                                              "Preinstallation" , # Regex String     \\#
-                                                                                            "10.1.17763.1" , # Minimum Version  //#
-                                                                                                   "WinPE" , # ID               \\#
-                                                                 "Windows ADK Preinstallation Environment" , # Title            //#
-                                                                                          "$Install\WinPE" , # Target Path      \\#
-                                                                                           "winpe1903.exe" , # Target File      //#
-                                                         "https://go.microsoft.com/fwlink/?linkid=2087112" , # URL              \\#
-                                                "/quiet /norestart /log $env:temp\win_adk.log /features +"   # Silent Arguments //#
-        # - [ Microsoft Deployment Toolkit ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-        2 =                                                                                 "$Deploy Tool" , # Regex String     //#
-                                                                                           "6.3.8450.0000" , # Minimum Version  \\#
-                                                                                                     "MDT" , # ID               //#
-                                                                            "Microsoft Deployment Toolkit" , # Title            \\#
-                                                                                            "$Install\MDT" , # Target Path      //#
-                                                                                                "$MDTFile" , # Target File      \\#
-                                                                                        "$MDTURL/$MDTFile" , # URL              //#
-                                                                                       "/quiet /norestart"   # Silent Arguments \\#
-        # - [ 7-Zip ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-        3 =                                                                                        "7-Zip" , # Regex String     \\#
-                                                                                                   "19.00" , # Minimum Version  //#
-                                                                                                   "7-Zip" , # ID               \\#
-                                                                                 "7-Zip Archiving Utility" , # Title            //#
-                                                                                          "$Install\7-Zip" , # Target Path      \\#
-                                                                                                   "$7zip" , # Target File      //#
-                                                                           "https://www.7-zip.org/a/$7zip" , # URL              \\#
-                                                                                                      "/S" } # Silent Arguments //#
-        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        #- [ Variables Declared, Run the loop ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+Switch ( $host.UI.PromptForChoice( 'PowerShell Deployment' , 'Standard MDT, or Upgrade to PSD-Development?' , #- - - - - - - - - - - - - - - - - - -\\#
+[ System.Management.Automation.Host.ChoiceDescription [] ]@( '&Standard MDT' , '&PSD-Development' ) , [ Int ] 1 ) ) # - - - - - - - - - - - - - - - //#    
+{   0 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+      #// - [ Common Variables ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+      #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    {   $CPU     =                                                            $env:PROCESSOR_ARCHITECTURE    # CPU Arch                             //#
+        $SRV     =                                                                      $env:COMPUTERNAME    # Server Name                          \\#
+        $Install =                                                                "C:\Hybrid-Installation"   # Install Folder                       //#
+        $Deploy  =                                                                            "Deployment"   # Deploy String                        \\#
+        $MDTFile =                                                            "Microsoft$Deploy`Toolkit_x"   # MDT File                             //#
+        $MDTURL  =    "https://download.microsoft.com/download/3/3/9/339BE62D-B4B8-4956-B58D-73C4685FC492"   # MDT Base URL                         \\#
+        $ADK     =                                                    "Windows Assessment and $Deploy Kit"   # ADK String                           //#
+        $MDT     =                                                             "Microsoft $Deploy Toolkit"   # MDT String                           \\#
+        $7zip    =                                                        "https://www.7-zip.org/a/7z1900"   # 7 Zip Base URL                       //#
+      #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+      #// - [ Registry Checker ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+      #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $Path = "" , "\WOW6432Node" | % { "HKLM:\Software$_\Microsoft\Windows\CurrentVersion\Uninstall" } # - - - - - - - - - - - - - - - - - - - - //#
+        If ( $CPU -eq "x86" ) { $Reg = $Path[   0] | % { GP "$_\*" } ; $MDTFile = "$MDTFile`86.msi" ; $7zip = "7Z1900.exe"    }# - - - - - - - - - -\\#
+        Else                  { $Reg = $Path[0..1] | % { GP "$_\*" } ; $MDTFile = "$MDTFile`64.msi" ; $7zip = "7z1900-x64.exe"}#- - - - - - - - - - //#
+      #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+      #// - [ Real men use arrays ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+      #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $List = @{ #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        # - [ Windows ADK ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        0 =                                                                     "$Deploy Kit - Windows 10" , # Regex String                         //#
+                                                                                            "10.1.17763.1" , # Minimum Version                      \\#
+                                                                                                  "WinADK" , # ID                                   //#
+                                                                   "Windows Assessment and Deployment Kit" , # Title                                \\#
+                                                                                         "$Install\WinADK" , # Target Path                          //#
+                                                                                          "winadk1903.exe" , # Target File                          \\#
+                                                         "https://go.microsoft.com/fwlink/?linkid=2086042" , # URL                                  //#
+                                                "/quiet /norestart /log $env:temp\win_adk.log /features +"   # Silent Arguments                     \\#
+        # - [ Windows PE ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        1 =                                                                              "Preinstallation" , # Regex String                         \\#
+                                                                                            "10.1.17763.1" , # Minimum Version                      //#
+                                                                                                   "WinPE" , # ID                                   \\#
+                                                                 "Windows ADK Preinstallation Environment" , # Title                                //#
+                                                                                          "$Install\WinPE" , # Target Path                          \\#
+                                                                                           "winpe1903.exe" , # Target File                          //#
+                                                         "https://go.microsoft.com/fwlink/?linkid=2087112" , # URL                                  \\#
+                                                "/quiet /norestart /log $env:temp\win_adk.log /features +"   # Silent Arguments                     //#
+        # - [ Microsoft Deployment Toolkit ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        2 =                                                                                 "$Deploy Tool" , # Regex String                         //#
+                                                                                           "6.3.8450.0000" , # Minimum Version                      \\#
+                                                                                                     "MDT" , # ID                                   //#
+                                                                            "Microsoft Deployment Toolkit" , # Title                                \\#
+                                                                                            "$Install\MDT" , # Target Path                          //#
+                                                                                                "$MDTFile" , # Target File                          \\#
+                                                                                        "$MDTURL/$MDTFile" , # URL                                  //#
+                                                                                       "/quiet /norestart"   # Silent Arguments                     \\#
+        # - [ 7-Zip ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        3 =                                                                                        "7-Zip" , # Regex String                         \\#
+                                                                                                   "19.00" , # Minimum Version                      //#
+                                                                                                   "7-Zip" , # ID                                   \\#
+                                                                                 "7-Zip Archiving Utility" , # Title                                //#
+                                                                                          "$Install\7-Zip" , # Target Path                          \\#
+                                                                                                   "$7zip" , # Target File                          //#
+                                                                           "https://www.7-zip.org/a/$7zip" , # URL                                  \\#
+                                                                                                      "/S" } # Silent Arguments                     //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #// - [ Variables Declared, Run the loop ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
         Foreach ( $i in 0..3 ) 
         {   $Item = $Reg | ? { $_.DisplayName -like "*$( $List[$i][0] )*" } | Select DisplayName , DisplayVersion
             If ( ( $Item -ne $Null ) -and ( $Item.DisplayVersion -ge $List[$i][1] ) )
@@ -867,77 +884,61 @@
         $RegFull     =    "Secure Digits Plus LLC\Hybrid\Desired State Controller\$PName\$PSD"
         $RegRecurse  =                                                   $RegFull.Split( '\' )
         # -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - [ Create Registry Paths ]- #
-
         0 | % { If ( ( Test-Path "$RegRoot\$( $RegRecurse[0] )" ) -ne $True ) { $Null = NI -Path $RegRoot -Name $RegRecurse[0] } }
-
         $RegPath = "$RegRoot\$( $RegRecurse[0] )"
-                
         1..4 | % `
         {   If ( ( Test-Path "$RegPath\$( $RegRecurse[$_] )" ) -ne $True ) 
             { $Null    = NI -Path $RegPath -Name $RegRecurse[$_] }
               $RegPath = "$RegPath\$( $RegRecurse[$_] )" }
-
         $RegFull = "$RegRoot\$RegFull"
-
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -[ Create Registry Key/Value Pairs ]- #
-
         If ( ( Test-Path $RegFull ) -eq $True )
         {   $RegName = @( $DSC.Keys ) ; $RegValue = @( $DSC.Values ) 
-
             0..23 | % { $Null = SP -Path "$RegFull" -Name $RegName[$_] -Value $RegValue[$_] -Force }
             0..( $DSC.Count - 1 ) | % `
             {   $RegName  = @( $_.Keys ) ; $RegValue = @( $_.Values ) ; $i = ( $RegName.Count - 1 )
                 $Null = SP -Path "$RegFull" -Name $RegName[$i] -Value $RegValue[$i] -Force } }
-
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - [ Error Handling ]- #
-
         Else { Wrap-Action -Type "Exception" -Info "The user exited the dialogue" ; Read-Host "Press Enter to Exit" ; Exit }
-
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -[ Switchin' It Up ]- #
-
         Switch ( $host.UI.PromptForChoice( 'PowerShell Deployment' , 'Standard MDT, or Upgrade to PSD-Development?' , 
         [ System.Management.Automation.Host.ChoiceDescription [] ]@( '&Standard MDT' , '&PSD-Development' ) , [ Int ] 1 ) )
-        {   
-            0   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
+        {   0   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
                 # - [ What sissies will choose ] - - - - - - - - - - - - - - - - - - - - - - - - #//#
                 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-            {   Wrap-Action -Type "Selected" -Info "Standard MDT - Share Generation complete" }  #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#                          
+            {   Wrap-Action -Type "Selected" -Info "MDT [Deployment] Share created" }            #//#
+                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
             1   # - [ What real men will choose ]- - - - - - - - - - - - - - - - - - - - - - - - #//#
                 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-            {   Wrap-Action -Type "Installing" -Info "PowerShell-[Deployment/Development]"       #//#
+            {   Wrap-Action -Type "Creating" -Info "PowerShell [Deployment/Development] Share"   #//#
                 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
                 # - [ PSD-Scripts ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
                 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                $Scripts = "Scripts"                                                             #//#
-                @( gci "$Install\$Scripts" -Filter "*.ps1" -EA 0 ).Name | % {                    #\\#
-                    Robocopy "$Install\$Scripts" "$URI\$Scripts" $_                              #//#
-                    Dir "$URI\$Scripts\$_" | Unblock-File }                                      #\\#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#//#
-                # - [ PSD-Templates ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #\\#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#//#
-                $Templates = "Templates"                                                         #\\#
-                @( gci "$Install\$Templates" ).Name | % {                                        #//#
+                @( gci "$Install\$( $Scripts = "Scripts" )" -Filter "*.ps1" -EA 0 ).Name | % {   #//#
+                    Robocopy "$Install\$Scripts" "$URI\$Scripts" $_                              #\\#
+                    Dir "$URI\$Scripts\$_" | Unblock-File }                                      #//#
+                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
+                # - [ PSD-Templates ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
+                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
+                @( gci "$Install\$( $Templates = "Templates" )").Name | % {                      #//#
                     Robocopy "$Install\$Templates" "$URI\$Templates" $_                          #\\#
                     Dir "$URI\$Templates\$_" | Unblock-File }                                    #//#
                 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
                 # - [ PSD-Modules ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
                 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                $Modules = "Tools\Modules"                                                       #//#
-                "PSDGather", "PSDDeploymentShare", "PSDUtility", "PSDWizard" | % {               #\\#
-                    $ModPath = "$URI\$Modules\$_"                                                #//#
-                    If ( ( Test-Path "$ModPath" ) -eq $False )                                   #\\#
-                    {   $Null = NI "$ModPath" -ItemType Directory                                #//#
-                        Wrap-Action -Type "Created" -Info "[+] Directory $_" }                   #\\#
-                        Wrap-Action -Type "Copying" -Info "Module $_ to $ModPath"                #//#
-                        Robocopy "$Install\$Scripts" "$ModPath" "$_.psm1"                        #\\#
-                        Dir "$ModPath" | Unblock-File }                                          #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                # - [ PSD-SnapIns ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-                $BDD = "Microsoft.BDD"                                                           #//#
+                "PSDGather", "PSDDeploymentShare", "PSDUtility", "PSDWizard" | % {               #//#
+                    $ModPath  = "$URI\$($Modules="Tools\Modules")\$_"                            #\\#
+                    If ( ( Test-Path "$ModPath" ) -eq $False )                                   #//#
+                    {   $Null = NI "$ModPath" -ItemType Directory                                #\\#
+                        Wrap-Action -Type "Created" -Info "[+] Directory $_" }                   #//#
+                    Wrap-Action -Type "Copying" -Info "Module $_ to $ModPath"                    #\\#
+                    Robocopy "$Install\$Scripts" "$ModPath" "$_.psm1"                            #//#
+                    Dir "$ModPath" | Unblock-File }                                              #\\#
+                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#//#
+                # - [ PSD-SnapIns ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #\\#
+                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#//#
                 Wrap-Action -Type "Copying" -Info "[+] $URI\$Modules"                            #\\#
-                If ( ( Test-Path "$URI\$Modules\$BDD.PSSnapin" ) -eq $False  )                   #//#
+                If ( ( Test-Path "$URI\$Modules\$($BDD="Microsoft.BDD").PSSnapin" ) -ne $True )  #//#
                 {   $Null = NI "$URI\$Modules\$BDD.PSSnapIn" -ItemType Directory                 #\\#
                     Wrap-Action -Type "Created" -Info "[+] Directory" }                          #//#
                 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
@@ -975,7 +976,7 @@
                 # - [ Random Crap I'll likely replace ]- - - - - - - - - - - - - - - - - - - - - #\\#
                 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#//#
                 $Message  = "Logs" , "Dynamics Logs Sub" , "DriverSources" ,                     #\\#
-                "DriverPackages" | % { "$_ Folder" }                                             #//#            
+                "DriverPackages" | % { "$_ Folder" }                                             #//#
                 $Path = "Logs" , "Logs\Dyn" , "DriverSources" , "DriverPackages"                 #\\#
                 0..3 | % {                                                                       #//#
                     Wrap-Action -Type "Creating" -Info "$( $Message[$_] ) in $URI\$( $Path[$_] )"#\\#
@@ -997,36 +998,29 @@
         # - [ Designate-SSLTLS ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
         $SSLTLS = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols" ; $Types = "Client" , "Server"
-        $SK2V   = ( 0..7 | % { 0 } ) + ( 8..9 | % { 1 } )
-
-        $Protocols = @( 2..3 | % { "SSL $_.0" } ) + @( 0..2 | % { "TLS 1.$_" } )
-        $Protocols | % { $Path = "$SSLTLS\$_" ; 
+        $SK2V   = ( 0..7 | % { 0 } ) + ( 8..9 | % { 1 } ) ; $Protocols = @( 2..3 | % { "SSL $_.0" } ) + @( 0..2 | % { "TLS 1.$_" } )
+        $Protocols | % { 
+        $Path   = "$SSLTLS\$_"
             If ( ( Test-Path $Path ) -ne $True ) { NI -Path "$SSLTLS" -Name "$_" } 
             $Types | % { If ( ( Test-Path "$Path\$_" ) -ne $True ) { NI -Path "$Path" -Name "$_" } } }
-        
-        $Path      = @( $Protocols | % { "$SSLTLS\$_\Client" ; "$SSLTLS\$_\Server" } )
-        
+        $Path   = @( $Protocols | % { "$SSLTLS\$_\Client" ; "$SSLTLS\$_\Server" } )
         0..( $Path.Count - 1 ) | % { 
             If ( ( gci $Path ) -eq $Null ) 
             {   SP -Path ( $Path[$_] ) -Name "DisabledByDefault" -Type "DWORD" -Value "0"
                 SP -Path ( $Path[$_] ) -Name           "Enabled" -Type "DWORD" -Value ( $SK2V[$_] ) } }
-
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
         # - [ Deploy-Website ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
         (  $SD , $Date , $LogPath , $Server ) = ( $env:SystemDrive , ( Get-Date -UFormat "%m-%d-%Y" ) , "$Home\Desktop\ACL" , $Env:ComputerName )    #
         ( $PSP ,  $DWS ,     $SWS ,    $WSS ) = ( "Machine/Webroot/AppHost" , "$SiteName" , "System.WebServer" , "Security/Authentication" )         #
                                         $Full = "IIS:\Sites\$SiteName\$VHost"                                                                        #
-
         If ( ( Test-Path $SiteRoot ) -eq $False )
         {   NI -Path $SiteRoot -ItemType Directory -Name $SiteRoot
-            If ( $? -eq $True ) { Echo "" ,  "Successful [+] '$SiteRoot' Directory Created" , "" }
-            Else                { Echo "" , "Exception [!] Site Path Directory not created" , "" 
-                                  Read-Host "Press any key to exit" } }
-        Else { Echo "" , "Detected [+] '$SiteRoot' exists, continuing" , "" }
-
+            If ( $? -eq $True ) { Wrap-Action -Type "Successful" -Info "[+] '$SiteRoot' Created" }
+            Else                { Wrap-Action -Type "Exception"  -Info "[!] '$SiteRoot' not created" ; Read-Host "Press Enter to Exit" ; Exit } }
+        Else { Wrap-Action -Type "Detected" -Info "[+] '$SiteRoot' already exists. Continuing . . ." }
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        # - [ Install-WindowsFeatures using "0" XML files - What a "Desired State Controller" appears to be ]- - - - - - - - - - - - - - - - - - - - #
+        # - [ Declare-WindowsFeatures ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
         $WebSvc = @(                "Web-Server" ; # Installs the base 'Web Server functions ... ( $SE = Self Explanatory )                          #
                                    "DSC-Service" ; # Installs the Desired State Configuration Service                                                #
@@ -1069,132 +1063,72 @@
                                 "Static-Content" ; # Works with Web-Includes                                                                         #
                                       "Url-Auth" ; # Similar to when you log into Gmail                                                              #
                                      "WebServer" ; # The service that is nearly an exact replica of Apache                                           #
-                                  "Windows-Auth" ) | % { "Web-$_" } ) ; # Allows the WebSite to use NTLM/Kerberos authentication in order to access  #
+                                  "Windows-Auth" ) | % { "Web-$_" } ) ; # Allows the WebSite to use NTLM/Kerberos authentication ( Most Secure )     #
         @( "WAS" | % {                      "$_" ; # Series of services that takes HTTP and says "You don't need HTTP. You can use whatever we tell  #
                               "$_-Process-Model" ; # you to use, cause that's what Windows Process Activation Services means, it's just turning      #
                                 "$_-Config-APIs" } ) ) # HTML into XML and vice versa. Like $Magic = @( David | % { $_ Blaine ; $_ Copperfield } )   # 
-        
-        # Services Declared, now run the loop.
-
-        $WebSvc | % { Echo "[ $_ ]" ; Install-WindowsFeature -Name $_ }
-        IPMO WebAdministration
-        $Default = "Default Web Site"
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+        # - [ Install-WindowsFeatures using "0" XML files - What a "Desired State Controller" appears to be ]- - - - - - - - - - - - - - - - - - - - #
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+        $WebSvc | % { Echo "[ $_ ]" ; Install-WindowsFeature -Name $_ } ; IPMO WebAdministration ; $Default = "Default Web Site"                 
         $DWSite  = ( Get-Website -Name $Default -EA 0 )
-    
         If ( $DWSite -ne $Null ) 
-        { 
-            If ( $DWSite.State -eq 'Running' )
-            {   Stop-Website | SP "IIS:\Sites\$Default" ServerAutoStart False }
-        }
-
-        "MRxDAV" , "WebClient" | % `
-        {   $Check = ( Get-Service -ComputerName $Server -Name $_ -EA 0 ) 
-            If ( ( $Check ).Status -ne "Running" )
-            {   Set-Service -ComputerName $Server -StartupType Automatic -EA 4 -Status Start -Name $_ } }
-        
-        New-WebAppPool     -Name $SitePool -Force
-        
-        $Name  = "Enable32BitAppOnWin64" , "ManagedRuntimeVersion" , "ManagedPipelineMode"
-        $Value =                  "True" ,                  "v4.0" ,          "Integrated"
-        
+        {   If ( $DWSite.State -eq 'Running' )
+            {   Stop-Website | SP "IIS:\Sites\$Default" ServerAutoStart False } }
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+        # - [ Check-WebServices ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+        "MRxDAV" , "WebClient" | % { $Check = ( Get-Service -ComputerName $Server -Name $_ -EA 0 ) 
+            If ( ( $Check ).Status -ne "Running" ) { Set-Service -ComputerName $Server -StartupType Automatic -EA 4 -Status Start -Name $_ } }
+        New-WebAppPool -Name $SitePool -Force
+        $Name  = "Enable32BitAppOnWin64" , "ManagedRuntimeVersion" , "ManagedPipelineMode" ; $Value = "True" , "v4.0" , "Integrated"
         0..2 | % { SP -Path "$( IIS:\AppPools\$SitePool )" -Name "$( $Name[$_] )" -Value "$( $Value[$_] )" }
-
         Restart-WebAppPool -Name $SitePool
         New-Website        -Name $SiteName -ApplicationPool $SitePool -PhysicalPath $SiteRoot -Force
         Start-Website      -Name $SiteName
-
-         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+        # - [ Create-VHost ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
         New-WebVirtualDirectory -Site "$SiteName" -Name "$Vhost" -PhysicalPath "$SiteRoot" -Force
-
-        ( $MWA , $SWS , $WSS ) = ( "MACHINE/WEBROOT/APPHOST" , "System.WebServer" , "Security/Authentication" )
-
-        Set-WebConfigurationProperty -PSPath "$MWA" -Location "$SiteName" -Filter "$SWS/webdav/authoring" `
-            -Name "Enabled" -Value "True"
-
-        $DAV = @"
+        ( $MWA , $SWS , $WSS , $STC ) = ( "MACHINE/WEBROOT/APPHOST" , "System.WebServer" , "Security/Authentication" , "StaticContent" )
+        Set-WebConfigurationProperty -PSPath "$MWA" -Location "$SiteName" -Filter "$SWS/webdav/authoring" -Name "Enabled" -Value "True" ; $DAV = @"
 		Set Config "$SiteName/$Vhost" /Section:$SWS/Webdav/AuthoringRules /+[Users='*',Path='*',Access='Read,Source'] /Commit:AppHost
-"@
-        $Sys32 =                                                  "$SD\Windows\System32"
-        
+"@     
+        $Sys32 = "$SD\Windows\System32"
 		$Results = SAPS "$Sys32\inetsrv\AppCMD.EXE" -Args $DAV -NoNewWindow -PassThru | Out-Null
-
-        If ( ! ( ( Get-WebConfigurationProperty -PSPath "$MWA" -Filter "$SWS/StaticContent" -Name "." ).Collection `
-        | ? { $_.FileExtension -eq ".*" } ) ) `
-        {   $MimeResults = Add-WebConfigurationProperty -PSPath "IIS:\Sites\$SiteName\$Vhost" -Filter "$SWS/StaticContent" `
-                  -Name "." -Value @{  FileExtension = '.*' ; MimeType = 'Text/Plain' } }
-
-         Set-WebConfigurationProperty -Filter "/$SWS/DirectoryBrowse" -Name "Enabled" `
-            -PSPath "IIS:\Sites\$SiteName\$VHost" -Value $True
-
-        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-        $TGT =    "anonymousAuthentication" , "windowsAuthentication" + 
-        @( "webDAV/authoring"          | % { "$_`Rules" ; ( @( "$_/Properties" ) * 2 ) } ) + 
-        @( "security/RequestFiltering" | % { @( "$_/FileExtensions" ) * 2  + @( "$_/Verbs" ) * 2 } )
-
-        $Full = "$SiteName/$VHost"
-
-        $WCP = @{
-        0 = "$Full"      , "$SWS/$WSS/$( $TGT[0] )" , "Enabled"         , "False"
-        1 = "$Full"      , "$SWS/$WSS/$( $TGT[1] )" , "Enabled"         , "True"
-        2 = "$Sitename/" , "$SWS/$(      $TGT[2] )" , "DefaultMimeType" , "Text/XML" 
-        3 = "$Full"      , "$SWS/$(      $TGT[3] )" , "AllowInfinitePropfindDepth" , "True"
-        4 = "$Sitename"  , "$SWS/$(      $TGT[4] )" , "AllowInfinitePropfindDepth" , "True"
-        5 = "$Full"      , "$SWS/$(      $TGT[5] )" , "ApplyToWebDAV"   , "False"
-        6 = "$Sitename/" , "$SWS/$(      $TGT[6] )" , "ApplyToWebDAV"   , "False"
-        7 = "$Full"      , "$SWS/$(      $TGT[7] )" , "ApplyToWebDav"   , "False"
-        8 = "$Sitename/" , "$SWS/$(      $TGT[8] )" , "ApplyToWebDav"   , "False"  }
-          
-           
-        0..8 | % {  Set-WebConfigurationProperty                    `
-                                    -PSPath           $MWA          `
-                                    -Location         $WCP[$_][0]   `
-                                    -Filter           $WCP[$_][1]   `
-                                    -Name             $WCP[$_][2]   `
-                                    -Value            $WCP[$_][3]   }
-
-            $Filtering = Get-IISConfigSection `
-            | ? { $_.SectionPath -like "*$SWS/security/requestfiltering*" }     `
-            | Get-IISConfigElement -ChildElementName           'HiddenSegments'
-
-				Set-IISConfigAttributeValue                                     `
-                           -ConfigElement                           $Filtering  `
-                           -AttributeName                       'ApplyToWebDAV' `
-                          -AttributeValue                               $False
-
-        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    
-             'IIS_IUSRS', 'IUSR', "IIS APPPOOL\$SitePool"                       `
-             | % {   
-     
-                 $Obj =  New-AclObject                                          `
-                            -SamAccountName                                  $_ `
-                            -Permission                        'ReadAndExecute' `
-                            -Inheritance                     'ContainerInherit' ,
-                                                                'ObjectInherit' 
-
-                Add-Acl                                                         `
-                    -Path                                             $SiteRoot `
-                    -AceObject                                             $Obj
-            }
-  
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+        # - [ Set-WebConfiguration ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+        If ( ! ( ( Get-WebConfigurationProperty -PSPath "$MWA" -Filter "$SWS/$STC" -Name "." ).Collection | ? { $_.FileExtension -eq ".*" } ) ) `
+        {   $MimeResults = Add-WebConfigurationProperty -PSPath "IIS:\Sites\$SiteName\$Vhost" -Filter "$SWS/StaticContent" -Name "." `
+                -Value @{  FileExtension = '.*' ; MimeType = 'Text/Plain' } }
+        Set-WebConfigurationProperty -Filter "/$SWS/DirectoryBrowse" -Name "Enabled" -PSPath "IIS:\Sites\$SiteName\$VHost" -Value $True
+        $TGT = "anonymousAuthentication" , "windowsAuthentication" + @( "webDAV/authoring" | % { "$_`Rules" ; ( @( "$_/Properties" ) * 2 ) } ) + 
+        @( "security/RequestFiltering" | % { @( "$_/FileExtensions" ) * 2  + @( "$_/Verbs" ) * 2 } ) ; $Full = "$SiteName/$VHost"
+        $WCP = @{   0 = "$SiteName/$VHost" , "$SWS/$WSS/$( $TGT[0] )" , "Enabled"         , "False"
+                    1 = "$SiteName/$VHost" , "$SWS/$WSS/$( $TGT[1] )" , "Enabled"         , "True"
+                    2 = "$SiteName/"       , "$SWS/$(      $TGT[2] )" , "DefaultMimeType" , "Text/XML" 
+                    3 = "$SiteName/$VHost" , "$SWS/$(      $TGT[3] )" , "AllowInfinitePropfindDepth" , "True"
+                    4 = "$SiteName"        , "$SWS/$(      $TGT[4] )" , "AllowInfinitePropfindDepth" , "True"
+                    5 = "$SiteName/$VHost" , "$SWS/$(      $TGT[5] )" , "ApplyToWebDAV"   , "False"
+                    6 = "$SiteName/"       , "$SWS/$(      $TGT[6] )" , "ApplyToWebDAV"   , "False"
+                    7 = "$SiteName/$VHost" , "$SWS/$(      $TGT[7] )" , "ApplyToWebDav"   , "False"
+                    8 = "$SiteName/"       , "$SWS/$(      $TGT[8] )" , "ApplyToWebDav"   , "False"  }
+        0..8 | % {  Set-WebConfigurationProperty -PSPath $MWA -Location $WCP[$_][0] -Filter $WCP[$_][1] -Name $WCP[$_][2] -Value $WCP[$_][3] }
+        $Filtering = Get-IISConfigSection | ? { $_.SectionPath -like "*$SWS/security/requestfiltering*" } `
+        | Get-IISConfigElement -ChildElementName 'HiddenSegments'
+        Set-IISConfigAttributeValue -ConfigElement $Filtering -AttributeName 'ApplyToWebDAV' -AttributeValue $False
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+        # - [ Set-WebConfiguration ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+        'IIS_IUSRS', 'IUSR', "IIS APPPOOL\$SitePool" | % `
+        {   $Obj = New-AclObject -SamAccountName $_ -Permission 'ReadAndExecute' -Inheritance 'ContainerInherit' , 'ObjectInherit' 
+            Add-Acl -Path $SiteRoot -AceObject $Obj }
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   
-            $AppData = "$SiteRoot"
-            'IIS_IUSRS', "IIS APPPOOL\$SitePool"                                `
-            | % {  
-             
-                $Obj = New-AclObject                                            `
-                        -SamAccountName                                      $_ `
-                        -Permission                                    'Modify' `
-                        -Inheritance                         'ContainerInherit',
-                                                                'ObjectInherit'
-
-                Add-Acl                                                         `
-                    -Path                                              $AppData `
-                    -AceObject                                             $Obj
-            }
+        $AppData = "$SiteRoot"
+        'IIS_IUSRS', "IIS APPPOOL\$SitePool"         | % `
+        {   $Obj = New-AclObject -SamAccountName $_ -Permission         'Modify' -Inheritance 'ContainerInherit' , 'ObjectInherit'
+            Add-Acl -Path $AppData  -AceObject $Obj }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -# # #
 # - - - [ Provisional Root ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
