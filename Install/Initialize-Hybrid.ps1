@@ -13,10 +13,12 @@
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 #// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
 #\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
-#// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-#// -[ Declare-Functions ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\  [ Initialize-Hybrid ] @: Initializes the Functions needed for all sub-script usage, AKA "what sissies refer to as a module"                    //#
+#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ //#
+#// \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \\#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
     using namespace System.Security.Principal # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
     #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
     Function Elevate-Script # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
@@ -32,10 +34,10 @@
 #// -[ Write-Output Wrappers ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
     ( $fs , $bs , $Message ) = ( " // " , " \\ " , "System.Windows.MessageBox" ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-    Function Wrap-Top   { Echo "$( " " * 108 ; $fs + "_-" * 52 + $bs ; $bs + " -" * 52 + $fs )" } #- - - - - - - - - - - - - - - - - - - - - - - - -//#
-    Function Wrap-Bot   { Echo "$( $bs + " -" * 52 + $fs ; $fs + "_-" * 52 + $bs ; " " * 108 )" } # - - - - - - - - - - - - - - - - - - - - - - - - \\#
-    Function Wrap-Out   { Echo "$(  $fs + "  " * 52 + $bs )" } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-    Function Wrap-In    { Echo "$(  $bs + "  " * 52 + $fs )" } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Wrap-Top   { Echo @( " " * 108 ; $fs + "_-" * 52 + $bs ; $bs + " -" * 52 + $fs ) } #- - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Wrap-Bot   { Echo @( $bs + " -" * 52 + $fs ; $fs + "_-" * 52 + $bs ; " " * 108 ) } # - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    Function Wrap-Out   { Echo @(  $fs + "  " * 52 + $bs ) } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Wrap-In    { Echo @(  $bs + "  " * 52 + $fs ) } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
     Function Wrap-Title #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
     { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         [ CmdLetBinding () ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
@@ -102,7 +104,7 @@
     { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         [ CmdletBinding () ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
             [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-                [ String ] $Type , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//# 
+                [ String ] $Type , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
             [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
                 [ String ] $Info ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
       # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
@@ -153,12 +155,12 @@
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 #// -[ Show-WPFWindow ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-    Function Show-WPFWindow # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\# 
+    Function Show-WPFWindow # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
     {   Param ( [ Parameter ( Mandatory ) ] [ Windows.Window ] $GUI ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         $Output = $Null # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
                   $Null = $GUI.Dispatcher.InvokeAsync{ $Output = $GUI.ShowDialog() # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
                         SV -Name Output -Value $Output -Scope 1 }.Wait() #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-        $Output } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//# 
+        $Output } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
 #//- [ Add-ACL ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
@@ -314,7 +316,7 @@
 " //       //                                                                                      \\         \\ " ; #- - - - - - - - - - - - - - - \\#
 " \\       \\- - - - - - - - - -\_______________________________________________/- - - - - - - - - //         // " ; # - - - - - - - - - - - - - - -//#
 " //       //                                                                                      \\         \\ " ; #- - - - - - - - - - - - - - - \\#
-" \\       \\ - - - - - -[  0 7 / 1 5 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R . ]- - - - - - -//         // " ; # - - - - - - - - - - - - - - -//#
+" \\       \\ - - - - - -[  0 7 / 1 6 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R . ]- - - - - - -//         // " ; # - - - - - - - - - - - - - - -//#
 " //       //                                                                                      \\         \\ " ; #- - - - - - - - - - - - - - - \\#
 " \\       \\______________________________________________________________________________________//         // " ; # - - - - - - - - - - - - - - -//#
 " //                                                                                                          \\ " ; #- - - - - - - - - - - - - - - \\#
@@ -337,17 +339,23 @@ Sleep -Seconds 2 } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 " //                                                                                                          \\ " ) # - - - - - - - - - - - - - - -//#
 Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-#// -[ Load-GUIModule ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-    Function Load-GUIModule # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
+#\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
+#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\  [ Provision-Installation ] @: Initializes the Installation GUI                                                                                 //#
+#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ //#
+#// \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \\#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    Function Provision-Installation # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
     {   [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12 #- - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
     ( $Background , $Banner ) = ( "sdp-bg.jpg" , "banner.png" | % { "$Home\Downloads\$_" } ) # - - - - - - - - - - - #- - - - - - - - - - - - - - - \\#
     $Named = @( 0..4 | % { "r$_" } ; 0..2 | % { "iis$_" } ; 0..2 | % { "dc$_" } ; 0..3 | % { "p$_" } ; 0..1 | % { "img$_" } ; 0 | % { "n$_" }) # - -//#
     $T0_Tags  = @( "" ; "" ; "System Root 'C:\'" ; #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
     @( "Secured" | % { "Deploy Folder '$_'" , "SMB Name '$_$'" , "PSDrive '$_`:'" } ) + "Share Description '[Dev]'" ;# - - - - - - - - - - - - - - -//#
     "";"";"BITS / IIS Name 'Hybrid'" ; "IIS App Pool 'SecureApp'" ; "Virtual Host / Proxy" ;"";""; "NetBIOS Domain" ;#- - - - - - - - - - - - - - - \\#
-    @( "User" , "P/W" | % { "Child Admin $_" } ) ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-    $T0_Offs  = @( "" ; "" ; @( $Named[0..4] ) + "" ; "" ; @( $Named[5..7] ) + "" ; "" ; @( $Named[8..10] ) ) #- - - #- - - - - - - - - - - - - - - \\#
+    @( "User" , "P/W" | % { "Child Admin $_" } ) ) # - @: I'm well aware this can all be reduced in line #, but there's a reason I did it this way -//#
+    $T0_Offs  = @( "" ; "" ; @( $Named[0..4] ) + "" ; "" ; @( $Named[5..7] ) + "" ; "" ; @( $Named[8..10] ) ) # - - - - - - - - - - - - - - - - - - \\#
     $T0_List  = @{ # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
     RowDef    = @( 0..16                 | % { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
     "                            <RowDefinition Height                    =                               '*' />
@@ -723,42 +731,42 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
     #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
     #//- [ Exporting the variables to a hash table ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
     #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-    $DSC = [ Ordered ]@{R0_Company     =                                          "$( $GUI.p0.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        R1_UNCRoot     = "\\$( $Env:ComputerName )\$( $GUI.r2.Text.TrimEnd( '$' ) )$" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        R2_Hostname    =                                     "$( $Env:ComputerName )" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        R3_DC_User     =                                      "$( $DCCred.Username )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        R4_DC_Pass     =                                      "$( $DCCred.Password )" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        R5_WWW_Site    =                                          "$( $GUI.p1.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        R6_Phone       =                                          "$( $GUI.p2.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        R7_Hours       =                                          "$( $GUI.p3.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        R8_Logo        =                                        "$( $GUI.img0.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        R9_Background  =                                        "$( $GUI.img1.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        R10_Branch     =                                          "$( $GUI.n0.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        R11_Domain     =                                    "$( $env:USERDNSDOMAIN )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        R12_LM_User    =                                      "$( $LMCRED.Username )" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        R13_LM_Pass    =                                      "$( $LMCRED.Password )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        R14_Proxy      =                                     "$( $Env:ComputerName )" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        R15_NetBIOS    =                                       "$( $Env:UserDomain )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        R16_DSC_Folder =     "$( $GUI.r0.Text.TrimEnd( '\' ) )\$( ( $GUI.r1.Text ) )" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        R17_PSDrive    =                          "$( $GUI.r3.Text.TrimEnd( ':' ) ):" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        R18_PSDrive_ID =                                          "$( $GUI.r4.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        R19_BITS_Name  =                                        "$( $GUI.iis0.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        R20_BITS_Pool  =                                        "$( $GUI.iis1.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        R21_BITS_Host  =                                        "$( $GUI.iis2.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        R22_BITS_Root  =                            "https://$( $Env:USERDNSDOMAIN )" } # - - - - - - - - - - - - - - - - - - - - - //#
-                        $NRoot         = "\\$( $Env:ComputerName )\$( $GUI.r2.Text.TrimEnd( '$' ) )$" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        $URI           =     "$( $GUI.r0.Text.TrimEnd( '\' ) )\$( ( $GUI.r1.Text ) )" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        $SMB           =                          "$( $GUI.r2.Text.TrimEnd( '$' ) )$" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        $PSD           =                          "$( $GUI.r3.Text.TrimEnd( ':' ) ):" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        $TAG           =                                          "$( $GUI.r4.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        $SiteRoot      =                                                  "$( $URI )" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        $SiteName      =                                        "$( $GUI.iis0.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        $SitePool      =                                        "$( $GUI.iis1.Text )" # - - - - - - - - - - - - - - - - - - - - - - //#
-                        $Vhost         =                                        "$( $GUI.iis2.Text )" #- - - - - - - - - - - - - - - - - - - - - - -\\#
-                        $PName         =                                          "$( $GUI.p0.Text )" } # - - - - - - - - - - - - - - - - - - - - - //#
-    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-    #// - [ Common Variables ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    $DSC = [ Ordered ]@{R00_Company     =                                          "$( $GUI.p0.Text )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        R01_UNCRoot     = "\\$( $Env:ComputerName )\$( $GUI.r2.Text.TrimEnd( '$' ) )$" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        R02_Hostname    =                                     "$( $Env:ComputerName )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        R03_DC_User     =                                      "$( $DCCred.Username )" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        R04_DC_Pass     =                                      "$( $DCCred.Password )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        R05_WWW_Site    =                                          "$( $GUI.p1.Text )" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        R06_Phone       =                                          "$( $GUI.p2.Text )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        R07_Hours       =                                          "$( $GUI.p3.Text )" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        R08_Logo        =                                        "$( $GUI.img0.Text )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        R09_Background  =                                        "$( $GUI.img1.Text )" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        R10_Branch      =                                          "$( $GUI.n0.Text )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        R11_Domain      =                                    "$( $env:USERDNSDOMAIN )" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        R12_LM_User     =                                      "$( $LMCRED.Username )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        R13_LM_Pass     =                                      "$( $LMCRED.Password )" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        R14_Proxy       =                                     "$( $Env:ComputerName )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        R15_NetBIOS     =                                       "$( $Env:UserDomain )" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        R16_DSC_Folder  =     "$( $GUI.r0.Text.TrimEnd( '\' ) )\$( ( $GUI.r1.Text ) )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        R17_PSDrive     =                           "$( $GUI.r3.Text.TrimEnd( ':' ) )" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        R18_PSDrive_ID  =                                          "$( $GUI.r4.Text )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        R19_BITS_Name   =                                        "$( $GUI.iis0.Text )" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        R20_BITS_Pool   =                                        "$( $GUI.iis1.Text )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        R21_BITS_Host   =                                        "$( $GUI.iis2.Text )" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        R22_BITS_Root   =                            "https://$( $Env:USERDNSDOMAIN )" } # - - - - - - - - - - - - - - - - - - - - -//#
+                        $NRoot          = "\\$( $Env:ComputerName )\$( $GUI.r2.Text.TrimEnd( '$' ) )$" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        $URI            =     "$( $GUI.r0.Text.TrimEnd( '\' ) )\$( ( $GUI.r1.Text ) )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        $SMB            =                          "$( $GUI.r2.Text.TrimEnd( '$' ) )$" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        $PSD            =                           "$( $GUI.r3.Text.TrimEnd( ':' ) )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        $TAG            =                                          "$( $GUI.r4.Text )" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        $SiteRoot       =                                                  "$( $URI )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        $SiteName       =                                        "$( $GUI.iis0.Text )" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        $SitePool       =                                        "$( $GUI.iis1.Text )" # - - - - - - - - - - - - - - - - - - - - - -//#
+                        $Vhost          =                                        "$( $GUI.iis2.Text )" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        $PName          =                                          "$( $GUI.p0.Text )" # - - - - - - - - - - - - - - - - - - - - - -//#
+    #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    #//- [ Common Variables ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         $CPU     =                                                            $env:PROCESSOR_ARCHITECTURE    # CPU Arch                             //#
         $SRV     =                                                                      $env:COMPUTERNAME    # Server Name                          \\#
         $Install =                                                                "C:\Hybrid-Installation"   # Install Folder                       //#
@@ -868,10 +876,8 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
         #//- [ Create Registry Key/Value Pairs ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         If ( ( Test-Path $RegFull ) -eq $True ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        {   $RegName = @( $DSC.Keys ) ; $RegValue = @( $DSC.Values ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-            0..23 | % { $Null = SP -Path "$RegFull" -Name $RegName[$_] -Value $RegValue[$_] -Force } # - - - - - - - - - - - - - - - - - - - - - - -//#
-            0..( $DSC.Count - 1 ) | % {  $RegName = @( $_.Keys ) ; $RegValue = @( $_.Values ) ; $i = ( $RegName.Count - 1 ) # - - - - - - - - - - - \\#
-                                            $Null = SP -Path "$RegFull" -Name $RegName[$i] -Value $RegValue[$i] -Force } } # - - - - - - - - - - - -//#
+        {   $RegName = @() ; $RegValue = @() ; $DSC.Keys | % { $RegName += $_ } ; $DSC.Values | % { $RegValue += $_ } # - - - - - - - - - - - - - - \\#
+            0..22 | % { SP -Path "$RegFull" -Name "$( $RegName[$_] )" -Value "$( $RegValue[$_] )" -Force } } # - - - - - - - - - - - - - - - - - - -//#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #//- [ Error Handling ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
@@ -925,17 +931,17 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
                 "LinkedDeploymentShares" | % { "$_.xsd" } | % { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
                 CP "$MDTDir\$Templates\$_" "$URI\$Templates" ; Wrap-Action -Type "Copying" -Info "[+] $URI\$Templates" } # - - - - - - - - - - - - -//#
                 #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-                #//- [ "0" Touching - That means you, Mark Z. or Johan A. . . ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                #//- [ "0" Touching - That means you, Zuckerberg XD... ( It's not cool to make fun of people Michael... Even if it is funny... )]- -//#
                 #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
                 Wrap-Action -Type "Sending" -Info "[+] ZTIGather.XML to correct folder" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
                 ( gci $MDTDir\Templates\Distribution\Scripts -Filter "*Gather.xml" -EA 0 ) | % { CP $_.FullName "$URI\$Modules\PSDGather" } # - - - \\#
                 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-                #// -[ Random Crap I'll likely replace ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                #// -[ Random things that I'll likely replace ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
                 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
                 $MsgType  = "Logs" , "Dynamics Logs Sub" , "DriverSources" , "DriverPackages" | % { "$_ Folder" } # - - - - - - - - - - - - - - - - \\#
                 $DirType  = "Logs" ,          "Logs\Dyn" , "DriverSources" , "DriverPackages" #- - - - - - - - - - - - - - - - - - - - - - - - - - -//#
                 0..3 | % { Wrap-Action -Type "Creating" -Info "$( $Message[$_] ) in $URI\$( $Path[$_] )" #- - - - - - - - - - - - - - - - - - - - - \\#
-                    $Null = NI -ItemType Directory -Path "$URI\$( $Path[$_] )" -Force } } } #- - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                $Null = NI -ItemType Directory -Path "$URI\$( $Path[$_] )" -Force } } } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #//- [ / End Switch ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
@@ -945,7 +951,7 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
         #\\ - [ Set-Permissions ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         Wrap-Action -Type "Reducing" -Info "[~] Permissions Hardening on $SMB" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-        $Target = "Users" , "Administrators" , "SYSTEM" | % { "$_`:(OI)(CI)(RX)" } ; $Target | % { $null = icacls $URI /grant "$_" } # - - - - - - -//#
+        $Target = "Users" , "Administrators" , "SYSTEM" | % { "$_`:(OI)(CI)(RX)" } ; $Target | % { $Null = ICACLS $URI /Grant "$_" } # - - - - - - -//#
         GRSMBA -Name $SMB -AccountName "EVERYONE" -AccessRight Change -Force ; RKSMBA -Name $SMB -AccountName "CREATOR OWNER" -Force #- - - - - - - \\#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         #// -[ Designate-SSLTLS ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
@@ -970,7 +976,7 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         #// [ Declare-WindowsFeatures ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        $WebSvc = @(                "Web-Server" ; # Installs the base 'Web Server functions ... ( $SE = Self Explanatory )                         \\#
+        $Web = @(                   "Web-Server" ; # Installs the base 'Web Server functions ... ( $SE = Self Explanatory )                         \\#
                                    "DSC-Service" ; # Installs the Desired State Configuration Service                                               //#
                                       "FS-SMBBW" ; # Updates the file system to allow for Samba Bandwidth to be differentially allocated            \\#
                                "ManagementOData" ; # Creates an ASP.NET Web Service end point that exposes your management data ( Raw Doggin' it )  //#
@@ -992,7 +998,7 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
                                    "Digest-Auth" ; # More advanced than Basic authentication, but still pretty fkin basic...                        //#
                                   "Dir-Browsing" ; # Allows any authenticated user to browse the contents of the web directory                      \\#
                                      "Filtering" ; # Mime Types and things of that nature                                                           //#
-                                        "Health" ; # If you don't understand how $SE this is... Go outside. Stop trying to program or read scripts. \\#
+                                        "Health" ; # If you don't understand how $SE this is..? Go outside. Stop trying to program or read scripts. \\#
                     @( "HTTP" | % {  "$_-Errors" ; # Falls under the above entry                                                                    //#
                                     "$_-Logging" ; # Also falls under that same entry                                                               \\#
                                    "$_-Redirect" ; # Works with WebDAV to keep people on the outside guessing what the hell is happening            //#
@@ -1018,762 +1024,295 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         #// - [ Install-WindowsFeatures using "0" XML files - What a "Desired State Controller" appears to be ] - - - - - - - - - - - - - - - - - - \\#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        $WebSvc | % { Echo "[ $_ ]" ; Install-WindowsFeature -Name $_ } ; IPMO WebAdministration ; $Default = "Default Web Site" #- - - - - - - - - \\#
-        $DWSite  = ( Get-Website -Name $Default -EA 0 ) ; If ( $DWSite -ne $Null ) {   If ( $DWSite.State -eq 'Running' ) #- - - - - - - - - - - - -//#
-                                                          { Stop-Website | SP "IIS:\Sites\$Default" ServerAutoStart False } } # - - - - - - - - - - \\#
-        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        #// - [ Check-WebServices ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        "MRxDAV" , "WebClient" | % { $Check = ( Get-Service -ComputerName $Server -Name $_ -EA 0 ) #- - - - - - - - - - - - - - - - - - - - - - - - \\#
-            If ( ( $Check ).Status -ne "Running" ) { Set-Service -ComputerName $Server -StartupType Automatic -EA 4 -Status Start -Name $_ } } # - -//#
-        New-WebAppPool -Name $SitePool -Force # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-        $Name  = "Enable32BitAppOnWin64" , "ManagedRuntimeVersion" , "ManagedPipelineMode" ; $Value = "True" , "v4.0" , "Integrated" # - - - - - - -//#
-        0..2 | % { SP -Path "$( IIS:\AppPools\$SitePool )" -Name "$( $Name[$_] )" -Value "$( $Value[$_] )" } ; Restart-WebAppPool -Name $SitePool # \\#
+        $GWF = @( Get-WindowsFeature ) ; $DWS = "Default Web Site" ; $SAS = "ServerAutoStart" # - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        ForEach ( $i in $Web ) { $GWF | ? { $_.Name -like "*$i*" -and $_.InstallState -ne "Installed" } | % { Install-WindowsFeature -Name $i } } #-//#
+        IPMO WebAdministration #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Get-Website -Name $DWS -EA 0 | ? { $_ -ne $Null -and $_.State -eq 'Running' } | % { Stop-Website | SP "IIS:\Sites\$DWS" $SAS False } # - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #//- -[ Check-WebServices ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        "MRxDAV" , "WebClient" | % { Get-Service -ComputerName $Server -Name $_ -EA 0 } | ? { $_.Status -ne "Running" } | % {  # - - - - - - - - - -//#
+        Set-Service -ComputerName $Server -StartupType Automatic -EA 4 -Status Start -Name $_ } ; New-WebAppPool -Name $SitePool -Force # - - - - - \\#
+        $N = "Enable32BitAppOnWin64" , "ManagedRuntimeVersion" , "ManagedPipelineMode" ; $V = "True" , "v4.0" , "Integrated" # - - - - - - - - - - -//#
+        0..2 | % { SP -Path IIS:\AppPools\$SitePool -Name "$( $N[$_] )" -Value "$( $V[$_] )" } ; Restart-WebAppPool -Name $SitePool # - - - - - - - \\#
         New-Website -Name $SiteName -ApplicationPool $SitePool -PhysicalPath $SiteRoot -Force ; Start-Website -Name $SiteName #- - - - - - - - - - -//#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #//- [ Create-VHost ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-        New-WebVirtualDirectory -Site "$SiteName" -Name "$Vhost" -PhysicalPath "$SiteRoot" -Force #- - - - - - - - - - - - - - - - - - - - - - - - -//#
+        New-WebVirtualDirectory -Site "$SiteName" -Name "$Vhost" -PhysicalPath "$SiteRoot" -Force ; $SI = "IIS:\Sites\$SiteName\$Vhost" #- - - - - -//#
         ( $MWA , $SWS , $WSS , $STC ) = ( "MACHINE/WEBROOT/APPHOST" , "System.WebServer" , "Security/Authentication" , "StaticContent" ) #- - - - - \\#
-        Set-WebConfigurationProperty -PSPath "$MWA" -Location "$SiteName" -Filter "$SWS/webdav/authoring" -Name "Enabled" -Value "True" #- - - - - -//#
-        $DAV = "Set Config '$SiteName/$Vhost' /Section:$SWS/Webdav/AuthoringRules /+[Users='*',Path='*',Access='Read,Source'] /Commit:AppHost" #- - \\#
+        Set-WebConfigurationProperty -PSPath $MWA -Location $SiteName -Filter "$SWS/webdav/authoring" -Name "Enabled" -Value "True" #- - - - - - - -//#
+        $DAV = "Set Config '$SiteName/$Vhost' /Section:$SWS/webdav/authoringRules /+[Users='*',Path='*',Access='Read,Source'] /Commit:AppHost" #- - \\#
         $Sys32 = "$SD\Windows\System32" ; $Results = SAPS "$Sys32\inetsrv\AppCMD.EXE" -Args $DAV -NoNewWindow -PassThru | Out-Null # - - - - - - - -//#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #//- [ Set-WebConfiguration ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         If ( ! ( ( Get-WebConfigurationProperty -PSPath "$MWA" -Filter "$SWS/$STC" -Name "." ).Collection | ? { $_.FileExtension -eq ".*" } ) ) #- -//#
-        {   $MimeResults = Add-WebConfigurationProperty -PSPath "IIS:\Sites\$SiteName\$Vhost" -Filter "$SWS/StaticContent" -Name "." ` #- - - - - - \\#
-                -Value @{  FileExtension = '.*' ; MimeType = 'Text/Plain' } } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        Set-WebConfigurationProperty -Filter "/$SWS/DirectoryBrowse" -Name "Enabled" -PSPath "IIS:\Sites\$SiteName\$VHost" -Value $True # - - - - - \\#
-        $TGT = "anonymousAuthentication" , "windowsAuthentication" + @( "webDAV/authoring" | % { "$_`Rules" ; ( @( "$_/Properties" ) * 2 ) } ) + # -//#
-        @( "security/RequestFiltering" | % { @( "$_/FileExtensions" ) * 2  + @( "$_/Verbs" ) * 2 } ) ; $Full = "$SiteName/$VHost" # - - - - - - - - \\#
-        $WCP = @{ 0 = "$SiteName/$VHost" , "$SWS/$WSS/$( $TGT[0] )" ,                    "Enabled" , "False" # - - - - - - - - - - - - - - - - - - -//#
-                  1 = "$SiteName/$VHost" , "$SWS/$WSS/$( $TGT[1] )" ,                    "Enabled" , "True" # - - - - - - - - - - - - - - - - - - - \\#
+        { $Mi = Add-WebConfigurationProperty -PSPath $SI -Filter "$SWS/$STC" -Name "." -Value @{ FileExtension = '.*' ; MimeType = 'Text/Plain' } }#\\#
+        Set-WebConfigurationProperty -Filter "/$SWS/DirectoryBrowse" -Name "Enabled" -PSPath "IIS:\Sites\$SiteName\$VHost" -Value $True # - - - - - //#
+        $TGT = "anonymousAuthentication" , "windowsAuthentication" + # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        @( "webdav/authoring" | % { "$_`Rules" ; ( @( "$_/Properties" ) * 2 ) } ) + # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        @( ( $SRF = "security/RequestFiltering" ) | % { @( "$_/FileExtensions" ) * 2  + @( "$_/Verbs" ) * 2 } ) ; # - - - - - - - - - - - - - - - - \\#
+        $WCP = @{ 0 = "$SiteName/$VHost" , "$SWS/$WSS/$( $TGT[0] )" ,                    "Enabled" ,    "False" #- - - - - - - - - - - - - - - - - -//#
+                  1 = "$SiteName/$VHost" , "$SWS/$WSS/$( $TGT[1] )" ,                    "Enabled" ,     "True" # - - - - - - - - - - - - - - - - - \\#
                   2 = "$SiteName/"       , "$SWS/$(      $TGT[2] )" ,            "DefaultMimeType" , "Text/XML" #- - - - - - - - - - - - - - - - - -//#
-                  3 = "$SiteName/$VHost" , "$SWS/$(      $TGT[3] )" , "AllowInfinitePropfindDepth" , "True" # - - - - - - - - - - - - - - - - - - - \\#
-                  4 = "$SiteName"        , "$SWS/$(      $TGT[4] )" , "AllowInfinitePropfindDepth" , "True" #- - - - - - - - - - - - - - - - - - - -//#
-                  5 = "$SiteName/$VHost" , "$SWS/$(      $TGT[5] )" ,              "ApplyToWebDAV" , "False" #- - - - - - - - - - - - - - - - - - - \\#
-                  6 = "$SiteName/"       , "$SWS/$(      $TGT[6] )" ,              "ApplyToWebDAV" , "False" # - - - - - - - - - - - - - - - - - - -//#
-                  7 = "$SiteName/$VHost" , "$SWS/$(      $TGT[7] )" ,              "ApplyToWebDav" , "False" #- - - - - - - - - - - - - - - - - - - \\#
-                  8 = "$SiteName/"       , "$SWS/$(      $TGT[8] )" ,              "ApplyToWebDav" , "False" } # - - - - - - - - - - - - - - - - - -//#
+                  3 = "$SiteName/$VHost" , "$SWS/$(      $TGT[3] )" , "AllowInfinitePropfindDepth" ,     "True" # - - - - - - - - - - - - - - - - - \\#
+                  4 = "$SiteName"        , "$SWS/$(      $TGT[4] )" , "AllowInfinitePropfindDepth" ,     "True" #- - - - - - - - - - - - - - - - - -//#
+                  5 = "$SiteName/$VHost" , "$SWS/$(      $TGT[5] )" ,              "ApplyToWebDAV" ,    "False" # - - - - - - - - - - - - - - - - - \\#
+                  6 = "$SiteName/"       , "$SWS/$(      $TGT[6] )" ,              "ApplyToWebDAV" ,    "False" #- - - - - - - - - - - - - - - - - -//#
+                  7 = "$SiteName/$VHost" , "$SWS/$(      $TGT[7] )" ,              "ApplyToWebDAV" ,    "False" # - - - - - - - - - - - - - - - - - \\#
+                  8 = "$SiteName/"       , "$SWS/$(      $TGT[8] )" ,              "ApplyToWebDAV" ,    "False" } #- - - - - - - - - - - - - - - - -//#
         0..8 | % { Set-WebConfigurationProperty -PSPath $MWA -Location $WCP[$_][0] -Filter $WCP[$_][1] -Name $WCP[$_][2] -Value $WCP[$_][3] } # - - \\#
-        $Filtering = Get-IISConfigSection | ? { $_.SectionPath -like "*$SWS/security/requestfiltering*" } | Get-IISConfigElement ` # - - - - - - - -//#
-            -ChildElementName 'HiddenSegments' #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-        Set-IISConfigAttributeValue -ConfigElement $Filtering -AttributeName 'ApplyToWebDAV' -AttributeValue $False #- - - - - - - - - - - - - - - -//#
-        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-        #//- [ Set-ASPPermissions ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-        $AppData = "$SiteRoot" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        'IIS_IUSRS', 'IUSR', "IIS APPPOOL\$SitePool" | % { $Obj = New-AclObject -SamAccountName $_ -Permission 'ReadAndExecute' ` # - - - - - - - - \\#
-            -Inheritance 'ContainerInherit' , 'ObjectInherit' ;   Add-Acl -Path $SiteRoot -AceObject $Obj } #- - - - - - - - - - - - - - - - - - - -//#
-        'IIS_IUSRS', "IIS APPPOOL\$SitePool"         | % { $Obj = New-AclObject -SamAccountName $_ -Permission 'Modify' ` # - - - - - - - - - - - - \\#
-            -Inheritance 'ContainerInherit' , 'ObjectInherit' ;   Add-Acl -Path $AppData  -AceObject $Obj } #- - - - - - - - - - - - - - - - - - - -//#
-    Else { Wrap-Action -Type "Exception" -Info "[!] The dialog has failed you sir/ma'am" ; Read-Host "Press Enter to Exit" ; Exit } } # - - - - - - \\#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-#// -[ Installation-Complete ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-
-
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-#// -[ / Declare-Functions ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $Filtering = Get-IISConfigSection | ? { $_.SectionPath -like "*$SWS/$SRF*" } | Get-IISConfigElement -ChildElementName 'HiddenSegments' # - -//#
+        Set-IISConfigAttributeValue -ConfigElement $Filtering -AttributeName "$ATWD" -AttributeValue $False # - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// -[ Set-ASPPermissions ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $AppData = "$SiteRoot" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        'IIS_IUSRS', 'IUSR', "IIS APPPOOL\$SitePool" | % { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            $Obj = New-AclObject -SamAccountName $_ -Permission 'ReadAndExecute' -Inheritance 'ContainerInherit' , 'ObjectInherit' ; #- - - - - - - \\#
+            Add-Acl -Path $SiteRoot -AceObject $Obj } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        'IIS_IUSRS', "IIS APPPOOL\$SitePool"         | % { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            $Obj = New-AclObject -SamAccountName $_ -Permission 'Modify' -Inheritance 'ContainerInherit' , 'ObjectInherit' ; # - - - - - - - - - - -//#
+            Add-Acl -Path $AppData  -AceObject $Obj } } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Else { Wrap-Action -Type "Exception" -Info "[!] The dialog has failed you sir/ma'am" ; Read-Host "Press Enter to Exit" ; Exit } #- - - - - -//#
+        } # - [ Will Include Further Hybrid Modification Installation Entries Later ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 #// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
 #\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
-#// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-#\\                                                                                                                                                 //#
-#//    <@[ Execute-Script ]@>                                                                                                                       \\#
-#\\                                                                                                                                                 //#
+#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\  [ Provision-Imaging ] @: Initializes the Hybrid Imaging Process                                                                                //#
 #//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
 #\\ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ //#
 #// \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \\#
-#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-#// [ Initialize Service Account Credential ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-$Message::Show( "Enter Hybrid Service Account Credential" ) ; $DCCred = Get-Credential "$( $Env:UserDomain )\Hybrid" # - - - - - - - - - - - - - - -\\#
-If ( ( $DCCred | Test-Credential ) -ne "Authenticated" ) { Exit } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-#// - [ Elevate, Show True Colors , Launch Installation / Imaging Switch ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-Elevate-Script ; Display-TrueColors # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -# # #
-# - - - [ Provisional Root ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-
-    # - [ Hybrid Installation / Initial Imaging Process ] - #
-
-    Wrap-Function -ID "Provision-HybridDSC"
-
-    # TODO: Test/Pull from "gp $RegPath" to prevent this
-
-    If ( ( Test-Path $URI ) -eq $Null )
-    {
-        Wrap-Action -Type "Exception" -Info "There is no root folder defined"
-        Read-Host "Press Enter to Exit"
-        Exit
-    }
-
-    If ( ( Test-Path "$URI\$PName" ) -ne $True )
-    {
-        NI -Path "$URI\$PName" -ItemType Directory
-        If ( $? -eq $True )
-        {
-            Wrap-Action -Type "Directory" -Info "[+] '$URI\$PName' Created"
-        }
-        Else
-        {
-            Wrap-Action -Type "Exception" -Info "[!] '$URI\$PName' creation failed"
-            Read-Host "Press Enter to Exit"
-            Exit
-        }
-    }
-
-    $Bridge =  'Resources' , 'Tools' , 'Images' , 'Profiles' , 'Certificates' , 'Applications'
-
-    0..5 | % { 
-        
-        $Current = "$URI\$PName\($_)$( $Bridge[$_] )"
-
-        If ( ( Test-Path "$Current" ) -ne $True )
-        {
-            NI -Path "$Current" -ItemType Directory
-            If ( $? -eq $True )
-            {
-                Wrap-Action -Type "Directory" -Info "[+] $_ created"
-            }
-            Else
-            {
-                Wrap-Action -Type "Exception" -Info "[!] $_ creation failed"
-            }
-        }
-
-    # TODO: Get this working in entirety with 7-zip and automatically extract contents to destination folders
-    #If ( ( gci $Current ) -eq $Null )
-    #{
-    #   IWR -URI "location" -OutFile "$Install\$PName\($_)$( $Bridge[$_] )"
-    #
-    #}
-
-    }
-
-        $LMV = @{    # - [ Local Machine Variables ] - - #
-                     HN =              $env:ComputerName # 
-                      X =    $env:Processor_Architecture #
-                      D =            "$env:SystemDrive\" #
-                      W =                $env:SystemRoot #
-                    S32 =     "$env:SystemRoot\System32" #
-                     PD =               $env:programdata #
-                     PF =              $env:ProgramFiles #
-                     # - - - - - - - - - - - - - - - - - #
-               }
-
-        $LM = @( $LMV | % { $_.HN , $_.X , $_.D , $_.W , $_.S32 , $_.PD , $_.PF }) 
-
-        $HybridDSC    = "HKLM:\SOFTWARE\Policies\Secure Digits Plus LLC\Hybrid\Desired State Controller"
-        If ( ( Test-Path $HybridDSC ) -ne $Null )
-        {
-            $Provisionary = gci $HybridDSC -EA 0
-            If ( ( $Provisionary.Name ) -ne $Null )
-            {
-                       $Split = $Provisionary.Name.Split( '\' )
-                       $Count = $Split.Count - 1
-                $Provisionary = $Split[$Count]
-            }
-        }
-        
-        If ( $LM[0] -eq $R[2] ) # If the current machine is the deployment server, target the local path
-        { 
-            $DR = $URI
-        } 
-        Else                    # If it isn't, target it's network path/share
-        { 
-            $dr = $
-        }
-
-        $DS = "$DR\$( $R[0] )"
-        
-        $Root = `
-        @{  
-            0 = $Bridge | % { "$ds\$_" }
-            
-            1 = $Bridge | % { "$( $lm[2] + $r[0] )\$_" }
-
-            2 = "( Domain State Controller @ Source )" , 
-                "( Current Machine @ Variables )"      , 
-                "( Provision Index @ Bridge Control )"
-
-            3 =                         "Provisionary" ,      
-                                         "(DSC) Share" , 
-                                    "(DSC) Controller" +
-                                 @( $Bridge | % { $_ } ) 
-                                     
-
-            4 =   "(DSC) Host" , "Current Hostname" , "CPU Architecture" , "System Drive" , "Windows Root" , 
-                    "System32" ,     "Program Data"
-
-            5 = "(DSC) Target" ,  "Resources" , "Tools / Drivers" , "Images" , "Profiles" , "Certificates" , 
-                "Applications" , "Background" ,            "Logo" }
-
-        If ( $lm[0] -eq $r[2] ) { $srv = "Yes" }
-        Else                    { $srv =  "No" }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -# # #
-# - - - [ Hybrid Control Panel ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-        Wrap-Title -Title "Provisional-Root" 
-        Wrap-Section -Section $Root[2][0]
-        Wrap-ItemOut -Type $Root[3][0] -Info $r[0]        # Provisionary Name $PName
-        Wrap-ItemIn  -Type $Root[3][1] -Info $r[1]        # Deployment Server Hostname 
-        Wrap-ItemOut -Type $Root[3][2] -Info $r[2]        # Deployment Share Name / $SMB
-        Wrap-ItemIn  -Type $Root[3][3] -Info $Root[0][0]
-        Wrap-ItemOut -Type $Root[3][4] -Info $Root[0][1]
-        Wrap-ItemIn  -Type $Root[3][5] -Info $Root[0][2]
-        Wrap-ItemOut -Type $Root[3][6] -Info $Root[0][3]
-        Wrap-ItemIn  -Type $Root[3][7] -Info $Root[0][4]
-        Wrap-ItemOut -Type $Root[3][8] -Info $Root[0][5]
-        Wrap-Section -Section $Root[2][1]
-        Wrap-ItemOut -Type $Root[4][0] -Info $srv
-        Wrap-ItemIn  -Type $Root[4][1] -Info $lm[0]
-        Wrap-ItemOut -Type $Root[4][2] -Info $lm[1]
-        Wrap-ItemIn  -Type $Root[4][3] -Info $lm[2]
-        Wrap-ItemOut -Type $Root[4][4] -Info $lm[3]
-        Wrap-ItemIn  -Type $Root[4][5] -Info $lm[4]
-        Wrap-ItemOut -Type $Root[4][6] -Info $lm[5]
-        Wrap-Section -Section $Root[2][2]
-        Wrap-ItemOut -Type $Root[5][0] -Info $lm[0]
-        Wrap-ItemIn  -Type $Root[5][1] -Info $Root[1][0]
-        Wrap-ItemOut -Type $Root[5][2] -Info $Root[1][1]
-        Wrap-ItemIn  -Type $Root[5][3] -Info $Root[1][2]
-        Wrap-ItemOut -Type $Root[5][4] -Info $Root[1][3]
-        Wrap-ItemIn  -Type $Root[5][5] -Info $Root[1][4]
-        Wrap-ItemOut -Type $Root[5][6] -Info $Root[1][5]
-
-        Wrap-In
-        Wrap-Out
-        Wrap-Bot
-        
-    Read-Host "Press (Enter) to continue"
-
-    $d = $Root[0] ; $l = $Root[1] ;  $b = $Bridge ; $Root = "" ; $Bridge = "" ;
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#   [ Provision-Images ]   ############################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    Wrap-Function -ID "Provision-Images"
-
-    $di     = $d[2]
-
-    $di = "C:\Hybrid\Secure Digits Plus LLC\(2)Images"
-    $dr = "C:\Hybrid"
-
-    $dt     = "$dr\Operating Systems\Server" , 
-              "$dr\Operating Systems\Client"
-
-    $Date   = ( Get-Date -UFormat "%Y%m%d" ) , 
-              ( "( " + ( Get-Date -UFormat "%m-%d-%Y" ) + " MC-SDP )")
-
-    $N_A    = "Not Detected"
-
-    $Tag    = "DC2016" , "10E64" , "10E86" , "10H64" , "10H86" , "10P64" , "10P86"
-        
-    $Wim    = @{ Name   = @( ( "Windows Server 2016 Datacenter (x64)" ) ; 
-                            @( "Education" , "Home" , "Professional"  ) | % { 
-                               "Windows 10 $_ (x64)" ; "Windows 10 $_ (x86)" } )
-                 Sign   = @( 0..6 | % { "$( $Date[1] ) [ $( $Tag[$_] ) ] " } )
-                 Build  = @(    0 | % { "10.0.14393.693" } ; 1..6 | % { "10.0.18362.207" } )
-                 Major  = @(    0 | % {  "1607"  } ; 1..6 | % {  "1903" } )
-                 Minor  = @(    0 | % { "(693)" } ; 1..6 | % { "(207)" } ) 
-                 Author = @( 0..6 | % { ( "Secure Digits Plus LLC" ) } ) }
-
-    $Stamp   = @( 0..6 | % { $wim.Build[$_] + ' [ ' + $wim.Major[$_] + ' ] '  } )
-
-    $DISM    = @( 0..6 ) 
-    0..6 | % { $DISM[$_] = @( $Tag[$_] ; $Wim.Name[$_] ; $Wim.Sign[$_] ; $Stamp[$_] ; $Wim.Author[$_] ) }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Working WIM Files ]   ##########################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    Wrap-Action -Type "Loading" -Info "[+] DISM WIM Store"
-
-    $wIndex  = ( GCI $di -EA 0 ).FullName[0..6]
-    $wFiles  = ( GCI $wIndex -Filter "*.wim" -EA 0 )
-
-    If ( ( Test-Path $wFiles.FullName[0..6] ) -ne $True ) { 
-    
-        $Store    = [ Ordered ] @{ 
-            Name  = $N_A
-            File  = $N_A 
-            Tag   = $N_A 
-            Path  = $N_A 
-            Date  = $N_A 
-            Full  = $N_A 
-            Build = $N_A } } 
-
-    Else {  
-
-    "When Detected"
-        $Store    = [ Ordered ] @{ 
-            Name  = ( 0..6 | % { ( Get-WIMName -IP $wFiles.FullName[$_] )        } )
-            File  = ( 0..6 | % { $wfiles.Name[$_]                                } )
-            Tag   = ( 0..6 | % { $wfiles.BaseName[$_]                            } )
-            Path  = ( 0..6 | % { $wfiles.DirectoryName[$_]                       } )
-            Date  = ( 0..6 | % { $wfiles.LastWriteTime[$_]                       } ) 
-            Full  = ( 0..6 | % { $wfiles.Fullname[$_]                            } )
-            Build = ( 0..6 | % { ( Get-WIMBuild -IP $wFiles.FullName[$_] -ID 1 ) } ) } }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Current Server WIM File ]   ####################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    Wrap-Action -Type "Loading" -Info "[+] MDT Server WIM Store"
-
-    If ( ( GCI $dt[0] -EA 0 ) -ne $null )
-    {
-        $cIndexS  = ( GCI $dt[0] -EA 0 ).FullName
-        $cFilesS  = ( GCI $cIndexS -Filter "*.wim" -EA 0 )
-
-    If ( $cFilesS -eq $Null ) { 
-    $CurrentS  = [ Ordered ] @{
-        Name   = $N_A
-        File   = $N_A 
-        Tag    = $N_A 
-        Path   = $N_A 
-        Date   = $N_A 
-        Full   = $N_A
-        Build  = $N_A  } } 
-
-    Else 
-    {
-            If ( ( Test-Path ( $cIndexS + '\' + $cfilesS ) ) -eq $True )
-            {
-                $CurrentS  = [ Ordered ] @{ 
-            Name   = "Windows Server 2016 Datacenter (x64)"
-            File   = $cfilesS.Name
-            Tag    = $cfilesS.BaseName
-            Path   = $cfilesS.DirectoryName
-            Date   = $cfilesS.LastWriteTime
-            Full   = $cfilesS.Fullname
-            Build  = ( Get-WIMBuild -IP $cFilesS.FullName -ID 1 )                                 } } } }
-
-    Else {
-    $CurrentS  = [ Ordered ] @{
-        Name   = $N_A
-        File   = $N_A 
-        Tag    = $N_A 
-        Path   = $N_A 
-        Date   = $N_A 
-        Full   = $N_A
-        Build  = $N_A  } }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Current Client WIM File ]   ####################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    Wrap-Action -Type "Loading" -Info "[+] MDT Client WIM Store"
-
-    If ( ( GCI $dt[1] -EA 0 ) -ne $Null )
-    {
-        $cIndexC  = ( GCI $dt[1] -EA 0 ).FullName
-        $cFilesC  = ( GCI $cIndexC -Filter "*.wim" -EA 0 )
-
-    If ( $cFilesC -eq $Null ) { 
-    $CurrentC  = [Ordered] @{
-        Name   = $N_A  
-        File   = $N_A  
-        Tag    = $N_A  
-        Path   = $N_A 
-        Date   = $N_A 
-        Full   = $N_A 
-        Build  = $N_A } }
-
-    else
-    {
-
-        if ( ( Test-Path ( $cIndexC + '\' + $cfilesC ) ) -eq $True )
-        {
-            $CurrentC  = [Ordered] @{ 
-                Name   = "Windows 10 Home/Education/Pro (x86/64)"
-                File   = $cfilesC.Name
-                Tag    = $cfilesC.BaseName
-                Path   = $cfilesC.DirectoryName
-                Date   = $cfilesC.LastWriteTime
-                Full   = $cfilesC.Fullname
-                Build  = ( Get-WIMBuild -IP $cFilesC.FullName -ID 1 ) } } } }
-
-    else {
-    $CurrentC  = [Ordered] @{
-        Name   = $N_A
-        File   = $N_A 
-        Tag    = $N_A 
-        Path   = $N_A 
-        Date   = $N_A 
-        Full   = $N_A
-        Build  = $N_A  } }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Update WIM Files ]   ###########################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        
-    $Update   = [Ordered]  @{ 
-        Name  = ( "Windows Server 2016 Datacenter (x64)" , "Windows 10 Home/Education/Pro (x86/64)" )
-        File  = ( 0..1 | % { "$( $Date[0] )_$( $Wim.Major[$_] )_$( $Wim.Minor[$_] ).wim"          } )
-        Tag   = ( 0..6 | % { $Tag[$_]                                                             } ) 
-        Path  = $di
-        Date  = $Date[0]
-        Full  = ( 0..1 | % { ( "$di\$( $Date[0] )_$( $Wim.Major[$_] )_$( $Wim.Minor[$_] ).wim" )  } )
-        Build = ( 0..1 | % { $Wim.build[$_]                                                    }  ) }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Stored WIM Info ]   ###########################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    Wrap-Title   -Title   "Stored-WIM(S)"
-    
-    0..( $Store.File.Count - 1 ) | % {
-
-        Wrap-Section -Section $Store.Name[$_]
-
-        Wrap-ItemOut -Type "[+] Path " -Info  $Store.Path[$_]
-
-        Wrap-ItemIn  -Type "[+] File " -Info  $Store.File[$_]
-
-        Wrap-ItemOut -Type "[+] Date " -Info  $Store.Date[$_]
-
-        Wrap-ItemIn  -Type "[+] Build" -Info $Store.Build[$_]
-
-        Wrap-Out 
-    }
-
-    Wrap-Bot
-
-    Read-Host "Verify list and press Enter to continue"
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Current WIM Info ]   ###########################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    Wrap-Title  -Title   "Current-WIM(S)"
-    $Current = @{ 0 = $CurrentS ; 1 = $CurrentC }
-
-    0..1 | % {  Wrap-Section -Section                    $Current[$_].Name
-                Wrap-ItemOut -Type     "[+] Path " -Info $Current[$_].Path
-                Wrap-ItemIn  -Type     "[+] File " -Info $Current[$_].File
-                Wrap-ItemOut -Type     "[+] Date " -Info $Current[$_].Date
-                Wrap-ItemIn  -Type     "[+] Build" -Info $Current[$_].Build
-                Wrap-Out }
-
-    Wrap-Bot
-
-    Read-Host "Press Enter to Continue"
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Update WIM Info ]   ############################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    Wrap-Title `
-        -Title "Update-WIM(S)"
-
-    0..( $Update.File.Count - 1 ) | % {
-    
-        Wrap-Section -Section                $Update.Name[$_]
-        Wrap-Itemout -Type "[+] Path " -Info $Update.Path
-        Wrap-ItemIn  -Type "[+] File " -Info $Update.File[$_]
-        Wrap-ItemOut -Type "[+] Date " -Info $Update.Date
-        Wrap-ItemIn  -Type "[+] Build" -Info $Update.Build[$_]
-
-        Wrap-Out 
-    
-    }
-
-    Wrap-Bot
-
-    Read-Host "Press Enter to Continue"
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ DISM-Server ]   ################################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    Wrap-Action -Type "Processing" -Info $Store.Name[0]
-
-    Echo $DISM
-
-    If ( ( Test-Path  $Update.Full[0] ) -eq $True )
-    {
-        Remove-Item $Update.Full[0]
-    }
-    Robocopy $Store.Path[0] $di $Store.File[0]
-
-    Rename-Item  ( "$di\$( $Store.File[0] )" ) `
-        -NewName (        $Update.Full[0]    )
-
-    if ( $? -eq $True ) 
-    {
-        Wrap-Action -Type "Successful" -Info "[+] Server Image Updated" 
-    }
-    else
-    {
-        Wrap-Action -Type "Failed" -Info "[!] Server Image not updated" 
-    }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ DISM-Client ]   ################################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    Wrap-Function -ID "Client-Image"
-
-    if ( ( Test-Path $Update.Full[1] ) -eq $True ) 
-    {
-        Remove-Item $Update.Full[1]
-    }
-
-    1..6 | % {
-
-        Wrap-Action -Type "DISM" -Info ( $Store.Name[$_] )
-
-        Echo "[ Current Image Info ]" ; "" ; $DISM[$_] ; ""
-
-        Export-WindowsImage                             `
-            -SIP                   ( $Store.Full[$_]  ) `
-            -SN                    ( $Store.Name[$_]  ) `
-            -DIP                   ( $Update.Full[1]  ) `
-            -DN                    ( $Store.Name[$_]  ) `
-            -vb
-
-        if ( $? -eq $True ) 
-        {
-            Wrap-Action -Type "Success" -Info "[+] Image $( $Store.Name[$_] ) Updated"
-        }
-        else 
-        { 
-            Wrap-Action -Type "Exception" -Info "[!] Image $( $Store.Name[$_] ) Not Updated"
-        }
-    }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Recycle-MDT ]   ################################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    Wrap-Function -ID "Recycle-MDT" 
-    
-    # MDT Module/Drive Controls
-
-    $MDTModule = "C:\Program Files\Microsoft Deployment Toolkit\bin\MicrosoftDeploymentToolkit.psd1"
-    if ( ( Test-Path $MDTModule ) -eq $True )
-    {
-        Import-Module $MDTModule
-    }
-    else
-    {
-        Read-Host "MDT is not installed or was not detected, press any key to exit."
-    }
-
-    $Drive = ( ( Get-MDTPersistentDrive -EA 0 ) | ? { $_.Path -eq $r[16] }).Name
-
-        $MDT = 
-            "MDTProvider" , 
-            $Drive , 
-            "Administrators" , 
-            "$( $Drive ):\Operating Systems\Server" , 
-            "$( $Drive ):\Operating Systems\Client" ,
-            "$( $Drive ):\Task Sequences\Server" , 
-            "$( $Drive ):\Task Sequences\Client" , 
-            "$( $r[16] )" , 
-            "$( $r[16].Split('\')[1] )$" ,
-            "$( $r[1] )" , 
-            "$dr\Boot" , 
-            "$dr\Operating Systems\Server" , 
-            "$dr\Operating Systems\Client" , 
-            "$dr\Scripts" , 
-            "$dr\Control" , 
-            "$( $r[0] ) [ Production ]"
-        
-        $Drive = ( $Drive + ":" )
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ URI-Check ]   ##################################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-        if ( ( Test-Path ( $MDT[7] ) ) -ne $True )
-        {
-            New-Item -Path $MDT[7] -ItemType Directory -Value $MDT[7]
-
-            if ( $? -eq $True ) 
-            { 
-                Wrap-Action -Type "Directory" -Info "[+] $( $MDT[7] ) created"
-            }
-
-            else
-            { 
-                Wrap-Action -Type "Exception" -Info "[!] $( $MDT[7] ) not created" 
-            }
-        }
-
-        else
-        {
-            Wrap-Action -Type "Folder Discovered" -Info "[+] $( $MDT[7] )"
-        }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ SMB-Check ]   ##################################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-        
-        if ( ( Get-SMBShare -Name ( $MDT[8] ) -EA 0 ) -eq $Null )
-        {
-            Wrap-Action -Type "SMB-Share" -Info "Not Detected, creating"
-
-            New-SMBShare `
-                -Name                             $MDT[ 8] `
-                -Path                             $MDT[ 7] `
-                -ScopeName                        $MDT[ 0] `
-                -Description                      $MDT[15] `
-                -FullAccess                       $MDT[ 2]
-
-            if ( $? -eq $True ) 
-            {
-                Wrap-Action -Type "SMB-Share" -Info "[+] $( $MDT[15] )"      
-            }
-
-            else
-            {
-                Wrap-Action -Type "Exception" -Info "[!] SMB-Share creation $( $MDT[15] ) failed"
-            }
-        }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ PersistentDrive-Check ]   ######################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-        $GetPSD = ( Get-MDTPersistentDrive -EA 0 )
-        if ( ( ( Get-PSDrive -Name ( $GetPSD ).Name -EA 0 ) ) -eq $null )
-        {
-            Wrap-Action -Type "Persistent Drive" -Info "Not Detected, creating/opening"
-
-            New-PSDrive `
-                -Name                           ( $GetPSD ).Name `
-                -PSProvider                       $MDT[ 0]       `
-                -Root                             $MDT[ 7]       `
-                -Description                      $MDT[15]       `
-                -NetworkPath                      $MDT[ 9]       `
-          | Add-MDTPersistentDrive                $MDT[ 1]
-
-            if ( $? -eq $True )
-            {
-                Wrap-Action -Type "Persistent Drive" -Info "[+] $( $MDT[15] )"
-            }
-            else
-            {
-                Wrap-Action -Type "Persistent Drive" -Info "[!] $( $MDT[15] )"
-            }
-        }
-
-        $GetPSD = "" ;
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ PSD-Check ]   ##################################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#    
-
-        if ( ( Get-PSDrive -Name $MDT[1] ) -eq $null )
-        {
-            New-PSDrive `
-                -Name                         $MDT[ 1]  `
-                -PSProvider                   $MDT[ 0]  `
-                -Root                         $MDT[ 7]  `
-                -Description                  $MDT[15] `
-                -NetworkPath                  $MDT[ 9]
-        }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ MDT-Children Check ]   #########################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-        $PSD   = @( $MDT[3..6] | % { $_ } ) + @( $MDT[11..12] | % { $_ } )
-
-        $Path  = @( ( 0..1 | % { "$Drive\Operating Systems" } )
-                    ( 2..3 | % { "$Drive\Task Sequences"    } )
-                    ( 4..5 | % { "$dr\Operating Systems"    } ) )
-                     
-        $Name  = @( ( "Server" , "Client" | % { $_ } ) * 3 )
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ MDT OS/TS Items Check ]   ######################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-        0..3 | % {
-
-            if ( ( Test-Path $PSD[$_] ) -eq $true )
-            { 
-                Wrap-Action `
-                    -Type               "Path Found" `
-                    -Info        "[+] $( $PSD[$_] )"   
-            }
-        
-            else    
-            {
-                New-Item                             `
-                    -Path                  $Path[$_] `
-                    -Enable                   "True" `
-                    -Name                  $Name[$_] `
-                    -Comments        "$( $Date[1] )" `
-                    -ItemType               "Folder" `
-                    -vb
-
-                if ( $? -eq $True )     
-                { 
-                    Wrap-Action                      `
-                        -Type         "Path Created" `
-                        -Info    "[+] $( $PSD[$_] )"
-                }
-                    
-                else
-                {
-                    Wrap-Action                      `
-                        -Type         "Path Failure" `
-                        -Info    "[-] $( $PSD[$_] )" 
-                }
-            }
-        }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ MDT-WIM Check ]   ##############################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-        4..5 | % {
-            
-            # If found, say so and skip
-
-            if ( ( ( Test-Path $PSD[$_] ) -eq $True ) )
-            { 
-                Wrap-Action                           `
-                    -Type                "Path Found" `
-                    -Info         "[+] $( $PSD[$_] )"   
-            }
-
-            # If not, create and continue
-            else           
-            {       
-                New-Item                              `
-                    -Path                    $PSD[$_] `
-                    -ItemType               Directory `
-                    -Value                   $PSD[$_]
-                        
-                If ( $? -eq $True ) 
-                { 
-                    Wrap-Action                       `
-                        -Type     "Directory Created" `
-                        -Info     "[+] $( $PSD[$_] )" 
-                }
-                else 
-                {
-                    Wrap-Action                       `
-                        -Type     "Directory Failure" `
-                        -Info     "[!] $( $PSD[$_] )"
-                }
-            }
-        } 
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    Function Provision-Imaging #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    {   Wrap-Function -ID "Provision-Imaging" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $LM = @( $Env:ComputerName ; $Env:Processor_Architecture ; "$Env:SystemDrive\" ; @( $Env:SystemRoot | % { "$_" ; "$_\System32" } ) + #- - - \\#
+        $Env:ProgramData ; $Env:ProgramFiles ) ; $Tree = "Resources" , "Tools" , "Images" , "Profiles" , "Certificates" , "Applications" # - - - - -//#
+        $HKL_ = "HKEY_LOCAL_MACHINE" ; $HKLM = "HKLM:" ; $SDP = "Secure Digits Plus LLC" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $DSC = "SOFTWARE\Policies\$SDP\Hybrid\Desired State Controller" ; $Base = "$HKLM\$DSC" # - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        "C:\Program Files\Microsoft Deployment Toolkit\bin\MicrosoftDeploymentToolkit.psd1" | ? { ( Test-Path $_ ) -eq $True } | % { IPMO $_ } #- - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// -[ Filter-Company ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $Provisionary    = @( $Base | ? { ( Test-Path $_ ) -ne $Null } | % { gci $Base -EA 0 } | ? { $_.Name -ne $Null } ) ; $Company = @( ) #- - - \\#
+        $Provisionary    | ? { $_.Name.Count -gt 1 } | % {  $Company += $_.PSChildName # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                                                            Wrap-Action -Type "Selection" -Info "[~] Multiple Companies Found" #- - - - - - - - - - \\#
+                                                            0..( $Company.Count - 1 ) | % { Echo "[$_] $( $Company[$_] )" } #- - - - - - - - - - - -//#
+                                                            $SEL      = Read-Host "Select # of listed companies" #- - - - - - - - - - - - - - - - - \\#
+                                                            $Company  = $( $Company[$SEL] ) } #- - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $Provisionary    | ? { $_.Name.Count -eq 1 } | % {  $Company  = $_.PSChildName } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $Provisionary    | ? { $_.Name.Count -lt 1 } | % {  Wrap-Action -Type "Launching" -Info "Installer" #- - - - - - - - - - - - - - - - - - - -//#
+                                                            Provision-Installation } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// -[ Filter-Share ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $Drive           = @( gci "$Base\$Company" ) ; $Share = @( ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $Drive           | ? { $_.Name.Count -gt 1 } | % {  Wrap-Action -Type "Selection" -Info "[~] Multiple Drives Found" #- - - - - - - - - - - -//#
+                                                            0..( $Drive.Count - 1 ) | % { Echo "[$_] $( $Drive[$_] )" } # - - - - - - - - - - - - - \\#
+                                                            $SEL      = Read-Host "Select # of listed drives" #- - - - - - - - - - - - - - - - - - -//#
+                                                            $Share    = $( $Drive[$SEL] ) } # - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $Drive           | ? { $_.Name.Count -eq 1 } | % {  $Share    = $_.PSChildName } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $Drive           | ? { $_.Name.Count -lt 1 } | % {  Wrap-Action -Type "Launching" -Info "Installer" # - - - - - - - - - - - - - - - - - - - \\#
+                                                            Provision-Installation } ; $Drive = "$Base\$Company\$Share" #- - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #//- [ Declare-Root ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $R               = gp $Drive | % {   $_.R00_Company ;    $_.R01_UNCRoot ; $_.R02_Hostname ;    $_.R03_DC_User ;    $_.R04_DC_Pass ; #- - - -//#
+                                            $_.R05_WWW_Site ;      $_.R06_Phone ;    $_.R07_Hours ;       $_.R08_Logo ; $_.R09_Background ; # - - - \\#
+                                              $_.R10_Branch ;     $_.R11_Domain ;  $_.R12_LM_User ;    $_.R13_LM_Pass ;      $_.R14_Proxy ; #- - - -//#
+                                             $_.R15_NetBIOS ; $_.R16_DSC_Folder ;  $_.R17_PSDrive ; $_.R18_PSDrive_ID } # - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// -[ Declare-IIS ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $IIS             = gp $Drive | % { $_.R19_BITS_Name ; $_.R20_BITS_Pool ; $_.R21_BITS_Host ; $_.R22_BITS_Root } #- - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// -[ Target-Drive ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $Drive           = ( $R[17] ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// -[ Target-Server ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        If ( $LM[0] -eq $R[2] ) { ( $DR , $SRV ) = ( $R[16] , "[ Yes ]" ) } Else { ( $DR , $SRV ) = ( $R[1] , "[ No ]" ) } $DS = "$DR\$( $R[0] )" # \\#
+        $D = @( 0..5 | % { "$DS\($_)$( $Tree[$_] )" } ) ; $L = @( 0..5 | % { "$( $LM[2] + $R[0] )\($_)$( $Tree[$_] )" } ) # - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #// -[ Declare-MDT ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $MDT = @( "MDTProvider" ; $Drive ; "Administrators" ; @( "Server" , "Client" | % { "$( $Drive ):\Operating Systems\$_" } ) + #- - - - - - - //#
+               @( "Server" , "Client" | % { "$( $Drive ):\Task Sequences\$_" } ) + "$( $R[16] )" ; "$( $R[1].Split('\')[-1] )" ; "$( $R[1] )" ; #- -\\#
+               @( "Boot" ; ( "Server" , "Client" | % { "Operating Systems\$_" } ) + "Scripts" ; "Control" ) | % { "$DR\$_" } ; "$( $R[18] )" )# - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #// -[ Display-Root ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-Title -Title "Provisional-Root" ; #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-Section -Section "( Domain State Controller @ Source )" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $Type = @( "Provisionary" ; "( DSC ) Share" ; "( DSC ) Controller" ; @( $Tree[0..5] ) ) # - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        $Info = @( $R[0..2] ; $D[0..5] ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //# 
+        Wrap-ItemOut -Type $Type[0] -Info $Info[0] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-ItemIn  -Type $Type[1] -Info $Info[1] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-ItemOut -Type $Type[2] -Info $Info[2] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-ItemIn  -Type $Type[3] -Info $Info[3] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-ItemOut -Type $Type[4] -Info $Info[4] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-ItemIn  -Type $Type[5] -Info $Info[5] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-ItemOut -Type $Type[6] -Info $Info[6] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-ItemIn  -Type $Type[7] -Info $Info[7] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-ItemOut -Type $Type[8] -Info $Info[8] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-Section -Section "( Current Machine @ Variables )" ; #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $Type = @( "Server" ; "Hostname" ; "Architecture" ; "System Drive" ; "Windows Root" ; "System32" ; "Program Data" ) # - - - - - - - - - - - //#
+        $Info = @( $SRV ; $R[2] ; $LM[1..5] ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-ItemOut -Type $Type[0] -Info $Info[0] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Wrap-ItemIn  -Type $Type[1] -Info $Info[1] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Wrap-ItemOut -Type $Type[2] -Info $Info[2] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Wrap-ItemIn  -Type $Type[3] -Info $Info[3] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Wrap-ItemOut -Type $Type[4] -Info $Info[4] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Wrap-ItemIn  -Type $Type[5] -Info $Info[5] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Wrap-ItemOut -Type $Type[6] -Info $Info[6] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Wrap-Section -Section "( Provision Index @ Bridge Control )" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $Type = @( "( DSC ) Target" ; @( $Tree[0..5] ) + "Logo" ; "Background" ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $Info = @( $LM[0] ; $L[0..5] ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Wrap-ItemOut -Type $Type[0] -Info $Info[0] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Wrap-ItemIn  -Type $Type[1] -Info $Info[1] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Wrap-ItemOut -Type $Type[2] -Info $Info[2] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Wrap-ItemIn  -Type $Type[3] -Info $Info[3] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Wrap-ItemOut -Type $Type[4] -Info $Info[4] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Wrap-ItemIn  -Type $Type[5] -Info $Info[5] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Wrap-ItemOut -Type $Type[6] -Info $Info[6] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Wrap-In ; Wrap-Out ; Wrap-Bot ; Read-Host "Press (Enter) to continue" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// - [ Provision-Images ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Wrap-Function -ID "Provision-Images" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $di   = $d[2] ; $dt = "Server" , "Client" | % { "$dr\Operating Systems\$_" } ; $Ed = "Education" , "Home" , "Professional" # - - - - - - - -//#
+        $Date = "$( Get-Date -UFormat "%Y%m%d" )" , "( $( Get-Date -UFormat "%m-%d-%Y" ) MC-SDP )" ; $NA = "Not Detected" # - - - - - - - - - - - - \\#
+        $Wim  = @{ Name = @( @( "Server 2016 Datacenter (x64)" ; @( $Ed | % { "$_ (x64)" ; "$_ (x86)" } | % { "10 $_" } ) ) | % { "Windows $_" } ) #//#
+                    Tag = @( "DC2016" ; @( "E" , "H" , "P" | % { "$_`64" ; "$_`86" } | % { "10$_" } ) ) # - - - - - - - - - - - - - - - - - - - - - \\#
+                   Sign = @( 0..6 | % {                "$( $Date[1] ) [ $( $Tag[$_] ) ]" } ) # - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                  Build = @(    0 | % { "10.0.14393.693" } ; 1..6 | % { "10.0.18362.207" } ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                  Major = @(    0 | % {           "1607" } ; 1..6 | % {           "1903" } ) # - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                  Minor = @(    0 | % {          "(693)" } ; 1..6 | % {          "(207)" } ) } #- - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $Stamp = @( 0..6 | % {    "$( $wim.Build[$_] ) [ $( $wim.Major[$_] ) ]" } ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $DISM = @( 0..6 ) ; ForEach ( $i in 0..6 ) { $DISM[$i] = $Wim | % { $_.Tag[$i] , $_.Name[$i] , $_.Sign[$i] , $Stamp[$i] , $r[0] } } # - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// - [ Stored WIM Info ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        Wrap-Action -Type "DISM" -Info "[+] WIM Store" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $DI | ? { ( Test-Path $DI ) -ne $True } | % { NI -Path $_ -ItemType Directory } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $OnDeck = @( GCI $DI -EA 0 ) ; $OnDeckWIM = @( $OnDeck.FullName | % { GCI $_ -Filter "*.wim" -EA 0 } ) #- - - - - - - - - - - - - - - - - - \\#
+        If ( $OnDeckWIM.Count -eq 0 ) { $Store = @{ Name = $NA ; File = $NA ; Tag = $NA ; Path = $NA ; Date = $NA ; Full = $NA ; Build = $NA } } # -//#
+        Else {  $Store   = @( $OnDeckWim | Select       @{ Name =  "Name" ; Expression = {   Get-WIMName  -IP $_.FullName                    } } , #\\#    
+                                                        @{ Name =  "File" ; Expression = {                    $_.Name                        } } , #//#
+                                                        @{ Name =   "Tag" ; Expression = {                    $_.BaseName                    } } , #\\#
+                                                        @{ Name =  "Path" ; Expression = {               $_.DirectoryName                    } } , #//#
+                                                        @{ Name =  "Date" ; Expression = {               $_.LastWriteTime                    } } , #\\#
+                                                        @{ Name =  "Full" ; Expression = {                    $_.FullName                    } } , #//#
+                                                        @{ Name = "Build" ; Expression = {   Get-WIMBuild -IP $_.FullName -ID 1            } } ) } #\\#
+        Wrap-Title -Title "Stored-WIM(S)" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        0..( $Store.Count - 1 ) | % { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-Section -Section                    $Store.Name[$_] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-ItemOut -Type    "[+] Path " -Info  $Store.Path[$_] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-ItemIn  -Type    "[+] File " -Info  $Store.File[$_] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-ItemOut -Type    "[+] Date " -Info  $Store.Date[$_] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-ItemIn  -Type    "[+] Build" -Info  $Store.Build[$_] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-Out } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-Bot ; Read-Host "Verify list. Press Enter to Continue" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #// - [ Current-WIM Info ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-Action -Type "MDT" -Info "[+] Server WIM" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        $DT[0] | ? { ( Test-Path $_ ) -ne $True } | % { NI -Path $_ -ItemType Directory } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $OnBaseServer    = @( GCI $DT[0] -EA 0 ) ; #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        $OnBaseServerWIM = @( $OnBaseServer.FullName | % { GCI $_ -Filter "*.wim" -EA 0 } ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        If ( $OnBaseServerWIM.Count -eq 0 ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        {       $CServer = [ Ordered ]@{  Name = $NA ; File = $NA ; Tag = $NA ; Path = $NA ; Date = $NA ; Full = $NA ; Build = $NA             } } #\\#
+        Else {  $CServer = @( $OnBaseServerWim | Select @{ Name =  "Name" ; Expression = {   "Windows Server 2016 Datacenter (x64)"          } } , #//#
+                                                        @{ Name =  "File" ; Expression = {                    $_.Name                        } } , #\\#
+                                                        @{ Name =   "Tag" ; Expression = {                    $_.BaseName                    } } , #//#
+                                                        @{ Name =  "Path" ; Expression = {               $_.DirectoryName                    } } , #\\#
+                                                        @{ Name =  "Date" ; Expression = {               $_.LastWriteTime                    } } , #//#
+                                                        @{ Name =  "Full" ; Expression = {                    $_.FullName                    } } , #\\#
+                                                        @{ Name = "Build" ; Expression = {   Get-WIMBuild -IP $_.FullName -ID 1            } } ) } #//#
+        Wrap-Action -Type "MDT" -Info "[+] Client WIM" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $OnBaseClient  = @( GCI $DT[1] -EA 0 ) ; $OnBaseClientWIM = @( $OnBaseClient.FullName | % { GCI $_ -Filter "*.wim" -EA 0 } ) # - - - - - - -//#
+        If ( $OnBaseClientWIM.Count -eq 0 ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        {       $CClient = [ Ordered ]@{  Name = $NA ; File = $NA ; Tag = $NA ; Path = $NA ; Date = $NA ; Full = $NA ; Build = $NA             } } #//#
+        Else {  $CClient = @( $OnBaseClientWim | Select @{ Name =  "Name" ; Expression = { "Windows 10 Home/Education/Pro (x86/64)"          } } , #\\#
+                                                        @{ Name =  "File" ; Expression = {                    $_.Name                        } } , #//#
+                                                        @{ Name =   "Tag" ; Expression = {                    $_.BaseName                    } } , #\\#
+                                                        @{ Name =  "Path" ; Expression = {               $_.DirectoryName                    } } , #//#
+                                                        @{ Name =  "Date" ; Expression = {               $_.LastWriteTime                    } } , #\\#
+                                                        @{ Name =  "Full" ; Expression = {                    $_.FullName                    } } , #//#
+                                                        @{ Name = "Build" ; Expression = {   Get-WIMBuild -IP $_.FullName -ID 1            } } ) } #\\#
+        Wrap-Title  -Title   "Current-WIM(S)" ; $Current = $CServer , $CClient #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        $Current | % { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-Section -Section                    $_.Name #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-ItemOut -Type     "[+] Path " -Info $_.Path # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-ItemIn  -Type     "[+] File " -Info $_.File #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-ItemOut -Type     "[+] Date " -Info $_.Date # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-ItemIn  -Type     "[+] Build" -Info $_.Build # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-Out } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-Bot ; Read-Host "Press Enter to Continue" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #// - [ Update-WIM Info ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-Action -Type "Transfer / Update" -Info "[+] DISM -> MDT WIM Information" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                $Update   = [ Ordered ]@{ Name  = ( "Server 2016 Datacenter (x64)" , "10 Home/Education/Pro (x86/64)" | % { "Windows $_" } ) # - - -\\#
+                                          File  = ( 0..1 | % {               "$( $Date[0] )_$( $WIM.Major[$_] )_$( $WIM.Minor[$_] ).wim" } ) #- - - //#
+                                          Tag   = ( 0..6 | % {                                                           "$( $Tag[$_] )" } ) # - - -\\#
+                                          Path  =                                                                                  "$di" #- - - - - //#
+                                          Date  =                                                                        "$( $Date[0] )" # - - - - -\\#
+                                          Full  = ( 0..1 | % {           "$di\$( $Date[0] )_$( $WIM.Major[$_] )_$( $WIM.Minor[$_] ).wim" } ) #- - - //#
+                                          Build = ( 0..1 | % {                                                     "$( $WIM.Build[$_] )" } ) } # - -\\#
+        Wrap-Title -Title "Update-WIM(S)" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        0..( $Update.File.Count - 1 ) | % { #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-Section -Section                        $Update.Name[$_] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-Itemout -Type     "[+] Path " -Info     $Update.Path #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-ItemIn  -Type     "[+] File " -Info     $Update.File[$_] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-ItemOut -Type     "[+] Date " -Info     $Update.Date #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-ItemIn  -Type     "[+] Build" -Info     $Update.Build[$_] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-Out } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Wrap-Bot ; Read-Host "Press Enter to Continue" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #// -[ Update-ServerWIM ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $Update.Full[0] | ? { ( Test-Path $_ ) -eq $True } | % { RI $_ } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        0..( $Store.Count - 1 ) | ? { $Store[$_].Name -like "*Serv*" } | % { Wrap-Action -Type "Process" -Info $Store[$_].Name ; # - - - - - - - - -\\#
+        Echo "[ Current Image Info ]" , $DISM[$_] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Robocopy $Store.Path[0] $di $Store.File[0] ; RI "$di\$( $Store.File[0] )" -NewName $Update.Full[0] ; # - - - - - - - - - - - - - - - - - - -\\#
+        If ( $? -eq $True ) { Wrap-Action -Type "Successful" -Info "[+] Server Image Updated"     } # - - - - - - - - - - - - - - - - - - - - - - - //#
+        Else                { Wrap-Action -Type     "Failed" -Info "[!] Server Image not updated" } #- - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #//- -[ Update-ClientWIM ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        $Update.Full[1] | ? { ( Test-Path $_ ) -eq $True } | % { RI $_ } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        0..( $Store.Count - 1 ) | ? { $Store[$_].Name -like "*10*" } | % { Wrap-Action -Type "Process" -Info $Store[$_].Name ; Echo $DISM[$_] # - - //#
+        Wrap-Action -Type "DISM" -Info ( $Store.Name[$_] ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Echo "[ Current Image Info ]" , $DISM[$_] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Export-WindowsImage -SIP ( $Store.Full[$_] ) -SN ( $Store.Name[$_] ) -DIP ( $Update.Full[1] ) -DN ( $Store.Name[$_]  ) -VB # - - - - - - - -\\#
+        If ( $? -eq $True ) { Wrap-Action -Type   "Success" -Info "[+] Image $( $Store.Name[$_] ) Updated"     } #- - - - - - - - - - - - - - - - - //#
+        Else                { Wrap-Action -Type "Exception" -Info "[!] Image $( $Store.Name[$_] ) Not Updated" } } # - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #//- -[ Recycle-MDT ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-Function -ID "Recycle-MDT" ; $PSD  = @( $MDT[3..6] ) + @( $MDT[11..12] ) ; $Name = @( ( "Server" , "Client" | % { $_ } ) * 3 ) #- - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #//- -[ Clear-PSDrive ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        0..3 | ? { If ( ( Test-Path $PSD[$_] ) -eq $True ) { Wrap-Action -Type "Path Found" -Info "[+] $( $PSD[$_] )" } #- - - - - - - - - - - - - -\\#
+                   Else   { NI -Path $Path[$_] -Enable "True" -Name $Name[$_] -Comments "$( $Date[1] )" -ItemType "Folder" -VB #- - - - - - - - - - //#
+                            If ( $? -eq $True )     { Wrap-Action -Type "Path Created" -Info "[+] $( $PSD[$_] )" } # - - - - - - - - - - - - - - - -\\#
+                            Else                    { Wrap-Action -Type "Path Failure" -Info "[-] $( $PSD[$_] )" } } } #- - - - - - - - - - - - - - //#
+
+        4..5 | % { If ( ( Test-Path $PSD[$_] ) -eq $True ) { Wrap-Action -Type "Path Found" -Info "[+] $( $PSD[$_] )" }
+                   Else   { NI -Path $PSD[$_] -ItemType Directory -Value $PSD[$_]
+                            If ( $? -eq $True ) { Wrap-Action -Type "Directory Created" -Info "[+] $( $PSD[$_] )" }
+                            Else                { Wrap-Action -Type "Directory Failure" -Info "[!] $( $PSD[$_] )" } } } 
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 #    [ Recycle-MDT ]   ################################################################################
@@ -2231,8 +1770,26 @@ Elevate-Script ; Display-TrueColors # - - - - - - - - - - - - - - - - - - - - - 
         Exit 
     }
 
-    }
-
-
 }
-
+    
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// -[ / Declare-Functions ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
+#\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
+#// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\                                                                                                                                                 //#
+#//    <@[ Execute-Script ]@>                                                                                                                       \\#
+#\\                                                                                                                                                 //#
+#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ //#
+#// \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \\#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+#// [ Initialize Service Account Credential ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+$Message::Show( "Enter Hybrid Service Account Credential" ) ; $DCCred = Get-Credential "$( $Env:UserDomain )\Hybrid" # - - - - - - - - - - - - - - -\\#
+If ( ( $DCCred | Test-Credential ) -ne "Authenticated" ) { Exit } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#// - [ Elevate, Show True Colors , Launch Installation / Imaging Switch ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+Elevate-Script ; Display-TrueColors # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
