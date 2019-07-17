@@ -744,7 +744,7 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
                         R10_Branch      =                                          "$( $GUI.n0.Text )" # - - - - - - - - - - - - - - - - - - - - - -//#
                         R11_Domain      =                                    "$( $env:USERDNSDOMAIN )" #- - - - - - - - - - - - - - - - - - - - - - \\#
                         R12_LM_User     =                                      "$( $LMCRED.Username )" # - - - - - - - - - - - - - - - - - - - - - -//#
-                        R13_LM_Pass     =                                      "$( $LMCRED.Password )" #- - - - - - - - - - - - - - - - - - - - - - \\#
+                        R13_LM_Pass     =               "$( $LMCRED.GetNetworkCredential().Password )" #- - - - - - - - - - - - - - - - - - - - - - \\#
                         R14_Proxy       =                                     "$( $Env:ComputerName )" # - - - - - - - - - - - - - - - - - - - - - -//#
                         R15_NetBIOS     =                                       "$( $Env:UserDomain )" #- - - - - - - - - - - - - - - - - - - - - - \\#
                         R16_DSC_Folder  =     "$( $GUI.r0.Text.TrimEnd( '\' ) )\$( ( $GUI.r1.Text ) )" # - - - - - - - - - - - - - - - - - - - - - -//#
@@ -1090,7 +1090,7 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
     {   Wrap-Function -ID "Provision-Imaging" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         $LM = @( $Env:ComputerName ; $Env:Processor_Architecture ; "$Env:SystemDrive\" ; @( $Env:SystemRoot | % { "$_" ; "$_\System32" } ) + #- - - \\#
         $Env:ProgramData ; $Env:ProgramFiles ) ; $Tree = "Resources" , "Tools" , "Images" , "Profiles" , "Certificates" , "Applications" # - - - - -//#
-        $HKL_ = "HKEY_LOCAL_MACHINE" ; $HKLM = "HKLM:" ; $SDP = "Secure Digits Plus LLC" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $HKL_ = "HKEY_LOCAL_MACHINE" ; $HKLM = "HKLM:" ; $SDP = "Secure Digits Plus LLC" ; $SC = "Server" , "Client" #- - - - - - - - - - - - - - - \\#
         $DSC = "SOFTWARE\Policies\$SDP\Hybrid\Desired State Controller" ; $Base = "$HKLM\$DSC" # - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         "C:\Program Files\Microsoft Deployment Toolkit\bin\MicrosoftDeploymentToolkit.psd1" | ? { ( Test-Path $_ ) -eq $True } | % { IPMO $_ } #- - \\#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
@@ -1149,7 +1149,7 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
         Wrap-Section -Section "( Domain State Controller @ Source )" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
         $Type = @( "Provisionary" ; "( DSC ) Share" ; "( DSC ) Controller" ; @( $Tree[0..5] ) ) # - - - - - - - - - - - - - - - - - - - - - - - - - //#
         $Info = @( $R[0..2] ; $D[0..5] ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //# 
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
         Wrap-ItemOut -Type $Type[0] -Info $Info[0] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
         Wrap-ItemIn  -Type $Type[1] -Info $Info[1] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
         Wrap-ItemOut -Type $Type[2] -Info $Info[2] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
@@ -1206,7 +1206,7 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
         $DI | ? { ( Test-Path $DI ) -ne $True } | % { NI -Path $_ -ItemType Directory } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         $OnDeck = @( GCI $DI -EA 0 ) ; $OnDeckWIM = @( $OnDeck.FullName | % { GCI $_ -Filter "*.wim" -EA 0 } ) #- - - - - - - - - - - - - - - - - - \\#
         If ( $OnDeckWIM.Count -eq 0 ) { $Store = @{ Name = $NA ; File = $NA ; Tag = $NA ; Path = $NA ; Date = $NA ; Full = $NA ; Build = $NA } } # -//#
-        Else {  $Store   = @( $OnDeckWim | Select       @{ Name =  "Name" ; Expression = {   Get-WIMName  -IP $_.FullName                    } } , #\\#    
+        Else {  $Store   = @( $OnDeckWim | Select       @{ Name =  "Name" ; Expression = {   Get-WIMName  -IP $_.FullName                    } } , #\\#
                                                         @{ Name =  "File" ; Expression = {                    $_.Name                        } } , #//#
                                                         @{ Name =   "Tag" ; Expression = {                    $_.BaseName                    } } , #\\#
                                                         @{ Name =  "Path" ; Expression = {               $_.DirectoryName                    } } , #//#
@@ -1291,7 +1291,7 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
         #//- -[ Update-ClientWIM ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
         $Update.Full[1] | ? { ( Test-Path $_ ) -eq $True } | % { RI $_ } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        0..( $Store.Count - 1 ) | ? { $Store[$_].Name -like "*10*" } | % { Wrap-Action -Type "Process" -Info $Store[$_].Name ; Echo $DISM[$_] # - - //#
+        0..( $Store.Count - 1 ) | ? { $Store[$_].Name -like "*10*" } | % { Wrap-Action -Type "Process" -Info $Store[$_].Name ; #- - - - - - - - - - //#
         Wrap-Action -Type "DISM" -Info ( $Store.Name[$_] ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
         Echo "[ Current Image Info ]" , $DISM[$_] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
         Export-WindowsImage -SIP ( $Store.Full[$_] ) -SN ( $Store.Name[$_] ) -DIP ( $Update.Full[1] ) -DN ( $Store.Name[$_]  ) -VB # - - - - - - - -\\#
@@ -1302,476 +1302,213 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
         Wrap-Function -ID "Recycle-MDT" ; $PSD  = @( $MDT[3..6] ) + @( $MDT[11..12] ) ; $Name = @( ( "Server" , "Client" | % { $_ } ) * 3 ) #- - - -\\#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-        #//- -[ Clear-PSDrive ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #//- -[ Generate-PSPaths ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
         0..3 | ? { If ( ( Test-Path $PSD[$_] ) -eq $True ) { Wrap-Action -Type "Path Found" -Info "[+] $( $PSD[$_] )" } #- - - - - - - - - - - - - -\\#
                    Else   { NI -Path $Path[$_] -Enable "True" -Name $Name[$_] -Comments "$( $Date[1] )" -ItemType "Folder" -VB #- - - - - - - - - - //#
                             If ( $? -eq $True )     { Wrap-Action -Type "Path Created" -Info "[+] $( $PSD[$_] )" } # - - - - - - - - - - - - - - - -\\#
                             Else                    { Wrap-Action -Type "Path Failure" -Info "[-] $( $PSD[$_] )" } } } #- - - - - - - - - - - - - - //#
-
-        4..5 | % { If ( ( Test-Path $PSD[$_] ) -eq $True ) { Wrap-Action -Type "Path Found" -Info "[+] $( $PSD[$_] )" }
-                   Else   { NI -Path $PSD[$_] -ItemType Directory -Value $PSD[$_]
-                            If ( $? -eq $True ) { Wrap-Action -Type "Directory Created" -Info "[+] $( $PSD[$_] )" }
-                            Else                { Wrap-Action -Type "Directory Failure" -Info "[!] $( $PSD[$_] )" } } } 
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Recycle-MDT ]   ################################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-        0..5 | % `
-        {   $Name = @( GCI ( $PSD[$_] ) -EA 0 )
-            If ( $Name.Count -eq 1 ) 
-            {   If ( $Name -ne $null ) 
-                { RI "$( $PSD[$_] )\$( $Name.Name )" -Recurse -VB -EA 0 } }
-            Else 
-            {   ForEach ( $Names in $Name ) 
-                {   If ( $Names -ne $Null ) { RI "$( $PSD[$_] )\$( $Names.Name )" -Recurse -VB -EA 0 } } }
-            If ( $? -eq $True ) { Wrap-Action -Type   "Removed" -Info "[+] $( $PSD[$_] ) Child Items"  }
-            Else                { Wrap-Action -Type "Exception" -Info "[-] $( $PSD[$_] ) Child Items"  } }
-
-        0..1 | % `
-        {   If ( ( Test-Path $Update.Full[$_] ) -ne $True ) 
-            {   Wrap-Action -Type "Image Missing" -Info "[!] $( $Update.Full[$_] )" }
-            Else                
-            {   Wrap-Action -Type   "Image Found" -Info "[+] $( $Update.Full[$_] )"
-            If ( $_ -eq 0 ) { $Folder = "Server" } Else { $Folder = "Client" } }
-        
-        Import-NewOSImage -IP $PSD[$_] -SF $Update.Full[$_] -DF "$Folder\$( $Wim.Build[$_])"
-        If ( $? -eq $True ) { Wrap-Action -Type "Import Successful" -Info "[+] $( $Update.Full[$_] )" }
-        Else                { Wrap-Action -Type         "Exception" -Info "[!] Import Failed"       } }
-    }
-
-    $TemplateXML = @( @( "PSD" , "MDT" | % { "$_`Server" , "$_`Client" } ) | % { "$_`Mod.xml" } )
-    If ( $PXD = 1 ) { $ServerXML = $TemplateXML[0] ; $ClientXML = $TemplateXML[1] }
-    If ( $MDT = 1 ) { $ServerXML = $TemplateXML[2] ; $ClientXML = $TemplateXML[3] }
-    $Server = @{ List = @( GCI $PSD[0] -EA 0 ) ; Template = @( "$di\Control\$ServerXML" ) }
-    $Client = @{ List = @( GCI $PSD[1] -EA 0 ) ; Template = @( "$di\Control\$ClientXML" ) }
-
-    0..6 | % {
-
-        If ( $_ -eq 0 )
-        {
-            $XML      = @(     Get-Content $Server.Template )
-            $PSP      =                              $MDT[ 5]
-            $SIP      = "$( $MDT[3] )\$( $Server.List.Name )"
-            $GUID     =                     $Server.List.GUID
-        }
-
-        Else
-        {
-            $XML      = @(     Get-Content $Client.Template )
-            $PSP      =                              $MDT[ 6]
-            $SIP      = "$( $MDT[4] )\$( $Client.List.Name[ ( $_ - 1 ) ] )"
-            $GUID     =       $Client.List.GUID[ ( $_ - 1 ) ]
-        }
-
-        # - [ Find OSGUID in Templates, replace the GUID ] - - - - - - - - - - - - - - #
-
-        $XMLArray = @()
-        0..$XML.Count | % { If ( $XML[$_] -like "*OSGUID*" ) { $XMLArray += $_ } }
-        ForEach ( $i in $XMLArray ) { $XML[$i] = $XML[$i].Split('{')[0] + $GUID + $XML[$i].Split('}')[1] }
-        $XML_Path     = "$( $Store.Path[$_] )\$( $Tag[$_] ).xml"
-        SC -Path $XML_Path -Value $XML -Force 
-
-        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-        
-        # - [ Set the Splat params, except, explicitly state each variable ] - - - - - #
-
-        $NT = @{
-                    PSD_Path      =                                    $PSP
-                    Cool_ID       =                           $DISM[$_][ 1]
-                    XML           =                               $XML_Path
-                    Info          =                               $Date[ 1]
-                    Tag_ID        =                           $DISM[$_][ 0]
-                    Date          =                               $Date[ 0]
-                    PS_SIP        =                                    $SIP
-                    Dumb_ID       =                           $DISM[$_][ 1]
-                    Author        =                                  $R[ 0]
-                    Website       =                                  $R[ 5]
-                    ChildPW       = $lmcred.GetNetworkCredential().Password
-                    }
-        
-        Wrap-Action `
-            -Type                            "Import-NewTask" `
-            -Info "[+] $( $DISM[$_][0] ) / $( $DISM[$_][1] )" 
-
-        # - [ Import all of the task sequences with one command that's looped ] - - - - #
-
-        Import-NewTask `
-                -PSP                $NT.PSD_Path  `
-                -Formal             $NT.Cool_ID   `
-                -XML                $NT.XML       `
-                -Info               $NT.Info      `
-                -ID                 $NT.Tag_ID    `
-                -Ver                $NT.Date      `
-                -SIP                $NT.PS_SIP    `
-                -TSName             $NT.Dumb_ID   `
-                -Org                $NT.Author    `
-                -WWW                $NT.Website   `
-                -LMCred             $NT.ChildPW   `
-    }
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-        # - [ Seeing that when Microsoft decides to have one of it's contractors . . . -#
-        # Intrude into my network on January 15th, 2019, and cryptolock my project files#
-        # . . . that you pushed me even harder and farther to 'make your contractors -  #
-        # . . . look pretty dumb for doing so . . . and by extension, you ]             #
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Update-DSC ]   #################################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    Wrap-Action -Type "[ MDT ]" -Info "Updating PSDrive $( $MDT[1] ) Properties"
-    
-    $Array = @( ".GenerateLiteTouchISO" ; @( "WIMDescription" , "ISOName" | % { ".LiteTouch$_" } ) ; ".BackgroundFile" )
-    $DSC   = @( ( $MDT[1] + ':' ) ;
-             @( $Array | % { "Boot.x86$_" } ) +
-             @( $Array | % { "Boot.x64$_" } ) )
-    $n     = @( "Comments" , "MonitorHost" + $DSC )
-    $v     = @( $Date[1] ; $r[2] ; 
-                "True" ; @( ' (x86)' | % { "$_" , "$_.iso" } | % { "$( $r[0] )$($_)" } ) + "$( $d[0] )\$( $r[9] )" ; 
-                "True" ; @( ' (x64)' | % { "$_" , "$_.iso" } | % { "$( $r[0] )$($_)" } ) + "$( $d[0] )\$( $r[9] )" )
-
-    $j = 0
-    do
-    {
-        SP -Path $DSC[0] -Name $n[$j] -Value $v[$j]
-        Wrap-Action -Type "Drive Property" -Info "$($n[$j]) set to . . ."
-        Echo $v[$j]
-        $j = $j + 1
-    }
-    until ( $j -ge $n.count )
-
-    if ( $? -eq $True ) 
-    { 
-        Wrap-Action `
-            -Type                                             "[ MDT ]" `
-            -Info "PSDrive $( $MDT[1] ) Properties updated Successfully"
-    }
-
-    else
-    { 
-        Wrap-Action `
-            -Type                                             "[ MDT ]" `
-            -Info     "PSDrive $( $MDT[1] ) Properties failed to update"
-        
-        break 
-    }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Recycle-Bootstrap ]   ##########################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-    
-    $Bootstrap_hash = @{
-            
-        Settings = @{
-    
-            Priority           = "Default"
-    
-            }
-
-        Default = @{
-
-            DeployRoot         = "http://$( $r[2] ),$( $r[1] )"
-            UserID             = "$( $r[3] )"
-            UserPassword       = "$( $dccred.GetNetworkCredential().Password )"
-            UserDomain         = "$( $r[15] )"
-            SkipBDDWelcome     = "YES"
-
-            }
-        }
-    
-    $Bootstrap_ini = "$( $MDT[14] )\Bootstrap.ini"
-
-    If ( ! ( Test-Path $Bootstrap_ini ) ) 
-    { 
-        RI $Bootstrap_ini -EA 0 -Force 
-    }
-    
-    Export-Ini `
-        -Filepath $Bootstrap_ini `
-        -Encoding UTF8 `
-        -Force `
-        -InputObject $Bootstrap_hash `
-        -Passthru
-
-    [ System.IO.File ]::WriteAllLines( 
-        ( $Bootstrap_ini ), 
-        ( GC $Bootstrap_ini ) , 
-        ( New-Object System.Text.UTF8Encoding $False ) )
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Recycle-CustomSettings ]   #####################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    $CustomSettings_Hash = @{
-
-        Settings = @{
-
-            Priority           = "Default"
-            Properties         = "MyCustomProperty"
-        
-            }
-        
-        Default = @{
-        
-            _SMSTSOrgName      = "$( $r[0] )"
-            OSInstall          = "Y"
-            SkipCapture        = "NO"
-            SkipAdminPassword  = "YES"
-            SkipProductKey     = "YES"
-            SkipComputerBackup = "NO"
-            SkipBitLocker      = "YES"
-            KeyboardLocale     = "en-US"
-            TimeZoneName       = "Eastern Standard Time"
-            EventService       = "http://$( $r[2] ):9800"
-        
-            }
-        }
-
-    $CustomSettings_ini = "$( $MDT[14] )\CustomSettings.ini"
-    
-    If ( ( Test-Path $CustomSettings_ini) -eq $True ) 
-    {
-        RI $CustomSettings_ini -EA 0 -Force
-    }
-    
-    Export-Ini `
-        -Filepath $CustomSettings_ini `
-        -Encoding UTF8 `
-        -Force `
-        -InputObject $CustomSettings_hash `
-        -Passthru
-
-    [ System.IO.File ]::WriteAllLines( ( $CustomSettings_ini ) , 
-        ( GC $CustomSettings_ini ) , 
-        ( New-Object System.Text.UTF8Encoding $False ) )
-
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ MDT-PXE/Stuff  ]  ##############################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-    $Control = "$DI\Control"
-
-    $Icon = @( gci $Control -Filter "*computer.png" -EA 0 ).FullName
-    If ( ( Test-Path $Icon ) -eq $True )
-    {
-        CP $Icon "$( $MDT[13] )\computer.png"
-    }
-
-    $Head = @( gci $Control -Filter "*header-image.png" -EA 0 ).FullName
-    If ( ( Test-Path $Head ) -eq $True )
-    {
-        CP $Head "$( $MDT[13] )\header-image.png"
-    }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Hybrid-Launcher ]   ############################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    $Script = @"
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-#// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
-#\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
-#// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-#\\                                                                                                                   //#
-#//   <@[ Script-Initialization ]@>                        "Script Magistration by Michael C. 'Boss Mode' Cook Sr."   \\#
-#\\                                                                                                                   //#
-#//                        [ Secure Digits Plus LLC | Hybrid ] [ Desired State Controller ]                           \\#
-#\\                                                                                                                   //#
-#//                  [ https://www.securedigitsplus.com | Server/Client | Seedling/Spawning Script ]                  \\#
-#\\                                                                                                                   //#
-#//                                                                                                                   \\#
-#\\# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-#//# [ Declare-Functions ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#\\#
-#\\# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #//#
-
-    using namespace System.Security.Principal
-
-    Function Elevate-Script
-    {   
-        ( [ WindowsPrincipal ] [ WindowsIdentity ]::GetCurrent() ).IsInRole( "Administrators" ) | % {
-
-            If ( ( `$_ -eq `$False ) -and ( ( [ Int ]( gcim Win32_OperatingSystem ).BuildNumber -ge 6000 ) -eq `$True ) )
-            {   
-                Echo "Attempting [~] Script Elevation"
-                
-                SAPS `
-                    -FilePath PowerShell.exe `
-                    -Verb Runas `
-                    -Args "-File `$PSCommandPath `$( `$MyInvocation.UnboundArguments )"
-                
-                If ( `$? -eq `$True ) 
-                { 
-                    Echo "[+] Elevation Successful"
-                    Echo "[+] Access Granted"
-                    Return 
-                }
-
-                Else
-                { 
-                    Echo "[!] Elevation Failed"
-                    Read-Host "[!] Access Denied"
-                    Exit 
-                }
-            }
-
-            ElseIf ( `$_ -eq `$True )
-            {   
-                Echo "Access [+] Granted"
-                Set-ExecutionPolicy Bypass -Scope Process -Force 
-            }
-        }
-    }  
-    
-    Elevate-Script
-
-    CMDKEY /add:$( $r[2] ) /user:$( $r[3] ) /pass:$( $dccred.GetNetworkCredential().Password )
-    
-    If ( `$_ -eq `$True )
-    {
-         Echo "[+] Domain Credential Added"
-    }
-
-    Else
-    {
-        Echo "Exception [!] - Something didn't feel like 'working correctly'"
-    }
-    
-    CP -Path "$( $r[1] )\$( $r[0] )\(0)Resources\Initialize-HybridClient.ps1" -Destination "`$home\Desktop" -Force
-    SC -Path "`$home\Desktop\RootVar.ini" -Value (
-    '$( $r[0] )'  , '$(  $r[1] )' , '$( $r[2] )' , '$( $r[3] )' , '$( $dccred.GetNetworkCredential().Password )' ,
-    '$( $r[5] )'  , '$(  $r[6] )' , '$( $r[7] )' , '$( $r[8] )' , '$( $r[9] )' , '$( $r[10] )' ,
-    '$( $r[11] )' , '$( $r[12] )' , '$( $lmcred.GetNetworkCredential().Password )' , '$( $r[14] )' ,
-    '$( $r[15] )' , '$( $r[16] )'
-    )
-    `$hybrid = "`$home\Desktop\Initialize-Hybrid.ps1"
-    If ( Test-Path `$hybrid ) { RI `$hybrid -Force  }
-    Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser -Force
-    Powershell.exe "`$Home\Desktop\Initialize-HybridClient.ps1"
-"@
-    SC -Path "$( $MDT[13] )\Initialize-Hybrid.ps1" -Value $Script -Force
-    
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Update-BootImage ]   ###########################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    $Drive = ( $MDT[1] + ':' )
-    Switch( $host.UI.PromptForChoice( 'Recycle-MDT' , 'Select MDT Update Method' , 
-    [ System.Management.Automation.Host.ChoiceDescription[] ]@( '&Full' , '&Fast' , '&Compress' ) , 
-    [ Int ] 0 )  )
-    {
-        0 { Update-MDTDeploymentShare -Path $Drive -Force -Verbose }
-           
-        1 { Update-MDTDeploymentShare -Path $Drive -Verbose }
-
-        2 { Update-MDTDeploymentShare -Path $Drive -Compress -Verbose }
-    } 
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ WDS-Controls ]   ###############################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    $Boot  = $MDT[10]
-    $Lti   = "LiteTouchPE"
-    $Pro   = $r[0].Replace(' ','_')
-    $x86   = " (x86)"
-    $x64   = " (x64)"
-    $_86   = "_x86"
-    $_64   = "_x64"
-
-  $WDS = "$Boot\$Pro$_86.wim" , "$Boot\$Pro$_64.wim" , "$Boot\$Pro$_86.xml" , "$Boot\$Pro$_64.xml"
-
-  $LTW = "$Boot\$Lti$_86.wim" , "$Boot\$Lti$_64.wim" , "$Boot\$Lti$_86.xml" , "$Boot\$Lti$_64.xml"
-
-  $PXE = $r[0]+$x86 , $r[0]+$x64
-
-  $IMG = @( Get-WDSBootImage -Architecture X86 -EA 0 -ImageName $PXE[0] ;
-            Get-WDSBootImage -Architecture X64 -EA 0 -ImageName $PXE[1] )
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Provisional-Boot.x86 ]   #######################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    0..3 | % {
-        If ( ( Test-Path $WDS[$_] ) -eq $True )
-        {
-            Remove-Item $WDS[$_] -Force
-            Rename-Item $LTW[$_] $WDS[$_]
-        }
-
-        Else
-        {
-            Rename-Item $LTW[$_] $WDS[$_]
-        }
-    }
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Cycle-BootImages ]   ###########################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    0..1 | % { If ( $_ -eq 0 ) { $Arch = "x86" }
-               If ( $_ -eq 1 ) { $Arch = "x64" } }
-
-                If ( $IMG[$_].Description -eq $PXE[$_] )
-                { 
-                    Remove-WdsBootImage         `
-                        -Architecture $Arch     `
-                        -ImageName ( $PXE[$_] ) `
-                        -vb 
-                }
-
-                Wrap-Action `
-                    -Type "Recycling" `
-                    -Info "[+] WDS Boot Image  / $( $PXE[$_] )"
-
-                Import-WDSBootImage `
-                    -Path           $WDS[$_] `
-                    -NewDescription $PXE[$_] `
-                    -SkipVerify -vb
-
-                If ( $? -eq $True ) 
-                { 
-                        Wrap-Action `
-                        -Type "Recycled" `
-                        -Info $WDS[$_] 
-                }
-            
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-#    [ Restart-WDS ]   ################################################################################
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    Wrap-Function `
-        -ID "Restart-WDS"
-
-    Restart-Service `
-        -Name WDSServer
-    
-    If ( $? -eq $true ) 
-    { 
-        Wrap-Action `
-            -Type "WDS Image" `
-            -Info "[+] Successfully updated!"
-        
-        Display-Foot
-
-        Exit 
-    }
-    
-    Else
-    {
-        Wrap-Action `
-            -Type "WDS Image" `
-            -Info "[-] Update failed"
-
-        Display-Foot
-
-        Exit 
-    }
-
-}
-    
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #// -[ Generate-WIMPaths ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        4..5 | % { If ( ( Test-Path $PSD[$_] ) -eq $True ) { Wrap-Action -Type "Path Found" -Info "[+] $( $PSD[$_] )" } # - - - - - - - - - - - - - //#
+                   Else   { NI -Path $PSD[$_] -ItemType Directory -Value $PSD[$_] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                            If ( $? -eq $True ) { Wrap-Action -Type "Directory Created" -Info "[+] $( $PSD[$_] )" } # - - - - - - - - - - - - - - - //#
+                            Else                { Wrap-Action -Type "Directory Failure" -Info "[!] $( $PSD[$_] )" } } } #- - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #// -[ Remove-MDTOSTS ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        0..5 | % { $Name = @( GCI ( $PSD[$_] ) -EA 0 ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        If ( $Name.Count -eq 1 )            { If ( $Name  -ne $null ) { RI "$( $PSD[$_] )\$( $Name.Name )"  -Recurse -VB -EA 0 } } #- - - - - - - - //#
+        Else {  ForEach ( $Names in $Name ) { If ( $Names -ne $Null ) { RI "$( $PSD[$_] )\$( $Names.Name )" -Recurse -VB -EA 0 } } } # - - - - - - -\\#
+                If ( $? -eq $True ) { Wrap-Action -Type   "Removed" -Info "[+] $( $PSD[$_] ) Child Items"  } #- - - - - - - - - - - - - - - - - - - //#
+                Else                { Wrap-Action -Type "Exception" -Info "[-] $( $PSD[$_] ) Child Items"  } } # - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #// -[ Import-MDTOS ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        0..1 | % {  If ( ( Test-Path $Update.Full[$_] ) -ne $True ) { Wrap-Action -Type "Image Missing" -Info "[!] $( $Update.Full[$_] )" } #- - - -\\#
+                    Else                                            { Wrap-Action -Type   "Image Found" -Info "[+] $( $Update.Full[$_] )" # - - - - //#
+                    If ( $_ -eq 0 ) { $Folder = "Server" } Else { $Folder = "Client" } } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                    Import-NewOSImage -IP $PSD[$_] -SF $Update.Full[$_] -DF "$Folder\$( $WIM.Build[$_])" #- - - - - - - - - - - - - - - - - - - - - //#
+                    If ( $? -eq $True ) { Wrap-Action -Type "Import Successful" -Info "[+] $( $Update.Full[$_] )" } #- - - - - - - - - - - - - - - -\\#
+                    Else                { Wrap-Action -Type         "Exception" -Info "[!] Import Failed"       } } # - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #// - [ Import-MDTTS ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                    $TemplateXML = @( $SC | % { "MDT$_`Mod.xml" } ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                    $PSDCheck = @( gci "$dr\Tools\Modules" -Filter "*PSD*" -EA 0 ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                    $PSDCheck | ? { $_.Count -gt 0 } | % { $TemplateXML = @( $SC | % { "PSD$_`Mod.xml" } ) } #- - - - - - - - - - - - - - - - - - - //#
+                    $ServerXML = $TemplateXML[0] ; $ClientXML = $TemplateXML[1] } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                    $Server = @{ List = @( GCI $PSD[0] -EA 0 ) ; Temp = @( "$di\Control\$ServerXML" ) } # - - - - - - - - - - - - - - - - - - - - - //#
+                    $Client = @{ List = @( GCI $PSD[1] -EA 0 ) ; Temp = @( "$di\Control\$ClientXML" ) } #- - - - - - - - - - - - - - - - - - - - - -\\#
+                    0..6 | % { If ( $_ -eq 0 ) { $XML = @( GC $Server.Temp ) ; $PSP = $MDT[5] ; # - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                                                 $SIP = "$( $MDT[3] )\$( $Server.List.Name )" ; #- - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                                                 $GUID = $Server.List.GUID }  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                    Else                       { $XML = @( GC $Client.Temp ) ; $PSP = $MDT[6] ; #- - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                                                 $SIP = "$( $MDT[4] )\$( $Client.List.Name[ ( $_ - 1 ) ] )" # - - - - - - - - - - - - - - - - - - - //#
+                                                 $GUID = $Client.List.GUID[ ( $_ - 1 ) ] }  #- - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $XMLArray = @() ; 0..$XML.Count | % { If ( $XML[$_] -like "*OSGUID*" ) { $XMLArray += $_ } } #- - - - - - - - - - - - - - - - - - - - - - - //#
+        ForEach ( $i in $XMLArray ) { $XML[$i] = $XML[$i].Split('{')[0] + $GUID + $XML[$i].Split('}')[1] } # - - - - - - - - - - - - - - - - - - - -\\#
+        $XML_Path  = "$( $Store.Path[$_] )\$( $Tag[$_] ).xml" ; SC -Path $XML_Path -Value $XML -Force  #- - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-Action -Type "Import-NewTask" -Info "[+] $( $DISM[$_][0] ) / $( $DISM[$_][1] )" # - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Import-NewTask -PSP $PSP -Formal $DISM[$_][1] -XML $XML_Path -Info $NT.Info $Date[1] -ID $DISM[$_][0] -Ver $Date[0] -SIP $SIP ` # - - - - - //#
+            -TSName $DISM[$_][1] -Org $R[0] -WWW $R[5] -LMCred $lmcred.GetNetworkCredential().Password } # - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #// - [ Import-MDTTS ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Wrap-Action -Type "[ MDT ]" -Info "Updating PSDrive $( $MDT[1] ) Properties" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $Array  = @( ".GenerateLiteTouchISO" ; @( "WIMDescription" , "ISOName" | % { ".LiteTouch$_" } ) ; ".BackgroundFile" ) # - - - - - - - - - - //#
+        $DSC    = @( "$( $MDT[1] ):" ; @( $Array | % { "Boot.x64$_" } ) + @( $Array | % { "Boot.x86$_" } ) ) # - - - - - - - - - - - - - - - - - - -\\#
+        $Name   = @( "Comments" , "MonitorHost" + $DSC ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        $Value  = @( $Date[1] ; $r[2] ; "True" ; @( ' (x64)' | % { "$_" , "$_.iso" } | % { "$( $r[0] )$($_)" } ) + "$( $d[0] )\$( $r[9] )" ; # - - -\\#
+                                        "True" ; @( ' (x86)' | % { "$_" , "$_.iso" } | % { "$( $r[0] )$($_)" } ) + "$( $d[0] )\$( $r[9] )" ) #- - - //#
+        0..$Name.Count | % {  SP          -Path $DSC[0]   -Name $Name[$_] -Value $Value[$_] ; #- - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                              Wrap-Action -Type "Drive Property" -Info "$( $Name[$_] ) set to . . ." ; Echo $Value[$_]     } #- - - - - - - - - - - //#
+        If ( $? -eq $True ) { Wrap-Action -Type "[ MDT ]" -Info "PSDrive $( $MDT[1] ) Properties updated Successfully"     } # - - - - - - - - - - -\\#
+        Else                { Wrap-Action -Type "[ MDT ]" -Info "PSDrive $( $MDT[1] ) Properties failed to update" ; Break } #- - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #// -[ Recycle-BootStrap ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $BootStrap_HT      = @{ Settings = @{ Priority       = "Default" } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                                Default  = @{ DeployRoot     = "http://$( $r[2] ),$( $r[1] )" #- - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                                              UserID         = "$( $r[3] )" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                                              UserPassword   = "$( $dccred.GetNetworkCredential().Password )" #- - - - - - - - - - - - - - - - - - -\\#
+                                              UserDomain     = "$( $r[15] )" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                                              SkipBDDWelcome = "YES" } } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $BootStrap_INI = "$( $MDT[14] )\Bootstrap.ini" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        If ( ! ( Test-Path $BootStrap_INI ) ) { RI $BootStrap_INI -EA 0 -Force } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Export-Ini -Filepath $BootStrap_INI -Encoding UTF8 -Force -InputObject $BootStrap_HT -Passthru #- - - - - - - - - - - - - - - - - - - - - - //#
+        [ System.IO.File ]::WriteAllLines( ( $BootStrap_INI ), ( GC $BootStrap_INI ) , ( New-Object System.Text.UTF8Encoding $False ) ) #- - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #// -[ Recycle-CustomSettings ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        $CustomSettings_HT = @{ Settings = @{ Priority           = "Default" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                                              Properties         = "MyCustomProperty" } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                                Default  = @{ _SMSTSOrgName      = "$( $r[0] )" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                                              OSInstall          = "Y" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                                              SkipCapture        = "NO" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                                              SkipAdminPassword  = "YES" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                                              SkipProductKey     = "YES" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                                              SkipComputerBackup = "NO" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                                              SkipBitLocker      = "YES" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                                              KeyboardLocale     = "en-US" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                                              TimeZoneName       = "$( ( Get-TimeZone ).ID )" #- - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                                              EventService       = "http://$( $r[2] ):9800" } } # - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        $CustomSettings_INI = "$( $MDT[14] )\CustomSettings.ini" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        If ( ( Test-Path $CustomSettings_INI ) -eq $True ) { RI $CustomSettings_INI -EA 0 -Force } #  - - - - - - - - - - - - - - - - - - - - - - - //#
+        Export-Ini -Filepath $CustomSettings_INI -Encoding UTF8 -Force -InputObject $CustomSettings_HT -Passthru # - - - - - - - - - - - - - - - - -\\#
+        [ System.IO.File ]::WriteAllLines( ( $CustomSettings_INI ) , ( GC $CustomSettings_INI ) , ( New-Object System.Text.UTF8Encoding $False ) ) #//#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #// - [ Replace-Graphics ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $Graphics = "*computer.png" , "*header-image.png" | % { ( gci "$DI\Control" -Filter $_ -EA 0 ) } #- - - - - - - - - - - - - - - - - - - - - //#
+        $Graphics | ? { $_.Exists } | % { CP $_.FullName "$( $MDT[13] )\$( $_.Name )" } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #//- -[ Inject-BridgeScript ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        $Script = @"
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
+#\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
+#// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\                                                                                                                                                 //#
+#//    <@[ Initialize-Hybrid ]@>                                                                                           "Michael C. Cook Sr."    \\#
+#\\                                                                                                                                                 //#
+#//                                       [ Secure Digits Plus LLC | Hybrid ] [ Desired State Controller ]                                          \\#
+#\\                                                                                                                                                 //#
+#//                                [ https://www.securedigitsplus.com | Server/Client | Seedling/Spawning Script ]                                  \\#
+#\\                                                                                                                                                 //#
+#//                                                                                                                                                 \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
+#\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
+#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\  [ Initialize-Hybrid ] @: Initializes the Functions needed for all sub-script usage, AKA "what sissies refer to as a module"                    //#
+#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ //#
+#// \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \\#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    using namespace System.Security.Principal ; `$OS = gcim Win32_OperatingSystem ; `$Hybrid = "Initialize-Hybrid" ;
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+#//- [ Elevate-Script ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    Function Elevate-Script #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    {   ( [ WindowsPrincipal ] [ WindowsIdentity ]::GetCurrent() ).IsInRole( "Administrators" ) | % { # - - - - - - - - - - - - - - - - - - - - - - //#
+        If ( ( `$_ -eq `$False ) -and ( [ Int ] `$OS.BuildNumber -ge 6000 ) )
+        {   Echo "Attempting [~] Script Elevation" ; #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+            SAPS -FilePath PowerShell.exe -Verb Runas -Args "-File `$PSCommandPath `$( `$MyInvocation.UnboundArguments )"
+            If ( `$? -eq `$True ) { Echo "[+] Elevation Successful"   ; Echo      "[+] Access Granted" ; Bridge-Script }
+            Else                { Echo "[!] Elevation Failed"       ; Read-Host "[!] Access Denied"  ;          Exit } }
+        ElseIf ( `$_ -eq `$True ) {                                     Echo      "[+] Access Granted" ; Bridge-Script } } }
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#// -[ Bridge-Script ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    Function Bridge-Script #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    {   Set-ExecutionPolicy Bypass -Scope Process -Force # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        CMDKEY /add:$( $r[2] ) /user:$( $r[3] ) /pass:$( $dccred.GetNetworkCredential().Password )
+        `$Type = "Client" ; `$OS.Caption | ? { `$_ -like "*Server*" } | % { `$Type = "Server" }
+        CP -Path "$( $r[1] )\$( $r[0] )\(0)Resources\`$Hybrid`$Type.ps1" -Destination "`$home\Desktop" -Force
+        SC -Path "`$home\Desktop\RootVar.ini" -Value ("$( $r[0] )" , "$(  $r[1] )" , "$( $r[2] )" , "$( $r[3] )" ,
+        "$( $dccred.GetNetworkCredential().Password )" , "$( $r[5] )" , "$(  $r[6] )", "$( $r[7] )", "$( $r[8] )", "$( $r[9] )", "$( $r[10] )",
+        "$( $r[11] )", "$( $r[12] )", "$( $lmcred.GetNetworkCredential().Password )", "$( $r[14] )", "$( $r[15] )", "$( $r[16] )" )
+        "`$home\Desktop\`$Hybrid.ps1" | ? { ( Test-Path `$_ ) -eq `$True } | % { RI `$_ -Force  }
+        SAPS -FilePath PowerShell.EXE -Verb RunAs `
+            -Args "-File '`$Home\Desktop\`$Hybrid`$Type.ps1' Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser -Force " `
+            -WorkingDirectory "C:\Windows\System32\WindowsPowerShell\v1.0" }
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+#//- [ Test-Credential ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    Function Test-Credential # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    {   [ CmdLetBinding () ][ OutputType ( [ String ] ) ] Param ( # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+            [ Parameter ( ValueFromPipeLine = `$True , ValueFromPipelineByPropertyName = `$True ) ]
+                [ Alias ( 'PSCredential' ) ] [ ValidateNotNull () ][ System.Management.Automation.PSCredential ] #- - - - - - - - - - - - - - - - - //#
+                [ System.Management.Automation.Credential () ] `$Credentials )
+        ( `$Domain , `$Root , `$Username , `$Password ) = @( 0..3 | % { `$Null } )
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        If ( `$Credentials -eq `$null ) {   Try   { `$Credentials = Get-Credential "domain\`$env:username" -EA 4 }
+                                          Catch { `$ErrorMsg    = `$_.Exception.Message
+                                                  Echo "Failure [!] Account Validation" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                                                  Read-Host "Press Enter to Exit" ; Exit } } # - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Try       { `$Domain   = New-Object System.DirectoryServices.DirectoryEntry(
+                                      "LDAP://`$( ( [ ADSI ]'').distinguishedName )" , 
+                                                       "`$( `$Credentials.Username )" , 
+                                "`$( `$Credentials.GetNetworkCredential().Password )" ) }
+        Catch     { `$_.Exception.Message ; Continue } 
+        If ( ! `$Domain ) {   Echo "Exception [!] Domain does not exist"
+                             Echo "Install [!] Active Directory Domain Services" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                             Read-Host "Press Enter to Exit" ; Exit } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Else {   If ( `$Domain.Name -ne `$Null ) { Return "Authenticated" ; Elevate-Script }
+                 Else { Echo "Authentication [!] Failure" ; Sleep -Seconds 2 ; Exit  } } }
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+#//- [ Enter-Account ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    [ System.Windows.MessageBox ]::Show( "Enter Service Account Credentials to Continue" )
+    `$DCCRED = Get-Credential ; If ( ( `$DCCRED | Test-Credential ) -ne "Authenticated" ) { Exit } Else { Elevate-Script }
+"@      #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #// -[ Set-ScriptContent ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        SC -Path "$( $MDT[13] )\Initialize-Hybrid.ps1" -Value $Script -Force #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #// - [ Update-Hybrid ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        $Drive = $DSC[0] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        Switch( $host.UI.PromptForChoice( 'Recycle-MDT' , 'Select MDT Update Method' , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        [ System.Management.Automation.Host.ChoiceDescription[] ]@( '&Full' , '&Fast' , '&Compress' ) , # - - - - - - - - - - - - - - - - - - - - - //#
+        [ Int ] 0 )  ) {    0 { Update-MDTDeploymentShare -Path $Drive    -Force -VB } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+                            1 { Update-MDTDeploymentShare -Path $Drive           -VB } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+                            2 { Update-MDTDeploymentShare -Path $Drive -Compress -VB } } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// - [ Rename-BootImages ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $OEM       = "$( $R[0].Replace( ' ' , '_' ) )" ; $Types = "x64" , "x86" ; # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        GCI $MDT[10] -Filter "*$( $OEM )*" -EA 0 | RI -Force # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        "x64" , "x86" | % { Remove-WDSBootImage -Architecture $_ -ImageName "$( $R[0] ) ($_)" -EA 0 -VB } # - - - - - - - - - - - - - - - - - - - - \\#
+        GCI $MDT[10] -Filter "*LiteTouch*" -EA 0 | RNI -NewName { $_.Name -Replace 'LiteTouchPE' , $OEM } #- - - - - - - - - - - - - - - - - - - - -//#
+        $Boot  = $Types | % { GCI $MDT[10] -Filter "*_$_.wim" -EA 0 } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        0..1 | % { Import-WDSBootImage -Path $Boot[$_].FullName -NewDescription "$( $R[0] +' ('+ $Types[0] +')')" -SkipVerify -VB } #- - - - - - - -//#
+        Wrap-Function -ID "Restart-WDS" ; Restart-Service -Name WDSServer ; # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        If ( $? -eq $true ) { Wrap-Action -Type "WDS Image" -Info "[+] Successfully updated!" ; Display-Foot ; Exit } #- - - - - - - - - - - - - - -//#
+        Else                { Wrap-Action -Type "WDS Image" -Info "[-] Update failed"         ; Display-Foot ; Exit } } # - - - - - - - - - - - - - \\#
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 #// -[ / Declare-Functions ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
@@ -1787,9 +1524,11 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
 #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
 #// [ Initialize Service Account Credential ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
 #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-$Message::Show( "Enter Hybrid Service Account Credential" ) ; $DCCred = Get-Credential "$( $Env:UserDomain )\Hybrid" # - - - - - - - - - - - - - - -\\#
-If ( ( $DCCred | Test-Credential ) -ne "Authenticated" ) { Exit } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-#// - [ Elevate, Show True Colors , Launch Installation / Imaging Switch ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-Elevate-Script ; Display-TrueColors # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+    [ System.Windows.MessageBox ]::Show( "Enter Service Account Credentials to Continue" ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+    $DCCred = Get-Credential ; If ( ( $DCCred | Test-Credential ) -ne "Authenticated" ) { Exit } Else { Elevate-Script } #- - - - - - - - - - - - - //#
+    Switch( $host.UI.PromptForChoice( "[ Install / Generate ] Deployment Share, or Update Boot Images?" , 'Select [ Installation / Imaging ]' , #- -\\#
+    [ System.Management.Automation.Host.ChoiceDescription[] ]@( '&Installation' , '&Imaging' ) , #- - - - - - - - - - - - - - - - - - - - - - - - - //#
+    [ Int] 1 )  ) { 0 { Provision-Installation } 1 { Provision-Imaging } } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+#// -[ / Script-Initialized ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
