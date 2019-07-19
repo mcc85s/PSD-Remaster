@@ -774,7 +774,7 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
         $MDTURL  =    "https://download.microsoft.com/download/3/3/9/339BE62D-B4B8-4956-B58D-73C4685FC492"   # MDT Base URL                         //#
         $ADK     =                                                 "Windows Assessment and Deployment Kit"   # ADK String                           \\#
         $MDT     =                                                          "Microsoft Deployment Toolkit"   # MDT String                           //#
-        $7zu     =                                                              "https://www.7-zip.org/a"   # 7 Zip Base URL                       \\#
+        $7zu     =                                                              "https://www.7-zip.org/a"    # 7 Zip Base URL                       \\#
         $Install | ? { ( Test-Path $_ ) -ne $True } | % { NI -Path $_ -ItemType Directory }
     #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
     #// - [ Registry Checker ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
@@ -827,9 +827,9 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
         Foreach ( $i in 0..3 ) #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
         {   $Item = $Reg | ? { $_.DisplayName -like "*$( $List[$i][0] )*" } | Select DisplayName , DisplayVersion #- - - - - - - - - - - - - - - - -\\#
             If ( ( $Item -ne $Null ) -and ( $Item.DisplayVersion -ge $List[$i][1] ) ) # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-            {   Wrap-Action -Type "Dependency"  -Info "$( $List[$i][2] ) meets $Req" } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+            {   Wrap-Action -Type "Dependency"  -Info "$( $List[$i][2] ) meets minimum requirements" } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
             Else #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-            {   Wrap-Action -Type "Dependency"  -Info "$( $List[$i][2] ) does not meet $Req" # - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+            {   Wrap-Action -Type "Dependency"  -Info "$( $List[$i][2] ) does not meet minimum requirements" # - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
                 Wrap-Action -Type "Downloading" -Info "$( $List[$i][2] )" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
                 Provision-Dependency -ID $List[$i][3] -Path  $List[$i][4] -File $List[$i][5] -URL $List[$i][6] -Args $List[$i][7] #- - - - - - - - -\\#
                 If ( $? -eq $True ) { Wrap-Action -Type  "Successful" -Info "[+] $( $List[$i][2] ) Updated"          } #- - - - - - - - - - - - - - //#
@@ -1185,8 +1185,8 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
         #// -[ Download-Applications ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
         #\\  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
         Foreach ( $i in 0..15 ) { $Outfile = "$( $P.FullName[$i] )\$( $File[$i] ).$( $Exe[$i] )" ; #- - - - - - - - - - - - - - - - - - - - - - - - //#
-        $Info  = "$( $Name[$i] ) v$( $Ver[$i] )" ; $Check = "$( $Checksum[$i] )" ; $URL = "$( $URL[$i] )" #- - - - - - - - - - - - - - - - - - - - -\\#
-        If ( ( Test-Path $Outfile ) -ne $True ) { Wrap-Action -Type "Downloading" -Info $Info ; IWR -URI $URL -OutFile $Outfile } # - - - - - - - - //#
+        $Info  = "$( $Name[$i] ) v$( $Ver[$i] )" ; $Check = "$( $Checksum[$i] )" ; # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        If ( ( Test-Path $Outfile ) -ne $True ) { Wrap-Action -Type "Downloading" -Info $Info ; IWR -URI $URL[$i] -OutFile $Outfile } # - - - - - - //#
         Else                                    { Wrap-Action -Type    "Detected" -Info $Info } #- - - - - - - - - - - - - - - - - - - - - - - - - -\\#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
         #//- [ Get-FileHash ] - - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
@@ -1196,10 +1196,21 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
                            Else { Wrap-Action -Type "Exception" -Info "[!] $Check" ; # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
                                   Wrap-Action -Type "Removing"  -Info "[!] $Info"  ; RI $OutFile -Force } } # - - - - - - - - - - - - - - - - - - - //#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-        #// -[ Get-Images ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #// -[ Get-Tools ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
 
 
+
+        "$Base\(1)Tools\(1)DISM++" | % { IWR -Uri $DISMGUI -OutFile "$_.zip" ; Set-Alias SZ $7zip ; SZ x "$_.zip" -o"$_" ; RI "$_.zip" -Force } # - //#
+
+
+
+        $URL      = @( ( "x86" , "i386" ) , ( "x64" , "x86_64" ) | % { ` # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                    "https://packages.vmware.com/tools/releases/10.3.10/windows/$( $_[0] )/VMware-tools-10.3.10-12406962-$( $_[1] ).exe" } ) + #- - //#
+                    "https://download.virtualbox.org/virtualbox/6.0.10/VBoxGuestAdditions_6.0.10.iso" #- - - - - - - - - - - - - - - - - - - - - - -\\#
+        $checksum = "59A498CC1641A04C10D08709AC6DC6AA95CAFC7B56E6D613D3630E89083F0F4C" # VMWare Tools x86 # - - - - - - - - - - - - - - - - - - - - //#
+                    "65D5CC22D2FAE73F104E985BAA7885A1544ADCEB0774CC302522C03541E5DD82" # VMWare Tools x64 #- - - - - - - - - - - - - - - - - - - - -\\#
+                    "c8a686f8c7ad9ca8375961ab19815cec6b1f0d2496900a356a38ce86fe8a1325" # VirtualBox Guest Additions # - - - - - - - - - - - - - - - //#
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 #// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
 #\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
