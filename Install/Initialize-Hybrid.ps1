@@ -316,7 +316,7 @@
 " //       //                                                                                      \\         \\ " ; #- - - - - - - - - - - - - - - \\#
 " \\       \\- - - - - - - - - -\_______________________________________________/- - - - - - - - - //         // " ; # - - - - - - - - - - - - - - -//#
 " //       //                                                                                      \\         \\ " ; #- - - - - - - - - - - - - - - \\#
-" \\       \\ - - - - - -[  0 7 / 1 6 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R . ]- - - - - - -//         // " ; # - - - - - - - - - - - - - - -//#
+" \\       \\ - - - - - -[  0 7 / 1 8 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R . ]- - - - - - -//         // " ; # - - - - - - - - - - - - - - -//#
 " //       //                                                                                      \\         \\ " ; #- - - - - - - - - - - - - - - \\#
 " \\       \\______________________________________________________________________________________//         // " ; # - - - - - - - - - - - - - - -//#
 " //                                                                                                          \\ " ; #- - - - - - - - - - - - - - - \\#
@@ -769,12 +769,13 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
     #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         $CPU     =                                                            $env:PROCESSOR_ARCHITECTURE    # CPU Arch                             //#
         $SRV     =                                                                      $env:COMPUTERNAME    # Server Name                          \\#
-        $Install =                                                                "C:\Hybrid-Installation"   # Install Folder                       //#
+        $Install =                                               "$Env:SystemDrive\Secure Digits Plus LLC"   # Install Folder                       //#
         $MDTFile =                                                         "MicrosoftDeployment`Toolkit_x"   # MDT File                             \\#
         $MDTURL  =    "https://download.microsoft.com/download/3/3/9/339BE62D-B4B8-4956-B58D-73C4685FC492"   # MDT Base URL                         //#
         $ADK     =                                                 "Windows Assessment and Deployment Kit"   # ADK String                           \\#
         $MDT     =                                                          "Microsoft Deployment Toolkit"   # MDT String                           //#
-        $7zip    =                                                        "https://www.7-zip.org/a/7z1900"   # 7 Zip Base URL                       \\#
+        $7zu     =                                                              "https://www.7-zip.org/a"   # 7 Zip Base URL                       \\#
+        $Install | ? { ( Test-Path $_ ) -ne $True } | % { NI -Path $_ -ItemType Directory }
     #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
     #// - [ Registry Checker ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
     #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
@@ -818,7 +819,7 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
                                                                                  "7-Zip Archiving Utility" , # Title                                //#
                                                                                           "$Install\7-Zip" , # Target Path                          \\#
                                                                                                    "$7zip" , # Target File                          //#
-                                                                           "https://www.7-zip.org/a/$7zip" , # URL                                  \\#
+                                                                                              "$7zu/$7zip" , # URL                                  \\#
                                                                                                       "/S" } # Silent Arguments                     //#
     #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
     #// - [ Variables Declared, Run the loop ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
@@ -1025,7 +1026,9 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
         #// - [ Install-WindowsFeatures using "0" XML files - What a "Desired State Controller" appears to be ] - - - - - - - - - - - - - - - - - - \\#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         $GWF = @( Get-WindowsFeature ) ; $DWS = "Default Web Site" ; $SAS = "ServerAutoStart" # - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-        ForEach ( $i in $Web ) { $GWF | ? { $_.Name -like "*$i*" -and $_.InstallState -ne "Installed" } | % { Install-WindowsFeature -Name $i } } #-//#
+        $Check = ForEach ( $i in $Web ) { $GWF | ? { ( $_.Name -eq $i ) } } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $Check | ? { $_.InstallState -eq "Installed" } | % { Echo "[ $( $_.Name ) ] [ $( $_.InstallState ) ]"  } #- - - - - - - - - - - - - - - - - \\#
+        $Check | ? { $_.InstallState -ne "Installed" } | % { Install-WindowsFeature -Name $i }  #- - - - - - - - - - - - - - - - - - - - - - - - - -//#
         IPMO WebAdministration #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         Get-Website -Name $DWS -EA 0 | ? { $_ -ne $Null -and $_.State -eq 'Running' } | % { Stop-Website | SP "IIS:\Sites\$DWS" $SAS False } # - - -//#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
@@ -1077,6 +1080,126 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
             Add-Acl -Path $AppData  -AceObject $Obj } } # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         Else { Wrap-Action -Type "Exception" -Info "[!] The dialog has failed you sir/ma'am" ; Read-Host "Press Enter to Exit" ; Exit } #- - - - - -//#
         } # - [ Will Include Further Hybrid Modification Installation Entries Later ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    #//  -[ Mobilize-7zip ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $7Zip    = 'C:\Program Files\7-Zip\7z.exe' ; $Base = "$URI\$Pname" ; $Install = "C:\Hybrid-Installation\Hybrid" #- - - - - - - - - - - - - -//#
+        $URLBase = "https://drive.google.com/drive/folders/1tmS-BelyD9Pd7IeCUaZTnrigQSt9ozwQ?usp=sharing" # - - - - - - - - - - - - - - - - - - - - \\#
+        $DISMGUI = "http://cdn.chuyu.me/Dism++10.1.1000.100_2d2bf466baca088c4b35248f5a7316f4e00cac0b.zip" #- - - - - - - - - - - - - - - - - - - - -//#
+    #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    #//  -[ Generate-DSCRoot ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $DSCR = @{ Tree = @( "Resources" , "Tools" , "Images" , "Profiles" , "Certificates" , "Applications" ) # - - - - - - - - - - - - - - - - - -//#
+                   Path = @{ 0 = @() ; 1 = @( "Drivers" , "DISM++" , "VM" ) ; 2 = @( "DC2016" ; @( "E" , "H" , "P" | % { "$_`64" ; "$_`86" } | % {# \\#
+                   "10$_" } ) ) ; 3 = @() ; 4 = @( "Root" | % { "$_" , "CA" , "Auth$_" } )  ; 5 = @( "chrome" ; "silverlight" ; "jre" ; #- - - - - -//#
+                   "libre" ; "mwb" ; "flash" ; "air" ; "reader" ; "ccleaner" ; "klite" ;  "tv"  ) } # - - - - - - - - - - - - - - - - - - - - - - - \\#
+                   File = @{ 0 = @(   "Server" , "Client" | % { "Initialize-Hybrid$_.ps1" } ; "logo.bmp" , "bg.jpg" | % { "OEM$_" } ; #- - - - - - -//#
+                   "StartLayout.xml" ; "UEV-Profile.ps1" ) ; 1 = @() ; 2 = @() ; 3 = @() ; 4 = @() ; 5 = @() } } #- - - - - - - - - - - - - - - - - \\#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    #// - [ Scaffold-DSCRoot ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $DSCR | % { $H = $_.Tree ; $C = 0..( $_.Tree.Count - 1 ) ; $P = $C | % { "$Base\($_)$( $H[$_] )" } #- - - - - - - - - - - - - - - - - - - - \\#
+            $C  | ? { ( Test-Path "$( $P[$_] )" ) -ne $True } | % { NI -Path "$( $P[$_] )" -ItemType Directory  } } #- - - - - - - - - - - - - - - -//#
+    #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    #//- -[ Scaffold-DSCFolders ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $T = @( gci $Base ).FullName ; ForEach ( $i in 0..( $T.Count - 1 ) ) { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            $DSCR.Path[$i].Count | ? { $_ -gt 0 } | % { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            $H = $DSCR.Path[$i] ; $C = 0..( $H.Count - 1 ) ; $P  = @( $C | % { "$( $T[$i] )\($_)$( $H[$_] )"  } ) ; #- - - - - - - - - - - - - - - -//#
+            $C | ? { ( Test-Path "$( $P[$_] )" ) -ne $True } | % { NI -Path "$( $P[$_] )" -ItemType Directory } } # - - - - - - - - - - - - - - - - \\#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    #// - [ Scaffold-DSCFiles ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+            $DSCR.File[$i].Count | ? { $_ -gt 0 } | % { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+            $H = $DSCR.File[$i] ; $C = 0..( $H.Count - 1 ) ; $P  = @( $C | % { "$( $T[$i] )\$( $H[$_] )" } ) ; # - - - - - - - - - - - - - - - - - -//#
+            $C | ? { ( Test-Path "$( $P[$_] )" ) -ne $True } | % { CP -Path "$( $Inst[$i] )\$( $H[$_] )" -Destination "$( $P[$_] )" } } } # - - - - \\#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+    #// - [ Source-Applications ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+    #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $URL = #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        # It's like shiny rims for your 'wheels' , except...? Like not that, at all... really. # - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        @( "" ,   "64" | % { "https://dl.google.com/tag/s/dl/chrome/install/googlechromestandaloneenterprise$_.msi" } ) + # - - - - - - - - - - - - \\#
+        # It's not 'Gold Heavy', but it's about as good as a VCR - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        @( "" , "_x64" | % { "https://download.microsoft.com/download/F/D/0/FD0B0093-DE8A-4C4E-BDC4-F0C56D72018C/50907.00/Silverlight$_.exe" } ) + #\\#
+        # Because everyone needs some coffee in their life. Who needs Dunkin when you've got Oracle... - - - - - - - - - - - - - - - - - - - - - - -//#
+        @( 7 , 9 | % { "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=23872$_`_478a62b7d4e34b78b671c754eaaf38ab" } ) + # - - - - - - - \\#
+        # When you want a free version of Office that doesn't spy on you, and does a lot more out of the box - - - - - - - - - - - - - - - - - - - -//#
+        @( ( "" , 86 ) , ( "_64" , 64 ) | % { # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        "https://download.documentfoundation.org/libreoffice/stable/6.2.5/win/x86$( $_[0] )/LibreOffice_6.2.5_Win_x$( $_[1] ).msi" } ) + # - - - - -//#
+        # Because Malware 'bytes', and...? Microsoft's idea of free protection is similar to "raw doggin' it". #- - - - - - - - - - - - - - - - - - \\#
+        "https://downloads.malwarebytes.com/file/mb3/" , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        # Not the type of 'flash' you probably wanna see? But you live and learn. # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        "https://download.macromedia.com/get/flashplayer/pdc/32.0.0.223/install_flash_player_32_plugin.msi" , #- - - - - - - - - - - - - - - - - - -//#
+        # When it's hard for you to breathe, or, you feel like getting the jump on something... then catch some 'Air'. #- - - - - - - - - - - - - - \\#
+        "http://airdownload.adobe.com/air/win/download/32.0/AdobeAIRInstaller.exe" , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        # If you know how to 'read' then Adobe's got you covered. If you don't? Well... you might have other issues. #- - - - - - - - - - - - - - - \\#
+        "http://ardownload.adobe.com/pub/adobe/reader/win/AcrobatDC/1901020064/AcroRdrDC1901020064_MUI.exe" , #- - - - - - - - - - - - - - - - - - -//#
+        # ...and, it comes with 'multiple languages' in case you're a real boss. Like me. # - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        "http://ftp.adobe.com/pub/adobe/reader/win/AcrobatDC/1901220035/AcroRdrDCUpd1901220035_MUI.msp" , #- - - - - - - - - - - - - - - - - - - - -//#
+        # For operating system maintenance that Microsoft sucks at doing by default. #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        "https://download.ccleaner.com/ccsetup560.exe" , # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        # Codec's for your brodecks. I know that word doesn't exist... just roll with it. # - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        "https://files3.codecguide.com/K-Lite_Codec_Pack_1504_Full.exe" , #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        # Cause we're all on the same team, except the hackers that created Azure. #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        "https://download.teamviewer.com/download/version_14x/TeamViewer_Setup.exe" #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #//- [ Designate-AppList ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $DisplayName = @( @( "Google Chrome" , "Microsoft Silverlight" , "Java Runtime Environment" , "Libre Office Fresh" | % { ` # - - - - - - - -//#
+        "$_ (x86)" , "$_ (x64)" } ) ; @( "Malwarebytes" ; @( "Flash" , "Air" + @( "Reader DC" | % { "$_" ; "$_ MUI" } ) | % { ` # - - - - - - - - - \\#
+        "Adobe $_" } ) + "CCleaner" , "K-Lite Codec Pack Full" , "Teamviewer 14" ) | % { "$_ (x22)" } ) #- - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #//- -[ Designate-AppVersions ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        $Version = @( 0..1 | % { "75.0.3770.142" } ; 0..1 | % { "5.1.50907.0" } ; 0..1 | % { "8.0.211" } ; 0..1 | % { "6.2.5" } ; #- - - - - - - - -//#
+        "3.8.3.296511612" ; "32.0.0.223" ; "32.0.0.125" ; "2019.012.20064" ; "2019.012.20035" ; "5.60.7307" ; "15.0.4" ; "14.4.2669" ) #- - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        #// - [ Define-Names ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $File = @( @( "chrome" , "silverlight" , "jre" , "libre" | % { "$_(x86)" , "$_(x64)" } ) ; #- - - - - - - - - - - - - - - - - - - - - - - - \\#
+        @( "mwb" ; @( "flash" , "air" + @( "reader" | % { "$_" ; "$_`mui" } ) ) + "ccleaner" , "klite" , "tv" ) | % { "$_(x22)" } ) #- - - - - - - -//#
+        $Exe = @( 0..1 | % { "msi" } ; 0..3 | % { "exe" } ; 0..1 | % { "msi" } ; 0..3 | % { "exe" } ; "msp" ; 0..2 | % { "exe" } ) #- - - - - - - - \\#
+        $Folder = gci $Base -Filter "*Applications" -EA 0 ; $T = gci $Folder.FullName ; #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
+        $P = @( 0..1 | % { $T[0] } ; 2..3 | % { $T[1] } ; 4..5 | % { $T[3] } ; 6..7 | % { $T[4] } ; 8 | % { $T[5] } ; 9 | % { $T[6] } ; # - - - - - \\#
+        10 | % { $T[7] } ; 11..12 | % { $T[8] } ; 13 | % { $T[9] } ; 14 | % { $T[10] } ; 15 | % { $T[2] } ) #- - - - - - - - - - - - - - - - - - - -//#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #//- -[ Declare-FileHashes ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        $Checksum = "f5ae4e45ec177ee53513426aabef2d0c0967584c30327678afb6f77535718357" , # Google Chrome x86 # - - - - - - - - - - - - - - - - - - -\\#
+                    "a5941959bf0f5058702252d411cf39c2982c751f5b662c48b651d94ce4a7ee19" , # Google Chrome x64 #- - - - - - - - - - - - - - - - - - - //#
+                    "88e1b76bdf799478a72fa27db0bfe7bc5d02cc7e53675967399300448f0e266f" , # Silverlight x86 # - - - - - - - - - - - - - - - - - - - -\\#
+                    "8d263a6f42a378073b6f057f242a42076f9f4082340153c2e27ecc959c5036aa" , # Silverlight x64 #- - - - - - - - - - - - - - - - - - - - //#
+                    "47DE97325B8EA90EA9F93E1595CC7F843DA0C9C6E4C9532ABEA3A194CFB621D9" , # Java x86 #- - - - - - - - - - - - - - - - - - - - - - - -\\#
+                    "C18CF8F2776B69DC838440AADFAAE36F50717636F38EEC5F1E4A27A8CB4F20FB" , # Java x64 # - - - - - - - - - - - - - - - - - - - - - - - //#
+                    "717fb9e17a3feb8af1662e668b919db86fab343303b78f88c7859003056ee010" , # Libre x86 # - - - - - - - - - - - - - - - - - - - - - - -\\#
+                    "9b01f6f382dbb31367e12cfb0ad4c684546f00edb20054eeac121e7e036a5389" , # Libre x64 #- - - - - - - - - - - - - - - - - - - - - - - //#
+                    "f8247c1c6d47165640e70ee9cfa9a7a7b4e0e96cb850852690742508f70e2f01" , # Malwarebytes #- - - - - - - - - - - - - - - - - - - - - -\\#
+                    "ee34f7a2ecd40039738861fd331ff9d9c5320a33d61b62ae71e108b78f999892" , # Adobe Flash #- - - - - - - - - - - - - - - - - - - - - - //#
+                    "6718308E10A45176155D0ECC8458BD3606308925B91F26A7D08C148CF52C9DB3" , # Adobe Air # - - - - - - - - - - - - - - - - - - - - - - -\\#
+                    "81953f3cf426cbe9e6702d1af7f727c59514c012d8d90bacfb012079c7da6d23" , # Adobe Reader DC #- - - - - - - - - - - - - - - - - - - - //#
+                    "67AAB19943FA63393F15E1354FACCE65BED476D1C2BB5D311DB8450614A33200" , # Adobe Reader DC MUI/Update #- - - - - - - - - - - - - - -\\#
+                    "00be05f95e08eb4f181ccde15403e782150a616cb93fd74525c99920f53a2cea" , # CCleaner # - - - - - - - - - - - - - - - - - - - - - - - //#
+                    "1F6BDE89E752811FDC04492D0F73216720B625E54966B3E350659BABD9AD7A83" , # K-Lite Codec Pack # - - - - - - - - - - - - - - - - - - -\\#
+                    "df26627cc29716b65a3ed72f78d59808244f9bc4ad2624657ddbee79d2baa422"   # Teamviewer 14 #- - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #// -[ Download-Applications ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        Foreach ( $i in 0..15 ) { $Outfile = "$( $P.FullName[$i] )\$( $File[$i] ).$( $Exe[$i] )" ; #- - - - - - - - - - - - - - - - - - - - - - - - //#
+        $Info  = "$( $Name[$i] ) v$( $Ver[$i] )" ; $Check = "$( $Checksum[$i] )" ; $URL = "$( $URL[$i] )" #- - - - - - - - - - - - - - - - - - - - -\\#
+        If ( ( Test-Path $Outfile ) -ne $True ) { Wrap-Action -Type "Downloading" -Info $Info ; IWR -URI $URL -OutFile $Outfile } # - - - - - - - - //#
+        Else                                    { Wrap-Action -Type    "Detected" -Info $Info } #- - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #//- [ Get-FileHash ] - - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        $Hash = ( Get-FileHash -Path $Outfile -Algorithm SHA256 ).Hash # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        If ( $Hash -eq $Check ) { Wrap-Action -Type "Validated" -Info "[+] $Check" } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+                           Else { Wrap-Action -Type "Exception" -Info "[!] $Check" ; # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+                                  Wrap-Action -Type "Removing"  -Info "[!] $Info"  ; RI $OutFile -Force } } # - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+        #// -[ Get-Images ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
+        #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
+
+
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 #// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
 #\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
@@ -1184,7 +1307,7 @@ Read-Host "Press Enter to exit" } # - - - - - - - - - - - - - - - - - - - - - - 
         Wrap-ItemIn  -Type $Type[5] -Info $Info[5] # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         Wrap-ItemOut -Type $Type[6] -Info $Info[6] #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        Wrap-In ; Wrap-Out ; Wrap-Bot ; Read-Host "Press (Enter) to continue" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        Wrap-In ; Wrap-Out ; Wrap-Bot ; Read-Host "Press Enter to Continue" # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         #// - [ Provision-Images ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
