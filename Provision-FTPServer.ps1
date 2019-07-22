@@ -61,7 +61,7 @@
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         $FS = "ftpServer.security"  ; $ADS = "ActiveDirectory" , "AD-Domain-Services" ; $F += "IIS:\Sites\$( $F[0] )" , # - - - - - - - - - - - - - \\#
         "$( $FS ).$( $A = "authentication" )$A.basicA$( $A.TrimStart( 'a' ) ).enabled" , "/system.$( $FS.Replace( "." , "/" ) )/authorization" + # -//#
-        @( "control" , "data" | % { "$FS.ssl$_`ChannelPolicy" } ) ; "Name" , "CurrentLocation" #- - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        @( "control" , "data" | % { "$FS.ssl.$_`ChannelPolicy" } ) ; "Name" , "CurrentLocation" # - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         #// -[ Cast Windows Features to an Array & then declare IIS Services ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
@@ -80,7 +80,7 @@
         #// -[ Check for AD , Load AD Module , Set AD Flag ] @: Pst... Cause Active Directory is where you gotta go full 'Boss Mode'- - - - - - - - \\#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         $GW  | ? { $_.Name -eq $ADS[1] -and $_.InstallState -eq "Installed" } | % { IPMO $ADS[0] ; $ADS = 1 # - - - - - - - - - - - - - - - - - - - \\#
-        GDR -Name AD | % { $AD = "$( $_.Name ):" ; $DC = $_.CurrentLocation ; $CN = gci $AD\$DN | % { gci $AD\$_ } } } # - - - - - - - - - - - - - -//#
+        GDR -Name AD | % { $AD = "$( $_.Name ):" ; $DC = $_.CurrentLocation ; $CN = gci $AD\$DC | % { gci $AD\$_ } } } # - - - - - - - - - - - - - -//#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #//- [ Set the Local Policy Conditions for non-AD environments ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         #\\ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
@@ -109,7 +109,7 @@
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         #// -[ Tell that Secure Sockets Layer what your 'policy' is gonna be ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-        $F[11..12] | % { SP -Path $F[8] -Name $_ -Value $False } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
+        11..12 | % { SP -Path $F[8] -Name $F[$_] -Value $False } #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         #// -[ Access Control schematics ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
         #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
