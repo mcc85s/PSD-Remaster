@@ -179,15 +179,15 @@ Using Namespace System.Security.Principal ;
 
             $Base | ? { ( Test-Path $_ ) -ne $True } | % { 
             
-                Wrap-Action -Type "Creating" -Info "Installation Directory"
+                Wrap-Action "Creating" "Installation Directory"
                 NI $_ -ItemType Directory
                 If ( $_ -eq $False ) 
                 { 
-                    Wrap-Action -Type "Exception" -Info "[!] The directory could not be created"
+                    Wrap-Action "Exception" "[!] The directory could not be created"
                     Read-Host "Press Enter to Exit"
                     Exit
                 }
-                Wrap-Action -Type "Created" -Info "[+] Installation Directory"
+                Wrap-Action "Created" "[+] Installation Directory"
             }
 
             Sleep -M 100
@@ -196,23 +196,35 @@ Using Namespace System.Security.Principal ;
 
                 $BasePath | ? { ( Test-Path $_ ) -eq $False } | % {
                         
-                    Wrap-Action -Type "Creating" -Info "Registry Entry for Installation path"
+                    Wrap-Action "Creating" "Registry Entry for Installation path"
                     NI -Path $Registry -Name $Vendor
                     If ( $? -ne $True ) 
                     {
-                        Wrap-Action -Type "Exception" -Info "[!] Registry Entry Failed"
+                        Wrap-Action "Exception" "[!] Registry Entry Failed"
                     }
                     ( "Hybrid-DSC" , $Base ) , ( "Installation Date" , ( Get-Date ) ) | % { 
                         SP -Path $BasePath -Name $_[0] -Value $_[1] 
-                        Wrap-Action -Type "Created" -Info "[+] $_"
+                        Wrap-Action "Created" "[+] $_"
                     }
                 }
             }
+            Return $Base
+        }
+
+        Else
+        {
+            Wrap-Action "Exception" "[!] The exited or the dialogue failed"
+            Read-Host "Press Enter to Exit"
+            Exit
+        }
+    }
 
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 #// - [ Scaffold-DSCRoot ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
         
+        Function Populate-DSCRoot
+        {
             Start $Base
 
             $Root = "Resources" , "Tools" , "Images" , "Profiles" , "Certificates" , "Applications"
@@ -264,16 +276,7 @@ Using Namespace System.Security.Principal ;
                     }
                 }
             }
-        
         }
-    
-        Else
-        {
-            Wrap-Action -Type "Exception" -Info "[!] The exited or the dialogue failed"
-            Read-Host "Press Enter to Exit"
-            Exit
-        }
-    }
 
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 #//- [ Collect-Applications ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
@@ -284,13 +287,13 @@ Using Namespace System.Security.Principal ;
         $Base = ( gp "HKLM:\Software\Policies\Secure Digits Plus LLC" ).'Hybrid-DSC'
         If ( ( Test-Path $Base ) -ne $True ) 
         { 
-            Wrap-Action -Type "Exception" -Info "[!] The Directory was not found" 
+            Wrap-Action "Exception" "[!] The Directory was not found" 
             Read-Host "Press Enter to Exit"
             Exit
         }
         If ( ( gci $Base  ).count -eq 0 )
         { 
-            Wrap-Action -Type "Exception" -Info "[!] The Directory was found empty"
+            Wrap-Action "Exception" "[!] The Directory was found empty"
             Read-Host "Press Enter to Exit"
             Exit
         }
@@ -344,7 +347,7 @@ Using Namespace System.Security.Principal ;
 
         $Program = ( gci $Applications ).FullName
         
-        $Target = $Program[ 0 , 0 , 1 , 1 , 3 , 3 , 4 , 4 , 5 , 6 , 7 , 7 , 8 , 9 , 10 , 2 ]
+        $Target = $Program[ 0 , 0 , 1 , 1 , 3 , 3 , 4 , 4 , 5 , 6 , 7 , 8 , 8 , 9 , 10 , 2 ]
 
     #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
     #//- [ Application File Hashes ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
@@ -384,10 +387,10 @@ Using Namespace System.Security.Principal ;
     
     Function Review-Applications
     {
-        Switch( $Host.UI.PromptForChoice( "Application Review Screen" , "Would you like to review the applications ?" , 
-        [ System.Management.Automation.Host.ChoiceDescription [] ]@( '&Yes' , '$No' ) , [ Int ] 0 ) )
+        Switch( $Host.UI.PromptForChoice( "Application Template Review" , "Would you like to review the Designated Application Template?" , 
+        [ System.Management.Automation.Host.ChoiceDescription [] ]@( '&Yes' , '&No' ) , [ Int ] 0 ) )
         {
-            0 { Wrap-Action -Type "Review" -Info "[~] User chose to review the applications list"
+            0 { Wrap-Action "Review" "[~] User chose to review the applications list"
 
                 $Item = @( Collect-Applications )
 
@@ -404,7 +407,7 @@ Using Namespace System.Security.Principal ;
     "#\\" ; $Null = ( $j = $j + 1 ) }
         Read-Host "Press Enter to Continue"
             }
-            1 { Wrap-Action -Type "Bypass" -Info "[~] User chose to bypass the application review screen" 
+            1 { Wrap-Action "Bypass" "[~] User chose to bypass the application review screen" 
                 Sleep -S 1 }
         }
     }
@@ -415,147 +418,119 @@ Using Namespace System.Security.Principal ;
 
     Function Download-Applications
     {
-            $i.File | ? { ( Test-Path $_ ) -ne $True } | % {
-            
-                Wrap-Action -Type "Downloading" -Info ( $i.Name ) 
-              
-                [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
-              
-                $Command = IWR -URI ( $i.URL ) -OutFile ( $i.File ) -PassThru
-              
-                # - [ Progress Indicator ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-              
-                For ( $j = 0 ; $j -le 100 ; $j = ( $j + 1 ) % 100 )
-                {   
-            
-                    Write-Progress -Activity "Downloading $( $i.Name )" -PercentComplete $j -Status "$( $j )% Complete"
-                  
-                    Sleep -m 250
-            
-                    If ( $Command.HasExited ) { Return } 
-            
-                }
+        
+        $Item = @( Collect-Applications )
 
-                If ( $? -eq $false ) { Wrap-Action -Type "Exception" -Info "[!] $( $i.Name ) Download Failed" ; Break }
-            }
+        IPMO BITSTransfer
 
-            $i.file | ? { ( Test-Path $_ ) -eq $True } | % { Wrap-Action -Type "Detected" -Info "[+] $( $i.Name )" }
+        $Time = [ System.Diagnostics.Stopwatch ]::StartNew()
 
-            $Hash = ( Get-FileHash -Path $i.File -Algorithm SHA256 ) | ? { $_.Hash -eq $i.Checksum } | % { 
+        0..15 | % { Start-BitsTransfer -Source $Item.URL[$_] -Destination $Item.File[$_] -EA 0 }
+
+        Wrap-Action "Downloads Complete" "[ Elapsed Time @: $( $Time.$Elapsed ) ]"
+
+        0..15 | % {
+
+            $ID = $( $Item.Name[$_] )
+
+            If ( ( Test-Path $Item.File[$_] ) -ne $True ) { Wrap-Action "Exception" "[!] $ID Not Found" }
+
+            Else 
+            { 
+                Wrap-Action "Detected" "[+] $( $Item.Name[$_] )"
                 
-                Wrap-Action -Type "Validated" -Info "[+] $Check" } 
-            
-            $Hash | ? { $_.Hash -ne $i.Checksum } | % { 
+                $Hash = ( Get-FileHash -Path $Item.File[$_] -Algorithm SHA256 ).Hash
                 
-                Wrap-Action -Type "Exception" -Info "[!] $( $i.Name )" 
+                If ( $Hash -eq $Item.Checksum[$_] ) { Wrap-Action "[+] Checksum Valid" "$ID" } 
+                
+                Else 
+                {
+                    Wrap-Action "[!] Checksum Invalid" "$ID"
                     
-                Wrap-Action -Type "Removing"  -Info "[!] $Info"
+                    Wrap-Action "[!] Removing File" "[!] $ID"
                 
-                RI $i.File -Force
-            } 
+                    RI $Item.File[$_] -Force
+                }
+            }
+        }
+        Wrap-Action "Downloads Complete" "[ Elapsed Time @: $( $Time.$Elapsed ) ]"
     }
 
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 #//- [ Download Applications ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 
-    Function Execute-Downloads
-    {
-        $Item = @( Collect-Applications )
-
-        $RSP = [ RunspaceFactory ]::CreateRunspacePool( 1 , 4 )
-        $RSP.ApartmentState = "MTA"
-        $RSP.Open()
-
-        $Code = { 
-                $Processes = Invoke-Command -ComputerName $Env:ComputerName -ScriptBlock {
-                [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
-                IWR -URI ( $Item.URL[$i] ) -OutFile ( $Item.File[$i] ) }
-                Return $Processes
-        }
-
-        $Threads = @()
-
-        $Time = [ System.Diagnostics.Stopwatch ]::StartNew()
-        Foreach ( $i in 0..15 )
-        {
-        	$RSO = [ PSCustomObject ] @{
-        		Runspace = [ PowerShell ]::Create()
-        		Invoker  = $null
-    	    }
-
-        	$RSO.Runspace.RunspacePool = $RSP
-        	$RSO.Runspace.AddScript( $Code ) | Out-Null
-    	    $RSO.Runspace.AddArgument( $i ) | Out-Null
-        	$RSO.Invoker = $RSO.Runspace.BeginInvoke()
-        	$Threads += $RSO
-    	    $Elapsed = $Time.Elapsed
-        	Write-Host -F 3 "Finished downloading $( $Item.Name[$i] ). Elapsed Time: $Elapsed"
-        }
-
-        $Elapsed = $Time.Elapsed
-        Wrap-Action -Type "Complete" -Info "[ Elapsed Time @: $Elapsed ] All Programs Downloaded. "
-
-        While ( $Threads.Invoker.IsCompleted -contains $False ) {}
-        $Elapsed = $Time.Elapsed
-        Wrap-Action -Type "Complete" -Info "[ Elapsed Time @: $Elapsed ] Threads closed."
-
-        $ThreadResults = @()
-        Foreach ( $T in $Threads )
-        {
-		    $Threadresults += $T.Runspace.EndInvoke( $T.Invoker )
-    		$T.Runspace.Dispose()
-        }
-
-        $RSP.Close()
-        $RSP.Dispose()
-    }
 
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 #//- [ /End-Script ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
 #\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
 
-Install-Hybrid ;
-Review-Applications ;
-Execute-Downloads ;
+$BasePath = "HKLM:\Software\Policies\Secure Digits Plus LLC"
 
-
-
-            $i.File | ? { ( Test-Path $_ ) -ne $True } | % {
-            
-                Wrap-Action -Type "Downloading" -Info ( $i.Name ) 
-              
-                [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
-              
-                $Command = IWR -URI ( $i.URL ) -OutFile ( $i.File ) -PassThru
-              
-                # - [ Progress Indicator ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-              
-                For ( $j = 0 ; $j -le 100 ; $j = ( $j + 1 ) % 100 )
-                {   
-            
-                    Write-Progress -Activity "Downloading $( $i.Name )" -PercentComplete $j -Status "$( $j )% Complete"
-                  
-                    Sleep -m 250
-            
-                    If ( $Command.HasExited ) { Return } 
-            
-                }
-
-                If ( $? -eq $false ) { Wrap-Action -Type "Exception" -Info "[!] $( $i.Name ) Download Failed" ; Break }
-            }
-
-            $i.file | ? { ( Test-Path $_ ) -eq $True } | % { Wrap-Action -Type "Detected" -Info "[+] $( $i.Name )" }
-
-            $Hash = ( Get-FileHash -Path $i.File -Algorithm SHA256 ) | ? { $_.Hash -eq $i.Checksum } | % { 
+If ( ( gp $BasePath ) -ne $Null ) 
+{
+    ( $Base , $InstallDate ) = ( gp $BasePath -EA 0 | % { $_.'Hybrid-DSC' , $_."Installation Date" } )
+    
+    If ( ( ( $Base , $InstallDate ) -ne $Null ) -and ( Test-Path $Base ) -eq $True ) 
+    { 
+        Switch( $Host.UI.PromptForChoice( 
+"Change / Refresh / Remove" ,
+" An existing installation was detected        
+                                               
+    [ Hybrid-DSC Location ]                    
+    = = = = = = = = = = =                      
+        $Base                                      
+                                               
+    [ Installation Date ]                      
+    = = = = = = = = =                          
+        $InstallDate                               
+                                            " ,
+        [ System.Management.Automation.Host.ChoiceDescription [] ]@( '&Change' , '&Refresh' , '&Remove' ) , [ Int ] 0 ) )
+        {
+            0 { Wrap-Action "Change" "[+] Selected"
+                RI $BasePath
+                RI $Base -Recurse -Force
+                ( $Base , $BasePath , $InstallDate ) = $Null
+                Install-Hybrid
+                Populate-DSCRoot
+                Review-Applications
+                Download-Applications
+                Read-Host "[+] Installation Complete" 
+                Exit } 
                 
-                Wrap-Action -Type "Validated" -Info "[+] $Check" } 
-            
-            $Hash | ? { $_.Hash -ne $i.Checksum } | % { 
-                
-                Wrap-Action -Type "Exception" -Info "[!] $( $i.Name )" 
-                    
-                Wrap-Action -Type "Removing"  -Info "[!] $Info"
-                
-                RI $i.File -Force
-            } 
+            1 { Wrap-Action "Refresh" "[+] Selected"
+                RI $Base -Recurse -Force
+                NI $Base
+                Populate-DSCRoot
+                Review-Applications
+                Download-Applications
+                Read-Host "[+] Installation Complete" 
+                Exit }
+
+            2 { Wrap-Action "Remove" "[+] Selected"
+                RI $BasePath
+                RI $Base -Recurse -Force 
+                Wrap-Action "Complete" "[+] Installation Removed"
+                Read-Host "Press Enter to Exit" 
+                Exit } 
+        }
+    }
+    If ( $Base -ne $Null -and ( ( Test-Path $Base -EA 0 ) -eq $True ) -and ( ( gci $Base  ).count -eq 0 ) ) 
+    { 
+        Populate-DSCRoot
+        Review-Applications
+        Download-Applications
+        Read-Host "[+] Installation Complete" 
+        Exit
+    }
+}
+
+Else
+{
+    Install-Hybrid
+    Populate-DSCRoot
+    Review-Applications
+    Download-Applications
+    Read-Host "[+] Installation Complete" 
+    Exit
+}
