@@ -14,6 +14,7 @@ Using Namespace System.Security.Principal ;
             [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ]
                 [ String ] $Info ) 
       
+            $fs = " // " ; $bs = " \\ "
             $x = " " * ( 23 - $Type.Length ) ; $y = " " * ( 78 - $Info.Length )
             Echo @( " " * 108 ; $fs + "_-" * 52 + $bs ; $bs + " -" * 52 + $fs )
             Echo "$( $fs + $x + $Type ) : $( $Info + $y + $bs )"
@@ -467,7 +468,7 @@ Using Namespace System.Security.Principal ;
 
 $BasePath = "HKLM:\Software\Policies\Secure Digits Plus LLC"
 
-If ( ( gp $BasePath ) -ne $Null ) 
+If ( ( gp $BasePath -ea 0 ) -ne $Null ) 
 {
     ( $Base , $InstallDate ) = ( gp $BasePath -EA 0 | % { $_.'Hybrid-DSC' , $_."Installation Date" } )
     
