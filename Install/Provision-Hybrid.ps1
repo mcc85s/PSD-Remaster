@@ -287,69 +287,6 @@
 # ____                                                                            _______________________________________________#\__//¯¯\\__//¯¯\\__//
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-    Function Get-WIMName # Retrieves the name of a given Windows Image File       ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-        [ CmdLetBinding () ] Param ( 
-
-            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ][ String ]    $IP , 
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ][ String ]    $ID ) 
-
-        ( Get-WindowsImage -ImagePath $IP ).ImageName } 
-# ____                                                                            _______________________________________________#\__//¯¯\\__//¯¯\\__//
-#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-    Function Get-WIMBuild  # Retrieves the build version number from said WIM     ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-        [ CmdLetBinding () ] Param ( 
-
-            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ][ String ]    $IP , 
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ][ String ]    $ID ) 
-
-        ( Get-WindowsImage -ImagePath $IP -Index $ID ).Version } 
-
-# ____                                                                            _______________________________________________#\__//¯¯\\__//¯¯\\__//
-#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-    Function Import-NewOSImage  # Imports an WIM/Operating System into MDT        ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-        [ CmdLetBinding () ] Param ( 
-
-            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ][ String ] $IP , 
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ][ String ] $SF , 
-            [ Parameter ( Position = 2 , ValueFromPipeline = $True ) ][ String ] $DF ) 
-
-        Import-MDTOperatingSystem -Path $IP -SourceFile $SF -DestinationFolder $DF -Move -VB }
-
-# ____                                                                            _______________________________________________#\__//¯¯\\__//¯¯\\__//
-#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-    Function Import-NewTask   # Imports a dynamic task sequence                   ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-        [ CmdLetBinding () ] Param ( 
-
-            [ Parameter ( Position =  0 , ValueFromPipeline = $True ) ][ String ]    $PSP ,
-            [ Parameter ( Position =  1 , ValueFromPipeline = $True ) ][ String ] $Formal , 
-            [ Parameter ( Position =  2 , ValueFromPipeline = $True ) ][ String ]    $XML , 
-            [ Parameter ( Position =  3 , ValueFromPipeline = $True ) ][ String ]   $Info , 
-            [ Parameter ( Position =  4 , ValueFromPipeline = $True ) ][ String ]     $ID , 
-            [ Parameter ( Position =  5 , ValueFromPipeline = $True ) ][ String ]    $Ver , 
-            [ Parameter ( Position =  6 , ValueFromPipeline = $True ) ][ String ]    $SIP , 
-            [ Parameter ( Position =  7 , ValueFromPipeline = $True ) ][ String ] $TSName , 
-            [ Parameter ( Position =  8 , ValueFromPipeline = $True ) ][ String ]    $Org , 
-            [ Parameter ( Position =  9 , ValueFromPipeline = $True ) ][ String ]    $WWW , 
-            [ Parameter ( Position = 10 , ValueFromPipeline = $True ) ][ String ] $LMCred ) 
-
-        Import-MDTTaskSequence -Path $PSP -Name $Formal -Template $XML -Comments $Info -ID $ID -Version $Ver ` 
-            -OperatingSystemPath $SIP -FullName $TSName -OrgName $Org -HomePage $WWW -AdminPassword $LMCred -VB
-    } 
-
-# ____                                                                            _______________________________________________#\__//¯¯\\__//¯¯\\__//
-#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Collect-Graphics   # Imports a dynamic task sequence                 ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
     { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
                                                                                                                      #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
@@ -376,7 +313,7 @@
         }
         ( $GFX.Banner , $GFX.Background ) = ( $GFX.Banner , $GFX.Background ) | % { "$( $GFX.Path )\$_" }
         Return $GFX
-    }                                                                                                                                #\__//¯¯\\__//¯¯\\
+    }                                                                                                                            #\__//¯¯\\__//¯¯\\
 # ____                                                                            ____________________________________________________/¯¯\\__//¯¯\\__//
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -390,26 +327,9 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Collect-DSCRoot # Collects Hybrid DSC Installation Path              ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
     {
-        $KeyPath = "HKLM:\Software\Policies\Secure Digits Plus LLC"
-        If ( ( Test-Path $KeyPath ) -ne $True )
-        {
-            Install-DSCRoot
-            Return ( gp $KeyPath ).'Hybrid-DSC'
-        } #
-
-        If ( ( Test-Path $KeyPath ) -eq $True )
-        {
-            $DSCKey = ( gp $KeyPath ).'Hybrid-DSC'
-            If ( ( Test-Path $DSCKey ) -ne $True )
-            {
-                RI $KeyPath
-                Install-DSCRoot
-                Return ( gp $KeyPath ).'Hybrid-DSC' 
-            }
-            If ( ( Test-Path $DSCKey ) -eq $True )
-            {
-                Return ( gp $KeyPath ).'Hybrid-DSC'
-            }
+        "HKLM:\Software\Policies\Secure Digits Plus LLC" | % { 
+            If ( ( Test-Path $_ ) -eq $True ) { Return @{ Root = $_ ; Tree = ( gp $_ ).'Hybrid-DSC' } }
+            Else { Install-DSCRoot }
         }
     }
         
@@ -510,7 +430,7 @@
         $GUI.Cancel.Add_Click( { $GUI.DialogResult = $False } )                                                                  #\__//¯¯\\__//¯¯\\__//
                                                                                                                                  #/¯¯\\__//¯¯\\__//¯¯\\
         $GUI.Start.Add_Click( {                                                                                                  #\__//¯¯\\__//¯¯\\__//
-                                                                                                                                 #/¯¯\\__//¯¯\\__//¯¯\\    
+                                                                                                                                 #/¯¯\\__//¯¯\\__//¯¯\\
         "Installation Location" | % { $1 = "You must enter a $_" ; $2 = "$_ Missing" }                                           #\__//¯¯\\__//¯¯\\__//
                                                                                                                                  #/¯¯\\__//¯¯\\__//¯¯\\
         If ( $GUI.Install.Text -eq "" ) { [ System.Windows.MessageBox ]::Show( $1 , $2 ) }                                       #\__//¯¯\\__//¯¯\\__//
@@ -566,7 +486,8 @@
                     }                                                                                                            #\__//¯¯\\__//¯¯\\__//
                 }                                                                                                                #/¯¯\\__//¯¯\\__//¯¯\\
             }
-            Collect-Dependencies                                                                                                 #\__//¯¯\\__//¯¯\\__//
+            Collect-Dependencies
+            "HKLM:\Software\Policies\Secure Digits Plus LLC" | % { Return @{ Root = $_ ; Tree = ( gp $_ ).'Hybrid-DSC' } }       #\__//¯¯\\__//¯¯\\__//
         }                                                                                                                        #/¯¯\\__//¯¯\\__//¯¯\\
     
         Else                                                                                                                     #\__//¯¯\\__//¯¯\\__//
@@ -700,13 +621,59 @@
 
 # ____                                                                            ___________________________________________________//¯¯\\__//¯¯\\__//
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Collect-DSCShare # Downloads dependency programs & files                \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    {
+        $DSCRoot  = @( Collect-DSCRoot )
+        $DSCTrunk = "Hybrid\Desired State Controller"
+        $DSCChild = ( $DSCRoot | % { gci "$( $_.Root )\$DSCTrunk" } ).PSChildName
+
+        $i = $DSCChild
+        If ( $i.Count -gt 1 )
+        {
+            Wrap-Action "Selection" "[~] Multiple Company/Channels Found" 
+            [ System.Windows.Messagebox ]::Show( "Multiple Provisionaries Found" , "Make Selection" )
+                
+            0..( $i.Count - 1 ) | % { Echo "[$_] @: $( $i[$_] )" } 
+            $i  = $( $i[$( Read-Host "Select [#] Company/Channel" )] )
+            $DSCChild = $i
+        }
+        If ( $i.Count -le 0 ) { Install-DSCShare }
+           
+        $DSCChildTrunk = "$( $DSCRoot.Root )\$DSCTrunk\$DSCChild"
+        $DSCChildDrive = ( gci "$DSCChildTrunk" ).PSChildName
+
+        $i = $DSCChildDrive
+
+        If ( $i.Count -gt 1 )
+        { 
+            Wrap-Action "Selection" "[~] Multiple Drives Found" 
+            [ System.Windows.Messagebox ]::Show( "Multiple Drives Found" , "Make Selection" )
+
+                0..( $i.Count - 1 ) | % { Echo "[$_] $( $i[$_] )" } 
+                $DSCShare = $( $i[$( Read-Host "Select [#] of SMBShare/PSDrive" )] ) 
+        }
+        If ( $i.Count -le 0 ) { RI $DSCChildTrunk ; Install-DSCShare }
+        Else
+        {
+            echo @( gp "$DSCChildTrunk\$DSCShare" | % {    
+                            $_.R00_Company ;    $_.R01_UNCRoot ;   $_.R02_Hostname ;   $_.R03_DC_User ;    
+                            $_.R04_DC_Pass ;   $_.R05_WWW_Site ;      $_.R06_Phone ;     $_.R07_Hours ; 
+                               $_.R08_Logo ; $_.R09_Background ;     $_.R10_Branch ;    $_.R11_Domain ; 
+                            $_.R12_LM_User ;    $_.R13_LM_Pass ;      $_.R14_Proxy ;   $_.R15_NetBIOS ; 
+                         $_.R16_DSC_Folder ;    $_.R17_PSDrive ; $_.R18_PSDrive_ID ; $_.R19_BITS_Name ; 
+                          $_.R20_BITS_Pool ;  $_.R21_BITS_Host ;  $_.R22_BITS_Name } )
+        }
+    }
+
+# ____                                                                            ___________________________________________________//¯¯\\__//¯¯\\__//
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Install-DSCShare # Provisions a deployment server                       \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
     { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
                                                                                                                      #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
         $GFX = @( Collect-Graphics )                                                                                         #/¯¯\\__//¯¯\\__//¯¯\\__//
         $Title  = "$( $GFX.Title ) - Deployment Share / BITS / IIS Setup"                                                    #\__//¯¯\\__//¯¯\\__//¯¯\\
-
                                                                                                                                      #/¯¯\\__//¯¯\\__//
 # ____                                ________________________________________________________________________________________________\__//¯¯\\__//¯¯\\
 #//  \\______________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -717,10 +684,9 @@
     $Named = @( 0..4 | % { "r$_"   } ; 0..2 | % { "iis$_" } ; 0..2 | % { "dc$_"  } ;
                 0..3 | % { "p$_"   } ; 0..1 | % { "img$_" } ; 0    | % { "n$_"   } )
 
-    $FirstTags  = @( "" ; "" ; "System Root 'C:\'" ; 
-    @( "Secured" | % { "Deploy Folder '$_'" , "SMB Name '$_$'" , "PSDrive '$_`:'" } ) + "Description '[Dev]'" ; 
-    "" ; "" ; "BITS / IIS Name 'Hybrid'" ; "IIS App Pool 'SecureApp'" ; "Virtual Host / Proxy" ; 
-    "" ; "" ; "NetBIOS Domain" ; @( "User" , "P/W" | % { "Child Admin $_" } ) ) 
+    $FirstTags  = @( "" , "" , "System Root 'C:\'" ; @( "Secured" | % { "Deploy Folder '$_'" , "SMB Name '$_$'" , "PSDrive '$_`:'" } ) + ,
+    "Description '[Dev]'" , "" , "" , "BITS / IIS Name 'Hybrid'" , "IIS App Pool 'SecureApp'" , "Virtual Host / Proxy" , 
+    "" , "" , "NetBIOS Domain" ; @( "Child Admin" | % { "$_ User" , "$_ P/W" } ) )
 
     $FirstOffs  = @( "" ; "" ; @( $Named[0..4] ) + "" ; "" ; @( $Named[5..7] ) + "" ; "" ; @( $Named[8..10] ) )
 
@@ -1116,24 +1082,24 @@
     $1 = $0 | % { "You must enter a $_" } ; $2 = $0 | % { "$_ Missing" } ; 
     $MSG = 0..16 | % { "[ System.Windows.MessageBox ]::Show( '$( $1[$_] )' , '$( $2[$_] )' )" } 
 
-    If     (      $GUI.r0.Text -eq "" ) { IEX $MSG[0] } 
-    ElseIf (      $GUI.r1.Text -eq "" ) { IEX $MSG[1] }
-    ElseIf (      $GUI.r2.Text -eq "" ) { IEX $MSG[2] } 
-    ElseIf (      $GUI.r3.Text -eq "" ) { IEX $MSG[3] } 
-    ElseIf (      $GUI.r4.Text -eq "" ) { IEX $MSG[4] } 
-    ElseIf (    $GUI.iis0.Text -eq "" ) { IEX $MSG[5] }
-    ElseIf (    $GUI.iis1.Text -eq "" ) { IEX $MSG[6] }
-    ElseIf (    $GUI.iis2.Text -eq "" ) { IEX $MSG[7] } 
-    ElseIf (     $GUI.dc0.Text -eq "" ) { IEX $MSG[8] } 
-    ElseIf (     $GUI.dc1.Text -eq "" ) { IEX $MSG[9] } 
+    If     (      $GUI.r0.Text -eq "" ) { IEX $MSG[ 0] } 
+    ElseIf (      $GUI.r1.Text -eq "" ) { IEX $MSG[ 1] } 
+    ElseIf (      $GUI.r2.Text -eq "" ) { IEX $MSG[ 2] } 
+    ElseIf (      $GUI.r3.Text -eq "" ) { IEX $MSG[ 3] } 
+    ElseIf (      $GUI.r4.Text -eq "" ) { IEX $MSG[ 4] } 
+    ElseIf (    $GUI.iis0.Text -eq "" ) { IEX $MSG[ 5] } 
+    ElseIf (    $GUI.iis1.Text -eq "" ) { IEX $MSG[ 6] } 
+    ElseIf (    $GUI.iis2.Text -eq "" ) { IEX $MSG[ 7] } 
+    ElseIf (     $GUI.dc0.Text -eq "" ) { IEX $MSG[ 8] } 
+    ElseIf (     $GUI.dc1.Text -eq "" ) { IEX $MSG[ 9] } 
     ElseIf ( $GUI.dc2.Password -eq "" ) { IEX $MSG[10] } 
     ElseIf (      $GUI.p0.Text -eq "" ) { IEX $MSG[11] } 
     ElseIf (      $GUI.p1.Text -eq "" ) { IEX $MSG[12] } 
-    ElseIf (      $GUI.p2.Text -eq "" ) { IEX $MSG[13] }
+    ElseIf (      $GUI.p2.Text -eq "" ) { IEX $MSG[13] } 
     ElseIf (      $GUI.p3.Text -eq "" ) { IEX $MSG[14] } 
     ElseIf (    $GUI.img0.Text -eq "" ) { IEX $MSG[15] } 
-    ElseIf (    $GUI.img1.Text -eq "" ) { IEX $MSG[16] }
-    ElseIf (      $GUI.n0.Text -eq "" ) { IEX $MSG[17] }
+    ElseIf (    $GUI.img1.Text -eq "" ) { IEX $MSG[16] } 
+    ElseIf (      $GUI.n0.Text -eq "" ) { IEX $MSG[17] } 
     Else { $GUI.DialogResult = $True }})
 
 # ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
@@ -1149,30 +1115,33 @@
 
         $LMCRED = New-Object -TypeName System.Management.Automation.PSCredential -Args $GUI.dc1.Text , $SP 
 
-        $DSC = [ Ordered ]@{R00_Company     =                                          "$( $GUI.p0.Text )" 
-                            R01_UNCRoot     = "\\$( $Env:ComputerName )\$( $GUI.r2.Text.TrimEnd( '$' ) )$" 
-                            R02_Hostname    =                                     "$( $Env:ComputerName )" 
-                            R03_DC_User     =                                      "$( $DCCred.Username )" 
-                            R04_DC_Pass     =                                      "$( $DCCred.Password )" 
-                            R05_WWW_Site    =                                          "$( $GUI.p1.Text )" 
-                            R06_Phone       =                                          "$( $GUI.p2.Text )" 
-                            R07_Hours       =                                          "$( $GUI.p3.Text )" 
-                            R08_Logo        =                                        "$( $GUI.img0.Text )" 
-                            R09_Background  =                                        "$( $GUI.img1.Text )" 
-                            R10_Branch      =                                          "$( $GUI.n0.Text )" 
-                            R11_Domain      =                                    "$( $env:USERDNSDOMAIN )" 
-                            R12_LM_User     =                                      "$( $LMCRED.Username )" 
-                            R13_LM_Pass     =               "$( $LMCRED.GetNetworkCredential().Password )" 
-                            R14_Proxy       =                                     "$( $Env:ComputerName )" 
-                            R15_NetBIOS     =                                       "$( $Env:UserDomain )" 
-                            R16_DSC_Folder  =     "$( $GUI.r0.Text.TrimEnd( '\' ) )\$( ( $GUI.r1.Text ) )" 
-                            R17_PSDrive     =                           "$( $GUI.r3.Text.TrimEnd( ':' ) )" 
-                            R18_PSDrive_ID  =                                          "$( $GUI.r4.Text )" 
-                            R19_BITS_Name   =                                        "$( $GUI.iis0.Text )" 
-                            R20_BITS_Pool   =                                        "$( $GUI.iis1.Text )" 
-                            R21_BITS_Host   =                                        "$( $GUI.iis2.Text )" 
-                            R22_BITS_Root   =                            "https://$( $Env:USERDNSDOMAIN )" }
-        
+        $DSCShare = [ Ordered ]@{
+                                    R00_Company     =                                          "$( $GUI.p0.Text )" 
+                                    R01_UNCRoot     = "\\$( $Env:ComputerName )\$( $GUI.r2.Text.TrimEnd( '$' ) )$" 
+                                    R02_Hostname    =                                     "$( $Env:ComputerName )" 
+                                    R03_DC_User     =                                      "$( $DCCred.Username )" 
+                                    R04_DC_Pass     =                                      "$( $DCCred.Password )" 
+                                    R05_WWW_Site    =                                          "$( $GUI.p1.Text )" 
+                                    R06_Phone       =                                          "$( $GUI.p2.Text )" 
+                                    R07_Hours       =                                          "$( $GUI.p3.Text )" 
+                                    R08_Logo        =                                        "$( $GUI.img0.Text )" 
+                                    R09_Background  =                                        "$( $GUI.img1.Text )" 
+                                    R10_Branch      =                                          "$( $GUI.n0.Text )" 
+                                    R11_Domain      =                                    "$( $env:USERDNSDOMAIN )" 
+                                    R12_LM_User     =                                      "$( $LMCRED.Username )" 
+                                    R13_LM_Pass     =               "$( $LMCRED.GetNetworkCredential().Password )" 
+                                    R14_Proxy       =                                     "$( $Env:ComputerName )" 
+                                    R15_NetBIOS     =                                       "$( $Env:UserDomain )" 
+                                    R16_DSC_Folder  =     "$( $GUI.r0.Text.TrimEnd( '\' ) )\$( ( $GUI.r1.Text ) )" 
+                                    R17_PSDrive     =                           "$( $GUI.r3.Text.TrimEnd( ':' ) )" 
+                                    R18_PSDrive_ID  =                                          "$( $GUI.r4.Text )" 
+                                    R19_BITS_Name   =                                        "$( $GUI.iis0.Text )" 
+                                    R20_BITS_Pool   =                                        "$( $GUI.iis1.Text )" 
+                                    R21_BITS_Host   =                                        "$( $GUI.iis2.Text )" 
+                                    R22_BITS_Root   =                            "https://$( $Env:USERDNSDOMAIN )" }
+
+        $DSC = $DSCShare
+
         $NRoot          = $DSC.R01_UNCRoot 
         $URI            = $DSC.R16_DSC_Folder 
         $SMB            = "$( $GUI.r2.Text.TrimEnd( '$' ) )$" 
@@ -1241,11 +1210,7 @@
             1   
             {   Wrap-Action "Creating" "[+] PowerShell [Deployment/Development] Share"
 
-                $Base    = "HKLM:\SOFTWARE\Policies\Secure Digits Plus LLC\Hybrid\Desired State Controller"
-                $Company = Split-Path -Leaf ( gci $Base ).Name
-                $Drive   = 
-                $Inst = "\Desired State Controller\Secure Digits Plus LLC"
-
+                $Base   = @( Collect-DSCRoot ).Tree
 
 # ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -1397,7 +1362,7 @@
 #    \\____________[ Generate SiteRoot ]_____________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
                                                                                                                      #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
         $SD     = $ENV:SystemDrive
-        $Server = $ENV:SystemDrive
+        $Server = $ENV:ComputerName
 
                  ( $Date , $LogPath ) = ( ( Get-Date -UFormat "%m-%d-%Y" ) , "$Home\Desktop\ACL" ) 
 
@@ -1648,6 +1613,7 @@
         Wrap-Action "Windows" "[+] Images"
         Wrap-Action "Windows" "[!] Images will be available for download soon"
 
+        Return $DSCShare
         }
 
         Else 
@@ -1659,39 +1625,7 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Get-Provisionary
     {
-                  $HKLM = "HKLM:\Software\Policies"
-                $Author = "Secure Digits Plus LLC"
 
-        If ( ( Test-Path "$HKLM\$Author" ) -eq $False ) { Install-DSCRoot }
-        Else                                            
-        { 
-               $DSCRoot = "$HKLM\$Author\Hybrid\Desired State Controller"
-                 $PName = @( $DSCRoot | % { gci $_ -EA 0 } ).PSChildName
-            
-            If ( $PName.Count -gt 1 )
-            {
-                Wrap-Action "Selection" "[~] Multiple Company/Channels Found" 
-                [ System.Windows.Messagebox ]::Show( "Multiple Provisionaries Found" , "Make Selection" )
-                
-                0..( $PName.Count - 1 ) | % { Echo "[$_] @: $( $PName[$_] )" } 
-                $PName  = $( $PName[$( Read-Host "Select [#] Company/Channel" )] ) 
-            }
-        }
-
-        If ( ( Test-Path "$DSCRoot\$PName" ) -eq $False ) { Install-DSCShare }
-        Else
-        {
-                 $Drive = @( gci "$DSCRoot\$PName" ).PSChildName
-
-            If ( $Drive.Count -gt 1 )
-            { 
-                Wrap-Action "Selection" "[~] Multiple Drives Found" 
-                [ System.Windows.Messagebox ]::Show( "Multiple Drives Found" , "Make Selection" )
-
-                0..( $Drive.Count - 1 ) | % { Echo "[$_] $( $Drive[$_] )" } 
-                $Share = $( $Drive[$( Read-Host "Select [#] of SMBShare/PSDrive" )] ) 
-            }
-        }     
 
         $Root = gp ( gci "$DSCRoot\$PName\$Share" ).PSPath
 
@@ -1872,6 +1806,69 @@
 
         Else { Wrap-Action -Type "Exception" -Info "[!] The dialog has failed you sir/ma'am" ; Read-Host "Press Enter to Exit" ; Exit } 
     }
+
+# ____                                                                            _______________________________________________#\__//¯¯\\__//¯¯\\__//
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Get-WIMName # Retrieves the name of a given Windows Image File       ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+        [ CmdLetBinding () ] Param ( 
+
+            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ][ String ]    $IP , 
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ][ String ]    $ID ) 
+
+        ( Get-WindowsImage -ImagePath $IP ).ImageName } 
+# ____                                                                            _______________________________________________#\__//¯¯\\__//¯¯\\__//
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Get-WIMBuild  # Retrieves the build version number from said WIM     ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+        [ CmdLetBinding () ] Param ( 
+
+            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ][ String ]    $IP , 
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ][ String ]    $ID ) 
+
+        ( Get-WindowsImage -ImagePath $IP -Index $ID ).Version } 
+
+# ____                                                                            _______________________________________________#\__//¯¯\\__//¯¯\\__//
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Import-NewOSImage  # Imports an WIM/Operating System into MDT        ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+        [ CmdLetBinding () ] Param ( 
+
+            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ][ String ] $IP , 
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ][ String ] $SF , 
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True ) ][ String ] $DF ) 
+
+        Import-MDTOperatingSystem -Path $IP -SourceFile $SF -DestinationFolder $DF -Move -VB }
+
+# ____                                                                            _______________________________________________#\__//¯¯\\__//¯¯\\__//
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Import-NewTask   # Imports a dynamic task sequence                   ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+        [ CmdLetBinding () ] Param ( 
+
+            [ Parameter ( Position =  0 , ValueFromPipeline = $True ) ][ String ]    $PSP ,
+            [ Parameter ( Position =  1 , ValueFromPipeline = $True ) ][ String ] $Formal , 
+            [ Parameter ( Position =  2 , ValueFromPipeline = $True ) ][ String ]    $XML , 
+            [ Parameter ( Position =  3 , ValueFromPipeline = $True ) ][ String ]   $Info , 
+            [ Parameter ( Position =  4 , ValueFromPipeline = $True ) ][ String ]     $ID , 
+            [ Parameter ( Position =  5 , ValueFromPipeline = $True ) ][ String ]    $Ver , 
+            [ Parameter ( Position =  6 , ValueFromPipeline = $True ) ][ String ]    $SIP , 
+            [ Parameter ( Position =  7 , ValueFromPipeline = $True ) ][ String ] $TSName , 
+            [ Parameter ( Position =  8 , ValueFromPipeline = $True ) ][ String ]    $Org , 
+            [ Parameter ( Position =  9 , ValueFromPipeline = $True ) ][ String ]    $WWW , 
+            [ Parameter ( Position = 10 , ValueFromPipeline = $True ) ][ String ] $LMCred ) 
+
+        Import-MDTTaskSequence -Path $PSP -Name $Formal -Template $XML -Comments $Info -ID $ID -Version $Ver ` 
+            -OperatingSystemPath $SIP -FullName $TSName -OrgName $Org -HomePage $WWW -AdminPassword $LMCred -VB
+    } 
 
 # ____                                                                            _______________________________________________________#\__//¯¯\\__//
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
