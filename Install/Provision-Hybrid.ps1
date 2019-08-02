@@ -1615,9 +1615,8 @@
         ForEach ( $i in $NetFW ) 
         { 
             "v2.0.50727" , "v4.0.30319" | % { 
-            
-                NI -Path $i -Name "$_" 
-                SP -Path "$i" -Name "SystemDefaultTlsVersions" -Type DWORD -Value 1
+                If ( ( Test-Path "$i\$_" ) -ne $True ) { NI -Path $i -Name "$_" } 
+                SP -Path "$i\$_" -Name "SystemDefaultTlsVersions" -Type DWORD -Value 1
             }
         }
 
