@@ -35,7 +35,28 @@
                                                                                                                                          #\__//¯¯\\__//
             Echo @( "" ; ( $fs + ( "¯-" * 54 ) + $bs ) ;                                                                                 #/¯¯\\__//¯¯\\
             "$( $bs + $x + $Type ) : $( $Info + $y + $fs )" ;                                                                            #\__//¯¯\\__//
-            ( $fs + ( "-_" * 54 ) + $bs ) ; "" ) }                                                                                       #/¯¯\\__//¯¯\\
+            ( $fs + ( "-_" * 54 ) + $bs ) ; "" ) 
+    }
+
+# ____                                                                                                                        ___________#/¯¯\\__//¯¯\\
+#//¯¯\\______________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    Function Wrap-Title # Ties this commandlet into Write-Output for styling strings     \\__//  \\__//  \\__//  \\__//  \\__//  \\__//  \\__//  \\__//
+    { #__________________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\
+        
+        [ CmdLetBinding () ] Param ( 
+
+            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ]
+
+                [ String ] $Title )
+
+            $fs = " // " ; $bs = " \\ " ; $th = "[ $Title ]" ; $y  = $th.length ; $x  = 108 - $y
+            If ( $x % 4 -ge 2 ) { $x  = $x - 2 ; $y  = $th.replace( "[" , " [ " ) ; $th = $y }
+            If ( $x % 2 -ge 1 ) { $x  = $x - 1 ; $y  = $th.replace( "]" , " ]" )  ; $th = $y ; $z  = 0 }
+            If ( $z = 1 ) { $z = " -" } Else { $z = "- " } $y = $z * ( $x / 4 ) ; $x = "- " * ( $x / 4 )
+            Echo @( "" ; ( $fs + ( "¯-" * 54 ) + $bs )
+                    "$( $bs + $x + $th + $y + $fs )" )
+    }
                                                                                                                                          #\__//¯¯\\__//
 # ____                                                                                                                        ___________#/¯¯\\__//¯¯\\
 #//¯¯\\______________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -48,8 +69,10 @@
             [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] [ Array ] $Block )                                    #/¯¯\\__//¯¯\\
                                                                                                                                          #\__//¯¯\\__//
                 $fs = " // " ; $bs = " \\ "                                                                                              #/¯¯\\__//¯¯\\
-                Echo @( " " * 112 ; $fs + "=-" * 54 + $bs ; $bs + "-=" * 54 + $fs ) ;                                                    #\__//¯¯\\__//
-                Echo $Block ; Echo @( $bs + "=-" * 54 + $fs ; $fs + "-=" * 54 + $bs ; " " * 112 ) }                                      #/¯¯\\__//¯¯\\
+                Echo @( " " * 112 ; $fs + "=-" * 54 + $bs ; $bs + "-=" * 54 + $fs )                                                      #\__//¯¯\\__//
+                Echo $Block
+                Echo @( $bs + "=-" * 54 + $fs ; $fs + "-=" * 54 + $bs ; " " * 112 ) 
+    }
                                                                                                                                          #\__//¯¯\\__//
 # ____                                                                                                                        ___________#/¯¯\\__//¯¯\\
 #//¯¯\\______________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -61,36 +84,67 @@
                                                                                                                                          #\__//¯¯\\__//
             [Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] [ String ] $Section )                                  #/¯¯\\__//¯¯\\
                                                                                                                                          #\__//¯¯\\__//
-            $z = $Section ; $x = " " * 10 ; $y = " " * ( 94 - $z.Length ) ; Wrap-In ; Echo "$( $fs + $x + $z + $y + $bs )" ; Wrap-In }   #/¯¯\\__//¯¯\\
+            $fs = " // " ; $bs = " \\ " ; $z = $Section ; $x = " " * 10 ; $y = " " * ( 98 - $z.Length )
+            ( $fs + "  " * 54 + $bs )
+            Echo "$( $bs + $x + $z + $y + $fs )" 
+            ( $fs + "  " * 54 + $bs )
+    }
                                                                                                                                          #\__//¯¯\\__//
 # ____                                                                                                                        ___________#/¯¯\\__//¯¯\\
 #//¯¯\\______________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    Function Wrap-ItemIn    #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-    { #__________________//¯¯\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-        [ CmdLetBinding () ] Param (                                                                                                 #\__//¯¯\\__//¯¯\\
-                                                                                                                                         #\__//¯¯\\__//
-            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] [ String ] $Type ,                                    #/¯¯\\__//¯¯\\
-                                                                                                                                         #\__//¯¯\\__//
-            [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ] [ String ] $Info )                                    #/¯¯\\__//¯¯\\
-                                                                                                                                         #\__//¯¯\\__//
-            $x = " " * ( 23 - $Type.Length ) ; $y = " " * ( 78 - $Info.Length ) ; Echo "$( $bs + $x + $Type ) : $( $Info + $y + $fs )" } #/¯¯\\__//¯¯\\
-                                                                                                                                         #\__//¯¯\\__//
+    Function Wrap-ItemIn
+    { 
+
+        [ CmdLetBinding () ] Param (
+
+            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] [ String ] $Type ,
+
+            [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ] [ String ] $Info )
+ 
+            $fs = " // " ; $bs = " \\ " ; $x = " " * ( 25 - $Type.Length ) ; $y = " " * ( 80 - $Info.Length )
+            Echo "$( $bs + $x + $Type ) : $( $Info + $y + $fs )" 
+    }
+
 # ____                                                                                                                        ___________#/¯¯\\__//¯¯\\
 #//¯¯\\______________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    Function Wrap-ItemOut   #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-    { #__________________//¯¯\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-        [ CmdLetBinding () ] Param (                                                                                                 #\__//¯¯\\__//¯¯\\
-                                                                                                                                         #\__//¯¯\\__//
-            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] [ String ] $Type ,                                    #/¯¯\\__//¯¯\\
-                                                                                                                                         #\__//¯¯\\__//
-            [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ][ String ] $Info )                                     #/¯¯\\__//¯¯\\
-                                                                                                                                         #\__//¯¯\\__//
-            $x = " " * ( 23 - $Type.Length ) ; $y = " " * ( 78 - $Info.Length ) ; Echo "$( $fs + $x + $Type ) : $( $Info + $y + $bs )" } #/¯¯\\__//¯¯\\
-                                                                                                                                         #\__//¯¯\\__//
+    Function Wrap-ItemOut
+    {
+
+        [ CmdLetBinding () ] Param (
+
+            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] [ String ] $Type ,
+
+            [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ][ String ] $Info )
+
+            $fs = " // " ; $bs = " \\ " ; $x = " " * ( 25 - $Type.Length ) ; $y = " " * ( 80 - $Info.Length ) 
+            Echo "$( $fs + $x + $Type ) : $( $Info + $y + $bs )" 
+    }
+
+
+# ____                                                                                                                        ___________#/¯¯\\__//¯¯\\
+#//¯¯\\______________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    Function Wrap-Space
+    {
+        [ CmdLetBinding () ] Param (
+
+            [ Switch ] $In ,
+            [ Switch ] $Out )
+
+            $fs = " // " ; $bs = " \\ "
+            If ( $In  ) { Echo @( $fs + ( " " * 108 ) + $bs ) }
+            If ( $Out ) { Echo @( $bs + ( " " * 108 ) + $fs ) }
+    }
+
+# ____                                                                                                                        ___________#/¯¯\\__//¯¯\\
+#//¯¯\\______________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    Function Wrap-Foot
+    {
+        $fs = " // " ; $bs = " \\ " ; Echo @( ( $fs + ( "¯-" * 54 ) + $bs ) ; "" )
+    }
 # ____                                                                                                                        ___________#/¯¯\\__//¯¯\\
 #//¯¯\\______________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
@@ -535,6 +589,16 @@
 # ____                                                                            ___________________________________________________//¯¯\\__//¯¯\\__//
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Extract-Archive # Downloads dependency programs & files    \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    {
+        $Reg = @( Collect-Registry )
+        $7z  = "$( ( $Reg | ? { $_.DisplayName -like "*7-zip*" } ).InstallLocation.TrimEnd('\') )\7z.exe"
+        Return $7Z 
+    }
+
+# ____                                                                            ___________________________________________________//¯¯\\__//¯¯\\__//
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Collect-Dependencies # Downloads dependency programs & files    \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
     { #______________________________________________________________________//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 
@@ -609,11 +673,10 @@
         }
         
         Wrap-Action "Installed" "[+] All Dependencies" 
-        $7z  = "$( ( $Reg | ? { $_.DisplayName -like "*7-zip*" } ).InstallLocation.TrimEnd('\') )\7z.exe"
-        If ( $7z -ne $Null ) { Set-Alias SZ $7Z }
 
         Wrap-Action "Sourcing" "[+] Hybrid-DSC Root Structure"
         IWR -URI "https://securedigitsplus.com/Hybrid-DSC/Hybrid.7z" -OutFile "$Base\Hybrid.7z"
+        Set-Alias SZ "$( Extract-Archive )"
         SZ x "$Base\Hybrid.7z" -o"$Base"
 
         RI "$Base\Hybrid.7z"
@@ -651,19 +714,16 @@
             [ System.Windows.Messagebox ]::Show( "Multiple Drives Found" , "Make Selection" )
 
                 0..( $i.Count - 1 ) | % { Echo "[$_] $( $i[$_] )" } 
-                $DSCShare = $( $i[$( Read-Host "Select [#] of SMBShare/PSDrive" )] ) 
+                $DSCChildDrive = $( $i[$( Read-Host "Select [#] of SMBShare/PSDrive" )] ) 
         }
         If ( $i.Count -le 0 ) { RI $DSCChildTrunk ; Install-DSCShare }
-        Else
-        {
-            echo @( gp "$DSCChildTrunk\$DSCShare" | % {    
-                            $_.R00_Company ;    $_.R01_UNCRoot ;   $_.R02_Hostname ;   $_.R03_DC_User ;    
-                            $_.R04_DC_Pass ;   $_.R05_WWW_Site ;      $_.R06_Phone ;     $_.R07_Hours ; 
-                               $_.R08_Logo ; $_.R09_Background ;     $_.R10_Branch ;    $_.R11_Domain ; 
-                            $_.R12_LM_User ;    $_.R13_LM_Pass ;      $_.R14_Proxy ;   $_.R15_NetBIOS ; 
-                         $_.R16_DSC_Folder ;    $_.R17_PSDrive ; $_.R18_PSDrive_ID ; $_.R19_BITS_Name ; 
-                          $_.R20_BITS_Pool ;  $_.R21_BITS_Host ;  $_.R22_BITS_Name } )
-        }
+
+        Return gp "$( $DSCRoot.Root )\$DSCTrunk\$DSCChild\$DSCChildDrive" | % { 
+        
+            $_.R00_Company ;   $_.R01_UNCRoot ;  $_.R02_Hostname ;    $_.R03_DC_User ;    $_.R04_DC_Pass ;   $_.R05_WWW_Site ; 
+              $_.R06_Phone ;     $_.R07_Hours ;      $_.R08_Logo ; $_.R09_Background ;     $_.R10_Branch ;     $_.R11_Domain ; 
+            $_.R12_LM_User ;   $_.R13_LM_Pass ;     $_.R14_Proxy ;    $_.R15_NetBIOS ; $_.R16_DSC_Folder ;    $_.R17_PSDrive ;  
+         $_.R18_PSDrive_ID ; $_.R19_BITS_Name ; $_.R20_BITS_Pool ;  $_.R21_BITS_Host ;  $_.R22_BITS_Root }
     }
 
 # ____                                                                            ___________________________________________________//¯¯\\__//¯¯\\__//
@@ -1120,7 +1180,7 @@
                                     R01_UNCRoot     = "\\$( $Env:ComputerName )\$( $GUI.r2.Text.TrimEnd( '$' ) )$" 
                                     R02_Hostname    =                                     "$( $Env:ComputerName )" 
                                     R03_DC_User     =                                      "$( $DCCred.Username )" 
-                                    R04_DC_Pass     =                                      "$( $DCCred.Password )" 
+                                    R04_DC_Pass     =                               "System.Security.SecureString" 
                                     R05_WWW_Site    =                                          "$( $GUI.p1.Text )" 
                                     R06_Phone       =                                          "$( $GUI.p2.Text )" 
                                     R07_Hours       =                                          "$( $GUI.p3.Text )" 
@@ -1555,8 +1615,9 @@
         $R    = @( Get-Provisionary ) 
         $R    | % { $DR = "$( $R[16] )" ; $DS = "$DR\$( $R[0] )" }
 
-        $Base = ( gp "HKLM:\Software\Policies\Secure Digits Plus LLC" ).'Hybrid-DSC'
+        $Base = @( Collect-DSCRoot ).Tree
         $Root = ( gci "$Base\Hybrid" ).FullName
+        Set-Alias SZ "$( Extract-Archive )"
 
         Robocopy "$Base\Hybrid" "$DS" /E                                                                                                             
         
@@ -1613,7 +1674,8 @@
         Wrap-Action "Windows" "[+] Images"
         Wrap-Action "Windows" "[!] Images will be available for download soon"
 
-        Return $DSCShare
+        Download-Applications
+
         }
 
         Else 
@@ -1625,35 +1687,19 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Get-Provisionary
     {
-
-
-        $Root = gp ( gci "$DSCRoot\$PName\$Share" ).PSPath
-
-        $R = $Root | % {    $_.R00_Company ;    $_.R01_UNCRoot ;  $_.R02_Hostname   ;    $_.R03_DC_User ;    
-                            $_.R04_DC_Pass ;   $_.R05_WWW_Site ;     $_.R06_Phone   ;      $_.R07_Hours ; 
-                               $_.R08_Logo ; $_.R09_Background ;    $_.R10_Branch   ;     $_.R11_Domain ; 
-                            $_.R12_LM_User ;    $_.R13_LM_Pass ;     $_.R14_Proxy   ;    $_.R15_NetBIOS ; 
-                         $_.R16_DSC_Folder ;    $_.R17_PSDrive ;  $_.R18_PSDrive_ID ;                  }
-        Return $R
-    } 
+        $DSCRoot  = @( Collect-DSCRoot )
+        Return @( Collect-DSCShare )
+    }
 
 # ____                                                                            _______________________________________________#\__//¯¯\\__//¯¯\\__//
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Collect-Applications # Concatenates strings into an indexed hash table       ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
     { #\_________________________________________________________________________________________\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-        $Base = ( gp "HKLM:\Software\Policies\Secure Digits Plus LLC" ).'Hybrid-DSC'                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                             #\__//¯¯\\__//¯¯\\__//¯¯\\
-        If ( ( Test-Path $Base ) -ne $True )                                                                                     #\__//¯¯\\__//¯¯\\__//
-        {                                                                                                                        #/¯¯\\__//¯¯\\__//¯¯\\
-            Wrap-Action "Exception" "[!] Folder not found" ; Read-Host "Press Enter to Exit" ; Exit }                            #\__//¯¯\\__//¯¯\\__//
                                                                                                                                  #/¯¯\\__//¯¯\\__//¯¯\\
-        If ( ( GCI $Base -EA 0 ).Count -eq 0 )                                                                                   #\__//¯¯\\__//¯¯\\__//
-        {                                                                                                                        #/¯¯\\__//¯¯\\__//¯¯\\
-            Wrap-Action "Exception" "[!] Folder found empty" ; Read-Host "Press Enter to Exit" ; Exit }                          #\__//¯¯\\__//¯¯\\__//
-                                                                                                                                 #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
+        $Base = ( gci "$( ( Collect-DSCShare )[16,0] -join "\" )" -Filter "*Applications*" ).FullName                            #\__//¯¯\\__//¯¯\\__// 
+        $Path = "chrome" , "silverlight" , "jre" , "libre" , "mwb" , "flash" , "air" , "reader" , "ccleaner" , "klite" ,  "tv"   #/¯¯\\__//¯¯\\__//¯¯\\ 
+        0..10 | % { "$Base\($_)$($Path[$_])" | % { If ( ( Test-Path $_ ) -ne $True ) { NI "$_" -ItemType Directory } } }         #\__//¯¯\\__//¯¯\\__// 
 # ____                                ___________________________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
 #//  \\______________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
@@ -1669,8 +1715,8 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\____[ Application Versions ]______\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
                                                                                                                      #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-        $V = @( 0..1 | % { "75.0.3770.142" } ; 0..1 | % { "5.1.50907.0" } ; 0..1 | % { "8.0.211" } ;                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//
-        0..1 | % { "6.2.5" } ; "3.8.3.296511612" ; "32.0.0.223" ; "32.0.0.125" ; "2019.012.20064" ; "2019.012.20035" ;       #\__//¯¯\\__//¯¯\\__//¯¯\\
+        $V = @( 0..1 | % { "76.0.3809.87" } ; 0..1 | % { "5.1.50907.0" } ; 0..1 | % { "8.0.211" } ;                      #\__//¯¯\\__//¯¯\\__//¯¯\\__//
+        0..1 | % { "6.2.5" } ; "3.8.3.296511804" ; "32.0.0.223" ; "32.0.0.125" ; "2019.012.20064" ; "2019.012.20035" ;       #\__//¯¯\\__//¯¯\\__//¯¯\\
         "5.60.7307" ; "15.0.4" ; "14.4.2669" )                                                                                   #\__//¯¯\\__//¯¯\\__//
 # ____                                ___________________________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
 #//  \\______________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -1705,21 +1751,21 @@
                                                                                                                                      #\__//¯¯\\__//¯¯\\
         $X = @( "msi" , "exe" , "msp" )[0,0,1,1,1,1,0,0,1,1,1,1,2,1,1,1]                                                             #/¯¯\\__//¯¯\\__//
                                                                                                                                      #\__//¯¯\\__//¯¯\\
-        $P = @( ( GCI $Base -Filter "*Applications" -EA 0 ).FullName | % { ( GCI $_ ).FullName } )[0,0,1,1,3,3,4,4,5,6,7,8,8,9,10,2] #/¯¯\\__//¯¯\\__//
+        $P = @( ( gci $Base ).FullName )[0,0,1,1,3,3,4,4,5,6,7,8,8,9,10,2]                                                           #/¯¯\\__//¯¯\\__//
 # ____                                ________________________________________________________________________________________________\__//¯¯\\__//¯¯\\
 #//  \\______________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\__[ Application Hash Values ]_____\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
                                                                                                                      #\__//__\\__//__\\__//¯¯\\__//¯¯\\
-        $S =            "f5ae4e45ec177ee53513426aabef2d0c0967584c30327678afb6f77535718357" ,  #                 [ Google Chrome x86 ]//¯¯\\__//¯¯\\__//
-                        "a5941959bf0f5058702252d411cf39c2982c751f5b662c48b651d94ce4a7ee19" ,  #                 [ Google Chrome x64 ]\\__//¯¯\\__//¯¯\\
+        $S =            "d8d5c5bab68e4c12fa7b6df631ffd6f6c362f3c67accc81ed31f4dfec257b864" ,  #                 [ Google Chrome x86 ]//¯¯\\__//¯¯\\__//
+                        "4814efd0dbc0a31f00b2ea7eae9d3816260c8bd38611250c83f11ee8cf3f10ec" ,  #                 [ Google Chrome x64 ]\\__//¯¯\\__//¯¯\\
                         "88e1b76bdf799478a72fa27db0bfe7bc5d02cc7e53675967399300448f0e266f" ,  #                   [ Silverlight x86 ]//¯¯\\__//¯¯\\__//
                         "8d263a6f42a378073b6f057f242a42076f9f4082340153c2e27ecc959c5036aa" ,  #                   [ Silverlight x64 ]\\__//¯¯\\__//¯¯\\
                         "47DE97325B8EA90EA9F93E1595CC7F843DA0C9C6E4C9532ABEA3A194CFB621D9" ,  #                          [ Java x86 ]//¯¯\\__//¯¯\\__//
                         "C18CF8F2776B69DC838440AADFAAE36F50717636F38EEC5F1E4A27A8CB4F20FB" ,  #                          [ Java x64 ]\\__//¯¯\\__//¯¯\\
                         "717fb9e17a3feb8af1662e668b919db86fab343303b78f88c7859003056ee010" ,  #                         [ Libre x86 ]//¯¯\\__//¯¯\\__//
                         "9b01f6f382dbb31367e12cfb0ad4c684546f00edb20054eeac121e7e036a5389" ,  #                         [ Libre x64 ]\\__//¯¯\\__//¯¯\\
-                        "8fb48cc837e050197b3274d8a8857d0cb353aebadd1e67952af85879f2363a34" ,  #                  [ Malwarebytes x22 ]//¯¯\\__//¯¯\\__//
+                        "301dcaad2fc3f521c71ec2ade476a835d6e4ec2860d905b434900d56dc4c1b37" ,  #                  [ Malwarebytes x22 ]//¯¯\\__//¯¯\\__//
                         "ee34f7a2ecd40039738861fd331ff9d9c5320a33d61b62ae71e108b78f999892" ,  #                   [ Adobe Flash x22 ]\\__//¯¯\\__//¯¯\\
                         "6718308E10A45176155D0ECC8458BD3606308925B91F26A7D08C148CF52C9DB3" ,  #                     [ Adobe Air x22 ]//¯¯\\__//¯¯\\__//
                         "81953f3cf426cbe9e6702d1af7f727c59514c012d8d90bacfb012079c7da6d23" ,  #               [ Adobe Reader DC x22 ]\\__//¯¯\\__//¯¯\\
@@ -1727,10 +1773,17 @@
                         "00be05f95e08eb4f181ccde15403e782150a616cb93fd74525c99920f53a2cea" ,  #                      [ CCleaner x22 ]\\__//¯¯\\__//¯¯\\
                         "1F6BDE89E752811FDC04492D0F73216720B625E54966B3E350659BABD9AD7A83" ,  #             [ K-Lite Codec Pack x22 ]//¯¯\\__//¯¯\\__//
                         "df26627cc29716b65a3ed72f78d59808244f9bc4ad2624657ddbee79d2baa422"    #                 [ Teamviewer 14 x22 ]\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-        $Item = @( 0..15 )                                                                                                       #/¯¯\\__//¯¯\\__//¯¯\\
-        0..15 | % { $Item[$_] = @{ Name = "$($N[$_]) v$($V[$_])" ; File = "$($P[$_])\$($F[$_]).$($X[$_])" ;                      #\__//¯¯\\__//¯¯\\__//
-        URL = "$($U[$_])" ; Sum = "$($S[$_])"} } Return $Item }                                                                  #/¯¯\\__//¯¯\\__//¯¯\\
+                                                                                                                               
+        $Item = @( 0..15 )                                                                                                       
+        0..15 | % { 
+                    $Item[$_] = @{     Name = "$($N[$_]) v$($V[$_])"
+                                       File = "$($P[$_])\$($F[$_]).$($X[$_])"                     
+                                        URL = "$($U[$_])" 
+                                        Sum = "$($S[$_])" } 
+        }
+         
+        Return $Item 
+    }                                                                  
 # ____                                                                            _______________________________________________#\__//¯¯\\__//¯¯\\__//
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -1764,47 +1817,68 @@
 # ____                                                                            _______________________________________________#\__//¯¯\\__//¯¯\\__//
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//
-    Function Download-Applications # Reaches out to the internet to retrieve the files listed above and verifies the file integrity  \\__//¯¯\\__//¯¯\\
+    Function Download-Applications # Reaches out to the internet to retrieve the files listed above and verifies the file integrity  \\__//¯¯\\__//¯¯\\ # Like a fricken boss or somethin' ¯\_(ツ)_/¯
     { #\_____________________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//
                                                                                                                              #\__//¯¯\\__//¯¯\\__//¯¯\\
-        $Item  = @( Collect-Applications ) ; $Base  = ( GP "HKLM:\Software\Policies\Secure Digits Plus LLC" ).'Hybrid-DSC'       #\__//¯¯\\__//¯¯\\__//
-                                                                                                                                     #\__//¯¯\\__//¯¯\\
-        Wrap-Action "Downloading" "[+] Application Template" ; IPMO BITSTransfer ; $Total = [ System.Diagnostics.Stopwatch ]::StartNew() #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-        $Time  = @( 0..15 ) ; 0..15 | % {                                                                                                #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-            If ( ( Test-Path $Item.File[$_] ) -ne $True )                                                                                #\__//¯¯\\__//
-            {                                                                                                                            #/¯¯\\__//¯¯\\
-                Wrap-Action "Downloading" "$( $Item.Name[$_] )" ; $Time[$_] = [ System.Diagnostics.Stopwatch ]::StartNew()               #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-                Start-BitsTransfer -Source $Item.URL[$_] -Destination $Item.File[$_] -TransferType Download -Description $Item.Name[$_]  #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-                If ( $? -eq $False ) { IWR -Uri $Item.URL[$_] -OutFile $Item.File[$_] }                                                  #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-                $Time[$_].Stop()                                                                                                         #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-                Write-Host -F Cyan "Time Elapsed : $( ( $Time[$_] | Select Elapsed ).Elapsed ) $( $Item.Name[$_] )" } }                  #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-        $Total | % { $_.Stop() ; $T = $_.Elapsed }                                                                                       #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-        $Size    = @( gci "$Base\(5)Applications" -Recurse -File | Select Length | % { $_.Length } | Measure -Sum ).Sum                  #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-        $Rate    = ( ( $Size / 1MB ) / ( ( $T.Minutes * 60 ) + ( $T.Seconds ) ) | % { "{0:n3}" -f $_ } )                                 #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-        Wrap-Action "Downloads Complete" "[ Total Time Elapsed @: $( $T.Elapsed ) @: $Rate MB/sec ]"                                     #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-        0..15 | % { $ID = $( $Item.Name[$_] ) ;                                                                                          #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-        If ( ( Test-Path $Item.File[$_] ) -ne $True ) { Wrap-Action "Exception" "[!] $ID Not Found" }                                    #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-        Else { $Hash = ( Get-FileHash -Path $Item.File[$_] -Algorithm SHA256 ).Hash                                                      #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-                    If ( $Hash -eq $Item.Sum[$_] ) { Wrap-Action "[+] Checksum Valid" "$ID" }                                            #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-                    Else { Wrap-Action "[!] Checksum Invalid" "$ID" ; RI $Item.File[$_] -Force -VB } } }                                 #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
+        $Item  = @( Collect-Applications )
+        $Base  = @( "$( ( Collect-DSCShare )[16,0] -join "\" )" )
+        $Apps  = @( gci $Base -Filter "*Applications" ).FullName                         
 
-        Else { Wrap-Action -Type "Exception" -Info "[!] The dialog has failed you sir/ma'am" ; Read-Host "Press Enter to Exit" ; Exit } 
+        Wrap-Action "Downloading" "[+] Application Template"
+        IPMO BITSTransfer
+        [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
+        $Total = [ System.Diagnostics.Stopwatch ]::StartNew()
+
+        $Time  = @( 0..15 )
+        
+        0..15 | % { 
+
+            If ( ( Test-Path $Item[$_].File ) -ne $True )
+            {
+                Wrap-Action "Downloading" "$( $Item[$_].Name )"
+                $Time[$_] = [ System.Diagnostics.Stopwatch ]::StartNew()
+                
+                $Item[$_] | % { Start-BitsTransfer -Source $_.URL -Destination  $_.File -Description $_.Name 
+                If ( $? -eq $False ) { IWR -Uri $_.URL -OutFile $_.File } }
+
+                $Time[$_].Stop()
+
+                If ( ( Test-Path $Item[$_].File ) -ne $True ) { Wrap-Action "Exception" "[!] $( $Item[$_].Name ) Failed" ; $Check = "No" } 
+                Else 
+                { 
+                    If ( ( Get-FileHash -Path $Item[$_].File -Algorithm SHA256 ).Hash -eq $Item[$_].Sum ) { $Check = "Yes" }
+                    Else { Wrap-Action "Checksum" "[!] $( $Item[$_].Name ) Failed" ; RI $Item[$_].File -Force -VB ; $Check = "No"  } 
+                } 
+
+                If ( $Check -eq "Yes" )
+                {
+                    $ITime   = $Time[$_].Elapsed
+                    $ILength = ( gp $Item[$_].File ).Length
+                    $ISize   = "$( $ILength / 1MB | % { "{0:n1}" -f $_ } )"
+                    $IRate   = ( $ILength / ( $ITime | % { ( $_.Minutes * 60 ) + ( $_.Seconds ) } ) / 1MB ) | % { "{0:n1}" -f $_ }
+                }
+
+                If ( $Check -eq "No" )
+                {
+                    $ITime , $ILength , $ISize , $IRate = 0..3 | % { "N/A" }
+                }
+
+                Wrap-Title   "Item #$( $_ + 1 ) Download Statistics" 
+                Wrap-Section "[ $( $Item[$_].Name ) ]"
+                Wrap-In      "Time" "$ITime"
+                Wrap-Out     "Size" "$ISize MB"
+                Wrap-In      "Rate" "$IRate MB/S"
+                Wrap-Out     "Hash" "Passed? ( $Check )"
+                Wrap-Space -Out
+                Wrap-Foot
+            }
+        }
+
+        $Total | % { $_.Stop() ; $T = $_.Elapsed }
+        $Size    = @( gci $Apps -Recurse -File | Select Length | % { $_.Length } | Measure -Sum ).Sum
+        $Rate    = ( ( $Size / 1MB ) / ( ( $T.Minutes * 60 ) + ( $T.Seconds ) ) | % { "{0:n3}" -f $_ } )
+
+        Wrap-Action "Downloads Complete" "[+] Time: $( $T ) / Size: $( $Size/1GB | % { "{0:n3}" -f $_ } ) GB / AVG-Rate @: $Rate MB/S ]"
     }
 
 # ____                                                                            _______________________________________________#\__//¯¯\\__//¯¯\\__//
@@ -1927,7 +2001,7 @@
         Wrap-Section -Section "( Domain State Controller @ Source )" 
         $Type = @( "Provisionary" ; "( DSC ) Share" ; "( DSC ) Controller" ; @( $Tree[0..5] ) ) 
         $Info = @( $R[0..2] ; $D[0..5] ) 
-        
+
         Wrap-ItemOut $Type[0] $Info[0] 
         Wrap-ItemIn  $Type[1] $Info[1] 
         Wrap-ItemOut $Type[2] $Info[2] 
@@ -2700,7 +2774,6 @@ $Script = @"
                 Echo "Either the user cancelled, or the dialogue failed"
             }
         }   
-
 
     $DCCred = @( Enter-ServiceAccount ) ; Display-TrueColors ; $R = @( Get-Provisionary ) ; 
 
