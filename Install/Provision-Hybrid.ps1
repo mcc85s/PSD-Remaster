@@ -1615,8 +1615,9 @@
         ForEach ( $i in $NetFW ) 
         { 
             "v2.0.50727" , "v4.0.30319" | % { 
-                If ( ( Test-Path "$i\$_" ) -ne $True ) { NI -Path $i -Name "$_" } 
-                SP -Path "$i\$_" -Name "SystemDefaultTlsVersions" -Type DWORD -Value 1
+            
+                NI -Path $i -Name "$_" 
+                SP -Path "$i" -Name "SystemDefaultTlsVersions" -Type DWORD -Value 1
             }
         }
 
@@ -1879,10 +1880,10 @@
 
                 Wrap-Title   "Item #$( $_ + 1 ) Download Statistics" 
                 Wrap-Section "[ $( $Item[$_].Name ) ]"
-                Wrap-In      "Time" "$ITime"
-                Wrap-Out     "Size" "$ISize MB"
-                Wrap-In      "Rate" "$IRate MB/S"
-                Wrap-Out     "Hash" "Passed? ( $Check )"
+                Wrap-ItemIn      "Time" "$ITime"
+                Wrap-ItemOut     "Size" "$ISize MB"
+                Wrap-ItemIn      "Rate" "$IRate MB/S"
+                Wrap-ItemOut     "Hash" "Passed? ( $Check )"
                 Wrap-Space -Out
                 Wrap-Foot
             }
