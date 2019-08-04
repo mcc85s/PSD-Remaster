@@ -18,6 +18,8 @@
 #//__________________________________________________________________________________________________________________________________________\\__//¯¯\\
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
                                                                                                                                      #\__//¯¯\\__//¯¯\\
+    Using Namespace System.Security.Principal
+    Using Namespace System.Security.AccessControl
 
 # ____                                                                                                                        _________________________
 #//¯¯\\______________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -91,7 +93,6 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
     Function Wrap-ItemIn    #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     { 
-
         [ CmdLetBinding () ] Param (
 
             [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] [ String ] $Type ,
@@ -107,7 +108,6 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
     Function Wrap-ItemOut   #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     {
-
         [ CmdLetBinding () ] Param (
 
             [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] [ String ] $Type ,
@@ -143,8 +143,8 @@
 
 # ____                                                                                                                        _________________________
 #//¯¯\\______________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    Function Display-TrueColors # Draws this static string array on the screen ( Will replace with Math at some point )       ¯¯¯\\__//¯¯\\__//¯¯\\__//
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    Function Display-TrueColors # Draws this static string array on the screen ( Will replace with Math at some point )  \\__//¯¯\\__//¯¯\\__//¯¯\\__//
     { #__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
                                                                                                                         #\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
         Wrap-Array -Block @(                                                                                                 #\__//¯¯\\__//¯¯\\__//¯¯\\
@@ -299,61 +299,60 @@
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Add-ACL # Changes permissions of application pool/VHost              ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+    {
        [ CmdletBinding () ] Param ( 
 
             [ String ] $Path , 
 
-                [ System.Security.AccessControl.FileSystemAccessRule ] $AceObject ) 
+                [ FileSystemAccessRule ] $ACL ) 
 
-            $OBJACL =  Get-ACL -Path $SiteRoot ; $OBJACL.AddAccessRule( $AceObject ) ; Set-ACL -Path $Path -AclObject $OBJACL }
+            ( Get-ACL -Path $Path ) | % { $_.AddAccessRule( $ACL ) ; Set-ACL -Path $Path -AclObject $_ }
+    }
 
 # ____                                                                            ____________________________________________________________________
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function New-ACLObject # Generates an ACL and edits its permissions           ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+    {
         [ CmdletBinding () ] Param ( 
 
-            [ String ] $SamAccountName , 
+            [ String ] $SAM , 
 
-                [ System.Security.AccessControl.FileSystemRights  ]               $Permission , 
-                [ System.Security.AccessControl.AccessControlType ]  $AccessControl = 'Allow' , 
-                [ System.Security.AccessControl.InheritanceFlags  ]    $Inheritance =  'None' , 
-                [ System.Security.AccessControl.PropagationFlags  ]    $Propagation =  'None' ) 
+                [ FileSystemRights  ]     $Rights , 
+                [ AccessControlType ]     $Access = 'Allow' , 
+                [ InheritanceFlags  ]    $Inherit =  'None' , 
+                [ PropagationFlags  ]  $Propagate =  'None' ) 
 
             New-Object -TypeName System.Security.AccessControl.FileSystemAccessRule( 
 
-                $SamAccountName , $Permission , $Inheritance , $Propagation , $AccessControl ) } 
+                $SAM , $Rights , $Inherit , $Propagate , $Access ) 
+    } 
 
 # ____                                                                            ____________________________________________________________________
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Collect-Graphics # Collects the background and banner for XAML       ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    {
         $Author     = "Secure Digits Plus LLC"
 
         $GFX = @{ 
-        Author      = $Author                                                                                            #\__//¯¯\\__//¯¯\\__//¯¯\\__//
-        Title       = "[ $Author | Hybrid ] DSC"                                                                             #\__//¯¯\\__//¯¯\\__//¯¯\\
-        Path        = "$Env:Temp\$Author"                                                                                        #\__//¯¯\\__//¯¯\\__//
-        Banner      = "banner.png"                                                                                                   #\__//¯¯\\__//¯¯\\
-        Background  = "background.jpg"                                                                                               #/¯¯\\__//¯¯\\__//
-        Secure      = "https://securedigitsplus.com" }                                                                               #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
+        Author      = $Author
+        Title       = "[ $Author | Hybrid ] DSC"
+        Path        = "$Env:Temp\$Author"
+        Banner      = "banner.png"
+        Background  = "background.jpg"
+        Secure      = "https://securedigitsplus.com" }
+
         $GFX | % { 
             If ( ( Test-Path $_.Path ) -ne $True ) 
-            {                                                                                                                        #/¯¯\\__//¯¯\\__//
-                NI $_.Path -ItemType Directory -Force -VB                                                                            #\__//¯¯\\__//¯¯\\
-                [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12                                  #/¯¯\\__//¯¯\\__//
-                $Site    = "$( $GFX.Secure )/img" | % { "$_/$( $GFX.Banner )" , "$_/$( $GFX.Background )" }                          #\__//¯¯\\__//¯¯\\
-                $Image   = $_.Banner , $_.Background                                                                                 #/¯¯\\__//¯¯\\__//
-                $Out     = @( 0..1 | % { "$( $GFX.Path )\$( $Image[$_] )" } )                                                        #\__//¯¯\\__//¯¯\\
-                Foreach ( $i in 0..1 ) { IWR -URI "$( $Site[$i] )" -OutFile "$( $Out[$i] )" }                                        #/¯¯\\__//¯¯\\__//  
-            }                                                                                                                        #\__//¯¯\\__//¯¯\\
+            {
+                NI $_.Path -ItemType Directory -Force -VB
+                [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
+                $Site    = "$( $GFX.Secure )/img" | % { "$_/$( $GFX.Banner )" , "$_/$( $GFX.Background )" }
+                $Image   = $_.Banner , $_.Background
+                $Out     = @( 0..1 | % { "$( $GFX.Path )\$( $Image[$_] )" } )
+                Foreach ( $i in 0..1 ) { IWR -URI "$( $Site[$i] )" -OutFile "$( $Out[$i] )" }
+            }
         }
         ( $GFX.Banner , $GFX.Background ) = ( $GFX.Banner , $GFX.Background ) | % { "$( $GFX.Path )\$_" }
         Return $GFX
@@ -382,16 +381,9 @@
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Install-DSCRoot # Provisions base folder for Hybrid-DSC to source files \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+    {
         $GFX = @( Collect-Graphics )
         $Title = "$( $GFX.Title ) Root"
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-# ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
-#//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\
-#             Dynamic XAML Content Definitions        ¯¯¯\\__________________________[ Cannot Add Commentary to Static String ]______________________//
-
         [ System.Windows.MessageBox ]::Show( "This folder may be reused for multiple deployment shares" , 
         "Specify a Hybrid-DSC Root folder."  )
 
@@ -464,82 +456,83 @@
                 </StackPanel>
             </StackPanel>
         </Window>
-"@ #________[ Return to Normal Script Mode ]__________________________________________________________________________________________________________
+"@
+
 # ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\____[ Converts the XAML into a Window ]_______//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-        $GUI = Convert-XAMLtoWindow -Xaml $XAML -NamedElement "Install" , "Start" , "Cancel" -PassThru                   #\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                             #\__//¯¯\\__//¯¯\\__//¯¯\\
-        $GUI.Cancel.Add_Click( { $GUI.DialogResult = $False } )                                                                  #\__//¯¯\\__//¯¯\\__//
-                                                                                                                                 #/¯¯\\__//¯¯\\__//¯¯\\
-        $GUI.Start.Add_Click( {                                                                                                  #\__//¯¯\\__//¯¯\\__//
-                                                                                                                                 #/¯¯\\__//¯¯\\__//¯¯\\
-        "Installation Location" | % { $1 = "You must enter a $_" ; $2 = "$_ Missing" }                                           #\__//¯¯\\__//¯¯\\__//
-                                                                                                                                 #/¯¯\\__//¯¯\\__//¯¯\\
-        If ( $GUI.Install.Text -eq "" ) { [ System.Windows.MessageBox ]::Show( $1 , $2 ) }                                       #\__//¯¯\\__//¯¯\\__//
-                                                                                                                                 #/¯¯\\__//¯¯\\__//¯¯\\
-        Else { $GUI.DialogResult = $True } } )                                                                                   #\__//¯¯\\__//¯¯\\__//
-# ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
+
+        $GUI = Convert-XAMLtoWindow -Xaml $XAML -NamedElement "Install" , "Start" , "Cancel" -PassThru
+
+        $GUI.Cancel.Add_Click( { $GUI.DialogResult = $False } )
+
+        $GUI.Start.Add_Click( {
+
+        "Installation Location" | % { $1 = "You must enter a $_" ; $2 = "$_ Missing" }
+
+        If ( $GUI.Install.Text -eq "" ) { [ System.Windows.MessageBox ]::Show( $1 , $2 ) }
+
+        Else { $GUI.DialogResult = $True } } )
+# ____                                                _________________________________________________________________________________________________
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\___[ Synchronizes WPF with Window Element ]___//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-        $Output = Show-WPFWindow -GUI $GUI                                                                               #\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                             #\__//¯¯\\__//¯¯\\__//¯¯\\
-        If ( $Output -eq $True )                                                                                                 #\__//¯¯\\__//¯¯\\__//
-        {                                                                                                                        #/¯¯\\__//¯¯\\__//¯¯\\
-            ( $Base , $Vendor , $Registry ) = ( $GUI.Install.Text , "Secure Digits Plus LLC" , "HKLM:\SOFTWARE\Policies" )       #\__//¯¯\\__//¯¯\\__//
-            $BasePath = "$Registry\$Vendor"                                                                                      #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-            $Base | ? { ( Test-Path $_ ) -ne $True } | % {                                                                       #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-                Wrap-Action "Creating" "[~] Installation Directory"                                                              #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-                NI $_ -ItemType Directory                                                                                        #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-                If ( $_ -eq $False )                                                                                             #/¯¯\\__//¯¯\\__//¯¯\\
-                {                                                                                                                #\__//¯¯\\__//¯¯\\__//
-                    Wrap-Action "Exception" "[!] The directory could not be created"                                             #/¯¯\\__//¯¯\\__//¯¯\\
-                    Read-Host "Press Enter to Exit"                                                                              #\__//¯¯\\__//¯¯\\__//
-                    Exit                                                                                                         #/¯¯\\__//¯¯\\__//¯¯\\
-                }                                                                                                                #\__//¯¯\\__//¯¯\\__//
-                                                                                                                                 #/¯¯\\__//¯¯\\__//¯¯\\
-                Wrap-Action "Created" "[+] Installation Directory"                                                               #\__//¯¯\\__//¯¯\\__//
-            }                                                                                                                    #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-            Sleep -M 100                                                                                                         #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-            $Base | ? { ( Test-Path $_ ) -eq $True } | % {                                                                       #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-                $BasePath | ? { ( Test-Path $_ ) -eq $False } | % {                                                              #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-                    Wrap-Action "Creating" "[~] Registry Entry for Installation path"                                            #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-                    NI -Path $Registry -Name $Vendor -Credential $Cred                                                           #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-                    If ( $? -ne $True )                                                                                          #/¯¯\\__//¯¯\\__//¯¯\\
-                    {                                                                                                            #\__//¯¯\\__//¯¯\\__//
-                        Wrap-Action "Exception" "[!] Registry Entry Creation Failed"                                             #/¯¯\\__//¯¯\\__//¯¯\\
-                        Read-Host "Press Enter to Exit"                                                                          #\__//¯¯\\__//¯¯\\__//
-                        Exit                                                                                                     #/¯¯\\__//¯¯\\__//¯¯\\
-                    }                                                                                                            #\__//¯¯\\__//¯¯\\__//
-                    ( "Hybrid-DSC" , $Base ) , ( "Installation Date" , ( Get-Date ) ) | % {                                      #/¯¯\\__//¯¯\\__//¯¯\\
-                        SP -Path $BasePath -Name $_[0] -Value $_[1]                                                              #\__//¯¯\\__//¯¯\\__//
-                        Wrap-Action "Created" "[+] $_"                                                                           #/¯¯\\__//¯¯\\__//¯¯\\
-                    }                                                                                                            #\__//¯¯\\__//¯¯\\__//
-                }                                                                                                                #/¯¯\\__//¯¯\\__//¯¯\\
+
+        $Output = Show-WPFWindow -GUI $GUI
+
+        If ( $Output -eq $True )
+        {
+            ( $Base , $Vendor , $Registry ) = ( $GUI.Install.Text , "Secure Digits Plus LLC" , "HKLM:\SOFTWARE\Policies" )
+            $BasePath = "$Registry\$Vendor"
+
+            $Base | ? { ( Test-Path $_ ) -ne $True } | % {
+
+                Wrap-Action "Creating" "[~] Installation Directory"
+
+                NI $_ -ItemType Directory
+
+                If ( $_ -eq $False )
+                {
+                    Wrap-Action "Exception" "[!] The directory could not be created"
+                    Read-Host "Press Enter to Exit"
+                    Exit
+                }
+
+                Wrap-Action "Created" "[+] Installation Directory"
+            }
+
+            Sleep -M 100
+
+            $Base | ? { ( Test-Path $_ ) -eq $True } | % {
+
+                $BasePath | ? { ( Test-Path $_ ) -eq $False } | % {
+
+                    Wrap-Action "Creating" "[~] Registry Entry for Installation path"
+
+                    NI -Path $Registry -Name $Vendor -Credential $Cred
+
+                    If ( $? -ne $True )
+                    {
+                        Wrap-Action "Exception" "[!] Registry Entry Creation Failed"
+                        Read-Host "Press Enter to Exit"
+                        Exit
+                    }
+                    ( "Hybrid-DSC" , $Base ) , ( "Installation Date" , ( Get-Date ) ) | % {
+                        SP -Path $BasePath -Name $_[0] -Value $_[1]
+                        Wrap-Action "Created" "[+] $_"
+                    }
+                }
             }
             Collect-Dependencies
-            "HKLM:\Software\Policies\Secure Digits Plus LLC" | % { Return @{ Root = $_ ; Tree = ( gp $_ ).'Hybrid-DSC' } }       #\__//¯¯\\__//¯¯\\__//
-        }                                                                                                                        #/¯¯\\__//¯¯\\__//¯¯\\
+            "HKLM:\Software\Policies\Secure Digits Plus LLC" | % { Return @{ Root = $_ ; Tree = ( gp $_ ).'Hybrid-DSC' } }
+        }
     
-        Else                                                                                                                     #\__//¯¯\\__//¯¯\\__//
-        {                                                                                                                        #/¯¯\\__//¯¯\\__//¯¯\\
-            Wrap-Action "Exception" "[!] The exited or the dialogue failed"                                                      #\__//¯¯\\__//¯¯\\__//
-            Read-Host "Press Enter to Exit"                                                                                      #/¯¯\\__//¯¯\\__//¯¯\\
-            Exit                                                                                                                 #\__//¯¯\\__//¯¯\\__//
+        Else
+        {
+            Wrap-Action "Exception" "[!] The exited or the dialogue failed"
+            Read-Host "Press Enter to Exit"
+            Exit
         }
     }
 
@@ -547,8 +540,7 @@
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Install-Dependencies # Downloads dependency programs & files         ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    { #______________________________________________________________________//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\  
+    {
        [ CmdLetBinding () ] Param ( 
 
             [ Parameter ( Position =  0 , ValueFromPipeline = $True ) ][ String ]     $ID , 
@@ -602,7 +594,7 @@
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Collect-Dependencies # Downloads dependency programs & files         ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    { #______________________________________________________________________//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    {
 
         Wrap-Action "Querying" "Registry for installed applications"
         $Reg     =                                                                       @( Collect-Registry )
@@ -684,7 +676,7 @@
         RI "$Base\Hybrid.7z"
     }
 
-# ____                                                                            ___________________________________________________//¯¯\\__//¯¯\\__//
+# ____                                                                            ____________________________________________________________________
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Collect-DSCShare # Downloads dependency programs & files             ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
@@ -1506,23 +1498,39 @@
 # ____                                                                            ____________________________________________________________________
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-    Function Install-DSCSite # Provisions a deployment server                        \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    { #______________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-        $SD     = $ENV:SystemDrive
-        $Server = $ENV:ComputerName
-        $R      = @( Get-Provisionary )
+    Function Install-DSCSite # Deploys/Autoconfigures BITS/IIS for deployment share  \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    {
+        $SD , $Sys32 , $SRV = $ENV:SystemDrive , "$ENV:SystemRoot\System32" , $ENV:ComputerName
+        $R    = @( Get-Provisionary )
+        $Root = "$SD\inetpub\$( $R[19] )"
+        $Full = "IIS:\Sites\$( $R[19] )\$( $R[21] )"
 
-        $R | % { $SiteName = $_[19] ; $SiteRoot = 
+        $IS = [ Ordered ]@{    
+                    System = [ Ordered ]@{ 
+                                Drive     = $ENV:SystemDrive
+                                Name      = $ENV:ComputerName }
+                    Site   = [ Ordered ]@{ 
+                                Name      = $R[19]
+                                Pool      = $R[20]
+                                VHost     = $R[21]
+                                Root      = $Root
+                                AppData   = "$Root\AppData"
+                                PSPath    = $Full }
+                    Config = [ Ordered ]@{ 
+                                AppHost   = "Machine/Webroot/AppHost"
+                                WebServer = "system.webServer"
+                                SecAuth   = "security/authentication"
+                                AutoStart = "ServerAutoStart"
+                                Static    = "StaticContent" }
+                    Format = [ Ordered ]@{ 
+                                Date      = ( Get-Date -UFormat "%m-%d-%Y" )
+                                Log       = "$Home\Desktop\ACL" } 
+        }
 
-                 ( $Date , $LogPath ) = ( ( Get-Date -UFormat "%m-%d-%Y" ) , "$Home\Desktop\ACL" ) 
+        $IIS = @( $IS | % { $_.System , $_.Site , $_.Config , $_.Format } ).Values
+        
+        $IIS[5,6] | % { If ( ( Test-Path $_ ) -ne $True ) { NI $_ -ItemType Directory } Else { GI $_ } }
 
-        ( $PSP , $SWS , $WSS ) = ( "Machine/Webroot/AppHost" , "System.WebServer" , "Security/Authentication" ) 
-
-                                $Full = "IIS:\Sites\$SiteName\$VHost"
-                                 $SAS = "ServerAutoStart"
-
-        $SiteRoot | ? { ( Test-Path $_ ) -eq $False } | % { NI -Path $_ -ItemType Directory -Name $_ }
 # ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
@@ -1573,129 +1581,127 @@
                                   "Windows-Auth" ) | % { "Web-$_" } ) ; # Allows the WebSite to use NTLM/Kerberos authentication ( Most Secure )     //
         @( "WAS" | % {                      "$_" ; # Series of services that takes HTTP and says "You don't need HTTP. You can use whatever we tell  \\
                               "$_-Process-Model" ; # you to use, cause that's what Windows Process Activation Services means, it's just turning      //
-                                "$_-Config-APIs" } ) ) # HTML into XML and vice versa. Like $Magic = @( David | % { $_ Blaine ; $_ Copperfield } )   \\
+                                "$_-Config-APIs" } ) ) # HTML into XML and vice versa. Like $Magic = "David" | % { "$_ Blaine" ; "$_ Copperfield" }  \\
                                                                                                                                  #____    ____    ___//
 # ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-#    \\____________[ Install Features _______________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                         #\__//¯¯\\__//¯¯\\__//¯¯\\__//
-        Get-WindowsFeature | ? { $_.Name -in $Web } | Select Name , InstallState | ? {                                       #\__//¯¯\\__//¯¯\\__//¯¯\\
-        $_.InstallState -ne "Installed" } | % { Install-WindowsFeature -Name $_.Name }                                           #\__//¯¯\\__//¯¯\\__//
-# ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
+#    \\___________[ Install Features ]_______________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+                                                                                                                    
+        Get-WindowsFeature | ? { $_.Name -in $Web } | Select Name , InstallState | ? {
+            $_.InstallState -ne "Installed" } | % { Install-WindowsFeature -Name $_.Name }
+
+# ____                                                _________________________________________________________________________________________________
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\___________[ Generate Website ]_______________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                         #\__//¯¯\\__//¯¯\\__//¯¯\\__//
-        IPMO WebAdministration                                                                                               #\__//¯¯\\__//¯¯\\__//¯¯\\
-        Get-Website -Name "Default Web Site" -EA 0 | ? { $_.Name -ne $Null -and $_.State -eq 'Started' } | % {                   #\__//¯¯\\__//¯¯\\__//
-        Stop-Website | SP IIS:\Sites\$( $_.Name ) ServerAutoStart False }                                                        #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-# ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
+                                                                                                                    
+        IPMO WebAdministration
+        Get-Website -Name "Default Web Site" -EA 0 | ? { $_.Name -ne $Null -and $_.State -eq 'Started' } | % {
+        Stop-Website | SP IIS:\Sites\$( $_.Name ) ServerAutoStart False }
+
+# ____                                                _________________________________________________________________________________________________
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\___________[ Enable Services ]________________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                         #\__//¯¯\\__//¯¯\\__//¯¯\\__//
-        "MRxDAV" , "WebClient" | % {                                                                                         #\__//¯¯\\__//¯¯\\__//¯¯\\
-        Get-Service -ComputerName $Server -Name $_ -EA 0 } | ? { $_.Status -ne "Running" } | % {                                 #\__//¯¯\\__//¯¯\\__//
-        Set-Service -ComputerName $Server -StartupType Automatic -EA 4 -Status Start -Name $_ }                                  #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-# ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
+
+        "MRxDAV" , "WebClient" | % { Get-Service -Name $_ -EA 0 } | % { If ( $_.Status -ne "Running" ) 
+        { Set-Service -StartupType Automatic -EA 4 -Status Start -Name $_  ; Wrap-Action $_.Name "[+] Service is now Active / Running" }
+        Else { Wrap-Action $_.Name "[+] Service was found Active / Running" } }  
+
+# ____                                                _________________________________________________________________________________________________
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\____________[ Create SitePool ]_______________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                         #\__//¯¯\\__//¯¯\\__//¯¯\\__//
-        New-WebAppPool -Name $SitePool -Force                                                                                #\__//¯¯\\__//¯¯\\__//¯¯\\
-        ( "Enable32BitAppOnWin64" , "True" ) ,                                                                                   #\__//¯¯\\__//¯¯\\__//
-        ( "ManagedRuntimeVersion" , "v4.0" ) ,                                                                                   #/¯¯\\__//¯¯\\__//¯¯\\
-        ( "ManagedPipelineMode" , "Integrated" )  | % {                                                                          #\__//¯¯\\__//¯¯\\__//
-        SP -Path "IIS:\AppPools\$SitePool" -Name $_[0] -Value $_[1] }                                                            #/¯¯\\__//¯¯\\__//¯¯\\
-        Restart-WebAppPool -Name $SitePool                                                                                       #\__//¯¯\\__//¯¯\\__//
-# ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
+
+        $P = $IIS[3]
+        New-WebAppPool -Name $P -Force
+        $SP = ( "Enable32BitAppOnWin64" , "True" ) , ( "ManagedRuntimeVersion" , "v4.0" ) , ( "ManagedPipelineMode" , "Integrated" )
+        $SP | % { SP -Path "IIS:\AppPools\$P" -Name $_[0] -Value $_[1] } ; Restart-WebAppPool -Name $P
+
+# ____                                                _________________________________________________________________________________________________
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\____________[ Start-Website ]_________________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                         #\__//¯¯\\__//¯¯\\__//¯¯\\__//
-        New-Website -Name $SiteName -ApplicationPool $SitePool -PhysicalPath $SiteRoot -Force                                #\__//¯¯\\__//¯¯\\__//¯¯\\
-        Start-Website -Name $SiteName                                                                                            #\__//¯¯\\__//¯¯\\__//
-# ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
-#//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-#    \\________[ Create Virtual Directory ]__________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                         #\__//¯¯\\__//¯¯\\__//¯¯\\__//
-        New-WebVirtualDirectory -Site "$SiteName" -Name "$Vhost" -PhysicalPath "$SiteRoot" -Force                            #\__//¯¯\\__//¯¯\\__//¯¯\\
-        $SI = "IIS:\Sites\$SiteName\$Vhost"                                                                                      #\__//¯¯\\__//¯¯\\__//
-# ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
+                                                                                                                     
+        New-Website -Name $IIS[2] -ApplicationPool $IIS[3] -PhysicalPath $IIS[5] -Force 
+        Start-Website -Name $IIS[2]
+        New-WebVirtualDirectory -Site $IIS[2] -Name $IIS[4] -PhysicalPath $IIS[5] -Force
+
+# ____                                                _________________________________________________________________________________________________
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\___________[ Configure Website ]______________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                         #\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                             #\__//¯¯\\__//¯¯\\__//¯¯\\
-        ( $MWA , $SWS ) = ( "MACHINE/WEBROOT/APPHOST" , "System.WebServer" )                                                     #\__//¯¯\\__//¯¯\\__//
-        ( $WSS , $STC ) = ( "Security/Authentication" ,    "StaticContent" )                                                     #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-        "MACHINE/WEBROOT/APPHOST" , $SiteName , "System.WebServer/webdav/authoring" , "Enabled" , "True" | % {                   #/¯¯\\__//¯¯\\__//¯¯\\
-        Set-WebConfigurationProperty -PSPath $_[0] -Location $_[1] -Filter $_[2] -Name $_[3] -Value $_[4] }                      #\__//¯¯\\__//¯¯\\__//
-                                                                                                                                 #¯¯¯¯¯¯¯¯¯¯¯¯   //¯¯\\
-        "Set Config '$SiteName/$Vhost' /Section:$SWS/webdav/authoringRules /+[Users='*',Path='*',Access='Read,Source'] /Commit:AppHost" | % {   #\\__//
-        $Results = SAPS "$SD\Windows\System32\inetsrv\AppCMD.EXE" -Args $_ -NoNewWindow -PassThru | Out-Null }                                  #//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-        $Collection = ( Get-WebConfigurationProperty -PSPath "$MWA" -Filter "$SWS/$STC" -Name "." ).Collection                   #/¯¯\\__//¯¯\\__//¯¯\\
-        If ( ! ( $Collection | ? { $_.FileExtension -eq ".*" } ) )                                                               #\__//¯¯\\__//¯¯\\__//
-        {                                                                                                                        #/¯¯\\__//¯¯\\__//¯¯\\
-            $Mi = Add-WebConfigurationProperty -PSPath $SI -Filter "$SWS/$STC" -Name "." -Value @{                               #\__//¯¯\\__//¯¯\\__//
-                FileExtension = '.*' ; MimeType = 'Text/Plain' } }                                                               #/¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
+
+        $SP = $IIS[8] , $IIS[2] , "$( $IIS[9] )/webdav/authoring" , "Enabled" , "True"
+        Set-WebConfigurationProperty -PSPath $SP[0] -Location $SP[1] -Filter $SP[2] -Name $SP[3] -Value $SP[4]
+
+        "Set Config '$( $IIS[2] )/$( $IIS[4] )'" , "/Section:$( $IIS[9] )/webdav/authoringRules" , 
+        "/+[Users='*',Path='*',Access='Read,Source']" , "/Commit:AppHost" -join ' ' | % { 
+            SAPS ( gci "$Sys32\inetsrv" "*appcmd.exe" ).FullName -Args $_ -NoNewWindow -PassThru | Out-Null 
+        } 
+
+        $STC  = $IIS[9,12] -join '/' ; $GWCP = ( Get-WebConfigurationProperty -PSPath $Full -Filter $STC -Name "." ).Collection
+        If ( ! ( $GWCP | ? { $_.fileExtension -eq ".*" } ) ) 
+        {   Add-WebConfigurationProperty -PSPath $Full -Filter $STC -Name "." -Value @{ fileExtension = '.*' ; mimeType = 'Text/Plain' } 
+            Wrap-Action "Web Config" "[+] [ fileExtension: '.*' ] / [ mimeType: 'Text/Plain' ]" }
+
 # ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\_________[ More Configure Website ]___________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                         #\__//¯¯\\__//¯¯\\__//¯¯\\__//
-        "/$SWS/DirectoryBrowse" , "Enabled" , "IIS:\Sites\$SiteName\$VHost" , $True | % {                                    #\__//¯¯\\__//¯¯\\__//¯¯\\
-        Set-WebConfigurationProperty -Filter $_[0] -Name $_[1] -PSPath $_[2] -Value $_[3] }                                      #\__//¯¯\\__//¯¯\\__//
-                                                                                                                                     #\__//¯¯\\__//¯¯\\
-        $TGT = "anonymousAuthentication" , "windowsAuthentication" , +                                                                   #\__//¯¯\\__//
-        @( "webdav/authoring" | % { "$_`Rules" ; ( @( "$_/Properties" ) * 2 ) } ) +                                                      #/¯¯\\__//¯¯\\
-        @( ( $SRF = "security/RequestFiltering" ) | % { @( "$_/FileExtensions" ) * 2  + @( "$_/Verbs" ) * 2 } )                          #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-        $WCP = @{ 0 = "$SiteName/$VHost" , "$SWS/$WSS/$( $TGT[0] )" ,                    "Enabled" ,    "False"                          #\__//¯¯\\__//
-                  1 = "$SiteName/$VHost" , "$SWS/$WSS/$( $TGT[1] )" ,                    "Enabled" ,     "True"                          #/¯¯\\__//¯¯\\
-                  2 = "$SiteName/"       , "$SWS/$(      $TGT[2] )" ,            "DefaultMimeType" , "Text/XML"                          #\__//¯¯\\__//
-                  3 = "$SiteName/$VHost" , "$SWS/$(      $TGT[3] )" , "AllowInfinitePropfindDepth" ,     "True"                          #/¯¯\\__//¯¯\\
-                  4 = "$SiteName"        , "$SWS/$(      $TGT[4] )" , "AllowInfinitePropfindDepth" ,     "True"                          #\__//¯¯\\__//
-                  5 = "$SiteName/$VHost" , "$SWS/$(      $TGT[5] )" ,              "applyToWebDAV" ,    "False"                          #/¯¯\\__//¯¯\\
-                  6 = "$SiteName/"       , "$SWS/$(      $TGT[6] )" ,              "applyToWebDAV" ,    "False"                          #\__//¯¯\\__//
-                  7 = "$SiteName/$VHost" , "$SWS/$(      $TGT[7] )" ,              "applyToWebDAV" ,    "False"                          #/¯¯\\__//¯¯\\
-                  8 = "$SiteName/"       , "$SWS/$(      $TGT[8] )" ,              "applyToWebDAV" ,    "False" }                        #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-        ForEach ( $i in $WCP ) {                                                                                                         #\__//¯¯\\__//
-        Set-WebConfigurationProperty -PSPath $MWA -Location $i[0] -Filter $i[1] -Name $i[2] -Value $i[3] }                               #/¯¯\\__//¯¯\\
-                                                                                                                                         #\__//¯¯\\__//
-        $i = Get-IISConfigSection | ? { $_.SectionPath -like "*$SWS/$SRF*" } | Get-IISConfigElement -ChildElementName 'HiddenSegments'   #/¯¯\\__//¯¯\\
-                                                                                                                                         #\__//¯¯\\__//
-        Set-IISConfigAttributeValue -ConfigElement $i -AttributeName "applyToWebDAV" -AttributeValue $False                              #/¯¯\\__//¯¯\\
+
+        $SP = "/$( $IIS[9] )/DirectoryBrowse" , "Enabled" , $Full , $True  
+        Set-WebConfigurationProperty -Filter $SP[0] -Name $SP[1] -PSPath $SP[2] -Value $SP[3]
+
+        $Path   = @(    @( $IIS[9,10] -join "/" ) * 2 ; 
+                        @( $IIS[9] , "webdav/authoring" -join '/' ) * 3 ; 
+                        @( $IIS[9] , "security/requestFiltering" -join '/' ) * 4 ) 
+    
+        $Leaf   = @( "anonymous" , "windows" | % { "/$_`Authentication" } ; "Rules" ; 
+                        @( "/properties" ) * 2 ; 
+                        @( "/fileExtensions" ) * 2 ; 
+                         @( "/verbs" ) * 2 )
+        $SP = @{
+        PSPath   = @( $IIS[8] ) * 9 
+        Location = @( "$( $IIS[2] )" | % { "$_/" , "$_/$( $IIS[4] )" , "$( $IIS[2] )" } )[1,1,0,1,2,1,0,1,0]
+        Filter   = 0..8 | % { "$( $Path[$_] )$( $Leaf[$_] )" }
+        Name     = @( @( "enabled" ) * 2 ; "defaultMimeType" ; @( "allowInfinitePropfindDepth" ) * 2 ; @( "applyToWebDAV" ) * 4 )
+        Value    =  @( "False" ; "True" ; "Text/XML" ; @( "True" ) * 2 ; @( "False" ) * 4 ) }
+
+        0..8 | % { $I = @{  PSPath   =      $SP.PSPath[$_]
+                            Location =    $SP.Location[$_]
+                            Filter   =      $SP.Filter[$_]
+                            Name     =        $SP.Name[$_]
+                            Value    =       $SP.Value[$_] }
+
+                    Wrap-Title   "Setting WebConfiguration #$( $_ + 1 )"
+                    Wrap-Space -In
+                    Wrap-ItemIn  "Location" "$( $I.Location )"
+                    Wrap-ItemOut "Filter"   "$( $I.Filter )"
+                    Wrap-ItemIn  "Name"     "$( $I.Name )"
+                    Wrap-ItemOut "Value"    "$( $I.Value )"
+                    Wrap-Space -Out
+                    Wrap-Foot
+                    Set-WebConfigurationProperty @i
+        }
+
+        $SP = "$( $IIS[9] )/security/requestFiltering" ; $HS = "hiddenSegments" ; $ATWD = "applytoWebDAV"
+        ( Get-IISConfigSection | ? { $_.SectionPath -like "*$SP*" } | Get-IISConfigElement -ChildElementName $HS ) | % { 
+        Set-IISConfigAttributeValue -ConfigElement $_ -AttributeName $ATWD -AttributeValue $False }
                                                                                                                                      #/¯¯\\__//¯¯\\__//
 # ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\_________[ Configure Access Control ]_________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-                                                                                                                     #\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-        $AppData = "$SiteRoot"                                                                                           #\__//¯¯\\__//¯¯\\__//¯¯\\__//
-        'IIS_IUSRS', 'IUSR', "IIS APPPOOL\$SitePool" | % { 
-            $Obj = New-AclObject -SamAccountName $_ -Permission 'ReadAndExecute' -Inheritance 'ContainerInherit' , 'ObjectInherit' ; 
-            Add-Acl -Path $SiteRoot -AceObject $Obj } 
 
-        'IIS_IUSRS', "IIS APPPOOL\$SitePool"         | % { 
-            $Obj = New-AclObject -SamAccountName $_ -Permission 'Modify' -Inheritance 'ContainerInherit' , 'ObjectInherit' ; 
-            Add-Acl -Path $AppData  -AceObject $Obj } 
+        'IIS_IUSRS', 'IUSR', "IIS APPPOOL\$( $IIS[3] )" | % { 
+            $ACL = New-AclObject -SAM $_ -Rights 'ReadAndExecute' -Inherit 'ContainerInherit' , 'ObjectInherit' 
+            Add-Acl -Path $IIS[5] -ACL $ACL } 
+
+        'IIS_IUSRS', "IIS APPPOOL\$( $IIS[3] )"         | % { 
+            $ACL = New-AclObject -SAM $_ -Rights 'Modify' -Inherit 'ContainerInherit' , 'ObjectInherit' 
+            Add-Acl -Path $IIS[6] -ACL $ACL } 
 
 # ____                                                ___________________________________________________________________________#/¯¯\\__//¯¯\\__//¯¯\\
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -1741,8 +1747,9 @@
         { 
             "v2.0.50727" , "v4.0.30319" | % { 
             
-                NI -Path $i -Name "$_" 
-                SP -Path "$i" -Name "SystemDefaultTlsVersions" -Type DWORD -Value 1
+                If ( ( Test-Path $i ) -ne $True )
+                { NI -Path $i -Name "$_" }
+                  SP -Path $i -Name "SystemDefaultTlsVersions" -Type DWORD -Value 1
             }
         }
     }
@@ -2839,7 +2846,10 @@ $Script = @"
             }
         }
 
-    $DCCred = @( Enter-ServiceAccount ) ; Display-TrueColors ; $R = @( Get-Provisionary ) ; 
+    #gcim Win32_OperatingSystem | % { 
+    
+       # If ( $_.Caption -notlike "*Server*" ) { Wrap-Action "Invalid System" "[!] Server OS Required" ; Exit }
+       # Else { $DCCred = @( Enter-ServiceAccount ) ; Display-TrueColors ; $R = @( Get-Provisionary ) } 
 
 # ____                                                                            ___________________________________________________#/¯¯\\__//¯¯\\__//
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
