@@ -33,7 +33,7 @@
             [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ][ String ] $Info )
 
             $fs = " // " ; $bs = " \\ " ; $x = " " * ( 25 - $Type.Length ) ; $y = " " * ( 80 - $Info.Length )
-
+            
             Echo @( "" ; ( $fs + ( "¯-" * 54 ) + $bs ) ;
             "$( $bs + $x + $Type ) : $( $Info + $y + $fs )" ;
             ( $fs + ( "-_" * 54 ) + $bs ) ; "" ) 
