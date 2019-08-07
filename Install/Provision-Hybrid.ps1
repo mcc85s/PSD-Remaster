@@ -123,7 +123,7 @@
     Function Display-TrueColors # Draws this static string array on the screen ( Will replace with Math at some point )   ¯¯¯\\__//¯¯\\__//__\\__//¯¯\\
     {                           # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
         Wrap-Array -Block @(
-        " \\                                                                                                              // " ;
+        " \\  __________________________________________________________________________________________________________  // " ;
         " // /¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\ \\ " ;
         " \\ \__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__/ // " ;
         " // /¯¯\\                                                                                                  //¯¯\ \\ " ;
@@ -140,7 +140,7 @@
         " \\ \__//    \\      *     *     *     *     *      ]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
         " // /¯¯\\    //   *     *     *     *     *     *   ]________________________________________________\\    //¯¯\ \\ " ;
         " \\ \__//    \\      *     *     *     *     *      ]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
-        " // /¯¯\\    //   *     *     *     *     *     *   ]________ Network & Hardware Magistration _______\\    //¯¯\ \\ " ;
+        " // /¯¯\\    //   *     *     *     *     *     *   ]_______[ Network & Hardware Magistration ]______\\    //¯¯\ \\ " ;
         " \\ \__//    \\     What America Once Stood For     ]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
         " // /¯¯\\    //_____________________________________]________________________________________________\\    //¯¯\ \\ " ;
         " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
@@ -154,7 +154,7 @@
         " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
         " // /¯¯\\    //___________[=]\_/[=]\_/[=]\_/[=]\_/[=]\__/[=]\__/[=]\_/[=]\_/[=]\_/[=]\_/[=]__________\\    //¯¯\ \\ " ;
         " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯[=]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯[=]¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
-        " // /¯¯\\    //___________[=]  0 8 / 0 6 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R   [=]__________\\    //¯¯\ \\ " ;
+        " // /¯¯\\    //___________[=]  0 8 / 0 7 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R   [=]__________\\    //¯¯\ \\ " ;
         " \\ \__//    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    \\__/ // " ;
         " // /¯¯\\                                [ A Heightened Sense Of Security ]                                //¯¯\ \\ " ;
         " \\ \__//                                ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯                                \\__/ // " ;
@@ -1336,7 +1336,7 @@
 # ____                                                _________________________________________________________________________________________________
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-#    \\___[ Building Linked Hybrid-DSC Tool Set ]____//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//       
+#    \\__[ Create/Detect/Select Tool Subdirectory ]__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//       
 #     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
             Wrap-Action "Building" "[+] Tools"
 
@@ -1666,7 +1666,7 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\________________[ Services ]__________________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-        $Web = @(                   "Web-Server" ; # Installs the base 'Web Server functions ... ( $SE = Self Explanatory )
+        $Web = @(                   "Web-Server" ; # Installs the base Web Server functions ... ( $SE = Self Explanatory )
                                    "DSC-Service" ; # Installs the Desired State Configuration Service
                                       "FS-SMBBW" ; # Updates the file system to allow for Samba Bandwidth to be differentially allocated
                                "ManagementOData" ; # Creates an ASP.NET Web Service end point that exposes your management data ( Raw Doggin' it )
@@ -1675,35 +1675,35 @@
         @( "BITS" | % {                     "$_" ; # Background Intelligent Transfer Service - Sends/Receives files without being annoying
                                     "$_-IIS-Ext" ; # Extension for BITS to be used in Internet Information Services
                                 "RSAT-$_-Server" } ) ; # Allows for the remote administration of BITS, but in a less cool way than RDP
-        @(  "Net" | % { "$_-Framework-45-ASPNET" ; # It's what you need to run any ASP.Net webpage in IIS
-                      "$_-WCF-HTTP-Activation45" } ) ; # It's the Windows Communication Foundation's way of attempting to be important
+        @(  "Net" | % { "$_-Framework-45-ASPNET" ; # It's what you need to run any ASP.Net webpage or application in IIS
+                      "$_-WCF-HTTP-Activation45" } ) ; # It's the Windows Communication Foundation's way of trying to remain relevant ( Like Netscape )
         @(                         @(  "App-Dev" ; # Application Development Module for IIS/Web
                                        "AppInit" ; # Initializes any WPF/C#/ASP applications for instance, MVC, or what have you.
                                      "Asp-Net45" ; # Another Module for ASP
                                     "Basic-Auth" ; # Allows for authentication that could be considered 'Basic'
-                                   "Common-Http" ; # A bunch of functions that the 'machine/operating system' converts into 'visual objects'
+                                   "Common-Http" ; # A bunch of functions that the 'machine/operating system' converts into 'stuff you see'
                                 "Custom-Logging" ; # Allows for customized logging of whatever happens on your web server
                                 "DAV-Publishing" ; # Publishes WebDAV modules to use/distribute to other machines/systems
                                    "Default-Doc" ; # Falls under $SE
-                                   "Digest-Auth" ; # More advanced than Basic authentication, but still pretty fkin basic...
+                                   "Digest-Auth" ; # More advanced than Basic authentication ? But still pretty fricken basic...
                                   "Dir-Browsing" ; # Allows any authenticated user to browse the contents of the web directory
                                      "Filtering" ; # Mime Types and things of that nature
                                         "Health" ; # If you don't understand how $SE this is..? Go outside. Stop trying to program or read scripts.
                     @( "HTTP" | % {  "$_-Errors" ; # Falls under the above entry
                                     "$_-Logging" ; # Also falls under that same entry
-                                   "$_-Redirect" ; # Works with WebDAV to keep people on the outside guessing what the hell is happening
+                                   "$_-Redirect" ; # Works with WebDAV to keep people on the outside guessing what the hell is happening ( Like 404/403 )
                                     "$_-Tracing" } ) ; # Like tracert but for 'tracking the IP addresses attempting to access the site'
                                       "Includes" ; # It allows static content to be more dynamic, without messing up the content
                    @( "ISAPI" | % {     "$_-Ext" ; # APPCMD.EXE ... and WebConfig, basically.
-                                     "$_-Filter" } ) ; # Allows 'Shell or VBScript to look through the content of WebConfig data. Similar to XML.
+                                     "$_-Filter" } ) ; # Allows Turtle Power or VBScript to look through the content of WebConfig data. Similar to XML.
                                  "Log-Libraries" ; # Pretty $SE if you ask me
-                                      "Metabase" ; # Like a database, but for business or server side analytics... It's like CEIP without the OS
+                                      "Metabase" ; # Like a database, but for business or server side analytics... It's like CEIP for IIS.
                                   "Mgmt-Console" ; # Also rather $SE
-                                     "Net-Ext45" ; # Yet another extension for ASP.Net to work with your website. Probably for turning C# into html
+                                     "Net-Ext45" ; # Yet another extension for ASP.Net 4.5 to work with in IIS. Probably for turning C # into 'pseudo html'
                                    "Performance" ; # $SE continued
                                "Request-Monitor" ; # An analytical logbook that specifically logs SSI requests, pretty sure anyway
                                       "Security" ; # What every website should use, but, may not unless you've studied how to use it
-                              "Stat-Compression" ; # Takes statistics and zips em up
+                              "Stat-Compression" ; # Takes statistics and zips em up. Like a fricken boss or somethin' . . .
                                 "Static-Content" ; # Works with Web-Includes
                                       "Url-Auth" ; # Similar to when you log into Gmail
                                      "WebServer" ; # The service that is nearly an exact replica of Apache
@@ -1738,19 +1738,23 @@
 #    \\___________[ Enable Services ]________________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                 "MRxDAV" , "WebClient" | % { Get-Service -Name $_ -EA 0 } | % { If ( $_.Status -ne "Running" ) 
-                { Set-Service -StartupType Automatic -EA 4 -Status Start -Name $_  ; Wrap-Action $_.Name "[+] Service is now Active / Running" }
-                Else { Wrap-Action $_.Name "[+] Service was found Active / Running" } }  
+                { Set-Service -StartupType Automatic -EA 4 -Status Running -Name $_  ; Wrap-Action $_.Name "[+] Service is now Active / Running" }
+                Else { Wrap-Action $_.Name "[+] Service was already Active" } }  
 
 # ____                                                _________________________________________________________________________________________________
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\____________[ Create SitePool ]_______________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//
 #     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                If ( ( Get-IISAppPool -Name $IIS[3] ) -ne $Null ) { Wrap-Action "Removing" "[!] Prior Application Pool" ; Remove-WebAppPool -Name $IIS[3] }
+                If ( ( Get-IISAppPool -Name $IIS[3] ) -ne $Null )
+                { Wrap-Action "Removing" "[!] Prior Application Pool" ; Remove-WebAppPool -Name $IIS[3] }
+
                 New-WebAppPool -Name $IIS[3] -Force
                 Wrap-Action "Configuring" "[~] Application Pool Settings"
+
                 $SP = ( "Enable32BitAppOnWin64" , "True" ) , ( "ManagedRuntimeVersion" , "v4.0" ) , ( "ManagedPipelineMode" , "Integrated" )
                 $SP | % { SP -Path "IIS:\AppPools\$( $IIS[3] )" -Name $_[0] -Value $_[1] }
+
                 Restart-WebAppPool -Name $IIS[3]
 
 # ____                                                _________________________________________________________________________________________________
@@ -2044,11 +2048,13 @@
 
         $SC = "Server" , "Client" ; $Drive = ( $R[17] )
 
-        $MDT = @( "MDTProvider" ; $Drive ; "Administrators" ; 
+        $M = @( "MDTProvider" ; $Drive ; "Administrators" ; 
         @( $SC | % { "$( $Drive ):\Operating Systems\$_" } ) +
         @( $SC | % { "$( $Drive ):\Task Sequences\$_" } ) + 
         "$( $R[16] )" ; "$( $R[1].Split('\')[-1] )" ; "$( $R[1] )" ; 
                @( "Boot" ; ( $SC | % { "Operating Systems\$_" } ) + "Scripts" ; "Control" ) | % { "$DR\$_" } ; "$( $R[0] ) $( $R[18] )" )
+
+        NDR -Name $M[1] -PSProvider $M[0] -Root $M[7] -Description $R[18] -NetworkPath $M[9]
 
 # ____                                                _________________________________________________________________________________________________
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -2089,7 +2095,7 @@
 #     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
         Wrap-Action "Provision" "[~] Images"
 
-        $DI    = $d[2] 
+        $DI    = $d[2]
         $DT    = @( $SC | % { "$DR\Operating Systems\$_" } | % { If ( ( Test-Path $_ ) -ne $True ) { NI $_ -ItemType Directory } Else { GI $_ } } ).FullName
         $Date  = "$( Get-Date -UFormat "%Y%m%d" )" , "( $( Get-Date -UFormat "%m-%d-%Y" ) MC-SDP )" 
         $Tag   = @( "DC2016" ; @( "E" , "H" , "P" | % { "$_`64" ; "$_`86" } | % { "10$_" } ) )
@@ -2338,8 +2344,7 @@
             {
                 If ( $_ -in 0..3 ) { NI -Path $Parent -Enable "True" -Name $Child -Comments "$( $Date[1] )" -ItemType "Folder" -VB }
                 If ( $_ -in 4..5 ) { NI -Path "$Parent\$Child" -ItemType Directory -VB }
-            } 
-            Sleep -M 200
+            }
         } 
 
 # ____                                                                            ____________________________________________________________________
@@ -2347,58 +2352,76 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #    \\___[ Purges all Outdated Operating System or Task Sequence Child Items ]__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-        
-        ForEach ( $i in 0..5 ) { $P = $PSD[$i] ; ForEach ( $j in @( GCI $P ) ) { RI "$P\$( $j.PSChildName )" -VB } }
- 
+        ForEach ( $i in 0..3 ) 
+        { 
+            $P = $PSD[$i] ; ForEach ( $j in @( GCI $P ) ) { RI "$P\$( $j.PSChildName )" -VB } 
+        }
 
-        ForEach ( $i in 0..1 ) { $U , $P , $F , $W = $Update.Full[$_] , $PSD[$_] , $SC[$_] , $WIM.Build[$_]
+        ForEach ( $i in 4..5 )
+        {
+            $P = $PSD[$i] ; ForEach ( $j in @( GCI $P ) ) { RI $j.FullName -Recurse -Force }
+        }
+
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\______________[ Import/Recycle the Updated DISM Images ]__________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        ForEach ( $i in 0..1 ) 
+        { 
+            $U , $P , $F , $W = $Update.Full[$i] , $PSD[$i] , $SC[$i] , $WIM.Build[$i]
             If ( ( Test-Path $U ) -ne $True ) { Wrap-Action "Image Missing" "[!] $U" } 
-            Else { Wrap-Action "Image Found" "[+] $U" ; Import-NewOSImage -IP $P -SF $U -DF "$F\$W" }
-        } 
+            Else                              { Wrap-Action "Image Found"   "[+] $U" 
+                                                Import-NewOSImage -IP $P -SF $U -DF "$F\$W" } 
+        }
  
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\______[ Selects whether to use MDT or PSD Task Sequence Templates ]_______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
         If ( ( GCI "$dr\Tools\Modules" -Filter "*PSD*" -EA 0 ) -ne $Null ) { $T = @( $SC | % { "PSD$_`Mod.xml" } ) }
-        Else { $T = @( $SC | % { "PSD$_`Mod.xml" } ) } }
-        
-        $ServerXML = $TemplateXML[0]
-        $ClientXML = $TemplateXML[1] 
+        Else                                                               { $T = @( $SC | % { "MDT$_`Mod.xml" } ) }
                     
-        $Server    = @{ List   = @( GCI $PSD[0] -EA 0 )
-                        Temp   = @( "$di\Control\$ServerXML" ) } 
+        $Server = @{ List = @( GCI $PSD[0] -EA 0 ) ; Temp = @( "$di\Control\$( $T[0] )" ) } 
+        $Client = @{ List = @( GCI $PSD[1] -EA 0 ) ; Temp = @( "$di\Control\$( $T[1] )" ) } 
         
-        $Client    = @{ List   = @( GCI $PSD[1] -EA 0 ) 
-                        Temp   = @( "$di\Control\$ClientXML" ) } 
-        
-        0..6 | % { 
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\______________[ Prepare the Import-NewTask Variables ]____________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        ForEach ( $i in 0..6 ) 
+        {
+            If ( $i -eq 0 ) 
+            { $Server | % { $XML , $PSP , $SIP , $GUID = 
+            @( GC $_.Temp ) , $MDT[5] , "$( $MDT[3] )\$( $_.List.Name )" , $_.List.GUID } }
             
-            If ( $_ -eq 0 ) 
-            { 
-                $XML  = @( GC $Server.Temp ) 
-                $PSP  = $MDT[5]
-                $SIP  = "$( $MDT[3] )\$( $Server.List.Name )" ; 
-                $GUID = $Server.List.GUID 
-            }
-              
-            Else 
-            { 
-                $XML  = @( GC $Client.Temp ) 
-                $PSP  = $MDT[6]
-                $SIP  = "$( $MDT[4] )\$( $Client.List.Name[ ( $_ - 1 ) ] )" 
-                $GUID = $Client.List.GUID[ ( $_ - 1 ) ] 
-            }
+            Else
+            { $Client | % { $XML , $PSP , $SIP , $GUID = 
+            @( GC $_.Temp ) , $MDT[6] , "$( $MDT[4] )\$( $_.List.Name[ ( $i - 1 ) ] )" , $_.List.GUID[ ( $i - 1 ) ] }
 
-        $XMLArray = @() 
-        0..$XML.Count | % { If ( $XML[$_] -like "*OSGUID*" ) { $XMLArray += $_ } } 
+            $XMLArray = @()
+            0..$XML.Count | % { If ( $XML[$_] -like "*OSGUID*" ) { $XMLArray += $_ } } 
 
-        ForEach ( $i in $XMLArray ) { $XML[$i] = $XML[$i].Split('{')[0] + $GUID + $XML[$i].Split('}')[1] } 
+            ForEach ( $j in $XMLArray ) { $XML[$j] = $XML[$j].Split( '{' )[0] + $GUID + $XML[$j].Split( '}' )[1] } 
 
-        $XML_Path  = "$( $Store.Path[$_] )\$( $Tag[$_] ).xml"
+            $XML_Path  = "$( $Store.Path[$i] )\$( $Tag[$i] ).xml"
         
-        SC -Path $XML_Path -Value $XML -Force 
+            SC -Path $XML_Path -Value $XML -Force 
 
-        Wrap-Action "Import-NewTask" "[+] $( $DISM[$_][0] ) / $( $DISM[$_][1] )" 
+            Wrap-Action "Import-NewTask" "[+] $( $DISM[$i][0] ) / $( $DISM[$i][1] )" 
         
-        Import-NewTask -PSP $PSP -Name $DISM[$i][1] -XML $XML_Path -Info $DISM[$i][2] -ID $DISM[$i][0] -Ver $DISM[$i][3] -SIP $SIP `
-            -User $R[12] -Org $R[0] -WWW $R[5] -Pass $R[13] } 
+            $X = $DISM[$i]
+            Import-NewTask -PSP $PSP -Name $X[1] -XML $XML_Path -Info $X[2] -ID $X[0] -Ver $X[3] -SIP $SIP `
+                -User $R[12] -Pro $R[0] -WWW $R[5] -Pass $R[13] } 
+        }
+
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\______________[ Update DS Registry Settings ]_____________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
         Wrap-Action "[ MDT ]" "Updating PSDrive $( $MDT[1] ) Properties" 
 
@@ -2410,34 +2433,40 @@
         
         0..9 | % { 
     
-            SP -Path $M[0] -Name $Name[$_] -Value $Value[$_]
+            SP -Path "$( $M[1] ):" -Name $Name[$_] -Value $Value[$_]
             Wrap-Action "Drive Property" "$( $Name[$_] ) set to . . ."
             Echo $Value[$_]     
-        } 
-        
-        If ( $? -eq $True ) 
-        { 
-            Wrap-Action "[ MDT ]" "PSDrive $( $MDT[1] ) Properties updated Successfully"     
         }
-         
-        Else 
-        { 
-            Wrap-Action "[ MDT ]" "PSDrive $( $MDT[1] ) Properties failed to update" 
-            Break 
-        } 
 
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\______________[ Ensure Monitoring is Enabled ]____________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        Enable-MDTMonitorService -EventPort 9800 -DataPort 9801
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\_________________[ Update Bootstrap.ini ]_________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
         $BootStrap = @{ 
 
                         Settings = @{   Priority           = "Default" } 
-                        Default  = @{   DeployRoot         = "\\$( $r[2] )" 
-                                        UserID             = "$( $r[3] )" 
-                                        UserPassword       = "$( $dccred.GetNetworkCredential().Password )" 
-                                        UserDomain         = "$( $r[15] )" 
+                        Default  = @{   DeployRoot         = "$( $M[9] ),http://$( $R[23] )/$( $R[21] )/" 
+                                        UserID             = "$( $R[3] )" 
+                                        UserPassword       = "$( $DCCRED.GetNetworkCredential().Password )" 
+                                        UserDomain         = "$( $R[15] )" 
                                         SkipBDDWelcome     = "YES" } 
         }
 
         Export-Ini -Path $( $MDT[14] ) -Name "Bootstrap.ini" -Value $Bootstrap -Encoding UTF8 -Force -UTF8NoBOM
+        If ( $? -eq $True ) { Wrap-Action "Export-INI" "[+] Successfully Exported Bootstrap.ini" }
 
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\________________[ Update CustomSettings.ini ]_____________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
         $CustomSettings = @{
 
                         Settings   = @{ Priority           = "Default" 
@@ -2454,10 +2483,21 @@
                                         EventService       = "http://$( $r[2] ):9800" }
         }
 
-        Export-Ini -Path $( $MDT[14] ) -Name "CustomSettings.ini" -Value $CustomSettings -Encoding UTF8 -Force -UTF8NoBOM
+        Export-Ini -Path $( $M[14] ) -Name "CustomSettings.ini" -Value $CustomSettings -Encoding UTF8 -Force -UTF8NoBOM
+        If ( $? -eq $True ) { Wrap-Action "Export-INI" "[+] Successfully Exported CustomSettings.ini" }
 
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\___________________[ Update PXE Graphics ]________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
         $Graphics = "*computer.png" , "*header-image.png" | % { ( gci "$DI\Control" -Filter $_ -EA 0 ) } 
-        $Graphics | ? { $_.Exists } | % { CP $_.FullName "$( $MDT[13] )\$( $_.Name )" }
+        $Graphics | ? { $_.Exists } | % { Robocopy $_.Directory $M[13] $_.Name }
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\___________________[ Deploy Bridge Script ]_______________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
 $Script = @"
 #_____________________________________________________________________________________________________________________________________________________
@@ -2478,150 +2518,296 @@ $Script = @"
 #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//   ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\
-#\\  [ Install-Hybrid ] @: Installs the base folder and application prerequisites for initializing a Hybrid Desired State Controller Server  //  \\__//
+#\\  [ Initialize-Hybrid ] @: The primary bridge script. Without a legitimate account or credential, this file is completely useless.        //  \\__//
 #//__________________________________________________________________________________________________________________________________________\\__//  \\
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #//¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #¯      Declare Namespaces    ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #       ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ¯¯¯¯    ¯¯¯¯   //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
     Using Namespace System.Security.Principal   #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-# ____                                           //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-#//  \\                                          \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\__//  \\
-    Function Elevate-Script # If the user is an administrator, and the window is not, this will elevate the window. Non-Admins get booted here.  \\__//
-    { #__________________________________________________________________________________________________________________________________________//  \\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-        ( GWMI Win32_ComputerSystem ) | % { If ( `$_.PartOfDomain -eq `$True ) { `$DC = 1 } Else { `$DC = 0 } `$Gate = 0 ; `$Key = 0 }     #\__//¯¯\\__//¯¯\\
-                                                                                                                                         #\__//¯¯\\__//
-        If ( `$DC = 1 ) { IPMO ActiveDirectory ;                                                                                          #/¯¯\\__//¯¯\\
-                         `$I = @( Get-ADPrincipalGroupMembership -Identity `$Env:Username | % { `$_.Name -like "*Admin*" } )                #\__//¯¯\\__//
-                         If ( `$I -contains `$True ) { `$Gate = 1 } }                                                                       #/¯¯\\__//¯¯\\
-                                                                                                                                         #\__//¯¯\\__//
-        If ( `$DC = 0 ) { `$I = ( [ WindowsPrincipal ] [ WindowsIdentity ]::GetCurrent() ).IsInRole( "Administrator" )                     #/¯¯\\__//¯¯\\
-                         If ( `$I -eq `$True )       { `$Gate = 1 } Else {  `$Key = 1 } }                                                    #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-        If ( ( `$Key = 1 ) -and ( [ Int ] ( gcim Win32_OperatingSystem ).BuildNumber -ge 6000 ) )                                         #\__//¯¯\\__//
-        {                                                                                                                                #/¯¯\\__//¯¯\\
-            Echo "Attempting [~] Script Elevation" ;                                                                                     #\__//¯¯\\__//
-            `$MyInvocation | % { SAPS -FilePath PowerShell.exe -Verb Runas -Args "-File `$( `$_.MyCommand.Path ) `$( `$_.UnboundArguments )" }#/¯¯\\__//¯¯\\
-                         If ( `$? -eq `$True ) { `$Gate = 1 } Else { `$Gate = 0 } }                                                          #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-        If ( `$Gate = 1 ) { Echo "Access [+] Granted" ; Set-ExecutionPolicy Bypass -Scope CurrentUser -Force -VB }                        #\__//¯¯\\__//
-                                                                                                                                         #/¯¯\\__//¯¯\\
-        Else { "Access [!] Denied" ; Sleep -S 2 ; Read-Host "Press Enter to Exit" ; Exit } }                                             #\__//¯¯\\__//
-# ____                                                                                                                        ___________#/¯¯\\__//¯¯\\
+    Using Namespace System.Management.Automation
+# ____                                                                                                                        _________________________
 #//¯¯\\______________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    Function Bridge-Script # Ties this commandlet into Write-Output for styling strings  \\__//  \\__//  \\__//  \\__//  \\__//  \\__//  \\__//  \\__//
-    { #__________________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//
-        CMDKEY /add:$( $r[2] ) /user:$( $r[3] ) /pass:`$( `$dccred.GetNetworkCredential().Password )                                   #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-        `$Type = "Client"                                                                                                             #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-        ( gcim Win32_OperatingSystem ).Caption | ? { `$_ -like "*Server*" } | % { `$Type = "Server" }                                  #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-        CP -Path "$( $r[1] )\$( $r[0] )\(0)Resources\`$Hybrid`$Type.ps1" -Destination "`$home\Desktop" -Force                           #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-        SC -Path "`$home\Desktop\RootVar.ini" -Value (                                                                                #\__//¯¯\\__//¯¯\\
-        "$(  $r[0] )" ,                                                                                                              #/¯¯\\__//¯¯\\__//
-        "$(  $r[1] )" ,                                                                                                              #\__//¯¯\\__//¯¯\\
-        "$(  $r[2] )" ,                                                                                                              #/¯¯\\__//¯¯\\__//
-        "$(  $r[3] )" ,                                                                                                              #\__//¯¯\\__//¯¯\\
-        "`$( `$dccred.GetNetworkCredential().Password )" ,                                                                             #/¯¯\\__//¯¯\\__//
-        "$(  $r[5] )" ,                                                                                                              #\__//¯¯\\__//¯¯\\
-        "$(  $r[6] )" ,                                                                                                              #/¯¯\\__//¯¯\\__//
-        "$(  $r[7] )" ,                                                                                                              #\__//¯¯\\__//¯¯\\
-        "$(  $r[8] )" ,                                                                                                              #/¯¯\\__//¯¯\\__//
-        "$(  $r[9] )" ,                                                                                                              #\__//¯¯\\__//¯¯\\
-        "$( $r[10] )" ,                                                                                                              #/¯¯\\__//¯¯\\__//
-        "$( $r[11] )" ,                                                                                                              #\__//¯¯\\__//¯¯\\
-        "$( $r[12] )" ,                                                                                                              #/¯¯\\__//¯¯\\__//
-        "$( $lmcred.GetNetworkCredential().Password )" ,                                                                             #\__//¯¯\\__//¯¯\\
-        "$( $r[14] )" ,                                                                                                              #/¯¯\\__//¯¯\\__//
-        "$( $r[15] )" ,                                                                                                              #\__//¯¯\\__//¯¯\\
-        "$( $r[16] )" )                                                                                                              #/¯¯\\__//¯¯\\__//
-                                                                                                                                     #\__//¯¯\\__//¯¯\\
-        "`$home\Desktop\`$Hybrid.ps1" | ? { ( Test-Path `$_ ) -eq `$True } | % { RI `$_ -Force }                                          #/¯¯\\__//¯¯\\__//
-        `$SEP = "Set-ExecutionPolicy Bypass -Scope CurrentUser -Force"                                                                #\__//¯¯\\__//¯¯\\
-        SAPS -FilePath PowerShell.EXE -Verb RunAs -Args "-File '`$Home\Desktop\`$Hybrid`$Type.ps1' `$SEP" }                              #/¯¯\\__//¯¯\\__//
-                                                                                                                                     #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-# ____                                                                                                                        _______#\__//¯¯\\__//¯¯\\
-#//¯¯\\______________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    Function Bridge-Script # Ties this commandlet into Write-Output for styling strings  \\__//  \\__//  \\__//  \\__//  \\__//  \\__//  \\__//  \\__//
-    { #__________________________________________________________________________________//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\
-                                                                                                                                 #\__//¯¯\\__//¯¯\\__//  
-        [ CmdLetBinding () ][ OutputType ( [ String ] ) ] Param (                                                                    #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-            [ Parameter ( ValueFromPipeLine = `$True , ValueFromPipelineByPropertyName = `$True ) ]                                    #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-                [ Alias ( 'PSCredential' ) ] [ ValidateNotNull () ][ System.Management.Automation.PSCredential ]                     #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-                [ System.Management.Automation.Credential () ] `$Credentials )                                                        #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-        ( `$Domain , `$Root , `$Username , `$Password ) = @( 0..3 | % { `$Null } )                                                        #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-        If ( `$Credentials -eq `$null ) {                                                                                              #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-                Try   { `$Credentials = Get-Credential "domain\`$env:username" -EA 4 }                                                 #\__//¯¯\\__//¯¯\\
-                Catch { `$ErrorMsg    = `$_.Exception.Message                                                                          #/¯¯\\__//¯¯\\__//
-                        Echo "Failure [!] Account Validation"                                                                        #\__//¯¯\\__//¯¯\\
-                        Read-Host "Press Enter to Exit"                                                                              #/¯¯\\__//¯¯\\__//
-                        Exit }                                                                                                       #\__//¯¯\\__//¯¯\\
-        }                                                                                                                            #/¯¯\\__//¯¯\\__//
-                                                                                                                                     #\__//¯¯\\__//¯¯\\
-        Try       { `$Domain   = New-Object System.DirectoryServices.DirectoryEntry(                                                  #/¯¯\\__//¯¯\\__//
-                                      "LDAP://`$( ( [ ADSI ]'').distinguishedName )" ,                                                #\__//¯¯\\__//¯¯\\
-                                                       "`$( `$Credentials.Username )" ,                                                #/¯¯\\__//¯¯\\__//
-                                "`$( `$Credentials.GetNetworkCredential().Password )" ) }                                              #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-        Catch     { `$_.Exception.Message ; Continue }                                                                                #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-        If ( ! `$Domain ) {   Echo "Exception [!] Domain does not exist"                                                              #\__//¯¯\\__//¯¯\\
-                             Echo "Install [!] Active Directory Domain Services"                                                     #/¯¯\\__//¯¯\\__//
-                             Read-Host "Press Enter to Exit" ; Exit                                                                  #\__//¯¯\\__//¯¯\\
-        }                                                                                                                            #/¯¯\\__//¯¯\\__//
-                                                                                                                                     #\__//¯¯\\__//¯¯\\
-        Else {  If ( `$Domain.Name -ne `$Null ) { Return "Authenticated" ; Elevate-Script }                                            #/¯¯\\__//¯¯\\__//
-                Else { Echo "Authentication [!] Failure" ; Sleep -S 2 }                                                              #\__//¯¯\\__//¯¯\\
-        }                                                                                                                            #/¯¯\\__//¯¯\\__//
-    }                                                                                                                                #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-    [ System.Windows.MessageBox ]::Show( "Enter Service Account Credentials to Continue" )                                           #\__//¯¯\\__//¯¯\\
-                                                                                                                                     #/¯¯\\__//¯¯\\__//
-    `$DCCRED = Get-Credential                                                                                                         #\__//¯¯\\__//¯¯\\
-    If ( ( `$DCCRED | Test-Credential ) -ne "Authenticated" ) { Exit }                                                                #/¯¯\\__//¯¯\\__//
-    Else { Elevate-Script }                                                                                                          #\__//¯¯\\__//¯¯\\
-# ____                                                                            ___________________________________________________#/¯¯\\__//¯¯\\__//
-#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-"@
-        SC -Path "$( $MDT[13] )\Initialize-Hybrid.ps1" -Value $Script -Force
+    Function Bridge-Script                                                            #¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    {
+        CMDKEY /add:$( $R[2] ) /user:$( $R[3] ) /pass:`$( `$dccred.GetNetworkCredential().Password )
 
-        $Drive = $DSC[0] 
+        `$Type = "Client"
+
+        ( gcim Win32_OperatingSystem ).Caption | ? { `$_ -like "*Server*" } | % { `$Type = "Server" }
+
+        CP -Path "$( $R[1] )\$( $R[0] )\(0)Resources\`$Hybrid`$Type.ps1" -Destination "`$home\Desktop" -Force
+
+        SC -Path "`$home\Desktop\RootVar.ini" -Value (
+        "$(  $R[0] )" , 
+        "$(  $R[1] )" , 
+        "$(  $R[2] )" , 
+        "$(  $R[3] )" , 
+        "`$( `$dccred.GetNetworkCredential().Password )" , 
+        "$(  $R[5] )" ,
+        "$(  $R[6] )" ,
+        "$(  $R[7] )" ,
+        "$(  $R[8] )" ,
+        "$(  $R[9] )" ,
+        "$( $R[10] )" ,
+        "$( $R[11] )" ,
+        "$( $R[12] )" ,
+        '$( $R[13] )' ,
+        "$( $R[14] )" ,
+        "$( $R[15] )" ,
+        "$( $R[16] )" )
+
+        "`$home\Desktop\`$Hybrid.ps1" | ? { ( Test-Path `$_ ) -eq `$True } | % { RI `$_ -Force }
+        SAPS PowerShell -Verb RunAs -Args "-File '`$Home\Desktop\`$Hybrid`$Type.ps1' -Args Set-ExecutionPolicy Bypass -Scope CurrentUser -Force"
+    }
+
+# ____                                                                                                                    ____________________________
+#//¯¯\\__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Convert-XAMLToWindow # Overloads a block of XAML strings to convert into interactive content dynamically     ¯¯¯\\__//¯¯\\__//__\\__//¯¯\\
+    {                             # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        Param ( [ Parameter ( Mandatory ) ] [ String ]                    `$XAML ,
+                                            [ String [] ] `$NamedElement = `$Null ,
+                                            [ Switch ]                `$PassThru )
+
+        @( "Framework" , "Core" | % { "Presentation`$_" } ) + "WindowsBase" | % { Add-Type -AssemblyName `$_ }
+
+        `$Reader       = [ XML.XMLReader ]::Create([ IO.StringReader ] `$XAML )
+
+        `$Output       = [ Windows.Markup.XAMLReader ]::Load( `$Reader )
+
+        `$NamedElement | % { `$Output | Add-Member -MemberType NoteProperty -Name `$_ -Value `$Output.FindName( `$_ ) -Force }
+
+        If ( `$PassThru )  { `$Output }
+
+        Else { `$Null = `$GUI.Dispatcher.InvokeAsync{ `$Output = `$GUI.ShowDialog() ;
+        SV -Name Output -Value `$Output -Scope 1 }.Wait() ; `$Output } }
+
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Show-WPFWindow # Displays the previously overloaded XAML string      ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    {                       # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        Param ( [ Parameter ( Mandatory ) ] [ Windows.Window ] `$GUI )
+
+        `$Output = `$Null ; `$Null = `$GUI.Dispatcher.InvokeAsync{ `$Output = `$GUI.ShowDialog()
+                                  SV -Name Output -Value `$Output -Scope 1 }.Wait() ; `$Output 
+    }
+
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Test-Creds # Tests an input credential for AD/WG Authentication      ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    {
+        [ CmdLetBinding () ][ OutputType ( [ Int ] ) ] Param ( 
+        
+            [ Parameter ( ValueFromPipeLine = `$True , ValueFromPipelineByPropertyName = `$True ) ]
+        
+                [ Alias ( 'PSCredential' ) ] [ ValidateNotNull () ][ PSCredential ]
+        
+                [ Credential () ] `$Creds )
+
+        ( `$Domain , `$Root , `$Username , `$Password ) = @( 0..3 | % { `$Null } )
+     
+        Try       
+        {
+            `$AD      = "LDAP://`$( ( [ ADSI ]'').distinguishedName )"
+            `$Creds   | % { `$UN = `$_.Username ; `$PW = `$_.GetNetworkCredential().Password } 
+            `$Domain  = New-Object System.DirectoryServices.DirectoryEntry( "`$AD" , "`$UN" , "`$PW" ) }
+
+        Catch     { `$_.Exception.Message ; Continue } 
+
+        If ( ! `$Domain ) 
+        { 
+            `$I = @( ForEach ( `$j in "Administrator" | % { "`$_" , "`$_`s" } ) 
+            { ( [ WindowsPrincipal ][ WindowsIdentity ]::GetCurrent() ).IsInRole( '`$j' )" } } )
+            If ( `$I -contains "True" )    { Return 1 }
+        }
+
+        ElseIf ( `$Domain.Name -ne `$Null ) { Return 1 } 
+        Else                              { Return 0 }
+    } 
+
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Determine-Domain # A switch that determines workgroup or domain      ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    {
+        If ( ( GWMI Win32_ComputerSystem ).PartOfDomain -eq `$True ) { `$env:USERDOMAIN } Else { `$ENV:ComputerName }
+    }
+
+# ____                                                                                                                        _________________________
+#//¯¯\\______________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    Function Enter-ServiceAccount  # Pulls up a script login prompt                                                      \\__//¯¯\\__//¯¯\\__//  \\__//
+    { 
+
+        `$XAML = @'
+        <Window                      xmlns =                 "http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                   xmlns:x =                              "http://schemas.microsoft.com/winfx/2006/xaml" 
+                                     Title =             "Secure Digits Plus LLC | Hybrid @ Service Account Designation" 
+                                     Width =                                                                       "480" 
+                                    Height =                                                                       "300" 
+                       HorizontalAlignment =                                                                    "Center" 
+                                ResizeMode =                                                                  "NoResize" 
+                     WindowStartupLocation =                                                              "CenterScreen" 
+                                   Topmost =                                                                      "True" >
+            <GroupBox 
+                                    Header =                                               "Enter Username and Password" 
+                       HorizontalAlignment =                                                                    "Center" 
+                         VerticalAlignment =                                                                    "Center" 
+                                    Height =                                                                       "250" 
+                                    Margin =                                                               "10,10,10,10" 
+                                     Width =                                                                       "460" >
+                <Grid 
+                                    Height =                                                                       "200" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width='25*' />
+                        <ColumnDefinition Width='75*' />
+                        <ColumnDefinition Width='34*' />
+                        <ColumnDefinition Width='75*' />
+                        <ColumnDefinition Width='25*' />
+                    </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                        <RowDefinition Height = '*' />
+                        <RowDefinition Height = '*' />
+                        <RowDefinition Height = '1.5*' />
+                        <RowDefinition Height = '1.5*' />
+                        <RowDefinition Height = '1.5*' />
+                        <RowDefinition Height = '1.5*' />
+                </Grid.RowDefinitions>
+            <TextBlock Grid.ColumnSpan="3" Grid.Row="0" FontSize="12" HorizontalAlignment="Center" Width="350" Grid.Column="1">Enter the credentials you would like to designate to your user.</TextBlock>
+            <TextBlock Grid.ColumnSpan="3" Grid.Row="1" FontSize="12" HorizontalAlignment="Center" Width="350" Grid.Column="1">A password is required, but may be changed after logging in.</TextBlock>
+            <TextBlock Grid.Row="2" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,25,0" Height="20" Width="120" TextAlignment="Right" Grid.Column="1">Username:</TextBlock>
+            <TextBlock Grid.Row="3" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,25,0" Height="20" Width="120" TextAlignment="Right" Grid.Column="1">Password:</TextBlock>
+            <TextBlock Grid.Row="4" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center" Height="20" Width="120" Text="Confirm:" Margin="0,0,25,0" Grid.Column="1" TextAlignment="Right"/>
+            <TextBox Name="Username" Grid.Row="2" Grid.Column="2" Height="24" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.ColumnSpan="3"></TextBox>
+            <PasswordBox Name="Password" PasswordChar="*" Grid.Row="3" Grid.Column="2" Height="24" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.ColumnSpan="3"></PasswordBox>
+            <PasswordBox Name="Confirm" PasswordChar="*" Grid.Row="4" Grid.Column="2" Height="24" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.ColumnSpan="3"></PasswordBox>
+            <Button Grid.Row="5" Grid.Column="1" Name="Ok" Content="OK" Width="140" HorizontalAlignment="Right" Margin="0,15,0,0"/>
+            <Button Grid.Row="5" Grid.Column="3" Name="Cancel" Content="Cancel" Width="140" HorizontalAlignment="Center" Margin="0,15,0,0"/>
+        </Grid>
+    </GroupBox>
+</Window>
+'@
+
+        `$GUI = Convert-XAMLtoWindow -Xaml `$xaml -NamedElement 'Username', 'Password', 'Confirm', 'Ok', 'Cancel' -PassThru
+
+        `$GUI.Cancel.add_Click( { `$GUI.DialogResult = `$False } )
+
+        `$GUI.Ok.add_Click(
+        {
+            `$0      = "Username" , "Password" , "Confirmation" ; `$1 = `$0 | % { "You must enter a `$_" } ; `$2 = `$0 | % { "`$_ Error" }
+            `$1[2]   = `$1[2].Replace( "You must enter a" , "Password Must Match the" )
+            `$1     += "The provided account is either incorrect or invalid. Try again, or hit cancel to exit" ; `$2 += "Authentication Failure"
+            `$MSG    = 0..3 | % { "[ System.Windows.MessageBox ]::Show( '`$( `$1[`$_] )' , '`$( `$2[`$_] )' )" }
+
+                If     ( `$GUI.Username.Text -eq `$Null )                                                                       { IEX `$MSG[0] }
+                ElseIf ( `$GUI.Password.Password -eq `$Null )                                                                   { IEX `$MSG[1] }
+                ElseIf ( ( `$GUI.Password.Password -notmatch `$GUI.Confirm.Password ) -or ( `$GUI.Confirm.Password -eq `$Null ) ) { IEX `$MSG[2] }
+                ElseIf ( ( [ PSCredential ]::New( `$GUI.Username.Text , `$GUI.Password.SecurePassword ) | Test-Creds ) -ne 1 )  { IEX `$MSG[3] }
+                Else { `$GUI.DialogResult = `$True }
+            })
+
+            `$Null = `$GUI.Username.Focus()
+
+            `$Output = Show-WPFWindow -GUI `$GUI
+
+            If ( `$Output -eq `$True ) { Return [ PSCredential ]::New( `$GUI.Username.Text , `$GUI.Password.SecurePassword ) }
+
+            Else { Echo "Either the user cancelled, or the dialogue failed" }
+    }
+
+    `$DCCred = @( Enter-ServiceAccount )
+    Bridge-Script
+"@
+        SC -Path "$( $M[13] )\Initialize-Hybrid.ps1" -Value $Script -Force
+
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\_________________[ Compile Boot Images ]__________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        $Drive = "$( $M[1] ):" 
         Switch( $host.UI.PromptForChoice( 'Recycle-MDT' , 'Select MDT Update Method' , 
         [ System.Management.Automation.Host.ChoiceDescription[] ]@( '&Full' , '&Fast' , '&Compress' ) , 
         [ Int ] 0 )  ) {    0 { Update-MDTDeploymentShare -Path $Drive    -Force -VB } 
                             1 { Update-MDTDeploymentShare -Path $Drive           -VB } 
                             2 { Update-MDTDeploymentShare -Path $Drive -Compress -VB } }
 
-        $OEM       = "$( $R[0].Replace( ' ' , '_' ) )"
-        
-        $Types = 64 , 86
-        GCI $MDT[10] -Filter "*$( $OEM )*" -EA 0 | RI -Force 
-        $Types | % { Remove-WDSBootImage -Architecture "x$_" -ImageName "$( $R[0] ) (x$_)" -EA 0 -VB } 
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\_______________[ Update Boot Image Output ]_______________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
-        GCI $MDT[10] -Filter "*LiteTouch*" -EA 0 | RNI -NewName { $_.Name.Replace( "LiteTouchPE" , "$OEM" ) } 
-        $Boot  = $Types | % { GCI $MDT[10] -Filter "*_$_.wim" -EA 0 }
-        
-        0..1 | % { Import-WDSBootImage -Path $Boot[$_].FullName -NewDescription "$( $R[0] +' ('+ $Types[$_] +')')" -SkipVerify -VB } 
-        Wrap-Function -ID "Restart-WDS"
-        
+        $OEM       = "$( $R[0].Replace( ' ' , '_' ) )"
+
+        Wrap-Action "Recycling WDS" "[~] Images for $( $R[0] )"
+        Foreach ( $i in ( 64 , 86 ) )
+        {
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\______[ Removes prior Provisionary WIM/XML files in Boot Folder ]_________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            # Removes any previous OEM images in MDT Boot Image folder
+
+            GCI $M[10] -Filter "*$( $OEM )_x$i*"   -EA 0 | % {
+                If ( $_ -ne $Null ) 
+                {
+                    Write-Host -F Magenta "    Found [~] $( $_.Name ), removing"
+                    RI $_.FullName -Force 
+                    Write-Host -F Cyan    "  Removed [+] $( $_.Name )"
+                }
+            }
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\_________[ Replace Default MDT output to the Provisionary ]_______________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            GCI $M[10] -Filter "*LiteTouchPE_x$i*" -EA 0 | % { 
+                Write-Host -F Magenta     " Renaming [~] $( $_.Name )"
+                RNI $_.FullName -NewName $_.Name.Replace( "LiteTouchPE" , "$OEM" )
+                Write-Host -F Cyan        "  Renamed [+] $( $_.Name )"
+            }
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\____________[ Queries WDS for a prior Provisioned Image ]_________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            $O = "$( $R[0] ) (x$i)"
+            GCI $M[10] -Filter "*_x$i.wim"         -EA 0 | % {
+
+                Wrap-Action "Querying WDS" "[~] for $( $_.Name )"
+                If ( ( Get-WDSBootImage -Architecture "x$i" -ImageName "$O" -EA 0 ) -ne $Null ) 
+                { 
+                    Write-Host -F Magenta "    Found [~] $O, Removing"
+                    Remove-WDSBootImage -Architecture "x$i" -ImageName "$O" 
+                    Write-Host -F Cyan    "  Removed [+] $O"
+            }
+
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\______________[ Sends MDT Boot Image(s) to WDS ]__________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            Wrap-Action "Recycling WDS" "[~] $O"
+            Import-WDSBootImage -Path $_.FullName -NewDescription "$O" -SkipVerify -VB 
+            " Recycled [+] $O" , "$( "- " * ( $O.Length / 2 + 7 ) )" | % { Write-Host -F Cyan $_ }
+            } 
+        }
+
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+#    \\_________________[ Restarts the WDS Service ]_____________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        Wrap-Action "Restarting" "[+] Windows Deployment Service"
         Restart-Service -Name WDSServer
-        If ( $? -eq $True ) { Wrap-Action -Type "WDS Image" -Info "[+] Successfully updated!" ; Display-Foot ; Exit } 
-        Else                { Wrap-Action -Type "WDS Image" -Info "[-] Update failed"         ; Display-Foot ; Exit } 
+        If ( $? -eq $True ) { Wrap-Action -Type "WDS Image(s)" -Info "[+] Successfully updated!" ; Display-Foot } 
+        Else                { Wrap-Action -Type "WDS Image(s)" -Info "[-] Update failed"         ; Display-Foot } 
     }
 
 # ____                                                                            ____________________________________________________________________
@@ -2813,14 +2999,25 @@ $Script = @"
         }
                 
         $R = @( Collect-DSCShare | % { If ( $_ -eq 1 ) { Return 1 } Else { Return @( $_ ) } } )
-        If ( $R -eq 1 ) { Install-DSCShare }
+        If ( $R -eq 1 ) { Install-DSCShare } 
+        Else 
+        {
+            $Name = "Hybrid-DSC | Provision Imaging"
+            [ Windows.Forms.MessageBox ]::Show( "The program has detected an imaging condition" , "$Name" )
+            Switch( $host.UI.PromptForChoice( "$Name" , 'Hybrid-DSC DSCShare is ready and primed for updating child images.' , 
+            [ System.Management.Automation.Host.ChoiceDescription[] ]@( '&Update' , '&Exit' ) , [ Int ] 0 )  )
+            {
+                0 { Wrap-Action "Loading" "[+] Hybrid-DSC Provision-Imaging" ; Provision-Imaging }
 
+                1 { Wrap-Action "Aborted" "[!] Hybrid-DSC Provision-Imaging" ; Read-Host "Press Enter to Exit" ; Exit } 
+            }
+        }
     }
 
 # ____                                                                            ____________________________________________________________________
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-            #Start-Hybrid                                        #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+            Initialize-Hybrid                                   #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\______________________________________________________________\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #//--\\--//--\\--//--\\--//--\\--//--\\--//--\\--//--\\--//--\\--//--\\--//--\\--//--\\--//--\\--//--\\--//--\\--//--\\--//--\\--//--\\--//--\\--//--\\
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
