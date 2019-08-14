@@ -14,10 +14,338 @@
 #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//   ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\
-#\\  [ Install-Hybrid ] @: Installs the base folder and application prerequisites for initializing a Hybrid Desired State Controller Server  //  \\__//
+#\\  [ Secure-System ] @: The module or set of modules that scopes out all things registry, DCOM, AppID, CLSID, and permissions related.
 #//__________________________________________________________________________________________________________________________________________\\__//¯¯\\
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
                                                                                                                                      #\__//¯¯\\__//¯¯\\
+    Using Namespace System.Security.Principal
+    Using Namespace System.Security.AccessControl
+    Using Namespace System.Management.Automation
+    Using NameSpace System.DirectoryServices
+
+    $CS , $OS = "ComputerSystem" , "OperatingSystem" | % { GCIM Win32_$_ }
+    If ( $CS.PartOfDomain -eq $True ) { IPMO ActiveDirectory } Else { 
+
+# ____                                                                                                                    ____________________________
+#//¯¯\\__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Wrap-Action # Ties this commandlet into Write-Output for styling strings                                    #¯¯¯\\__//¯¯\\__//__\\__//¯¯\\
+    {                                                                                                                        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        [ CmdletBinding () ] Param (
+            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ][ String ] $Type ,
+            [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ][ String ] $Info )
+
+            $fs = " // " ; $bs = " \\ " ; $x = " " * ( 25 - $Type.Length ) ; $y = " " * ( 80 - $Info.Length )
+
+            Echo @( "" ; ( $fs + ( "¯-" * 54 ) + $bs ) ;
+            "$( $bs + $x + $Type ) : $( $Info + $y + $fs )" ;
+            ( $fs + ( "-_" * 54 ) + $bs ) ; "" ) 
+    }
+
+# ____                                                                                                                    ____________________________
+#//¯¯\\__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Wrap-Title # Ties this commandlet into Write-Output for styling strings                                     #¯¯¯\\__//¯¯\\__//__\\__//¯¯\\
+    {                                                                                                                        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        [ CmdLetBinding () ] Param ( 
+            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ][ String ] $Title )
+
+            $fs = " // " ; $bs = " \\ " ; $th = "[ $Title ]" ; $y  = $th.length ; $x  = 108 - $y
+            If ( $x % 4 -ge 2 ) { $x  = $x - 2 ; $y  = $th.replace( "[" , " [ " ) ; $th = $y }
+            If ( $x % 2 -ge 1 ) { $x  = $x - 1 ; $y  = $th.replace( "]" , " ]" )  ; $th = $y ; $z  = 0 }
+            If ( $z = 1 ) { $z = " -" } Else { $z = "- " } $y = $z * ( $x / 4 ) ; $x = "- " * ( $x / 4 )
+            Echo @( "" ; ( $fs + ( "¯-" * 54 ) + $bs )
+                    "$( $bs + $x + $th + $y + $fs )" )
+    }
+
+# ____                                                                                                                    ____________________________
+#//¯¯\\__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Wrap-Array # Ties this commandlet into Write-Output for styling a string array                              #¯¯¯\\__//¯¯\\__//__\\__//¯¯\\
+    {                                                                                                                        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        [ CmdletBinding () ] Param (
+            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] [ Array ] $Block )
+
+                $fs = " // " ; $bs = " \\ "
+                Echo @( " " * 112 ; $fs + "¯-" * 54 + $bs )
+                Echo $Block
+                Echo @( $fs + "-_" * 54 + $bs ; " " * 112 ) 
+    }
+
+# ____                                                                                                                    ____________________________
+#//¯¯\\__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Wrap-Section                                                                                                #¯¯¯\\__//¯¯\\__//__\\__//¯¯\\
+    {                                                                                                                        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        [ CmdLetBinding () ] Param (
+            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] [ String ] $Section , [ Switch ] $In , [ Switch ] $Out )
+
+            If ( $In )  { $fs = " // " ; $bs = " \\ " } ; If ( $Out ) { $bs = " // " ; $fs = " \\ " }
+            $z = $Section ; $x = " " * 10 ; $y = " " * ( 98 - $z.Length )
+            ( $fs + "  " * 54 + $bs )
+            Echo "$( $bs + $x + $z + $y + $fs )" 
+            ( $fs + "  " * 54 + $bs )
+    }
+
+# ____                                                                                                                    ____________________________
+#//¯¯\\__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Wrap-Item                                                                                                   #¯¯¯\\__//¯¯\\__//__\\__//¯¯\\
+    {                                                                                                                        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        [ CmdLetBinding () ] Param (
+            [ Parameter ( Position = 0 , Mandatory , ValueFromPipeline = $True ) ] [ String ] $Type ,
+            [ Parameter ( Position = 1 , Mandatory , ValueFromPipeline = $True ) ] [ String ] $Info , [ Switch ] $In , [ Switch ] $Out )
+ 
+            If ( $In )  { $fs = " // " ; $bs = " \\ " } ; If ( $Out ) { $bs = " // " ; $fs = " \\ " }
+            $x = " " * ( 25 - $Type.Length ) ; $y = " " * ( 80 - $Info.Length )
+            Echo "$( $bs + $x + $Type ) : $( $Info + $y + $fs )" 
+    }
+
+# ____                                                                                                                    ____________________________
+#//¯¯\\__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Wrap-Space                                                                                                  #¯¯¯\\__//¯¯\\__//__\\__//¯¯\\
+    {                                                                                                                        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        [ CmdLetBinding () ] Param ( [ Switch ] $In , [ Switch ] $Out )
+
+            If ( $In  ) { $fs = " // " ; $bs = " \\ " } ; If ( $Out ) { $bs = " // " ; $fs = " \\ " }
+            Echo @( $bs + ( " " * 108 ) + $fs )
+    }
+
+# ____                                                                                                                    ____________________________
+#//¯¯\\__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Wrap-Foot                                                                                                    #¯¯\\__//¯¯\\__//__\\__//¯¯\\
+    {                                                                                                                        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        $fs = " // " ; $bs = " \\ " ; Echo @( ( $fs + ( "¯-" * 54 ) + $bs ) ; "" )
+    }
+
+# ____                                                                                                                    ____________________________
+#//¯¯\\__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Display-TrueColors # Draws this static string array on the screen ( Will replace with Math at some point )   ¯¯¯\\__//¯¯\\__//__\\__//¯¯\\
+    {                           # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        Wrap-Array -Block @(
+        " \\  __________________________________________________________________________________________________________  // " ;
+        " // /¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\ \\ " ;
+        " \\ \__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__/ // " ;
+        " // /¯¯\\                                                                                                  //¯¯\ \\ " ;
+        " \\ \__//    [ The beginning of the fight against Technological Tyranny and Cyber Criminal Activities ]    \\__/ // " ;
+        " // /¯¯\\    __________________________________________________________________________________________    //¯¯\ \\ " ;
+        " \\ \__//    \\                                     ]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
+        " // /¯¯\\    //   *     *     *     *     *     *   ]________________________________________________\\    //¯¯\ \\ " ;
+        " \\ \__//    \\      *     *     *     *     *      ]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
+        " // /¯¯\\    //   *     *     *     *     *     *   ]___[ Dynamically Engineered Digital Security ]__\\    //¯¯\ \\ " ;
+        " \\ \__//    \\      *     *     *     *     *      ]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
+        " // /¯¯\\    //   *     *     *     *     *     *   ]________________________________________________\\    //¯¯\ \\ " ;
+        " \\ \__//    \\      *     *     *     *     *      ]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
+        " // /¯¯\\    //   *     *     *     *     *     *   ]__[ Application Development - Virtualization ]__\\    //¯¯\ \\ " ;
+        " \\ \__//    \\      *     *     *     *     *      ]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
+        " // /¯¯\\    //   *     *     *     *     *     *   ]________________________________________________\\    //¯¯\ \\ " ;
+        " \\ \__//    \\      *     *     *     *     *      ]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
+        " // /¯¯\\    //   *     *     *     *     *     *   ]_______[ Network & Hardware Magistration ]______\\    //¯¯\ \\ " ;
+        " \\ \__//    \\     What America Once Stood For     ]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
+        " // /¯¯\\    //_____________________________________]________________________________________________\\    //¯¯\ \\ " ;
+        " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
+        " // /¯¯\\    //_________________________________[=]\_/[=]\_/[=]\_/[=]________________________________\\    //¯¯\ \\ " ;
+        " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯| |¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯| |¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
+        " // /¯¯\\    //_________________________________[=]  H Y B R I D  [=]________________________________\\    //¯¯\ \\ " ;
+        " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯| |¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯| |¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
+        " // /¯¯\\    //__________________[=]\_/[=]\_/[=]|=|      B Y      |=|[=]\_/[=]\_/[=]_________________\\    //¯¯\ \\ " ;
+        " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯| |¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯| |¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
+        " // /¯¯\\    //__________________[-] S E C U R E - D I G I T S - P L U S - L L C [-]_________________\\    //¯¯\ \\ " ;
+        " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
+        " // /¯¯\\    //___________[=]\_/[=]\_/[=]\_/[=]\_/[=]\__/[=]\__/[=]\_/[=]\_/[=]\_/[=]\_/[=]__________\\    //¯¯\ \\ " ;
+        " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯[=]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯[=]¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
+        " // /¯¯\\    //___________[=]  0 8 / 1 3 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R   [=]__________\\    //¯¯\ \\ " ;
+        " \\ \__//    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    \\__/ // " ;
+        " // /¯¯\\                                [ A Heightened Sense Of Security ]                                //¯¯\ \\ " ;
+        " \\ \__//                                ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯                                \\__/ // " ;
+        " // /¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\ \\ " ;
+        " \\ \__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__/ // " )
+
+        Sleep -S 2 
+        
+    }
+
+# ____                                                                                                                    ____________________________
+#//¯¯\\__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Display-Foot # Same as the above, just using this string array below at the end of the script                ¯¯¯\\__//¯¯\\__//__\\__//¯¯\\
+    {                     # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+
+        Wrap-Array -Block @(
+
+        " // /¯¯\\__//¯¯\\__//¯¯\\    __________________________________________________________    //¯¯\\__//¯¯\\__//¯¯\ \\ " ;
+        " \\ \__//¯¯\\__//¯¯\\__//    Secure Digits Plus LLC | Hybrid | Desired State Controller    \\__//¯¯\\__//¯¯\\__/ // " ;
+        " // /¯¯\\__//¯¯\\__//¯¯      ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯      ¯¯\\__//¯¯\\__//¯¯\ \\ " ;
+        " \\ \__//¯¯\\__//¯¯  -=-=-=-=-=-=-=[ Dynamically Engineered Digital Security ]-=-=-=-=-=-=--=-=  ¯¯\\__//¯¯\\__/ // " ;
+        " // /¯¯\\__//¯¯\\    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯                                           ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    //¯¯\\__//¯¯\ \\ " ;
+        " \\ \__//¯¯\\__//   Application Development | Virtualization | Network and Hardware Magistration   \\__//¯¯\\__/ // " ;
+        " // /¯¯\\__//¯¯\\   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   //¯¯\\__//¯¯\ \\ " ;
+        " \\ \__//¯¯\\__//   https://www.securedigitsplus.com | Server-Client | Seedling-Spawning Script    \\__//¯¯\\__/ // " ;
+        " // /¯¯\\__//¯¯\\__ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    //¯¯\\__//¯¯\ \\ " ;
+        " \\ \__//¯¯\\__//¯¯\\__         You've just deployed a heightened sense of security          __//¯¯\\__//¯¯\\__/ // " ;
+        " // /¯¯\\__//¯¯\\__//¯¯\\__________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\ \\ " ;
+        " \\ \__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__/ // " )
+        
+        Sleep -S 2 
+    }
+
+# ____                                                                                                                    ____________________________
+#//¯¯\\__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Convert-XAMLToWindow # Overloads a block of XAML strings to convert into interactive content dynamically     ¯¯¯\\__//¯¯\\__//__\\__//¯¯\\
+    {                             # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        Param ( [ Parameter ( Mandatory ) ] [ String ]                    $XAML ,
+                                            [ String [] ] $NamedElement = $Null ,
+                                            [ Switch ]                $PassThru )
+
+        @( "Framework" , "Core" | % { "Presentation$_" } ) + "WindowsBase" | % { Add-Type -AssemblyName $_ }
+
+        $Reader       = [ XML.XMLReader ]::Create([ IO.StringReader ] $XAML )
+
+        $Output       = [ Windows.Markup.XAMLReader ]::Load( $Reader )
+
+        $NamedElement | % { $Output | Add-Member -MemberType NoteProperty -Name $_ -Value $Output.FindName( $_ ) -Force }
+
+        If ( $PassThru )  { $Output }
+
+        Else { $Null = $GUI.Dispatcher.InvokeAsync{ $Output = $GUI.ShowDialog() ;
+        SV -Name Output -Value $Output -Scope 1 }.Wait() ; $Output } }
+
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Show-WPFWindow # Displays the previously overloaded XAML string      ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    {                       # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        Param ( [ Parameter ( Mandatory ) ] [ Windows.Window ] $GUI )
+
+        $Output = $Null ; $Null = $GUI.Dispatcher.InvokeAsync{ $Output = $GUI.ShowDialog()
+                                  SV -Name Output -Value $Output -Scope 1 }.Wait() ; $Output 
+    }
+
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Test-Creds # Tests an input credential for AD/WG Authentication      ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    {
+        [ CmdLetBinding () ][ OutputType ( [ Int ] ) ] Param ( 
+        
+            [ Parameter ( ValueFromPipeLine = $True , ValueFromPipelineByPropertyName = $True ) ]
+        
+                [ Alias ( 'PSCredential' ) ] [ ValidateNotNull () ][ PSCredential ]
+        
+                [ Credential () ] $Creds )
+
+        ( $Domain , $Root , $Username , $Password ) = @( 0..3 | % { $Null } )
+     
+        Try       
+        {
+            $AD      = "LDAP://$( ( [ ADSI ]'').distinguishedName )"
+            $Creds   | % { $UN = $_.Username ; $PW = $_.GetNetworkCredential().Password } 
+            $Domain  = New-Object System.DirectoryServices.DirectoryEntry( "$AD" , "$UN" , "$PW" ) }
+
+        Catch     { $_.Exception.Message ; Continue } 
+
+        If ( ! $Domain ) 
+        { 
+            $I = @( ForEach ( $j in "Administrator" | % { "$_" , "$_`s" } ) 
+            { "Windows" | % { IEX "( [ $_`Principal ][ $_`Identity ]::GetCurrent() ).IsInRole( '$j' )" } } )
+            If ( $I -contains "True" )    { Return 1 }
+        }
+
+        ElseIf ( $Domain.Name -ne $Null ) { Return 1 } 
+        Else                              { Return 0 }
+    } 
+
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+    Function Determine-Domain # A switch that determines workgroup or domain      ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    {
+        If ( ( GWMI Win32_ComputerSystem ).PartOfDomain -eq $True ) { $env:USERDOMAIN } Else { $ENV:ComputerName }
+    }
+
+# ____                                                                                                                        _________________________
+#//¯¯\\______________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    Function Enter-ServiceAccount  # Pulls up a script login prompt                                                      \\__//¯¯\\__//¯¯\\__//  \\__//
+    { 
+        $GridC = 25 , 75 , 34 , 75 , 25 | % { 
+                        "<ColumnDefinition Width='$_*' />"
+        }
+        
+        $GridR = "" , "" + @( 0..3 | % { "1.5" } ) | % { 
+                        "<RowDefinition Height = '$_*' />"
+        }
+
+        $XAML = @"
+        <Window                      xmlns =                 "http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                   xmlns:x =                              "http://schemas.microsoft.com/winfx/2006/xaml" 
+                                     Title =             "Secure Digits Plus LLC | Hybrid @ Service Account Designation" 
+                                     Width =                                                                       "480" 
+                                    Height =                                                                       "300" 
+                       HorizontalAlignment =                                                                    "Center" 
+                                ResizeMode =                                                                  "NoResize" 
+                     WindowStartupLocation =                                                              "CenterScreen" 
+                                   Topmost =                                                                      "True" >
+            <GroupBox 
+                                    Header =                                               "Enter Username and Password" 
+                       HorizontalAlignment =                                                                    "Center" 
+                         VerticalAlignment =                                                                    "Center" 
+                                    Height =                                                                       "250" 
+                                    Margin =                                                               "10,10,10,10" 
+                                     Width =                                                                       "460" >
+                <Grid 
+                                    Height =                                                                       "200" >
+                    <Grid.ColumnDefinitions>
+                        $( $GridC )
+                    </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                        $( $GridR )
+                </Grid.RowDefinitions>
+            <TextBlock Grid.ColumnSpan="3" Grid.Row="0" FontSize="12" HorizontalAlignment="Center" Width="350" Grid.Column="1">Enter the credentials you would like to designate to your user.</TextBlock>
+            <TextBlock Grid.ColumnSpan="3" Grid.Row="1" FontSize="12" HorizontalAlignment="Center" Width="350" Grid.Column="1">A password is required, but may be changed after logging in.</TextBlock>
+            <TextBlock Grid.Row="2" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,25,0" Height="20" Width="120" TextAlignment="Right" Grid.Column="1">Username:</TextBlock>
+            <TextBlock Grid.Row="3" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,25,0" Height="20" Width="120" TextAlignment="Right" Grid.Column="1">Password:</TextBlock>
+            <TextBlock Grid.Row="4" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center" Height="20" Width="120" Text="Confirm:" Margin="0,0,25,0" Grid.Column="1" TextAlignment="Right"/>
+            <TextBox Name="Username" Grid.Row="2" Grid.Column="2" Height="24" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.ColumnSpan="3"></TextBox>
+            <PasswordBox Name="Password" PasswordChar="*" Grid.Row="3" Grid.Column="2" Height="24" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.ColumnSpan="3"></PasswordBox>
+            <PasswordBox Name="Confirm" PasswordChar="*" Grid.Row="4" Grid.Column="2" Height="24" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.ColumnSpan="3"></PasswordBox>
+            <Button Grid.Row="5" Grid.Column="1" Name="Ok" Content="OK" Width="140" HorizontalAlignment="Right" Margin="0,15,0,0"/>
+            <Button Grid.Row="5" Grid.Column="3" Name="Cancel" Content="Cancel" Width="140" HorizontalAlignment="Center" Margin="0,15,0,0"/>
+        </Grid>
+    </GroupBox>
+</Window>
+"@
+
+        $GUI = Convert-XAMLtoWindow -Xaml $xaml -NamedElement 'Username', 'Password', 'Confirm', 'Ok', 'Cancel' -PassThru
+
+        $GUI.Cancel.add_Click( { $GUI.DialogResult = $False } )
+
+        $GUI.Ok.add_Click( 
+        {
+            $0      = "Username" , "Password" , "Confirmation" ; $1 = $0 | % { "You must enter a $_" } ; $2 = $0 | % { "$_ Error" }
+            $1[2]   = $1[2].Replace( "You must enter a" , "Password Must Match the" )
+            $1     += "The provided account is either incorrect or invalid. Try again, or hit cancel to exit" ; $2 += "Authentication Failure"
+            $MSG    = 0..3 | % { "[ System.Windows.MessageBox ]::Show( '$( $1[$_] )' , '$( $2[$_] )' )" }
+
+                If     ( $GUI.Username.Text -eq $Null )                                                                       { IEX $MSG[0] }
+                ElseIf ( $GUI.Password.Password -eq $Null )                                                                   { IEX $MSG[1] }
+                ElseIf ( ( $GUI.Password.Password -notmatch $GUI.Confirm.Password ) -or ( $GUI.Confirm.Password -eq $Null ) ) { IEX $MSG[2] }
+                ElseIf ( ( [ PSCredential ]::New( $GUI.Username.Text , $GUI.Password.SecurePassword ) | Test-Creds ) -ne 1 )  { IEX $MSG[3] }
+                Else { $GUI.DialogResult = $True }
+            })
+
+            $Null = $GUI.Username.Focus()
+
+            $Output = Show-WPFWindow -GUI $GUI
+
+            If ( $Output -eq $True ) { Return [ PSCredential ]::New( $GUI.Username.Text , $GUI.Password.SecurePassword ) }
+
+            Else { Echo "Either the user cancelled, or the dialogue failed" }
+    }
 
 # https://github.com/picheljitsu/Powershell/blob/master/ThreatHunting/Get-DCOMSecurity.ps1 | This list is based off of Matt Pichelmayer and this script
 
@@ -34,6 +362,33 @@
  with associated Access/Launch permissions to screen
 
 #>
+
+    Function Load-HKCR
+    {
+        $H    = "Registry" , "HKCR" , "HKEY_CLASSES_ROOT"
+        $HKCR = GDR -PSProvider $H[0] -Name $H[1] -EA 0 
+        If ( $HKCR -eq $Null ) 
+        { $HKCR = ( ndr -PSProvider $H[0] -Name $H[1] -Root $H[2] ) } 
+        Return $HKCR 
+    }
+
+
+
+    Function Get-CLSID
+    {
+        Param ( [ String ] $CLSID )
+
+        $i = "HKLM:\SOFTWARE\Classes\CLSID\$CLSID"
+        
+        If ( ( Test-Path $i ) -eq $True ) 
+        { 
+            $Name , $DLL = ( "" , "\InProcServer32" | % { ( gp "$i$_" )."(default)" } )
+        }
+
+        Return $Name , $DLL
+    }
+
+
 
     Function Collect-DefaultSID 
     {
@@ -133,6 +488,16 @@
 	        "S-1-5-32-578"               = "BUILTIN\Hyper-V Administrators"
 	        "S-1-5-32-579"               = "BUILTIN\Access Control Assistance Operators"
     	    "S-1-5-32-580"               = "BUILTIN\Remote Management Users" }
+    }
+
+    Function Collect-ADSID
+    {
+        
+    }
+
+    Function Collect-SystemSID
+    {
+
     }
             
     Function Collect-DCOM
