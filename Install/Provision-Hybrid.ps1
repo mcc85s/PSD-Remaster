@@ -23,72 +23,6 @@
     Using Namespace System.Management.Automation
     Using NameSpace System.DirectoryServices
 
-<# 
-
-.SYNOPSIS
-Installs all prerequisites to deploy a WG Server or, AD Domain Controller that automatically downloads dependencies, applications, images, and drivers
-for any child items to use... in addition to this server itself after the installation is complete.
-
-.DESCRIPTION
-This script is a monolithic process that allows an administrator or service account that is validated, to sign in at the initial login GUI, install a
-base tool folder to act as a deployment server cache ( for updates, drivers, images, applications ), and once a root installation folder is made, the 
-program will load the Deployment Share creation tool that functions as if it were any other program or software. 
-
-This process enables multiple companies/channels to be defined so that the shares aren't causing crosstalk or collisions, mixing up resources from one 
-share to another, or otherwise 'causing mayhem on your network when you want to test something outside of a production channel'. 
-
-Once the company information is established, a PSDrive with IIS information is also saved for future reference, and at that point, you won't need the
-MDT GUI to provision or send images through the process, update them, or send them to WDS automatically and restart the service.
-
-After spending a lot of time with MDT in general, it became apparent that 'nobody was attempting to make it a lot more readily capable and simple to use'
-
-This is that process.
-
-It currently has switches that allow any user to install a BITS/IIS server that can be used with the deployment server, or to install the original
-version of MDT / OR / Remastered edition of PowerShell Deployment originally found at FriendsofMDT, modified by me. I cannot verify that process works.
-Use strictly the original MDT method until I can complete those changes, or, install them and overwrite the scripts found on GitHub.com/FriendsOfMDT
-
-I would like to thank the DeploymentBunny team for working on the project that I found inspiration, as well as Michael Niehaus, Damien van Robaeys,
-Shane Young, in addition to many others I haven't mentioned.
-
-Here's the bottom line
-----------------------
-1) This automates the process of recycling all WIM files, and task sequences within MDT
-
-2) This also automates the process of providing child item root lookup scripts so that those child items pull from the deployment share you've created
-
-3) This also strips outdated WIM files from MDT as well as WDS so that they can be replaced with newer WIM files that this process distributes
-
-4) This eliminates the necessity for a WSUS server, although you are free to use one, the updates can be slipstreamed and cleaned up via DISM++
-
-5) During image recycling, you'll be able to compare any previous versions of the WIM files to the ones you have updated. It is comprehensive.
-
-6) The child item folders in MDT get updated with the version of the WIM files you use, so 10.0.18362.207 will use that as the folder name
-
-7) There is some fine tuning left to do to the PSD process, but the BITS process should work for basic MDT.
-
-8) The BITS/IIS server will be automatically configured and deployed upon selection, so that means installing over a network via HTTP
-
-9) HTTPS will be supported soon, as will AD service account generation, DHCP/DNS configuration, however, the case can be made that you should have
-
-the Windows Server services mentioned, already correctly configured first before attempting to use this program. ( DHCP, DNS, AD, WDS etc )
-
-10) Automatic service installation will be an option, that script already exists on my GitHub project... 
-https://github.com/mcc85s/PSD-Remaster/Provision-DomainController.ps1
-
-11) When all is said and done, the images that are sent to WDS will have the ability to utilize a dynamic driver template, ( Snappy Driver Installer ),
-an applications proxy ( strictly using BITS/IITS ), as well as customized images, settings, and graphics that you can deploy yourself.
-
-12) The script is intentionally "comment-headed" to provide explanation where it may be needed, I tried to make it look cool.
-
-13) The script uses a lot of functions that I created, but it does contain some commandlets/functions that I sourced and modified.
-
-.USAGE
-Run from ISE or PowerShell, no commandlets necessary. I may make a module set out of this at some point, but it's not on the agenda at this time.
-
-
-
-#>
 # ____                                                                                                                    ____________________________
 #//¯¯\\__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -220,7 +154,7 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
         " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
         " // /¯¯\\    //___________[=]\_/[=]\_/[=]\_/[=]\_/[=]\__/[=]\__/[=]\_/[=]\_/[=]\_/[=]\_/[=]__________\\    //¯¯\ \\ " ;
         " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯[=]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯[=]¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
-        " // /¯¯\\    //___________[=]  0 8 / 1 1 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R   [=]__________\\    //¯¯\ \\ " ;
+        " // /¯¯\\    //___________[=]  0 8 / 1 3 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R   [=]__________\\    //¯¯\ \\ " ;
         " \\ \__//    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    \\__/ // " ;
         " // /¯¯\\                                [ A Heightened Sense Of Security ]                                //¯¯\ \\ " ;
         " \\ \__//                                ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯                                \\__/ // " ;
@@ -259,14 +193,14 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
 #//¯¯\\__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Convert-XAMLToWindow # Overloads a block of XAML strings to convert into interactive content dynamically     ¯¯¯\\__//¯¯\\__//__\\__//¯¯\\
-    {                             # http://www.powertheshell.com/isesteroidsmanual/creating-user-interfaces/ 
+    {                             # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
         Param ( [ Parameter ( Mandatory ) ] [ String ]                    $XAML ,
                                             [ String [] ] $NamedElement = $Null ,
                                             [ Switch ]                $PassThru )
 
         @( "Framework" , "Core" | % { "Presentation$_" } ) + "WindowsBase" | % { Add-Type -AssemblyName $_ }
 
-        $Reader       = [ XML.XMLReader ]::Create( [ IO.StringReader ] $XAML )
+        $Reader       = [ XML.XMLReader ]::Create([ IO.StringReader ] $XAML )
 
         $Output       = [ Windows.Markup.XAMLReader ]::Load( $Reader )
 
@@ -281,7 +215,7 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Show-WPFWindow # Displays the previously overloaded XAML string      ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    {                       # same reference as above. ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+    {                       # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
         Param ( [ Parameter ( Mandatory ) ] [ Windows.Window ] $GUI )
 
         $Output = $Null ; $Null = $GUI.Dispatcher.InvokeAsync{ $Output = $GUI.ShowDialog()
@@ -291,8 +225,8 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
 # ____                                                                            ____________________________________________________________________
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-    Function Export-Ini # Extensively modified version of Oliver Lipkau's Script Out-INI //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
-    {                   # https://gallery.technet.microsoft.com/scriptcenter/7d7c867f-026e-4620-bf32-eca99b4e42f4 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+    Function Export-Ini # Extensively modified version found on TechNet           ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    {                   # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
         [ CmdLetBinding () ] Param ( 
 
             [ Parameter ( Mandatory = $True , Position = 0 ) ][ String ] $Path , 
@@ -341,7 +275,7 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
         End
         {
             If ( $UTF8NoBom ) 
-            { [ System.IO.File ]::WriteAllLines( ( $F ), ( GC $F ) , ( New-Object System.Text.UTF8Encoding $False ) ) }
+            { [ System.IO.File ]::WriteAllLines( ( $F ) , ( GC $F ) , ( New-Object System.Text.UTF8Encoding $False ) ) }
         }
     }
 
@@ -715,11 +649,14 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
 
         "Hybrid" , "Libraries" , "Scripts" , "Templates" , "Install" | % { If ( ( Test-Path "$Base\$_" ) -eq $True ) { RI $Base\$_ -Recurse -Force } }
 
-        "$Base\Hybrid.7z" | % { If ( ( Test-Path $_ ) -eq $True ) { RI $_ -Force }
-        IWR -URI "https://securedigitsplus.com/Hybrid-DSC/Hybrid.7z" -OutFile "$_"
-        Set-Alias SZ "$( Extract-Archive )"
-        SZ x $_ -o"$Base"
-        RI $_ -Force }
+        "$Base\Hybrid.7z" | % { 
+        
+            If ( ( Test-Path $_ ) -eq $True ) { RI $_ -Force }
+            IWR -URI "https://securedigitsplus.com/Hybrid-DSC/Hybrid.7z" -OutFile "$_"
+            Set-Alias SZ "$( Extract-Archive )"
+            SZ x $_ -o"$Base"
+            RI $_ -Force 
+        }
     }
 
 # ____                                                                            ____________________________________________________________________
@@ -1298,8 +1235,9 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\___________[ Scripts / Templates ]____________//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $Obj = $Scripts , $Templates = "Scripts" , "Templates"
             
-                    $Scripts , $Templates = "Scripts" , "Templates" | % { $S , $D = "$Base\$_" , "$URI\$_" ; ( gci $S ).Name | % { 
+                    $Obj | % { $S , $D = "$Base\$_" , "$URI\$_" ; ( gci $S ).Name | % { 
                     Robocopy $S $D $_ ; Dir "$D\$_" | Unblock-File ; Write-Host -F Cyan "$_ copied successfully" } }
 
 # ____                                                _________________________________________________________________________________________________
@@ -1506,7 +1444,7 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
 #     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
             $Apps = @( gci $DS -Filter "*Applications" ).FullName
             $Path = "chrome" , "silverlight" , "jre" , "libre" , "mwb" , "flash" , "air" , "reader" , "ccleaner" , "klite" ,  "tv"
-            0..10 | % { "$Apps\($_)$($Path[$_])" | % { If ( ( Test-Path $_ ) -ne $True ) { NI "$_" -ItemType Directory } } }
+            0..10 | % { "$Apps\($_)$($Path[$_])" | % { If ( ( Test-Path $_ ) -ne $True ) { NI "$_" -ItemType Directory } Else { GI $_ } } }
 
 # ____                                _________________________________________________________________________________________________________________
 #//  \\______________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -1531,23 +1469,22 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\____[ Application URLs ]__________\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-            $U = @(
-            @( "" , "64" | % {
+            $U = @( @( "" , "64"                    | % {
                 "https://dl.google.com/tag/s/dl/chrome/install/googlechromestandaloneenterprise$_.msi" } ) + 
-            @( "" , "_x64" | % { 
-            "https://download.microsoft.com/download/F/D/0/FD0B0093-DE8A-4C4E-BDC4-F0C56D72018C/50907.00/Silverlight$_.exe" } ) + 
-            @( 7 , 9 | % { 
-            "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=23872$_`_478a62b7d4e34b78b671c754eaaf38ab" } ) + 
-            @( ( "" , 86 ) , ( "_64" , 64 ) | % { 
-            "https://download.documentfoundation.org/libreoffice/stable/6.2.5/win/x86$( $_[0] )/LibreOffice_6.2.5_Win_x$( $_[1] ).msi" } ) + 
-            "https://downloads.malwarebytes.com/file/mb3/" , 
-            "https://download.macromedia.com/get/flashplayer/pdc/32.0.0.223/install_flash_player_32_plugin.msi" , 
-            "http://airdownload.adobe.com/air/win/download/32.0/AdobeAIRInstaller.exe" , 
-            "http://ardownload.adobe.com/pub/adobe/reader/win/AcrobatDC/1901020064/AcroRdrDC1901020064_MUI.exe" , 
-            "http://ftp.adobe.com/pub/adobe/reader/win/AcrobatDC/1901220035/AcroRdrDCUpd1901220035_MUI.msp" , 
-            "https://download.ccleaner.com/ccsetup560.exe" , 
-            "https://files3.codecguide.com/K-Lite_Codec_Pack_1504_Full.exe" , 
-            "https://download.teamviewer.com/download/version_14x/TeamViewer_Setup.exe" )
+                    @( "" , "_x64"                  | % { 
+                "https://download.microsoft.com/download/F/D/0/FD0B0093-DE8A-4C4E-BDC4-F0C56D72018C/50907.00/Silverlight$_.exe" } ) + 
+                    @( 7 , 9                        | % { 
+                "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=23872$_`_478a62b7d4e34b78b671c754eaaf38ab" } ) + 
+                    @( ( "" , 86 ) , ( "_64" , 64 ) | % { 
+                "https://download.documentfoundation.org/libreoffice/stable/6.2.5/win/x86$( $_[0] )/LibreOffice_6.2.5_Win_x$( $_[1] ).msi" } ) + 
+                "https://downloads.malwarebytes.com/file/mb3/" , 
+                "https://download.macromedia.com/get/flashplayer/pdc/32.0.0.223/install_flash_player_32_plugin.msi" , 
+                "http://airdownload.adobe.com/air/win/download/32.0/AdobeAIRInstaller.exe" , 
+                "http://ardownload.adobe.com/pub/adobe/reader/win/AcrobatDC/1901020064/AcroRdrDC1901020064_MUI.exe" , 
+                "http://ftp.adobe.com/pub/adobe/reader/win/AcrobatDC/1901220035/AcroRdrDCUpd1901220035_MUI.msp" , 
+                "https://download.ccleaner.com/ccsetup560.exe" , 
+                "https://files3.codecguide.com/K-Lite_Codec_Pack_1504_Full.exe" , 
+                "https://download.teamviewer.com/download/version_14x/TeamViewer_Setup.exe" )
 
 # ____                                _________________________________________________________________________________________________________________
 #//  \\______________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -1555,11 +1492,13 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
 #    \\___[ Application File Names ]_____\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//__\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
             $F = @( @( "chrome" , "silverlight" , "jre" , "libre" | % { "$_(x86)" , "$_(x64)" } ) ;
-            @( "mwb" ; @( "flash" , "air" + @( "reader" | % { "$_" ; "$_`mui" } ) ) + "ccleaner" , "klite" , "tv" ) | % { "$_(x22)" } )
+                    @( "mwb" ; @( "flash" , "air" + @( "reader" | % { "$_" ; "$_`mui" } ) ) + "ccleaner" , "klite" , "tv" ) | % { "$_(x22)" } )
 
             $X = @( "msi" , "exe" , "msp" )[0,0,1,1,1,1,0,0,1,1,1,1,2,1,1,1]
 
-            $P = @( ( gci $Apps ).FullName )[0,0,1,1,3,3,4,4,5,6,7,8,8,9,10,2]
+            $P = @( gci "$( $R[1] )\$( $R[0] )\(5)Applications" ).Fullname
+            
+            $P = $P[0,0,1,1,3,3,4,4,5,6,7,8,8,9,10,2]
 
 # ____                                _________________________________________________________________________________________________________________
 #//  \\______________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -1574,7 +1513,7 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
                         "C18CF8F2776B69DC838440AADFAAE36F50717636F38EEC5F1E4A27A8CB4F20FB" ,  #                         [ Java x64 ] \\__//¯¯\\__//¯¯\\
                         "717fb9e17a3feb8af1662e668b919db86fab343303b78f88c7859003056ee010" ,  #                        [ Libre x86 ] //¯¯\\__//¯¯\\__//
                         "9b01f6f382dbb31367e12cfb0ad4c684546f00edb20054eeac121e7e036a5389" ,  #                        [ Libre x64 ] \\__//¯¯\\__//¯¯\\
-                        "304E0D448F4E506C8D4A1CC564D7EAC6C002ECC6F23F6876087BC80B80310519" ,  #                 [ Malwarebytes x22 ] //¯¯\\__//¯¯\\__//
+                        "EE34F7A2ECD40039738861FD331FF9D9C5320A33D61B62AE71E108B78F999892" ,  #                 [ Malwarebytes x22 ] //¯¯\\__//¯¯\\__//
                         "ee34f7a2ecd40039738861fd331ff9d9c5320a33d61b62ae71e108b78f999892" ,  #                  [ Adobe Flash x22 ] \\__//¯¯\\__//¯¯\\
                         "6718308E10A45176155D0ECC8458BD3606308925B91F26A7D08C148CF52C9DB3" ,  #                    [ Adobe Air x22 ] //¯¯\\__//¯¯\\__//
                         "81953f3cf426cbe9e6702d1af7f727c59514c012d8d90bacfb012079c7da6d23" ,  #              [ Adobe Reader DC x22 ] \\__//¯¯\\__//¯¯\\
@@ -1584,11 +1523,16 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
                         "df26627cc29716b65a3ed72f78d59808244f9bc4ad2624657ddbee79d2baa422"    #                [ Teamviewer 14 x22 ] \\__//¯¯\\__//¯¯\\
 #\\__________________________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//
 
-            $Item = @( 0..15 )
-            0..15 | % { $Item[$_] = @{     Name = "$( $N[$_] ) v$( $V[$_] )"
-                                           File = "$( $P[$_] )\$( $F[$_] ).$( $X[$_] )"
-                                            URL = "$( $U[$_] )" 
-                                            Sum = "$( $S[$_] )" } }
+            $Item = @{ }
+
+            0..15 | % { $Item[$_] = @{   Name = "$( $N[$_] ) v$( $V[$_] )"
+                                                    File = "$( $P[$_] )\$( $F[$_] ).$( $X[$_] )"
+                                                     URL = "$( $U[$_] )" 
+                                                     Sum = "$( $S[$_] )" } }
+
+            Export-Ini -Path $Apps -Name "List.ini" -Value $Item -Encoding UTF8 -Force
+            
+
 
 # ____                                _________________________________________________________________________________________________________________
 #//  \\______________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -1603,19 +1547,23 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
         
                 0 { Wrap-Action "Reviewing" "[~] Application Template"
 
+                    $j = 0
                     $Item | % {
                         
                     "  ____                                                                                                                          ____  " ,
                     " //¯¯\\________________________________________________________________________________________________________________________//¯¯\\ " ,
                     " \\__//                                                                                                                        \\__// " ,
-                    "  ¯¯¯\\____[ Program # $( If ( $j -lt 10 ) { "$J " } Else { "$J" } ) ]$( "____" * 25 )//¯¯\\" ,
+                    "  ¯¯¯\\___ [ Program # $( If ( $j -lt 10 ) { "$J " } Else { "$J" } ) ] $( "____" * 25 )//¯¯\\" ,
                     "" ,
                     "     [ $(               $_.Name ) ]" ,
                     "" ,
                     "  Download String : $(      $_.URL )" ,
                     "          OutFile : $(     $_.File )" ,
                     "    Hash Checksum : $(      $_.Sum )" ,
-                    "" | % { Echo $_ } ; Sleep -M 200 }
+                    "" | % { Echo $_ }
+                    Sleep -M 200
+                    $j++
+                    }
                 
                     Read-Host "Press Enter to Continue" }
 
@@ -1626,9 +1574,7 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
 #//  \\______________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #    \\_____[ Download-Applications ] Downloads Applications like a fricken boss or somethin' ¯\_(ツ)_/¯ _____//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
-#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-            $Apps  = @( gci $Base -Filter "*Applications" ).FullName                         
-
+#     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯                  
             Wrap-Action "Downloading" "[+] Application Template"
             IPMO BITSTransfer
             [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
@@ -1643,7 +1589,7 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
                     Wrap-Action "Downloading" "$( $Item[$_].Name )"
                     $Time[$_] = [ System.Diagnostics.Stopwatch ]::StartNew()
                 
-                    $Item[$_] | % { Start-BitsTransfer -Source $_.URL -Destination  $_.File -Description $_.Name -EA Stop
+                    $Item[$_] | % { Start-BitsTransfer -Source $_.URL -Destination  $_.File -Description $_.Name -EA SilentlyContinue
                     If ( $? -eq $False ) { IWR -Uri $_.URL -OutFile $_.File } }
 
                     $Time[$_].Stop()
@@ -2119,7 +2065,7 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
         "$( $R[16] )" ; "$( $R[1].Split('\')[-1] )" ; "$( $R[1] )" ; 
                @( "Boot" ; ( $SC | % { "Operating Systems\$_" } ) + "Scripts" ; "Control" ) | % { "$DR\$_" } ; "$( $R[0] ) $( $R[18] )" )
 
-        NDR -Name $M[1] -PSProvider $M[0] -Root $M[7] -Description $R[18] -NetworkPath $M[9]
+        NDR -Name $M[1] -PSProvider $M[0] -Root $M[7] -Description $M[15] -NetworkPath $M[9] -VB | Add-MDTPersistentDrive
 
 # ____                                                _________________________________________________________________________________________________
 #//  \\______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
@@ -2176,9 +2122,9 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
                            @( "Education" , "Home" , "Professional" | % { "$_ (x64)" ; "$_ (x86)" } | % { "10 $_" } ) ) | % { "Windows $_" } )
                 Tag   = @( "DC2016" ; @( "E" , "H" , "P" | % { "$_`64" ; "$_`86" } | % { "10$_" } ) )
                 Sign  = @( 0..6 | % {                "$( $Date[1] ) [ $( $Tag[$_] ) ]" } ) 
-                Build = @(    0 | % { "10.0.14393.693" } ; 1..6 | % { "10.0.18362.207" } ) 
+                Build = @(    0 | % { "10.0.14393.2273" } ; 1..6 | % { "10.0.18362.239" } ) 
                 Major = @(    0 | % {           "1607" } ; 1..6 | % {           "1903" } ) 
-                Minor = @(    0 | % {          "(693)" } ; 1..6 | % {          "(207)" } ) }
+                Minor = @(    0 | % {         "(2273)" } ; 1..6 | % {          "(239)" } ) }
 
         $Stamp = @( 0..6 | % { "$( $WIM.Build[$_] ) [ $( $WIM.Major[$_] ) ]" } ) 
         $DISM  = @( 0..6 )
@@ -2387,12 +2333,8 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
 
         Wrap-Action "Launching" "[~] MDT Drive Access"
 
-        Load-MDTModule
-
-        $PSD  = @( $MDT[3..6] ) + @( $MDT[11..12] )
+        $PSD  = @( $M[3..6] ) + @( $M[11..12] )
         $Name = @( ( $SC | % { $_ } ) * 3 )
-        $M    = $MDT
-        NDR -Name $M[1] -PSProvider $M[0] -Root $M[7] -Description $M[15] -NetworkPath $M[9] -VB
 
 # ____                                                                            ____________________________________________________________________
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
@@ -2400,15 +2342,15 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
 #    \\__________[ Ensures that all Server/Client Folders Exist ]________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
         
-        0..5 | % { 
-
-            $Parent , $Child = ( Split-Path $PSD[$_] -Parent ) , ( Split-Path $PSD[$_] -Leaf )
+        ForEach ( $i in 0..5 ) 
+        {
+            $Parent , $Child = ( Split-Path $PSD[$i] -Parent ) , ( Split-Path $PSD[$i] -Leaf )
             
-            If ( ( Test-Path "$Parent\$Child" ) -eq $True ) { Wrap-Action "Path Found" "[+] $( $PSD[$_] )" }
-            Else
+            If ( ( Test-Path "$Parent\$Child" ) -eq $True  ) { Wrap-Action "Path Found" "[+] $( $PSD[$i] )" }
+            If ( ( Test-Path "$Parent\$Child" ) -eq $False )
             {
-                If ( $_ -in 0..3 ) { NI -Path $Parent -Enable "True" -Name $Child -Comments "$( $Date[1] )" -ItemType "Folder" -VB }
-                If ( $_ -in 4..5 ) { NI -Path "$Parent\$Child" -ItemType Directory -VB }
+                If ( $i -in 0..3 ) { NI -Path $Parent -Enable "True" -Name $Child -Comments "$( $Date[1] )" -ItemType "Folder" -VB }
+                If ( $i -in 4..5 ) { NI -Path "$Parent\$Child" -ItemType Directory -VB }
             }
         } 
 
@@ -2458,13 +2400,17 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
 #     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
         ForEach ( $i in 0..6 ) 
         {
-            If ( $i -eq 0 ) 
-            { $Server | % { $XML , $PSP , $SIP , $GUID = 
-            @( GC $_.Temp ) , $MDT[5] , "$( $MDT[3] )\$( $_.List.Name )" , $_.List.GUID } }
+            If ( $i -eq 0 ) { $Server | % { 
+             $XML = @( GC $_.Temp ) 
+             $PSP = $M[5]
+             $SIP = "$( $M[3] )\$( $_.List.Name )"
+            $GUID =  $_.List.GUID } }
             
-            Else
-            { $Client | % { $XML , $PSP , $SIP , $GUID = 
-            @( GC $_.Temp ) , $MDT[6] , "$( $MDT[4] )\$( $_.List.Name[ ( $i - 1 ) ] )" , $_.List.GUID[ ( $i - 1 ) ] }
+            Else { $Client | % { 
+             $XML = @( GC $_.Temp )
+             $PSP = $M[6] 
+             $SIP ="$( $M[4] )\$( $_.List.Name[ ( $i - 1 ) ] )"
+            $GUID = $_.List.GUID[ ( $i - 1 ) ] } }
 
             $XMLArray = @()
             0..$XML.Count | % { If ( $XML[$_] -like "*OSGUID*" ) { $XMLArray += $_ } } 
@@ -2478,8 +2424,8 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
             Wrap-Action "Import-NewTask" "[+] $( $DISM[$i][0] ) / $( $DISM[$i][1] )" 
         
             $X = $DISM[$i]
-            Import-NewTask -PSP $PSP -Name $X[1] -XML $XML_Path -Info $X[3] -ID $X[0] -Ver $X[3] -SIP $SIP `
-                -User $R[12] -Pro $R[0] -WWW $R[5] -Pass $R[13] } 
+            Import-NewTask -PSP $PSP -Name $X[1] -XML $XML_Path -Info $X[2] -ID $X[0] -Ver $X[3] -SIP $SIP `
+                -User $R[12] -Pro $R[0] -WWW $R[5] -Pass $R[13] 
         }
 
 # ____                                                                            ____________________________________________________________________
@@ -2488,7 +2434,7 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
 #    \\______________[ Update DS Registry Settings ]_____________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
-        Wrap-Action "[ MDT ]" "Updating PSDrive $( $MDT[1] ) Properties" 
+        Wrap-Action "[ MDT ]" "Updating PSDrive $( $M[1] ) Properties" 
 
         $Array  = @( ".GenerateLiteTouchISO" ; @( "WIMDescription" , "ISOName" | % { ".LiteTouch$_" } ) ; ".BackgroundFile" ) 
         $DSC    = @( @( $Array | % { "Boot.x64$_" } ) + @( $Array | % { "Boot.x86$_" } ) ) 
@@ -2508,6 +2454,7 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #    \\______________[ Ensure Monitoring is Enabled ]____________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
 #     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        ( Disable-MDTMonitorService -EA 0 )
         Enable-MDTMonitorService -EventPort 9800 -DataPort 9801
 # ____                                                                            ____________________________________________________________________
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
@@ -2524,7 +2471,7 @@ Run from ISE or PowerShell, no commandlets necessary. I may make a module set ou
                                         SkipBDDWelcome     = "YES" } 
         }
 
-        Export-Ini -Path $( $MDT[14] ) -Name "Bootstrap.ini" -Value $Bootstrap -Encoding UTF8 -Force -UTF8NoBOM
+        Export-Ini -Path $( $M[14] ) -Name "Bootstrap.ini" -Value $Bootstrap -Encoding UTF8 -Force -UTF8NoBOM
         If ( $? -eq $True ) { Wrap-Action "Export-INI" "[+] Successfully Exported Bootstrap.ini" }
 
 # ____                                                                            ____________________________________________________________________
@@ -2851,7 +2798,7 @@ $Script = @"
                     Write-Host -F Magenta "    Found [~] $O, Removing"
                     Remove-WDSBootImage -Architecture "x$i" -ImageName "$O" 
                     Write-Host -F Cyan    "  Removed [+] $O"
-            }
+                }
 
 # ____                                                                            ____________________________________________________________________
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
@@ -3007,6 +2954,8 @@ $Script = @"
         Wrap-Action "Initializing" "[+] Service Account Login"
                 
         $DCCred = @( Enter-ServiceAccount )
+        
+        If ( !$DCCred ) { Exit }
                 
         Display-TrueColors
 
