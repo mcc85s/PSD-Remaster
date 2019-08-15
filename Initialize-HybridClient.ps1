@@ -612,9 +612,10 @@
 
         }
 
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -# # #
-# - - - [ Provision-Applications ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+        # Provisioning Applications
 
     Wrap-Function "Provision" "[~] Applications"
 
@@ -667,9 +668,21 @@
             {
                 If ( ( Test-Path $Item[$i].File ) -ne $True )
                 {
-                    Start-BitsTransfer -Source $Item[$i].URL -Destination $Item[$i].File -Description $Item[$i].Name
-                    If ( $? -ne $True ) { IWR -URI $Item[$i].URL -OutFile $Item[$i].File }
+                    $Item[$i] | % { Start-BitsTransfer -Source $_.URL -Destination $_.File -Description $_.Name
+                    If ( $? -ne $True ) { IWR -URI $_.URL -OutFile $_.File }
+                    }
                 }
+
+                If ( $i -eq 13 ) 
+                {
+                    $CC = @( "" , "\WOW6432Node" | % { "HKLM:\Software$_\Google\No" } | % { "$_ Chrome" , "$_ Toolbar" } ) | % { "$_ Offer Until" } 
+
+                    If ( $CPU -eq "x86" ) { $CC = $cc[0..1] } Else { $CC = $cc[2..3] }
+
+                    $CC | % {   NI $_ -ItemType Directory -Force 
+                                SP -Name "Piriform" -Path $_ -PropertyType "DWORD" -Value "20991231" -Force }
+                }
+
                 Else 
                 {
                     $Source = $Apps[$i].FullName
@@ -678,584 +691,237 @@
                     $ArgL   = $Argm[$i] 
 
                     Robocopy $Source $Target $File
-                    SAPS -FilePath "$Target\$File" -ArgumentList "$ArgL" 
+                    $Application = SAPS -FilePath "$Target\$File" -ArgumentList "$ArgL" -PassThru 
+               
 
-
-
-
-                    $Check = @( gp "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" ).DisplayName
-                    if ( ! ( ( $Check ) -Contains ( $_.Tag ) ) )
+                    For ( $j = 0 ; $j -le 100 ; $j = ( $j + 1 ) % 100 )
                     {
-                        Function Preload-CCleaner {
-
-                            $cc = "HKLM:\Software\Google\No " , "HKLM:\Software\WOW6432Node\Google\No " , 
-                            "Chrome" , "Toolbar" , " Offer Until"
-
-                            $_cc = ( $cc[2] + $cc[4] ) , ( $cc[3] + $cc[4] )
-                            
-                            if ( $CPU -eq "x86" )
-                            {
-                                $cc_ = ( $cc[0] + $_cc[0] ) , ( $cc[0] + $_cc[1] )
-                            }
-
-                            if ( $CPU -eq "AMD64" )
-                            {
-                                $cc_ = ( $cc[1] + $_cc[0] ) , ( $cc[1] + $_cc[1] )
-                            }
-
-                            New-Item $cc_[0] `
-                                -ItemType Directory `
-                                -Force
-
-                            New-ItemProperty `
-                                -Name ( $_.Tag ) `
-                                -Path ( $cc_[0] ) `
-                                -PropertyType ( "DWORD" ) `
-                                -Value ( "20991231" ) `
-                                -Force
-
-                            New-Item $cc_[1] `
-                                -ItemType Directory `
-                                -Force
+                        Write-Progress -Activity " [ Installing ] $FullName" -PercentComplete $j -Status "$( $j )% Complete"     
+                        Sleep -M 500
                                 
-                            New-ItemProperty `
-                                -Name ( $_.Tag ) `
-                                -Path ( $cc_[1] ) `
-                                -PropertyType ( "DWORD" ) `
-                                -Value ( "20991231" ) `
-                                -Force 
-                            
-                            $cc = ""; $_cc = ""; $cc_ = ""
+                        If ( $Application.HasExited ) 
+                        {
+                            Write-Progress -Activity "[ Installed ]" -Completed
+                            Return
                         }
-
-                        if ( $_.UID -eq "CCleaner" ) { Preload-CCleaner }
-
-                        Function Install-Application {
-                            $Application = Start-Process `
-                                -FilePath ( $Control.Target.FullName ) `
-                                -Argumentlist ( $_.Arg ) `
-                                -PassThru
-
-                            for ( $j = 0 ; $j -le 100 ; $j = ( $j + 1 ) % 100 )
-                            {
-                                Write-Progress `
-                                    -Activity ( " [ Installing ] " + $FullName ) `
-                                    -PercentComplete $j `
-                                    -Status "$( $j )% Complete"
-                                
-                                Start-Sleep -Milliseconds 500
-                                
-                                if ( $Application.HasExited ) 
-                                {
-                                    Write-Progress `
-                                    -Activity "[ Installed ]" `
-                                    -Completed
-                                    
-                                    Return
-                                }
-                            }
-                        }
-
-                        Install-Application
                     }
-
-                    else { Wrap-Action -Type "Exception" -Info "$( $Application ) Already installed" }
                 }
-                Remove-Item $l[5] -Recurse -Force
             }
 
-            #Chocolatey
+            # Pull Applications from Chocolatey...
             1
-            { 
-                Wrap-Action -Type "Selected" -Info "Chocolatey Package Manager"
-                iex (
-                (New-Object System.Net.Webclient).DownloadString(
-                'https://chocolatey.org/install.ps1')
-                )
+            {   Wrap-Action "Selected" "Chocolatey Package Manager"
+                IEX ( New-Object Net.Webclient ).DownloadString( 'https://chocolatey.org/install.ps1' )
 
-                $package = 
-
-                    "googlechrome" , 
-                    "malwarebytes" , 
-                    "flashplayerplugin" , 
-                    "adobeair" , 
-                    "adobereader" , 
-                    "silverlight" , 
-                    "7zip.install" , 
-                    "jre8" , 
-                    "ccleaner" , 
-                    "k-litecodecpackfull" , 
-                    "teamviewer"
+                $package = "googlechrome" , "malwarebytes" , "flashplayerplugin" , 
+                "adobeair" , "adobereader" , "silverlight" , "jre8" , "ccleaner" , 
+                "k-litecodecpackfull" , "teamviewer"
 
                 $package | % { 
-                
-                    Wrap-Action `
-                        -Type "Installing" `
-                        -Info $_
 
+                    Wrap-Action "Installing" "$_"
                     choco install $_ -y
-                    
-                    if ( $? -eq $True ) 
-                    {
-                        Wrap-Action `
-                            -Type "Installed" `
-                            -Info "[+] Chocolatey @ $_"
-                    }
 
-                    else 
-                    {
-                        Wrap-Action `
-                            -Type "Exception" `
-                            -Info "[!] $_ was not installed"
-                    }
+                    If ( $? -eq $True ) { Wrap-Action "Installed" "[+] Chocolatey @ $_"      }
+                    Else                { Wrap-Action "Exception" "[!] $_ was not installed" }
 
-                Wrap-Action `
-                    -Type "Complete" `
-                    -Info "Chocolatey - Default Applications Installed"
+                    Wrap-Action "Complete" "[+] Chocolatey - Default Applications Installed"
                 }
 
             }
 
-            #Skip
+            # Skip / Don't install applications at this time
             2
-            { 
-                Wrap-Action `
-                    -Type "Bypass" `
-                    -Info "Default Applications Skipped"
-            }
-        }
-        $package     = "" ; $Application = "" ;
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -# # #
-# - - - [ Provision-Updates ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-    Wrap-Function `
-        -ID "Provision-Updates"
-
-    Function Install-Update {
-    $Update = Start-Process `
-        -FilePath ( $_.FullName ) `
-        -PassThru
-
-    for ( $j = 0 ; $j -le 100 ; $j = ( $j + 1 ) % 100 )
-        {
-            Write-Progress `
-                -Activity ( " [ Installing ] " + $_.Name ) `
-                -PercentComplete $j `
-                -Status "$( $j )% Complete"
-                                
-                Start-Sleep -Milliseconds 500
-                                
-            if ( $Update.HasExited ) 
-            {
-                Write-Progress `
-                    -Activity "[ Installed ]" `
-                    -Completed
-                                    
-                Return
-            }
+            {   Wrap-Action "Bypass" "Default Applications Skipped" }
         }
     }
 
-        if ( $lm[1] -eq "x86" )
-        {
-            $Updates_ = "$( $d[2] )\Updates\x86"
-            if ( ( Test-Path $Updates_ ) -eq $True )
-            {
-                $x86 = @( gci $Updates_ -EA 0 )
-                $x86 | % { Install-Update }
-            }
-        }
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+        # Provisioning Any Missing Windows Updates
 
-        if ( $lm[1] -eq "AMD64" )
-        {
-            $Updates_ = "$( $d[2] )\Updates\x64"
-            if ( ( Test-Path $Updates_ ) -eq $True )
-            {
-                $x64 = @( gci $Updates_ -EA 0 )
-                $x64 | % { Install-Update }
-            }
-        }
+    Wrap-Action "Provision-Updates"
 
+    Function Install-Update 
+    {
+        $Update = SAPS -FilePath $_.FullName -PassThru
+
+        For ( $j = 0 ; $j -le 100 ; $j = ( $j + 1 ) % 100 )
+        {
+            Write-Progress -Activity " [ Installing ] $( $_.Name )" -PercentComplete $j -Status "$( $j )% Complete"
+            Sleep -M 500
+                                
+            If ( $Update.HasExited ) { Write-Progress -Activity "[ Installed ]" -Completed ; Return }
+        }
+    }
+
+    If ( $lm[1] -eq "x86" ) { $Arch = "x86" } Else { $Arch = "x64" }
+    
+    "$( $D[2] )\Updates\$Arch" | % { If ( ( Test-Path $_ ) -eq $True ) { gci $_ -EA 0 | % { Install-Update } } }
         
-    Start-Process ms-settings:windowsupdate-action
+    Start ms-settings:windowsupdate-action
 
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -# # #
-# - - - [ Designate-Account ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+        # Designate a User Account, and/or migrate their data
 
-    Wrap-Function `
-        -ID "Designate-Account"
+    Wrap-Function "Designate" "[~] User Account"
 
-    switch ( $host.UI.PromptForChoice( 
-    'Designate-Account' , 
-    'Migrate/Create User Account, or skip ?' , 
-    [ System.Management.Automation.Host.ChoiceDescription [] ]@( 
-        '&Create' , 
-        '&Skip' ) , 
-    [int] 1 ) )
+    Switch ( $host.UI.PromptForChoice( 'Designate-Account' , 'Migrate/Create User Account, or skip ?' , 
+    [ Host.ChoiceDescription [] ]@( '&Create' , '&Skip' ) , [ Int ] 1 ) )
     {
         # User Account Designation GUI
         0
-        {
-            Wrap-Action `
-                -Type "Select" `
-                -Info "User Account"
+        {   Wrap-Action "Select" "[+] User Account"
 
             $xaml = @"
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    Title="Secure Digits Plus LLC | Hybrid @ Account Designation" Width="480" Height="300" 
-    HorizontalAlignment="Center" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" 
-    Topmost="True">
-    <GroupBox Header="Enter Username and Password" HorizontalAlignment="Center" VerticalAlignment="Center" Height="250" Margin="10,10,10,10" Width="460">
-        <Grid Height="200">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="25*"/>
-                <ColumnDefinition Width="75*"/>
-                <ColumnDefinition Width="34*"/>
-                <ColumnDefinition Width="75*"/>
-                <ColumnDefinition Width="25*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height = "*" />
-                <RowDefinition Height = "*" />
-                <RowDefinition Height = "1.5*" />
-                <RowDefinition Height = "1.5*" />
-                <RowDefinition Height = "1.5*" />
-                <RowDefinition Height = "1.5*" />
-            </Grid.RowDefinitions>
-            <TextBlock Grid.ColumnSpan="3" Grid.Row="0" FontSize="12" HorizontalAlignment="Center" Width="353" Grid.Column="1" TextAlignment="Center" Text="Enter the credentials you would like to designate to your user."/>
-            <TextBlock Grid.ColumnSpan="3" Grid.Row="1" FontSize="12" HorizontalAlignment="Center" Width="353" Grid.Column="1">A password is required, but may be changed after logging in.</TextBlock>
-            <TextBlock Grid.Row="2" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,25,0" Height="20" Width="120" TextAlignment="Right" Grid.Column="1">Username:</TextBlock>
-            <TextBlock Grid.Row="3" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,25,0" Height="20" Width="120" TextAlignment="Right" Text="Password:" Grid.Column="1"/>
-            <TextBlock Grid.Row="4" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center" Height="20" Width="120" Text="Confirm:" Margin="0,0,25,0" Grid.Column="1" TextAlignment="Right"/>
-            <TextBox Name="Username" Grid.Row="2" Grid.Column="2" Height="24" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.ColumnSpan="3"></TextBox>
-            <PasswordBox Name="Password" PasswordChar="*" Grid.Row="3" Grid.Column="2" Height="24" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.ColumnSpan="3"></PasswordBox>
-            <PasswordBox Name="Confirm" PasswordChar="*" Grid.Row="4" Grid.Column="2" Height="24" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.ColumnSpan="3"></PasswordBox>
-            <Button Grid.Row="5" Grid.Column="1" Name="Ok" Content="OK" Width="140" HorizontalAlignment="Right" Margin="0,15,0,0"/>
-            <Button Grid.Row="5" Grid.Column="3" Name="Cancel" Content="Cancel" Width="140" HorizontalAlignment="Center" Margin="0,15,0,0"/>
-        </Grid>
-    </GroupBox>
-</Window>
+        <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+            Title="Secure Digits Plus LLC | Hybrid @ Account Designation" Width="480" Height="300" 
+            HorizontalAlignment="Center" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" 
+            Topmost="True">
+            <GroupBox Header="Enter Username and Password" HorizontalAlignment="Center" VerticalAlignment="Center" Height="250" Margin="10,10,10,10" Width="460">
+                <Grid Height="200">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*"/>
+                        <ColumnDefinition Width="75*"/>
+                        <ColumnDefinition Width="34*"/>
+                        <ColumnDefinition Width="75*"/>
+                        <ColumnDefinition Width="25*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height = "*" />
+                        <RowDefinition Height = "*" />
+                        <RowDefinition Height = "1.5*" />
+                        <RowDefinition Height = "1.5*" />
+                        <RowDefinition Height = "1.5*" />
+                        <RowDefinition Height = "1.5*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.ColumnSpan="3" Grid.Row="0" FontSize="12" HorizontalAlignment="Center" Width="353" Grid.Column="1" TextAlignment="Center" Text="Enter the credentials you would like to designate to your user."/>
+                    <TextBlock Grid.ColumnSpan="3" Grid.Row="1" FontSize="12" HorizontalAlignment="Center" Width="353" Grid.Column="1">A password is required, but may be changed after logging in.</TextBlock>
+                    <TextBlock Grid.Row="2" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,25,0" Height="20" Width="120" TextAlignment="Right" Grid.Column="1">Username:</TextBlock>
+                    <TextBlock Grid.Row="3" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,25,0" Height="20" Width="120" TextAlignment="Right" Text="Password:" Grid.Column="1"/>
+                    <TextBlock Grid.Row="4" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center" Height="20" Width="120" Text="Confirm:" Margin="0,0,25,0" Grid.Column="1" TextAlignment="Right"/>
+                    <TextBox Name="Username" Grid.Row="2" Grid.Column="2" Height="24" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.ColumnSpan="3"></TextBox>
+                    <PasswordBox Name="Password" PasswordChar="*" Grid.Row="3" Grid.Column="2" Height="24" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.ColumnSpan="3"></PasswordBox>
+                    <PasswordBox Name="Confirm" PasswordChar="*" Grid.Row="4" Grid.Column="2" Height="24" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0" Grid.ColumnSpan="3"></PasswordBox>
+                    <Button Grid.Row="5" Grid.Column="1" Name="Ok" Content="OK" Width="140" HorizontalAlignment="Right" Margin="0,15,0,0"/>
+                    <Button Grid.Row="5" Grid.Column="3" Name="Cancel" Content="Cancel" Width="140" HorizontalAlignment="Center" Margin="0,15,0,0"/>
+                </Grid>
+            </GroupBox>
+        </Window>
 "@
-            Function Convert-XAMLToWindow 
-            { 
-                Param (
-                    [ Parameter ( Mandatory ) ]
-
-                        [ string ]   $XAML , 
-                    
-                        [ string[] ] $NamedElement = $null ,
-                
-                        [ switch ]   $PassThru )
-        
-                    Add-Type `
-                        -AssemblyName PresentationFramework
-                
-                    Add-Type `
-                        –AssemblyName PresentationCore
-                
-                    Add-Type `
-                        –AssemblyName WindowsBase
-        
-                    $reader = [ XML.XMLReader ]::Create( 
-                        [ IO.StringReader ] $XAML )
-
-                    $Output = [ Windows.Markup.XAMLReader ]::Load( 
-                    $reader )
-
-                foreach ( $Name in $NamedElement ) 
-                { 
-                    $Output | Add-Member `
-                        -MemberType NoteProperty `
-                        -Name $Name `
-                        -Value $Output.FindName( $Name ) `
-                        -Force 
-                }
-
-                if ( $PassThru ) 
-                { 
-                    $Output
-                } 
-                
-                else           
-                { 
-                    $null = $GUI.Dispatcher.InvokeAsync{ 
-                        
-                        $Output = $GUI.ShowDialog()
-                        
-                        Set-Variable `
-                            -Name Output `
-                            -Value $Output `
-                            -Scope 1 
-
-                        }.Wait()
-                    
-                    $Output
-                }
-            }
-
-            Function Show-WPFWindow
-            {
-                Param(
-
-                    [ Parameter ( Mandatory ) ][ Windows.Window ] $GUI )
-
-                    $Output = $null
-                
-                    $null = $GUI.Dispatcher.InvokeAsync{
-                        
-                        $Output = $GUI.ShowDialog()
-                    
-                        Set-Variable `
-                            -Name Output `
-                            -Value $Output `
-                            -Scope 1
-
-                        }.Wait()
-                
-                    $Output
-            }
-
-            $GUI = Convert-XAMLtoWindow `
-                -Xaml $xaml `
-                -NamedElement 'Username', 'Password', 'Confirm', 'Ok', 'Cancel' `
-                -PassThru
+            $GUI = Convert-XAMLtoWindow -Xaml $xaml -NamedElement 'Username', 'Password', 'Confirm', 'Ok', 'Cancel' -PassThru
 
             $GUI.Cancel.add_Click( { $GUI.DialogResult = $false } )
 
-            $GUI.Ok.add_Click(
-            { 
-                if ( $GUI.Username.Text -eq "" )
-                { 
-                    [ System.Windows.MessageBox ]::Show( 
-                    'You must enter a username' , 
-                    'Username Error' 
-                    )
-                }
+            $GUI.Ok.add_Click({ 
 
-                elseif ( $GUI.Password.Password -eq "" )
-                {
-                    [ System.Windows.MessageBox ]::Show( 
-                    'You must enter a password' , 
-                    'Password Error' 
-                    )
-                }
-                        
-                elseif ( $GUI.Password.Password -ne $GUI.Confirm.Password )
-                {
-                    [ System.Windows.MessageBox ]::Show( 
-                    'Password must match the confirmation' , 
-                    'Confirmation Error' 
-                    )
-                }
+            $0 = "Username" , "Password" , "Confirmation"
+            $1 = $0 | % { "You must enter a $_" } ; $2 = $0 | % { "$_ Missing" } ;
+            $MSG = 0..2 | % { "[ System.Windows.MessageBox ]::Show( '$( $1[$_] )' , '$( $2[$_] )' ) " }
 
-                else { $GUI.DialogResult = $true }
+            If     ( $GUI.Username.Text     -eq "" )                    { IEX $MSG[0] }
+            ElseIf ( $GUI.Password.Password -eq "" )                    { IEX $MSG[1] }
+            ElseIf ( $GUI.Password.Password -ne $GUI.Confirm.Password ) { IEX $MSG[2] }
+            
+            Else { $GUI.DialogResult = $True }
+            
             })
 
             $GUI.Username.Text     = ''
             $GUI.Password.Password = ''
             $GUI.Confirm.Password  = ''
 
-            $null = $GUI.Username.Focus()
+            $Null = $GUI.Username.Focus()
 
-            $Output = 
-                Show-WPFWindow `
-                    -GUI $GUI
+            $Output = Show-WPFWindow -GUI $GUI
 
-            if ( $Output -eq $True )
+            If ( $Output -eq $True )
             { 
+                Wrap-Action "Generating" "[+] User Account"
 
-                Wrap-Action `
-                    -Type "Generating" `
-                    -Info "User Account"
-                
                 $Username = $GUI.Username.Text
-                $Password = $GUI.Password.Password
-                $SP = ConvertTo-SecureString $Password -AsPlainText -Force
+                $Password = $GUI.SecurePassword.Password
+                $SP = $Password
 
-                New-LocalUser $Username `
-                    -Password $SP `
-                    -Description "Target User account"
+                NLU $Username -Password $SP -Description "Target User account"
+                ALGM -Group "Administrators" -Member $Username
 
-                Add-LocalGroupMember `
-                    -Group "Administrators" `
-                    -Member $Username
+                $Account = [ PSCredential ]::new( $Username , $SP )
 
-                $Account = New-Object `
-                    -TypeName System.Management.Automation.PSCredential `
-                    -Args $Username , $SP
+                SAPS explorer.exe -Credential $Account -Args "/separate" -WorkingDirectory "C:\Windows"
 
-                Start-Process -FilePath 'explorer.exe' -Credential $Account -ArgumentList "/separate" -WorkingDirectory "C:\Windows"
-
-                if ( $? -eq $True ) 
+                If ( $? -eq $True ) 
                 { 
-                    Wrap-Action `
-                        -Type "Profile" `
-                        -Info "[+] Successfully created"
-
-                    if ( ( Test-Path "$( $d[0] )\StartLayout.xml" ) -eq $True )
+                    Wrap-Action "Profile" "[+] Successfully created"
+                    If ( ( Test-Path "$( $D[0] )\StartLayout.xml" ) -eq $True )
                     {
-
-                        Robocopy $d[0] $l[0] "StartLayout.xml"
-
-                        Import-StartLayout `
-                            -LayoutPath "$( $l[0] )\StartLayout.xml" `
-                            -MountPath "$( $lm[2] )"
-
-                        if ( $? -eq $True )
-                        {
-                            Wrap-Action `
-                                -Type "Layout" `
-                                -Info "[+] Import Successful"
-                        }
-
-                        else 
-                        {
-                            Wrap-Action `
-                                -Type "Exception" `
-                                -Info "[!] Layout was not imported successfully"
-                        }
+                        Robocopy $D[0] $L[0] "StartLayout.xml"
+                        Import-StartLayout -LayoutPath "$( $l[0] )\StartLayout.xml" -MountPath "$( $lm[2] )"
+                        If ( $? -eq $True ) { Wrap-Action "Layout" "[+] Import Successful" }
+                        Else { Wrap-Action "Exception" "[!] Layout was not imported successfully" }
                     }
 
-                    switch ( $host.UI.PromptForChoice( 
-                    'Migrate-Account' , 
-                    'Migrate an existing account, or skip ?' , 
-                    [ System.Management.Automation.Host.ChoiceDescription [] ]@( 
-                        '&Migrate' , 
-                        '&Skip' ) , 
-                    [int] 1 ) )
+                    Switch ( $host.UI.PromptForChoice( 'Migrate-Account' , 'Migrate an existing account, or skip ?' , 
+                    [ Host.ChoiceDescription [] ]@( '&Migrate' , '&Skip' ) , [ Int ] 1 ) )
                     {
                         0
-                        {
-                            Wrap-Action -Type "Selected" -Info "Account Migration"
-
-                            Robocopy $d[0] "$( $lm[2] )Users\$( $Username )\Desktop" "UEV-Profile.ps1"
-
-                            if ( $? -eq $True )
-                            {
-                                Wrap-Action `
-                                    -Type "Profile" `
-                                    -Info "[+] Import Script copied Successful"
-                            }
-
-                            else
-                            {
-                                Wrap-Action `
-                                    -Type "Exception" `
-                                    -Info "[!] Import script failed to be copied"
-                            }
+                        {   Wrap-Action "Selected" "[+] Account Migration"
+                            Robocopy $D[0] "$( $LM[2] )Users\$Username\Desktop" "UEV-Profile.ps1"
+                            If ( $? -eq $True ) { Wrap-Action "Profile" "[+] Import Script copied Successful" }
+                            Else { Wrap-Action "Exception" "[!] Import script failed to be copied" }
                         }
 
                         1
-                        {
-                            Wrap-Action -Type "Selected" -Info "Bypass"
-                        }
+                        {   Wrap-Action "Selected" "[+] Bypass" }
                     }
 
-                    if ( $lm[0] -ne $r[2] ) 
-                    {
-                        Wrap-Action -Type "Relinquish" -Info "Deployment Credentials"
-                        Disable-LocalUser -Name "$( $r[12] )" -Confirm
-                    }
+                    If ( $LM[0] -ne $R[2] ) { DLU -Name $( $R[12] ) -Confirm }
                 }
 
             }
-            else 
-            { 
-                    Wrap-Action `
-                        -Type "Cancelled" `
-                        -Info "The user either cancelled the dialog or it failed"
-            }
+
+            Else { Wrap-Action "Cancelled" "The user either cancelled the dialog or it failed" }
 
             1
-            { 
-                Wrap-Action `
-                    -Type "Skipping" `
-                    -Info "User Account Generation"
-            }
+            {   Wrap-Action "Skipping" "[~] User Account Generation" }
         }
     }
-    $xaml = "" ; $NamedElement = "" ; $Profile = "" ; $Account = "" ; $UserAccount = "" ;
 
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -# # #
-# - - - [ Check-Activation ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+        # Make certain that Windows is Activated
 
-    Wrap-Function `
-        -ID "Activate-Windows"
+    Wrap-Action "Activate" "[+] Windows"
     
-    Start-Process ms-settings:activation
+    Start ms-settings:activation
 
-    msinfo32
+    MSINFO32
 
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -# # #
-# - - - [ Close-Script ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+# ____                                                                            ____________________________________________________________________
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+        # Final steps before UEV Profile Import can commence
 
-    Wrap-Function `
-        -ID "Close-Script"
+    Wrap-Action "Close" "[!] Script"
 
-        switch ( $host.UI.PromptForChoice( 
-        'Close-Script' , 
-        'You did stuff and things happened. [W]ait for some reason, or keep it real AF / [R]eboot ?' , 
-        [System.Management.Automation.Host.ChoiceDescription[]]@( 
-            '&Wait' , 
-            '&Reboot' ) , 
-        [int] 1 ) )
+        Switch ( $host.UI.PromptForChoice( 'Close-Script' , 'Things happened. [W]ait for drivers/apps, or [R]eboot ?' , 
+        [ Host.ChoiceDescription [] ]@( '&Wait' , '&Reboot' ) , [ Int ] 1 ) )
         {
             0
-            {
-                Wrap-Action `
-                    -Type "Waiting" `
-                    -Info "For things to like, do stuff. That's OK in my book."
-                
-                Start-Sleep `
-                    -Seconds 3
-                
-                Display-Foot
-                
-                Start-Sleep `
-                    -Seconds 3
-                
-                $r  = ""
-                $b  = ""
-                $lm = ""
-                $l  = ""
-                $d  = ""
-                $ls = ""
-                
-                Exit 
-
+            {   Wrap-Action "Waiting" "For things to like, do stuff. That's OK in my book."
+                Display-Foot ; Sleep -S 3 ; Exit 
             }
-            
+
             1
-            { 
-                Wrap-Action `
-                    -Type "Real AF" `
-                    -Info "is how you chose to keep it. Honestly? That's cool AF."
-
-                Start-Sleep `
-                    -Seconds 3
-
-                Display-Foot
-
-                Start-Sleep `
-                    -Seconds 3
-
-                $r  = ""
-                $b  = ""
-                $lm = ""
-                $l  = ""
-                $d  = ""
-                $ls = ""
-                
-                Restart-Computer 
-
+            {   Wrap-Action "Reboot" "[+] Machine is now in the process of rebooting."
+                Display-Foot ; Sleep -S 3 ; Restart-Computer 
             }
-        }
-    }
 
-    Initialize-Hybrid
+        }
+
+    Initialize-HybridClient
