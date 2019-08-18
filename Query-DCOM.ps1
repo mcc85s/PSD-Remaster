@@ -24,7 +24,7 @@
     Using NameSpace System.DirectoryServices
 
     $CS , $OS = "ComputerSystem" , "OperatingSystem" | % { GCIM Win32_$_ }
-    If ( $CS.PartOfDomain -eq $True ) { IPMO ActiveDirectory } Else { 
+    If ( $CS.PartOfDomain -eq $True ) { $LoadActiveDirectory = 1 }
 
 # ____                                                                                                                    ____________________________
 #//¯¯\\__________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
@@ -157,7 +157,7 @@
         " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
         " // /¯¯\\    //___________[=]\_/[=]\_/[=]\_/[=]\_/[=]\__/[=]\__/[=]\_/[=]\_/[=]\_/[=]\_/[=]__________\\    //¯¯\ \\ " ;
         " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯[=]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯[=]¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
-        " // /¯¯\\    //___________[=]  0 8 / 1 3 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R   [=]__________\\    //¯¯\ \\ " ;
+        " // /¯¯\\    //___________[=]  0 8 / 1 7 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R   [=]__________\\    //¯¯\ \\ " ;
         " \\ \__//    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    \\__/ // " ;
         " // /¯¯\\                                [ A Heightened Sense Of Security ]                                //¯¯\ \\ " ;
         " \\ \__//                                ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯                                \\__/ // " ;
@@ -197,15 +197,13 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Convert-XAMLToWindow # Overloads a block of XAML strings to convert into interactive content dynamically     ¯¯¯\\__//¯¯\\__//__\\__//¯¯\\
     {                             # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-        Param ( [ Parameter ( Mandatory ) ] [ String ]                    $XAML ,
-                                            [ String [] ] $NamedElement = $Null ,
-                                            [ Switch ]                $PassThru )
+        Param ( [ Parameter ( Mandatory ) ] [ String ] $XAML , [ String [] ] $NamedElement = $Null , [ Switch ] $PassThru )
 
         @( "Framework" , "Core" | % { "Presentation$_" } ) + "WindowsBase" | % { Add-Type -AssemblyName $_ }
 
-        $Reader       = [ XML.XMLReader ]::Create([ IO.StringReader ] $XAML )
+        $Reader = [ XML.XMLReader ]::Create( [ IO.StringReader ] $XAML )
 
-        $Output       = [ Windows.Markup.XAMLReader ]::Load( $Reader )
+        $Output = [ Windows.Markup.XAMLReader ]::Load( $Reader ) 
 
         $NamedElement | % { $Output | Add-Member -MemberType NoteProperty -Name $_ -Value $Output.FindName( $_ ) -Force }
 
@@ -248,11 +246,11 @@
 
         Catch     { $_.Exception.Message ; Continue } 
 
-        If ( ! $Domain ) 
-        { 
-            $I = @( ForEach ( $j in "Administrator" | % { "$_" , "$_`s" } ) 
-            { "Windows" | % { IEX "( [ $_`Principal ][ $_`Identity ]::GetCurrent() ).IsInRole( '$j' )" } } )
-            If ( $I -contains "True" )    { Return 1 }
+        If ( ! $Domain )
+        {
+            $a = @( Foreach ( $i in ( "Administrator" | % { "$_" , "$_`s" } | % { "( '$_' )" } ) )
+            { "Windows" | % { IEX "( [ $_`Principal ][ $_`Identity ]::GetCurrent() ).IsInRole$( $i )" } } )
+            If ( $a -contains "True" )    { Return 1 }
         }
 
         ElseIf ( $Domain.Name -ne $Null ) { Return 1 } 
@@ -264,7 +262,7 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
     Function Determine-Domain # A switch that determines workgroup or domain      ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
     {
-        If ( ( GWMI Win32_ComputerSystem ).PartOfDomain -eq $True ) { $env:USERDOMAIN } Else { $ENV:ComputerName }
+        If ( ( GWMI Win32_ComputerSystem ).PartOfDomain -eq $True ) { $ENV:USERDOMAIN } Else { $ENV:ComputerName }
     }
 
 # ____                                                                                                                        _________________________
@@ -336,7 +334,7 @@
                 ElseIf ( ( $GUI.Password.Password -notmatch $GUI.Confirm.Password ) -or ( $GUI.Confirm.Password -eq $Null ) ) { IEX $MSG[2] }
                 ElseIf ( ( [ PSCredential ]::New( $GUI.Username.Text , $GUI.Password.SecurePassword ) | Test-Creds ) -ne 1 )  { IEX $MSG[3] }
                 Else { $GUI.DialogResult = $True }
-            })
+        })
 
             $Null = $GUI.Username.Focus()
 
@@ -346,8 +344,6 @@
 
             Else { Echo "Either the user cancelled, or the dialogue failed" }
     }
-
-# https://github.com/picheljitsu/Powershell/blob/master/ThreatHunting/Get-DCOMSecurity.ps1 | This list is based off of Matt Pichelmayer and this script
 
 <#
 
@@ -367,28 +363,31 @@
     {
         $H    = "Registry" , "HKCR" , "HKEY_CLASSES_ROOT"
         $HKCR = GDR -PSProvider $H[0] -Name $H[1] -EA 0 
-        If ( $HKCR -eq $Null ) 
-        { $HKCR = ( ndr -PSProvider $H[0] -Name $H[1] -Root $H[2] ) } 
-        Return $HKCR 
+        If ( $? -eq $False ) { $HKCR = ( NDR -PSProvider $H[0] -Name $H[1] -Root $H[2] ) } 
+        Return "$( $HKCR ):" 
     }
-
-
 
     Function Get-CLSID
     {
         Param ( [ String ] $CLSID )
 
-        $i = "HKLM:\SOFTWARE\Classes\CLSID\$CLSID"
+        "$( Load-HKCR )" , "HKLM:" | % { "$_\Software\Classes\CLSID\$CLSID" } | % { "$_" , "$_\InProcServer32" } | % { 
         
-        If ( ( Test-Path $i ) -eq $True ) 
-        { 
-            $Name , $DLL = ( "" , "\InProcServer32" | % { ( gp "$i$_" )."(default)" } )
+            If ( ( Test-Path $_ ) -eq $True ) 
+            { 
+                Return ( gp $_ )."(default)" 
+            } 
+            
+            Else 
+            { 
+                Return "[!] [ Missing / Malicious Entry ] $_" 
+            } 
         }
-
-        Return $Name , $DLL
     }
 
-
+# This System Identifier list is based off of Matt Pichelmayer's script located @ 
+# "https://github.com/picheljitsu/Powershell/blob/master/ThreatHunting/Get-DCOMSecurity.ps1"
+# I read what commands he was using, I took a much different approach after this list here.
 
     Function Collect-DefaultSID 
     {
@@ -490,72 +489,173 @@
     	    "S-1-5-32-580"               = "BUILTIN\Remote Management Users" }
     }
 
+    # Get the Default SIDS
+    Wrap-Action "Collecting" "Default System Identifiers"
+    $S = @( Collect-DefaultSID )
+    $S | % { $Keys = @( $_.Keys ) ; $Values = @( $_.Values ) ; $Count = ( 0..( $_.Count - 1 ) ) }
+
     Function Collect-ADSID
     {
-        
-    }
+        # Start talking the proper language to AD Master/Catalogue
+        $DC = $Env:UserDNSDomain.Split( '.' ) ; $DN = "DC=$( $DC -join ',DC=' )" ; $AD = "$( GDR -Name AD ):"
 
-    Function Collect-SystemSID
-    {
+        # Create hash table of empty arrays to collect found objects
+        $ID = @{ Catalog = @( ) ; Objects = @( ) ;    Root = [ Ordered ]@{ } ;  DN = @( ) ; 
+                                     List = @( ) ; SubRoot = [ Ordered ]@{ } ; SDN = @( ) } 
 
-    }
+        # Query AD Global Catalog Root Structure
+        $ID.Catalog += gci $AD\$DN | Select Name , ObjectClass , DistinguishedName | Sort ObjectClass 
+
+        # Filter Query List to Organize Output
+        $ID.Catalog | % { If ( $_.ObjectClass -notin $ID.Objects ) { $ID.Objects += $_.ObjectClass } }
+
+        # Create Hash Table with object classses as the keys, and save all child item DN's to that array
+        ForEach ( $i in $ID.Objects ) 
+        {
+            $DIN = @( )
+            $ID.Catalog | ? { $_.ObjectClass -eq $I } | % { $DIN += $_.DistinguishedName }
+            $ID.Root.Add( $i , $DIN )
+        }
+
+        # Flatten the child item DN's for a query loop
+        ForEach ( $i in 0..( $ID.Root.Count - 1 ) ) 
+        { 
+            If ( $ID.Root[$i].Count -gt 1 ) { ForEach ( $j in 0..( $ID.Root[$i].Count - 1 ) ) { $ID.DN += $ID.Root[$i][$j] } }
+            Else { $ID.DN += $ID.Root[$i] }
+        }
+
+        # Query the flattened DN's
+        $List = $ID.DN | % { gci $AD\$_ }
+        $List | % { If ( $_.ObjectClass -notin $ID.List ) { $ID.List += $_.ObjectClass } }
+
+        # SubRoot
+        $ID.SubRoot = [ Ordered ]@{ }
+        ForEach ( $i in $ID.List )
+        {
+            $DIN = @( )
+            $List | ? { $_.ObjectClass -eq  "$i" } | % { $DIN += $_.DistinguishedName }
+            $ID.SubRoot.Add( $i , $DIN )
+        }
+
+        # Do the same as above
+        ForEach ( $i in 0..( $ID.SubRoot.Count - 1 ) ) 
+        {
+            If ( $ID.SubRoot[$i].Count -gt 1 ) { ForEach ( $j in 0..( $ID.SubRoot[$i].Count - 1 ) ) { $ID.SDN += $ID.SubRoot[$i][$j] } }
+            Else { $ID.SDN += $ID.SubRoot[$i] }
+        }
+
+        # Capture all unique class/container items
+
+        $Dist  = @( $ID.SDN | % { gci $AD\$_ } | Select Name , ObjectClass , DistinguishedName | Sort ObjectClass )
+        $DOM   = @(   $Dist | ? { $_.ObjectClass   -eq            "Container" } ).DistinguishedName | % { gci $AD\$_ } | Select Name
+        $GP    = @(   $Dist | ? { $_.ObjectClass   -eq "groupPolicyContainer" } ).DistinguishedName 
+        $IPS   = @(   $Dist | ? { $_.ObjectClass -like               "ipsec*" } ).DistinguishedName
+        $Group = @(   $List | ? { $_.ObjectClass   -eq                "Group" } ).DistinguishedName | % { Get-ADGroup -Identity $_ -Properties * } | Select ObjectGUID
+        $User  = @(   $List | ? { $_.ObjectClass   -eq                 "User" } ).DistinguishedName | % { Get-ADUser  -Identity $_ -Properties * } | Select ObjectGUID
+
+        # Output to a GUID Array
+
+        $GUID  = @( )
+        $GUID += $DOM   | % { "{$( $_.Name )}" }
+        $GUID += $User  | % { "{$( $_.ObjectGUID )}" }
+        $GUID += $Group | % { "{$( $_.ObjectGUID )}" }
             
+        ForEach ( $i in $IPS , $GP ) 
+        { 
+            $g = [ Regex ]::Matches( $i , '{\w{8}-\w{4}-\w{4}-\w{4}-\w{12}}' ).Value
+            If ( $g -notin $GUID ) { $GUID += $G } 
+        }
+
+        Return $GUID
+    }
+
+    If ( $LoadActiveDirectory -eq 1 ) { IPMO ActiveDirectory ; Wrap-Action "Collecting" "Active Directory GUID List" ; $GUID = @( Collect-ADSID ) }
+
     Function Collect-DCOM
     {
         $D = @( "" , "Access" , "Launch" | % { "Win32_DCOMApplication$_" } )
         1..2 | % { $D[$_] = "$( $D[$_] )AllowedSetting" }
-        Return $D
+        $Return = [ Ordered ]@{ }
+        ForEach ( $i in 0..2 ) { $Return.Add( $D[$i] , @( GWMI $D[$i] ) ) }
+        Return $Return
     }
+
+    Wrap-Action "Collecting" "DCOM Applications"
+    $D = @( Collect-DCOM )
+       
+    $GUIDList = ( $G.AppID ).AppID
 
     Function Query-DCOM
     {
         [ CmdLetBinding () ] Param (
             
-            [ Parameter ( Position = 0 , Mandatory = $False , ValueFromPipeline = $True ) ] [ String ] $GUID )
-
-        # Get the Default SIDS
-
-            $S = @( Collect-DefaultSID )
-            $S | % { $Keys = @( $_.Keys ) ; $Values = @( $_.Values ) ; $Count = @( $_.Count ) }
-
-        # Get the DCOM WMI Filters
-
-            $D = @( Collect-DCOM ) 
-
-            Echo "Querying WMI Hive"
-        
-            $G = [ Ordered ]@{ 
-                "$( $D[0] )" = @( GWMI $D[0] | ? { $_.AppID   -like "*$GUID*" } | Select Name, AppID | Sort Name )
-                "$( $D[1] )" = @( GWMI $D[1] | ? { $_.Element -like "*$GUID*" } | Select @{ Name = "SID" ; Expression = { ( $_.Setting.Split( '=' )[-1] ).Replace( '"' , '' ) } } )
-                "$( $D[2] )" = @( GWMI $D[2] | ? { $_.Element -like "*$GUID*" } | Select @{ Name = "SID" ; Expression = { ( $_.Setting.Split( '=' )[-1] ).Replace( '"' , '' ) } } ) }
-
-            $Section = ( "  " * 30 )
-
-            $G | % { If ( $G[0] -eq $Null ) { Echo "The AppID was not found." ; Break } }
-
-            $G[0] | % { $Section , "      Application : $( $_.Name ) " , $Section | % { Echo $_ }
+            [ Parameter ( Position = 0 , Mandatory = $False , ValueFromPipeline = $True ) ] [ Array ] $List )
             
-            ForEach ( $x in 1..2 )
+        Begin
+        {
+            Wrap-Action "Collecting" "Default System Identifiers"
+            $S = @( Collect-DefaultSID )
+            $S | % { $Keys = @( $_.Keys ) ; $Values = @( $_.Values ) ; $Count = ( 0..( $_.Count - 1 ) ) }
+        }
+
+        Process
+        {
+            ForEach ( $GUID in $List )
             {
-                $C = $G[$x]
+                $AppID  = $D.Win32_DCOMApplication  | ? { $_.AppID -like "*$GUID*" } | Select Name , AppID | Sort Name
+                $Access = $D.Win32_DCOMApplicationAccessAllowedSetting | ? { $_.Element -like "*$GUID*" } | Select @{ Name = "SID" ; Expression = { ( $_.Setting.Split( '=' )[-1] ).Replace( '"' , '' ) } }
+                $Launch = $D.Win32_DCOMApplicationLaunchAllowedSetting | ? { $_.Element -like "*$GUID*" } | Select @{ Name = "SID" ; Expression = { ( $_.Setting.Split( '=' )[-1] ).Replace( '"' , '' ) } }
 
-                If ( $x -eq 1 ) { $Head = "Access" } 
-                If ( $x -eq 2 ) { $Head = "Launch" }
+                # - [ Output Application Information ] - #
+                $Application = 
+                $(  If ( $AppID.Name -eq $Null )     { "#$( "-" * 53 )#" , "  Application : [!] Name Missing" , "" }
+                    Else                             { "#$( "-" * 53 )#" , "  Application : $( $AppID.Name )" , "" } )
+                Echo $Application
 
-                If ( ( $C ).Count -gt 0 )
-                {
-                    ForEach ( $y in ( $C ).SID )
+                # - [ Output Access Information ] - #
+                $AccessInfo = 
+                $(  If ( $Access.SID -eq $Null )     { "       Access : [!] SID Missing" }
+                    Else 
                     {
-                        ForEach ( $i in 0..( $Keys.Count - 1 ) )
+                        ForEach ( $i in $Count ) 
                         {
-                            $Keys[$i] | ? { $y -eq $_ } | % { 
-                                    
-                            "     $Head SID(s): $( $Values[$i] ) " , 
-                            "              SID : $y " , 
-                            $Section | % { Echo $_ } } 
+                            ForEach ( $v in $Access )
+                            {
+                                If ( $v.Sid -eq $Keys[$i] ) 
+                                {   
+                                    $w = "       Access : " ; 
+                                    $x = "$( $v.SID ) "     ;
+                                    $y = "." * ( 26 - $x.Length ) 
+                                    $z = "$( $Values[$i] )" ; 
+                                    Echo "$( $w + $x + $y + $z )"
+                                }
+                            }
                         }
-                    }
-                }
+                    } )
+                Echo $AccessInfo
+
+                # - [ Output Launch Information ] - #
+                $LaunchInfo = 
+                $(  If ( $Launch.SID -eq $Null )     { "       Launch : [!] SID Missing " }
+                    Else 
+                    {
+                        ForEach ( $i in $Count ) 
+                        {
+                            ForEach ( $v in $Launch )
+                            {
+                                If ( $v.Sid -eq $Keys[$i] ) 
+                                {   
+                                    $w = "       Launch : " ;
+                                    $x = "$( $v.SID ) " ;
+                                    $y = "." * ( 26 - $x.Length )
+                                    $z = "$( $Values[$i] )" ; 
+                                    Echo "$( $w + $x + $y + $z )"
+                                }
+                            }
+                        }
+                    } )
+                Echo $LaunchInfo , ""
             }
         }
     }
+    
