@@ -157,7 +157,7 @@
         " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
         " // /¯¯\\    //___________[=]\_/[=]\_/[=]\_/[=]\_/[=]\__/[=]\__/[=]\_/[=]\_/[=]\_/[=]\_/[=]__________\\    //¯¯\ \\ " ;
         " \\ \__//    \\¯¯¯¯¯¯¯¯¯¯¯[=]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯[=]¯¯¯¯¯¯¯¯¯¯//    \\__/ // " ;
-        " // /¯¯\\    //___________[=]  0 8 / 1 7 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R   [=]__________\\    //¯¯\ \\ " ;
+        " // /¯¯\\    //___________[=]  0 8 / 1 8 / 2 0 1 9  |  M I C H A E L  C  C O O K  S R   [=]__________\\    //¯¯\ \\ " ;
         " \\ \__//    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    \\__/ // " ;
         " // /¯¯\\                                [ A Heightened Sense Of Security ]                                //¯¯\ \\ " ;
         " \\ \__//                                ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯                                \\__/ // " ;
@@ -358,6 +358,10 @@
  with associated Access/Launch permissions to screen
 
 #>
+    
+    Display-TrueColors
+
+    $DCCred = @( Enter-ServiceAccount )
 
     Function Load-HKCR
     {
@@ -380,10 +384,12 @@
             
             Else 
             { 
-                Return "[!] [ Missing / Malicious Entry ] $_" 
+                Return "[!] $_ Missing/Invalid Entry" 
             } 
         }
     }
+
+    Wrap-Action "Enabled" "CLSID Check via 'Get-CLSID -CLSID <enter>'"
 
 # This System Identifier list is based off of Matt Pichelmayer's script located @ 
 # "https://github.com/picheljitsu/Powershell/blob/master/ThreatHunting/Get-DCOMSecurity.ps1"
@@ -489,8 +495,8 @@
     	    "S-1-5-32-580"               = "BUILTIN\Remote Management Users" }
     }
 
-    # Get the Default SIDS
     Wrap-Action "Collecting" "Default System Identifiers"
+
     $S = @( Collect-DefaultSID )
     $S | % { $Keys = @( $_.Keys ) ; $Values = @( $_.Values ) ; $Count = ( 0..( $_.Count - 1 ) ) }
 
@@ -569,7 +575,12 @@
         Return $GUID
     }
 
-    If ( $LoadActiveDirectory -eq 1 ) { IPMO ActiveDirectory ; Wrap-Action "Collecting" "Active Directory GUID List" ; $GUID = @( Collect-ADSID ) }
+    If ( $LoadActiveDirectory -eq 1 ) 
+    { 
+        IPMO ActiveDirectory
+        Wrap-Action "Collecting" "Active Directory GUID List" 
+        $ADSID = @( Collect-ADSID ) 
+    }
 
     Function Collect-DCOM
     {
@@ -580,10 +591,10 @@
         Return $Return
     }
 
-    Wrap-Action "Collecting" "DCOM Applications"
+    Wrap-Action "Collecting" "DCOM Application List"
     $D = @( Collect-DCOM )
        
-    $GUIDList = ( $G.AppID ).AppID
+    $GUIDList = ( $D.Win32_DCOMApplication ).AppID
 
     Function Query-DCOM
     {
@@ -591,25 +602,24 @@
             
             [ Parameter ( Position = 0 , Mandatory = $False , ValueFromPipeline = $True ) ] [ Array ] $List )
             
-        Begin
-        {
             Wrap-Action "Collecting" "Default System Identifiers"
             $S = @( Collect-DefaultSID )
             $S | % { $Keys = @( $_.Keys ) ; $Values = @( $_.Values ) ; $Count = ( 0..( $_.Count - 1 ) ) }
-        }
 
-        Process
-        {
             ForEach ( $GUID in $List )
             {
+                "#//¯¯\\_________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\"
+                "#\\__//  GUID : $GUID  \\__//¯¯\\__//¯¯\\__//¯¯\\__//" | % {  Echo "$_" }
+
                 $AppID  = $D.Win32_DCOMApplication  | ? { $_.AppID -like "*$GUID*" } | Select Name , AppID | Sort Name
                 $Access = $D.Win32_DCOMApplicationAccessAllowedSetting | ? { $_.Element -like "*$GUID*" } | Select @{ Name = "SID" ; Expression = { ( $_.Setting.Split( '=' )[-1] ).Replace( '"' , '' ) } }
                 $Launch = $D.Win32_DCOMApplicationLaunchAllowedSetting | ? { $_.Element -like "*$GUID*" } | Select @{ Name = "SID" ; Expression = { ( $_.Setting.Split( '=' )[-1] ).Replace( '"' , '' ) } }
 
+
                 # - [ Output Application Information ] - #
                 $Application = 
-                $(  If ( $AppID.Name -eq $Null )     { "#$( "-" * 53 )#" , "  Application : [!] Name Missing" , "" }
-                    Else                             { "#$( "-" * 53 )#" , "  Application : $( $AppID.Name )" , "" } )
+                $(  If ( $AppID.Name -eq $Null )     { "         Name : [!] Name Missing" , "" }
+                    Else                             { "         Name : $( $AppID.Name )" , "" } )
                 Echo $Application
 
                 # - [ Output Access Information ] - #
@@ -656,6 +666,4 @@
                     } )
                 Echo $LaunchInfo , ""
             }
-        }
     }
-    
