@@ -248,7 +248,7 @@ Using Namespace System.DirectoryServices
         
         $NE | % { $OP | Add-Member -MemberType NoteProperty -Name $_ -Value $OP.FindName( $_ ) -Force } 
  
-        If ( $PassThru ) { $OP } Else { $Null = $GUI.Dispatcher.InvokeAsync{ $OP = $GUI.ShowDialog() ; SV OP $OP -Scope 1 }.Wait() ; $OP } 
+        If ( $PassThru ) { $OP } Else { $Null = $GUI.Dispatcher.InvokeAsync{ $OP = $GUI.ShowDialog() ; SV -Name OP -Value $OP -Scope 1 }.Wait() ; $OP } 
     } 
 # ____                                                                            ____________________________________________________________________ 
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
@@ -256,13 +256,13 @@ Using Namespace System.DirectoryServices
     Function Show-WPFWindow                                                      #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
     {                                                                                #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
         Param ( [ Parameter ( Mandatory ) ] [ Windows.Window ] $GUI ) 
-        $OP = $Null ; $Null = $GUI.Dispatcher.InvokeAsync{ $OP = $GUI.ShowDialog() ; SV OP $OP -Scope 1 }.Wait() ; $OP 
+        $OP = $Null ; $Null = $GUI.Dispatcher.InvokeAsync{ $OP = $GUI.ShowDialog() ; SV -Name OP -Value $OP -Scope 1 }.Wait() ; $OP 
     }
 
 # ____                                                                            ____________________________________________________________________ 
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-    Function Collect-Domain                                                      #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+    Function Get-Domain                                                          #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
     {                                                                                #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
         $CS = GCIM Win32_ComputerSystem 
         $CS | ? { $_.PartOfDomain -eq $True } | % { IPMO ActiveDirectory } 
@@ -358,34 +358,21 @@ Using Namespace System.DirectoryServices
 # ____                                                                            ____________________________________________________________________ 
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-    Function Authenticate-Credential # Tests credential for AD/WG Authentication #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+    Function Auth-Cred # Tests credential for AD/WG Authentication               #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
     {                                                                                #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
         [ CmdLetBinding () ][ OutputType ( [ Int ] ) ] Param ( 
         
             [ Parameter ( ValueFromPipeLine = $True , ValueFromPipelineByPropertyName = $True ) ]
                 [ Alias ( 'PSCredential' ) ] [ ValidateNotNull () ][ PSCredential ][ Credential () ] $Creds )
-        
-        Get-NetBIOS    | ? { $_ -ne $Null } | % { $NetBIOS = $_ }
-        Get-DCName     | ? { $_ -ne $Null } | % {      $DC = $_ }
-        Collect-Domain | ? { $_ -ne $Null } | % {     $Dom = $_ }
 
-        If ( $Creds -eq $Null ) { Return 0 ; Break }
-        $AD = 389 , 686 | % { "LDAP://$( $DC ):$( $_ )/DC=$( $Dom.Split('.') -join ',DC=' )" }
-        $Creds   | % { $UN = $_.Username ; $PW = $_.GetNetworkCredential().Password }
+        Try   { $DC  = @( Get-DCName | ? { $_ -ne $Null } )
+                $Dom = @( Get-Domain | ? { $_ -ne $Null } )
+                $AD  = "LDAP://$( $DC ):389/DC=$( $Dom.Split('.') -join ',DC=' )"
+                $DX  = [ DirectoryEntry ]::New( "$AD" , "$( $Creds.Username )" , "$( $Creds.GetNetworkCredential().Password )" ) }
 
-        Try     { [ DirectoryEntry ]::New( $AD[0] , $UN , $PW ) | % { $_ } }
-        Catch   { [ DirectoryEntry ]::New( $AD[1] , $UN , $PW ) }
-        Finally { $_.Exception.Message }
+        Catch { $_.Exception.Message ; Continue } 
 
-        If ( ! $Domain )
-        {
-            $I = @( ForEach ( $j in "Administrator" | % { "$_" , "$_`s" } ) 
-            { "Windows" | % { IEX "( [ $_`Principal ][ $_`Identity ]::GetCurrent() ).IsInRole( '$j' )" } } )
-            If ( $I -contains "True" )    { Return 1 }
-        }
-
-        ElseIf ( $Domain.Name -ne $Null ) { Return 1 } 
-        Else                              { Return 0 }
+        If ( ! $DX ) { Return 0 } ElseIf ( $DX.Name -ne $Null ) { Return 1 } Else { Return 0 }
     }
 
 # ____                                                                                                                        _________________________
@@ -393,12 +380,6 @@ Using Namespace System.DirectoryServices
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
     Function Enter-ServiceAccount  # Pulls up a script login prompt                                                      \\__//¯¯\\__//¯¯\\__//  \\__//
     {   
-        [ CmdLetBinding () ] Param (
-
-            [ Parameter () ] [ String ]  $Domain ,
-            [ Parameter () ] [ String ] $NetBIOS ,
-            [ Parameter () ] [ String ]      $DC )
-
         $GridC = 25 , 75 , 34 , 75 , 25 | % { 
                         "<ColumnDefinition Width='$_*' />"
         }
@@ -458,14 +439,16 @@ Using Namespace System.DirectoryServices
             $1     += "The provided account is either incorrect or invalid. Try again, or hit cancel to exit" ; $2 += "Authentication Failure"
             $MSG    = 0..3 | % { "[ System.Windows.MessageBox ]::Show( '$( $1[$_] )' , '$( $2[$_] )' )" }
 
-            $GUI | % { $UN = $_.Username.Text ; $P0 = $_.Password.Password ; $P1 = $_.Confirm.Password ; $SP = $_.Password.SecurePassword }
+            If ( $GUI.Username.Text -ne $Null )
+            { Echo $GUI.Username.Text }
 
+            If     ( $GUI.Username.Text -eq $Null )                                                                                   { IEX $MSG[0] }
+            ElseIf ( $GUI.Password.Password -eq $Null )                                                                               { IEX $MSG[1] }
+            ElseIf ( ( $GUI.Password.Password -notmatch $GUI.Confirm.Password ) -or ( $GUI.Confirm.Password -eq $Null ) )             { IEX $MSG[2] }
+            ElseIf ( [ PSCredential ]::New( $GUI.Username.Text , $GUI.Password.SecurePassword ) | Auth-Cred | % { $_ -ne 1 } )        { IEX $MSG[3] }
+            Else 
+            { $GUI.DialogResult = $True }
 
-                If     ( $UN -eq $Null )                                                          { IEX $MSG[0] }
-                ElseIf ( $P0 -eq $Null )                                                          { IEX $MSG[1] }
-                ElseIf ( ( $P0 -notmatch $P1 ) -or ( $P1 -eq $Null ) )                            { IEX $MSG[2] }
-                ElseIf ( ( [ PSCredential ]::New( $UN, $SP ) | Authenticate-Credential ) -ne 1 )  { IEX $MSG[3] }
-                Else { $GUI.DialogResult = $True }
             })
 
             $Null = $GUI.Username.Focus()
@@ -473,23 +456,16 @@ Using Namespace System.DirectoryServices
             $OP = Show-WPFWindow -GUI $GUI
 
             If ( $OP -eq $True ) 
-            { 
-                
-                Return [ PSCredential ]::New( $GUI.Username.Text , $GUI.Password.SecurePassword ) 
+            {
+                Return [ PSCredential ]::New( $GUI.Username.Text , $GUI.Password.SecurePassword )
             }
 
-            Else { Echo "Either the user cancelled, or the dialogue failed" }
+            Else { Return Wrap-Action "Either the user cancelled, or the dialogue failed" }
     }
 
-    Function Initialize-Connection
-    {
-        $M = "NetBIOS ID" , "Domain Name" , "Domain Controller"
-        
-        Get-NetBIOS    | ? { $_ -ne $Null } | % { $NetBIOS = $_ ; Wrap-Action $M[0] "$_" }
-        Get-DCName     | ? { $_ -ne $Null } | % {      $DC = $_ ; Wrap-Action $M[1] "$_" }
-        Collect-Domain | ? { $_ -ne $Null } | % {     $Dom = $_ ; Wrap-Action $M[2] "$_" }
-        If ( $Dom -ne $Null )
-        {
-            $DCCred = @( Enter-ServiceAccount )
-        }
-    }
+    Display-TrueColors
+
+    $DCCred = @( Enter-ServiceAccount ) 
+    
+    If ( $DCCred.UserName -ne $Null ) { Wrap-Action "[+] Authenticated" "$( $DCCred.Username )" } 
+    Else { Wrap-Action "[!] Exception" "An account could not be authenticated, or the user exited" }
