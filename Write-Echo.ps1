@@ -1,18 +1,17 @@
-
-
-
 Function Write-Echo
 {
     [ CmdLetBinding () ] Param (
 
         [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True , ParameterSetName = "0" ) ][ Switch ]   $Action ,
-        [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True , ParameterSetName = "1" ) ][ String ]    $Array ,
-        [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True , ParameterSetName = "2" ) ][ Hashtable ] $Table ,
+        [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True , ParameterSetName = "1" ) ][ Array ]     $Array ,
+        [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True , ParameterSetName = "2" ) ][ PSCustomObject ] $Table ,
 
         [ Parameter ( Position = 1 , Mandatory = $True , ParameterSetName = "0" ) ][ String ] $Type ,
         [ Parameter ( Position = 2 , Mandatory = $True , ParameterSetName = "0" ) ][ String ] $Info ,
+        [ Parameter ( Position = 1 , ParameterSetName = "1" ) ]
         [ Parameter ( Position = 1 , ParameterSetName = "2" ) ][ Switch ] $Top ,
-        [ Parameter ( Position = 1 , ParameterSetName = "2" ) ][ Switch ] $Bot )
+        [ Parameter ( Position = 2 , ParameterSetName = "1" ) ]
+        [ Parameter ( Position = 2 , ParameterSetName = "2" ) ][ Switch ] $Bot )
 
     Begin 
     {
@@ -23,13 +22,17 @@ Function Write-Echo
 
     Process 
     {
+        # - [ Top Wrapper ] - - - - - - - - #
+
+        If ( $Top ) { $OP += "  $( "_" * 112 )  " , $D , " //$( "¯" * 110 )\\ " , $LI[1] }
+
         # - [ Action Wrapper ]- - - - - - - #
 
         If ( $Action )
         {
             $T , $I = $Type , $Info ; $ST , $SI = ( 25 - $T.Length ) , ( 80 - $I.Length ) | % { " " * $_ }
             $Sub = "$( $S[1] )$ST$T : $I$SI$( $S[0] )" ; $AT , $AB = 1..2 | % { $S[0] + $Z[$_] + $S[1] }
-            "" , $AT , $Sub , $AB , "" | % { $OP += $_ }
+            $OP += "" , $AT , $Sub , $AB , ""
         }
 
         # - [ Array Wrapper ] - - - - - - - #
@@ -40,41 +43,37 @@ Function Write-Echo
 
         If ( $Table )
         {
-            If ( $Top ) { "  $( "_" * 112 )  " , $D[0] , " //$( "¯" * 110 )\\ " , " \\ $( $L[2] ) // " | % { $OP += $_ } }
-                  
-            $Hash = $Table
-
             # - [ Hashtable Title ] - - - - - - - #
 
-            $TT = "[ $( $Hash.Title.Replace( ' ' , '-' ) ) ]" ; $T = $TT | % { "$_" , "$_-" , "$_ " , " $_ -" }
+            $TT = "[ $( $Table.Title.Replace( ' ' , '-' ) ) ]" ; $T = $TT | % { "$_" , "$_-" , "$_ " , " $_ -" }
             $U = 108 - $TT.Length ; $V = $U % 4 ; $W = ( $U - $V ) / 4 ; $TL , $TR = "_¯" , "¯_" | % { $_ * $W }
                 
             $OP += " // $TL$( $T[$V] )$TR \\ " , $LI[1]
 
             # - [ Hashtable Index ] - - - - - - - #
 
-            ForEach ( $I in $Hash.Index )
+            ForEach ( $I in $Table.Index )
             {
-                If ( $Hash.Index.Count -gt 1 )
+                If ( $Table.Index.Count -gt 1 )
                 {
                     If ( $C -ne $Null ) { $C = $C + 1 }
                     If ( ( $C -eq $Null ) -and ( $Name -eq $Null ) ) { $C = 0 }
-                    $Name = $Hash.Index.Name[$C] ; $Item = $Hash.Index.Items[$C]
+                    $Name = $Table.Index.Name[$C] ; $Item = $Table.Index.Items[$C]
                 }
 
-                If ( $Hash.Index.Count -eq 1 ) 
+                If ( $Table.Index.Count -eq 1 ) 
                 {
-                    $Name = $Hash.Index.Name ; $Item = $Hash.Index.Items
+                    $Name = $Table.Index.Name ; $Item = $Table.Index.Items
                 }
 
                 # - [ Hashtable Section ] - - - - - - #
 
                 $V  = $C % 2 ; $W = ( 1 - $V ) ; $U = 98 - $Name.Length
-                $TO = $L[$V] + ( "_" * 108 ) + $R[$V] 
-                $LL = $L[$W] + ( "-" * 10 ) + $Name + ( "-" * $U ) + $R[$W]
-                $BO = $L[$V] + ( "¯" * 108 ) + $R[$V] 
+                $TO = "$( $L[$V] + ( "_" * 108 ) + $R[$V] )"
+                $LL = "$( $L[$W] + ( "-" * 10 ) + $Name + ( "-" * $U ) + $R[$W] )"
+                $BO = "$( $L[$V] + ( "¯" * 108 ) + $R[$V] )"
 
-                $TO , $LL , $BO | % { $OP += $_ }
+                $OP += $TO , $LL , $BO
 
                 # - [ Hashtable Items ] - - - - - - - #
 
@@ -109,19 +108,19 @@ Function Write-Echo
                     $OP += "$( $L[$V] )$Key : $Val$( $R[$V] )" , $LI[$W]
                 }
 
-                If ( $C -eq ( $Hash.Index.Count - 1 ) )
+                If ( $C -eq ( $Table.Index.Count - 1 ) )
                 {
                     If ( $OP.Length % 2 -eq 1 )
                     {
                         $OP = $OP[ 0..( $OP.Length - 2 ) ]
                     }
-
-                    Break
                 }
             }
-
-            If ( $Bot ) { " // $( $L[2] ) \\ " , " \\$( "_" * 110 )// " , $D[1] , "  $( "¯" * 112 )  " | % { $OP += $_ }
         }
+
+        # - [ Bottom Wrapper ] - - - - - - - - #
+
+        If ( $Bot ) { $OP += $LI[0] , " \\$( "_" * 110 )// " , $D , "  $( "¯" * 112 )  " }
     }
 
     End { Return $OP }
