@@ -1,126 +1,134 @@
-Function Write-Echo
-{
-    [ CmdLetBinding () ] Param (
-
-        [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True , ParameterSetName = "0" ) ][ Switch ]   $Action ,
-        [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True , ParameterSetName = "1" ) ][ Array ]     $Array ,
-        [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True , ParameterSetName = "2" ) ][ PSCustomObject ] $Table ,
-
-        [ Parameter ( Position = 1 , Mandatory = $True , ParameterSetName = "0" ) ][ String ] $Type ,
-        [ Parameter ( Position = 2 , Mandatory = $True , ParameterSetName = "0" ) ][ String ] $Info ,
-        [ Parameter ( Position = 1 , ParameterSetName = "1" ) ]
-        [ Parameter ( Position = 1 , ParameterSetName = "2" ) ][ Switch ] $Top ,
-        [ Parameter ( Position = 2 , ParameterSetName = "1" ) ]
-        [ Parameter ( Position = 2 , ParameterSetName = "2" ) ][ Switch ] $Bot )
-
-    Begin 
+    Function Write-Echo
     {
-        $B = @{ 0 = 0..1 ; 1 = 1..0 } ; $Z = "  " , "¯-" , "-_" | % { $_ * 54 } ; $S = " // " , " \\ " ; $F = "/¯¯\" , "\__/"
-        $D = 0..1 | % { $X , $Y = $B[$_][0..1] ; "$( $S[$X] + ( $F[$X] + $F[$Y] ) * 13 + $F[$X] + $S[$Y] )" }
-        $L , $R = $S[0..1] , $S[1..0] ; $LI = 0..1 | % { $L[$_] + $Z[0] + $R[$_] } ; $OP = @( )
-    }
+        [ CmdLetBinding () ] Param (
 
-    Process 
-    {
-        # - [ Top Wrapper ] - - - - - - - - #
+            [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True , ParameterSetName = "0" ) ][ Switch ]   $Action ,
+            [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True , ParameterSetName = "1" ) ][ Array ]     $Array ,
+            [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True , ParameterSetName = "2" ) ][ PSCustomObject ] $Table ,
 
-        If ( $Top ) { $OP += "  $( "_" * 112 )  " , $D , " //$( "¯" * 110 )\\ " , $LI[1] }
+            [ Parameter ( Position = 1 , Mandatory = $True , ParameterSetName = "0" ) ][ String ] $Type ,
+            [ Parameter ( Position = 2 , Mandatory = $True , ParameterSetName = "0" ) ][ String ] $Info ,
 
-        # - [ Action Wrapper ]- - - - - - - #
+            [ Parameter ( Position = 1 , ParameterSetName = "1" ) ]
+            [ Parameter ( Position = 1 , ParameterSetName = "2" ) ][ Switch ] $Top ,
+            [ Parameter ( Position = 2 , ParameterSetName = "1" ) ]
+            [ Parameter ( Position = 2 , ParameterSetName = "2" ) ][ Switch ] $Bot )
 
-        If ( $Action )
+        Begin 
         {
-            $T , $I = $Type , $Info ; $ST , $SI = ( 25 - $T.Length ) , ( 80 - $I.Length ) | % { " " * $_ }
-            $Sub = "$( $S[1] )$ST$T : $I$SI$( $S[0] )" ; $AT , $AB = 1..2 | % { $S[0] + $Z[$_] + $S[1] }
-            $OP += "" , $AT , $Sub , $AB , ""
+            $B  = @{ 0 = 0..1 ; 1 = 1..0 } ; $Z  = "  " , "¯-" , "-_" | % { $_ * 54 } ; $S  = " // " , " \\ " ; $F  = "/¯¯\" , "\__/"
+            $FR = 0..1 | % { ( $F[( $B[$_] )] ) * 13 -join '' } ; $D  = 0..1 | % { $X , $Y = $B[$_][0..1] ; "$( $S[$X] + $FR[$_] + $F[$X] + $S[$Y] )" }
+            $L , $R = $S , $S[1..0] ; $LI = 0..1 | % { $L[$_] + $Z[0] + $R[$_] }
+            $TopL = "  $( "_" * 112 )  " , $D , " //$( "¯" * 110 )\\ " , $LI[1]
+            $BotL = $LI[0] , " \\$( "_" * 110 )// " , $D , "  $( "¯" * 112 )  "
+            $OP = @( )
         }
 
-        # - [ Array Wrapper ] - - - - - - - #
-
-        If ( $Array ) { Return $Array }
-
-        # - [ Hashtable Wrapper ] - - - - - #
-
-        If ( $Table )
+        Process 
         {
-            # - [ Hashtable Title ] - - - - - - - #
+            # - [ Top Wrapper ] - - - - - - - - #
 
-            $TT = "[ $( $Table.Title.Replace( ' ' , '-' ) ) ]" ; $T = $TT | % { "$_" , "$_-" , "$_ " , " $_ -" }
-            $U = 108 - $TT.Length ; $V = $U % 4 ; $W = ( $U - $V ) / 4 ; $TL , $TR = "_¯" , "¯_" | % { $_ * $W }
-                
-            $OP += " // $TL$( $T[$V] )$TR \\ " , $LI[1]
+            If ( $Top ) { $OP += $TopL }
 
-            # - [ Hashtable Index ] - - - - - - - #
+            # - [ Action Wrapper ]- - - - - - - #
 
-            ForEach ( $I in $Table.Index )
+            If ( $Action )
             {
-                If ( $Table.Index.Count -gt 1 )
+                $T , $I = $Type , $Info ; $ST , $SI = ( 25 - $T.Length ) , ( 80 - $I.Length ) | % { " " * $_ }
+                $Sub = "$( $S[1] )$ST$T : $I$SI$( $S[0] )" ; $AT , $AB = 1..2 | % { $S[0] + $Z[$_] + $S[1] }
+                $OP += "" , $AT , $Sub , $AB , ""
+            }
+
+            # - [ Array Wrapper ] - - - - - - - #
+
+            If ( $Array ) { Return $Array }
+
+            # - [ Hashtable Wrapper ] - - - - - #
+
+            If ( $Table )
+            {
+                # - [ Discover / Format Title ] - - - - - - #
+
+                $HT       = $Hash | GM
+                $Title    =   $HT | ? { $_.Name -eq "[+]Title" } | % { $_.Definition.Split( "=" )[1] } | % { $_.Replace( ' ' , '-' ) } | % { "[ $_ ]" }
+
+                # - [ Calculate Title via Shrodingers Fricken' Cat ] - - - - - - - #
+
+                $TT = 108 - $Title.Length ; $TX = $TT % 4 ; $TY = ( $TT - $TX ) / 4 ; $T = ( $Title | % { "$_" , "$_-" , "$_ " , " $_ -" } )[$TX]
+                $TL , $TR = "_¯" , "¯_" | % { $_ * $TY }
+
+                $Title    = $S[0] + $TL + $T + $TR + $S[1]
+
+                # - [ Send Title to Output Array ] - - - - - #
+
+                $OP      += $Title , $LI[1]
+
+            # - [ Discover / Format Sections ] - - - - - - #
+
+            $Index   =   $HT | ? { $_.Name -like "*]Index*" }
+            $Count   = $Index.Count - 1
+
+            If ( $Count -gt 0 ) { $Count = 0..$Count }
+
+            $Names   = $Index | % { $_.Definition.Split( "=" )[1] }
+            $Table   = [ Ordered ]@{ }
+
+            $Total = 0
+
+            # - [ Mathematics and Logic having a baby... ] - - - - #
+
+            ForEach ( $i in $Count )
+            { 
+                If ( $Count.Count -gt 1 )
                 {
                     If ( $C -ne $Null ) { $C = $C + 1 }
                     If ( ( $C -eq $Null ) -and ( $Name -eq $Null ) ) { $C = 0 }
-                    $Name = $Table.Index.Name[$C] ; $Item = $Table.Index.Items[$C]
+
+                    $Name = $Names[$i]
                 }
 
-                If ( $Table.Index.Count -eq 1 ) 
+                If ( $Count.Count -eq 1 ) 
                 {
-                    $Name = $Table.Index.Name ; $Item = $Table.Index.Items
+                    $Name = $Names
                 }
 
-                # - [ Hashtable Section ] - - - - - - #
+                # - [ Calculate / Output Section:# ] - - - - - - #
 
-                $V  = $C % 2 ; $W = ( 1 - $V ) ; $U = 98 - $Name.Length
-                $TO = "$( $L[$V] + ( "_" * 108 ) + $R[$V] )"
-                $LL = "$( $L[$W] + ( "-" * 10 ) + $Name + ( "-" * $U ) + $R[$W] )"
-                $BO = "$( $L[$V] + ( "¯" * 108 ) + $R[$V] )"
+                $U  = 98 - $Name.Length
+                $V  = $Total % 2
+                $W  = ( 1 - $V )
 
-                $OP += $TO , $LL , $BO
+                $SHeader = "_" , "¯" | % { "$( $L[$V] + ( "$_" * 108 ) + $R[$V] )" }
+                $SLine   = "$( $L[$W] + ( "-" * 10 ) + $Name + ( "-" * $U ) + $R[$W] )"
 
-                # - [ Hashtable Items ] - - - - - - - #
+                $OP += $SHeader[0] , $SLine , $SHeader[1]
 
-                $IC = $Item.Count
+                $Total = $Total + 3
 
-                If ( $IC -gt 1 )
-                {
-                    $IC = $IC - 1
+                # - [ Calculate / Parse Items:# ] - - - - - - #
 
-                    If ( $C % 2 -eq 1 ) { $IZ = 0..1 } Else { $IZ = 1..0 }
+                $X = "[$I]:"
+                $C = 0
+                $HT | ? { "$( $_.Name.Split( ':' )[0] ):" -eq $X } | % {
 
-                    $IK = @( $Item.Keys ) ; $IV = @( $Item.Values )
+                    $DF = $_.Definition.Replace( "string $X" , "" ).Split( "=" )
+                    
+                    $Y    = $Total % 2
 
-                    ForEach ( $Q in 0..$IC )
-                    {
-                        $P       = $IZ[$Q % 2]
-                        $Key     = $IK[$Q] | % { "$( " " * ( 25 - $_.Length ) )$_" }
-                        $Val     = $IV[$Q] | % { "$_$( " " * ( 80 - $_.Length ) )" }
-                        $OP += "$( $L[$P] )$Key : $Val$( $R[$P] )"
-                    }
-                
-                    If ( ( $IC | Select -Last 1 ) % 2 -eq 0 )
-                    {
-                        $OP += $LI[$V]
-                    }
-                }
-
-                If ( $Item.Count -eq 1 )
-                {
-                    $Key = $Item.Keys   | % { "$( " " * ( 25 - $_.Length ) )$_" }
-                    $Val = $Item.Values | % { "$_$( " " * ( 80 - $_.Length ) )" }
-                    $OP += "$( $L[$V] )$Key : $Val$( $R[$V] )" , $LI[$W]
-                }
-
-                If ( $C -eq ( $Table.Index.Count - 1 ) )
-                {
-                    If ( $OP.Length % 2 -eq 1 )
-                    {
-                        $OP = $OP[ 0..( $OP.Length - 2 ) ]
-                    }
+                    $Key   = $DF[0].Split(':')[1] | % { "$( " " * ( 25 - $_.Length ) )$_" }
+                    $Value = $DF[1] | % { "$_$( " " * ( 80 - $_.Length ) )" }
+                    
+                    $OP   += "$( $L[$Y] + $Key ) : $( $Value + $R[$Y] )"
+                    $Total++
+                    $C++
                 }
             }
-        }
 
-        # - [ Bottom Wrapper ] - - - - - - - - #
+            If ( ( $OP.Count | Select -Last 1 ) % 2 -ne 0 ) { $OP += $LI[1] }      
 
         If ( $Bot ) { $OP += $LI[0] , " \\$( "_" * 110 )// " , $D , "  $( "¯" * 112 )  " }
+
+        }
     }
 
     End { Return $OP }
