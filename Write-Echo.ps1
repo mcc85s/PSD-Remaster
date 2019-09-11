@@ -10,9 +10,7 @@
             [ Parameter ( Position = 2 , Mandatory = $True , ParameterSetName = "0" ) ][ String ] $Info ,
 
             [ Parameter ( Position = 1 , ParameterSetName = "1" ) ]
-            [ Parameter ( Position = 1 , ParameterSetName = "2" ) ][ Switch ] $Top ,
-            [ Parameter ( Position = 2 , ParameterSetName = "1" ) ]
-            [ Parameter ( Position = 2 , ParameterSetName = "2" ) ][ Switch ] $Bot )
+            [ Parameter ( Position = 1 , ParameterSetName = "2" ) ][ Switch ] $Wrap )
 
         Begin 
         {
@@ -28,7 +26,7 @@
         {
             # - [ Top Wrapper ] - - - - - - - - #
 
-            If ( $Top ) { $OP += $TopL }
+            If ( $Wrap ) { $OP += $TopL }
 
             # - [ Action Wrapper ]- - - - - - - #
 
@@ -65,15 +63,14 @@
 
                 # - [ Discover / Format Sections ] - - - - - - #
 
-                $Index   =   $HT | ? { $_.Name -like "*]Index*" }
-                $Count   = $Index.Count - 1
+                $Index    =   $HT | ? { $_.Name -like "*]Index*" }
+                $Count    = $Index.Count - 1
 
                 If ( $Count -gt 0 ) { $Count = 0..$Count }
 
-                $Names   = $Index | % { $_.Definition.Split( "=" )[1] }
-                $Table   = [ Ordered ]@{ }
+                $Names    = $Index | % { $_.Definition.Split( "=" )[1] }
 
-                $Total = 0
+                $Total    = 0
 
                 # - [ Mathematics and Logic having a baby... ] - - - - #
 
@@ -111,24 +108,49 @@
                     $C = 0
                     $HT | ? { "$( $_.Name.Split( ':' )[0] ):" -eq $X } | % {
 
-                        $DF = $_.Definition.Replace( "string $X" , "" ).Split( "=" )
+                        $DF    = $_.Definition.Replace( "string $X" , "" ).Split( "=" )
                     
-                        $Y    = $Total % 2
+                        $Y     = $Total % 2
 
-                        $Key   = $DF[0].Split(':')[1] | % { "$( " " * ( 25 - $_.Length ) )$_" }
-                        $Value = $DF[1] | % { "$_$( " " * ( 80 - $_.Length ) )" }
+                        # - [ Format Key Length ] - #
+
+                        $Key   = $DF[0].Split(':')[1]
+
+                        If ( $Key.Length -gt 20 ) 
+                        { 
+                            $Key   = "$( $DF[0].SubString( 0 , 20 ) ) ... " 
+                        }
+                        
+                        Else 
+                        {   
+                            $Key   = $Key | % { "$( " " * ( 25 - $_.Length ) )$_" } 
+                        }
+
+                        # - [ Format Value Length ] - #
+
+                        If ( $DF[1].Length -gt 75 ) 
+                        { 
+                            $Value = "$( $DF[1].SubString( 0 , 75 ) ) ... " 
+                        }
+
+                        Else 
+                        { 
+                            $Value = $DF[1] | % { "$_$( " " * ( 80 - $_.Length ) )" } 
+                        }
                     
                         $OP   += "$( $L[$Y] + $Key ) : $( $Value + $R[$Y] )"
                         $Total++
                         $C++
                     }
-                }
-
-            If ( ( $OP.Count | Select -Last 1 ) % 2 -ne 0 ) { $OP += $LI[1] }      
-
+                }     
             }
 
-            If ( $Bot ) { $OP += $LI[0] , " \\$( "_" * 110 )// " , $D , "  $( "¯" * 112 )  " }
+            If ( $Wrap ) 
+            { 
+                If ( ( $OP.Count | Select -Last 1 ) % 2 -ne 1 ) { $OP += $LI[0] } 
+                
+                $OP += " \\$( "_" * 110 )// " , $D , "  $( "¯" * 112 )  " 
+            }
         }
 
         End { Return $OP }
