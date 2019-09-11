@@ -63,73 +63,73 @@
 
                 $OP      += $Title , $LI[1]
 
-            # - [ Discover / Format Sections ] - - - - - - #
+                # - [ Discover / Format Sections ] - - - - - - #
 
-            $Index   =   $HT | ? { $_.Name -like "*]Index*" }
-            $Count   = $Index.Count - 1
+                $Index   =   $HT | ? { $_.Name -like "*]Index*" }
+                $Count   = $Index.Count - 1
 
-            If ( $Count -gt 0 ) { $Count = 0..$Count }
+                If ( $Count -gt 0 ) { $Count = 0..$Count }
 
-            $Names   = $Index | % { $_.Definition.Split( "=" )[1] }
-            $Table   = [ Ordered ]@{ }
+                $Names   = $Index | % { $_.Definition.Split( "=" )[1] }
+                $Table   = [ Ordered ]@{ }
 
-            $Total = 0
+                $Total = 0
 
-            # - [ Mathematics and Logic having a baby... ] - - - - #
+                # - [ Mathematics and Logic having a baby... ] - - - - #
 
-            ForEach ( $i in $Count )
-            { 
-                If ( $Count.Count -gt 1 )
-                {
-                    If ( $C -ne $Null ) { $C = $C + 1 }
-                    If ( ( $C -eq $Null ) -and ( $Name -eq $Null ) ) { $C = 0 }
+                ForEach ( $i in $Count )
+                { 
+                    If ( $Count.Count -gt 1 )
+                    {
+                        If ( $C -ne $Null ) { $C = $C + 1 }
+                        If ( ( $C -eq $Null ) -and ( $Name -eq $Null ) ) { $C = 0 }
 
-                    $Name = $Names[$i]
-                }
+                        $Name = $Names[$i]
+                    }
 
-                If ( $Count.Count -eq 1 ) 
-                {
-                    $Name = $Names
-                }
+                    If ( $Count.Count -eq 1 ) 
+                    {
+                        $Name = $Names
+                    }
 
-                # - [ Calculate / Output Section:# ] - - - - - - #
+                    # - [ Calculate / Output Section:# ] - - - - - - #
 
-                $U  = 98 - $Name.Length
-                $V  = $Total % 2
-                $W  = ( 1 - $V )
+                    $U  = 98 - $Name.Length
+                    $V  = $Total % 2
+                    $W  = ( 1 - $V )
 
-                $SHeader = "_" , "¯" | % { "$( $L[$V] + ( "$_" * 108 ) + $R[$V] )" }
-                $SLine   = "$( $L[$W] + ( "-" * 10 ) + $Name + ( "-" * $U ) + $R[$W] )"
+                    $SHeader = "_" , "¯" | % { "$( $L[$V] + ( "$_" * 108 ) + $R[$V] )" }
+                    $SLine   = "$( $L[$W] + ( "-" * 10 ) + $Name + ( "-" * $U ) + $R[$W] )"
 
-                $OP += $SHeader[0] , $SLine , $SHeader[1]
+                    $OP += $SHeader[0] , $SLine , $SHeader[1]
 
-                $Total = $Total + 3
+                    $Total = $Total + 3
 
-                # - [ Calculate / Parse Items:# ] - - - - - - #
+                    # - [ Calculate / Parse Items:# ] - - - - - - #
 
-                $X = "[$I]:"
-                $C = 0
-                $HT | ? { "$( $_.Name.Split( ':' )[0] ):" -eq $X } | % {
+                    $X = "[$I]:"
+                    $C = 0
+                    $HT | ? { "$( $_.Name.Split( ':' )[0] ):" -eq $X } | % {
 
-                    $DF = $_.Definition.Replace( "string $X" , "" ).Split( "=" )
+                        $DF = $_.Definition.Replace( "string $X" , "" ).Split( "=" )
                     
-                    $Y    = $Total % 2
+                        $Y    = $Total % 2
 
-                    $Key   = $DF[0].Split(':')[1] | % { "$( " " * ( 25 - $_.Length ) )$_" }
-                    $Value = $DF[1] | % { "$_$( " " * ( 80 - $_.Length ) )" }
+                        $Key   = $DF[0].Split(':')[1] | % { "$( " " * ( 25 - $_.Length ) )$_" }
+                        $Value = $DF[1] | % { "$_$( " " * ( 80 - $_.Length ) )" }
                     
-                    $OP   += "$( $L[$Y] + $Key ) : $( $Value + $R[$Y] )"
-                    $Total++
-                    $C++
+                        $OP   += "$( $L[$Y] + $Key ) : $( $Value + $R[$Y] )"
+                        $Total++
+                        $C++
+                    }
                 }
-            }
 
             If ( ( $OP.Count | Select -Last 1 ) % 2 -ne 0 ) { $OP += $LI[1] }      
 
-        If ( $Bot ) { $OP += $LI[0] , " \\$( "_" * 110 )// " , $D , "  $( "¯" * 112 )  " }
+            }
 
+            If ( $Bot ) { $OP += $LI[0] , " \\$( "_" * 110 )// " , $D , "  $( "¯" * 112 )  " }
         }
-    }
 
-    End { Return $OP }
+        End { Return $OP }
 }
