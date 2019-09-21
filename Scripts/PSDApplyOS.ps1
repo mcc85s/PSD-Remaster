@@ -1,23 +1,3 @@
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-#// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
-#\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
-#// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-#\\                                                                                                                   //#
-#//   <@[ Script-Initialization ]@>                        "Script Magistration by Michael C. 'Boss Mode' Cook Sr."   \\#
-#\\                                                                                                                   //#
-#//                        [ Secure Digits Plus LLC | Hybrid ] [ Desired State Controller ]                           \\#
-#\\                                                                                                                   //#
-#//                  [ https://www.securedigitsplus.com | Server/Client | Seedling/Spawning Script ]                  \\#
-#\\                                                                                                                   //#
-#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-#\\ - - [ PXD-ApplyOS ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-
-# The following script is newly formatted and contains slight alterations or adjustments made by the aforementioned auth.
-# Although I am nowhere close to complete, I have given these scripts my full attention in attempting to optimize them.
-# There are definitely many issues that I have noticed, but making mistakes is part of life. Learning from them, and
-# making the effort to correct them is what matters the most. Comments, questions, mcook@securedigitsplus.com
-
 <#
 .SYNOPSIS
 
@@ -54,23 +34,18 @@
 
     $VerbosePreference = "Continue"
 
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Load core modules"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Load core modules"
 
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Deployroot is now $( $TSenv:DeployRoot )"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Deployroot is now $( $TSenv:DeployRoot )"
 
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : env:PSModulePath is now $Env:PSModulePath"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): env:PSModulePath is now $Env:PSModulePath"
 
-    # Make sure we run at full power
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Make sure we run at full power"
+    # Make sure we run at full power [ MC @ Heroes in a half shell... Turtle Power. ]
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Make sure we run at full power"
     & powercfg.exe /s 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
 
     # Get the OS image details
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Get the OS image details"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Get the OS image details"
     
     Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
     : Operating system: $( $TSenv:OSGUID )"
