@@ -35,9 +35,7 @@
     $VerbosePreference = "Continue"
 
     Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Load core modules"
-
     Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Deployroot is now $( $TSenv:DeployRoot )"
-
     Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): env:PSModulePath is now $Env:PSModulePath"
 
     # Make sure we run at full power [ MC @ Heroes in a half shell... Turtle Power. ]
@@ -47,52 +45,36 @@
     # Get the OS image details
     Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Get the OS image details"
     
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Operating system: $( $TSenv:OSGUID )"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Operating system: $( $TSenv:OSGUID )"
 
     $OS = Get-Item "DeploymentShare:\Operating Systems\$( $TSenv:OSGUID )"
     $OSSource = Get-PSDContent "$( $OS.Source.Substring( 2 ) )"
     $Image = "$OSSource$($OS.ImageFile.Substring( $OS.Source.Length ) )"
     $Index = $OS.ImageIndex
 
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : os is now $OS"
-
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : osSource is now $OSSource"
-
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : image is now $Image"
-
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : index is now $Index"
-
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Verifying access to $Image"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): os is now $OS"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): osSource is now $OSSource"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): image is now $Image"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): index is now $Index"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Verifying access to $Image"
     
     If ( ( Test-Path -Path $Image ) -ne $True )
     {
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : Unable to continue, could not access the WIM $Image"
-    
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Unable to continue, could not access the WIM $Image"
         Show-PSDInfo -Message "Unable to continue, could not access the WIM $image" -Severity Error
         Exit 1
-}
+    }
 
     # Create a local scratch folder
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Create a local scratch folder"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Create a local scratch folder"
     
     $ScratchPath = "$( Get-PSDLocalDataPath )\Scratch"
-    
     Initialize-PSDFolder $ScratchPath
 
     # Apply the image
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Apply the image"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Apply the image"
     
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Applying image $Image index $Index to $( $TSenv:OSVolume )"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Applying image $Image index $Index to $( $TSenv:OSVolume )"
     
     $StartTime = Get-Date
     
@@ -127,11 +109,9 @@
     ###############################################################################################################################################################
 
     # Make the OS bootable
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Make the OS bootable"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Make the OS bootable"
     
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Configuring volume $( $TSenv:BootVolume ) to boot $( $TSenv:OSVolume ):\Windows."
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Configuring volume $( $TSenv:BootVolume ) to boot $( $TSenv:OSVolume ):\Windows."
 
     If ( $TSenv:IsUEFI -eq "True" )
     {
@@ -144,20 +124,17 @@
     }
 
     #Added for troubleshooting (admminy)
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Running bcdboot.exe with the following arguments: $Args"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Running bcdboot.exe with the following arguments: $Args"
 
     $Result = Start-Process -FilePath "bcdboot.exe" -Args $args -Wait -Passthru
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : BCDBoot completed, rc = $( $result.ExitCode )"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): BCDBoot completed, rc = $( $result.ExitCode )"
 
     # Fix the EFI partition type
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Fix the EFI partition type if using UEFI"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Fix the EFI partition type if using UEFI"
     If ( $TSenv:IsUEFI -eq "True" )
     {
-	    # Fix the EFI partition type
-        Write-PSDLog -Message "$($MyInvocation.MyCommand.Name): Fix the EFI partition type"
+	# Fix the EFI partition type [ MC @ Like a fricken' badass or somethin'... ]
+        Write-PSDLog -Message "$($MyInvocation.MyCommand.Name ): Fix the EFI partition type"
 	    @"
 select volume $( $tsenv:BootVolume )
 set id=c12a7328-f81f-11d2-ba4b-00a0c93ec93b
