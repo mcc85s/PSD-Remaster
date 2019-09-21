@@ -129,6 +129,7 @@ Function Install-PSDApplication
     #    WMI = ( $Reg | ? { $_.UninstallString -notlike "*MsiExec.exe*" } | Select-Object $Objects ) }
     #
     ## [ Written by MC ] Thought you guys were pros.... Everything from here down is pretty dumb. ####
+    ## Update 9/21/2019 @ MC - Gee... I seem to have a way with words don't I? It's not dumb. ^ I was just being obnoxious.
 
     ### /// ( MC stopped here )
 
@@ -226,7 +227,7 @@ $toolRoot = Get-PSDContent "Tools\$($tsenv:Architecture)"
 
 
 # Single application install initiated by a Task Sequence action
-# Note: The ApplicationGUID variable isn’t set globally. It’s set only within the scope of the Install Application action/step. One of the hidden mysteries of the task sequence engine :)
+# Note: The ApplicationGUID variable isnÂ’t set globally. ItÂ’s set only within the scope of the Install Application action/step. One of the hidden mysteries of the task sequence engine :)
 
 Write-PSDLog -Message "$($MyInvocation.MyCommand.Name): Checking for single application install step"
 If ($tsenv:ApplicationGUID -ne "") {
