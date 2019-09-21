@@ -1,23 +1,3 @@
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-#// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
-#\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
-#// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-#\\                                                                                                                   //#
-#//   <@[ Script-Initialization ]@>                        "Script Magistration by Michael C. 'Boss Mode' Cook Sr."   \\#
-#\\                                                                                                                   //#
-#//                        [ Secure Digits Plus LLC | Hybrid ] [ Desired State Controller ]                           \\#
-#\\                                                                                                                   //#
-#//                  [ https://www.securedigitsplus.com | Server/Client | Seedling/Spawning Script ]                  \\#
-#\\                                                                                                                   //#
-#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-#\\ - - [ PXD-DeploymentShare ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-
-# The following script is newly formatted and contains slight alterations or adjustments made by the aforementioned auth.
-# Although I am nowhere close to complete, I have given these scripts my full attention in attempting to optimize them.
-# There are definitely many issues that I have noticed, but making mistakes is part of life. Learning from them, and
-# making the effort to correct them is what matters the most. Comments, questions, mcook@securedigitsplus.com
-
 <#
 .SYNOPSIS
 
@@ -42,17 +22,14 @@
 
 .Example
 #>
+    Using Namespace System.Management.Automation
 
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Importing Module BITSTransfer"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Importing Module BITSTransfer"
 
     Import-Module BITSTransfer -Global
 
     # Local variables
-        $global:psddsDeployRoot = ""
-        $global:psddsDeployUser = ""
-    $global:psddsDeployPassword = ""
-        $global:PSDdsCredential = ""
+        $global:psddsDeployRoot , $global:psddsDeployUser , $global:psddsDeployPassword , $global:PSDdsCredential = 0..3 | % { "" }
 
     # Main function for establishing a connection 
     Function Get-PSDConnection 
@@ -60,18 +37,11 @@
         Param ( [ String ] $DeployRoot , [ String ] $Username , [ String ] $Password )
 
         # Save values in local variables
-            $Global:PSDdsDeployRoot = $DeployRoot
-            $Global:PSDdsDeployUser = $Username
-        $Global:PSDdsDeployPassword = $Password
-
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Global:PSDdsDeployRoot is now $Global:PSDdsDeployRoot"
-    
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Global:PSDdsDeployUser is now $Global:PSDdsDeployUser"
-    
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Global:PSDdsDeployPassword is now $Global:PSDdsDeployPassword"
+        $Global:PSDdsDeployRoot , $Global:PSDdsDeployUser , $Global:PSDdsDeployPassword  = $DeployRoot , $Username , $Password
+	
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Global:PSDdsDeployRoot is now $Global:PSDdsDeployRoot"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Global:PSDdsDeployUser is now $Global:PSDdsDeployUser"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Global:PSDdsDeployPassword is now $Global:PSDdsDeployPassword"
 
     # Get credentials
     If ( ! $Global:PSDdsDeployUser -or ! $Global:PSDdsDeployPassword )
@@ -81,15 +51,8 @@
 
     Else
     {
-        # ( MC ) So what this part here means, if someone enters in the password, and they know how to exploit this system during installation
-        # then, by not declaring the "$Global:psddsDeployPassword = "" after it's assigned to a secure variable ( like below ) , then, someone 
-        # can easily get into your account elsewhere... For someone that told me that writing passwords to a file is 'lazy'... I'd say that is
-        # quite the contradiction here. Anyway ...
-
-        # You should fix this. I've fixed it in this version, but you have other problems in your scripts, problems that need a good look.
-
         $Secure = ConvertTo-SecureString $global:psddsDeployPassword -AsPlainText -Force
-        $Global:PSDdsCredential = New-Object -TypeName System.Management.Automation.PSCredential -Args $global:psddsDeployUser, $secure
+        $Global:PSDdsCredential = [ PSCredential ]::( $global:psddsDeployUser , $secure )
     }
 
     # Make sure we can connect to the specified location
@@ -111,12 +74,13 @@
         # Connect to a UNC path
         Try
         {
-            New-PSDrive `
-                -Name        ( Get-PSDAvailableDriveLetter ) `
-                -PSProvider                       FileSystem `
-                -Root                $global:psddsDeployRoot `
-                -Credential          $global:psddsCredential `
-                -Scope                                Global
+	    $Drive = @{ Name       = ( Get-PSDAvailableDriveLetter )
+	                PSProvider =                    FileSystem 
+	                Root       =       $global:psddsDeployRoot
+			Credential =       $global:psddsCredential
+			Scope      =                         Global }
+            
+	    New-PSDrive @Drive
         }
 
         Catch
@@ -126,7 +90,6 @@
         Get-PSDProvider -DeployRoot $Global:PSDdsDeployRoot
     }
 
-    # This shouldn't be here.
     #Else
     #{
     #    # Connect to a local path ( no credential needed )
@@ -140,8 +103,7 @@ Function Get-PSDProvider # Will find it.
 {
     Param ( [ String ] $DeployRoot )
 
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : DeployRoot is now $DeployRoot"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): DeployRoot is now $DeployRoot"
 
     # Set an install directory if necessary (needed so the provider can find templates)
     $_MDT = "HKLM:\Software\Microsoft\Deployment 4"
