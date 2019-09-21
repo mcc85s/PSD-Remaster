@@ -15,8 +15,8 @@
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
 #//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\
 #\\  [ ViperBomb-Services ] @: Configures System Service Configuration through GUI. Originally by BlackViper, PowerShell by MadBomb122.      //¯¯\\__//
-#//  This version is extensively modified, and is still a work in progress. Would not call this function yet.                                \\__//¯¯\\
-#\\                                                                                                                                          //¯¯\\__//
+#//  This version is extensively modified, and is still a work in progress. Would not call this functional yet.                                \\__//¯¯\\
+#\\  [ Update 9/20/2019 @ by MC ] MadBomb122 updated his service utility that this script is based on. "https://github.com/madbomb122/BlackViperScript"                                                                                                                                         //¯¯\\__//
 #//__________________________________________________________________________________________________________________________________________\\__//¯¯\\
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
                                                                                                                                      #\__//¯¯\\__//¯¯\\
