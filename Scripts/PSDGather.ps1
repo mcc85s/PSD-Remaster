@@ -1,23 +1,3 @@
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-#// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
-#\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
-#// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-#\\                                                                                                                   //#
-#//   <@[ Script-Initialization ]@>                        "Script Magistration by Michael C. 'Boss Mode' Cook Sr."   \\#
-#\\                                                                                                                   //#
-#//                        [ Secure Digits Plus LLC | Hybrid ] [ Desired State Controller ]                           \\#
-#\\                                                                                                                   //#
-#//                  [ https://www.securedigitsplus.com | Server/Client | Seedling/Spawning Script ]                  \\#
-#\\                                                                                                                   //#
-#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-#\\ - - [ PXD-Gather ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-
-# The following script is newly formatted and contains slight alterations or adjustments made by the aforementioned auth.
-# Although I am nowhere close to complete, I have given these scripts my full attention in attempting to optimize them.
-# There are definitely many issues that I have noticed, but making mistakes is part of life. Learning from them, and
-# making the effort to correct them is what matters the most. Comments, questions, mcook@securedigitsplus.com
-
 # // ***************************************************************************
 # // 
 # // PowerShell Deployment for MDT
@@ -176,35 +156,16 @@
         {
             $tsenv.IsOnBattery = $true
         }
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : bFoundAC: $bFoundAC" 
-
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : bOnBattery :$bOnBattery" 
-
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : bFoundBattery: $bFoundBattery"
-
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : tsenv.IsOnBattery is now $( $tsenv.IsOnBattery )"
-
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : TODO: GetDP" 
-
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : TODO: GetWDS" 
-
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : TODO: GetHostName" 
-    
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : TODO: GetOSSKU" 
-            
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : TODO: GetCurrentOSInfo" 
-
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : TEST: Virtualization" 
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): bFoundAC: $bFoundAC" 
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): bOnBattery :$bOnBattery" 
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): bFoundBattery: $bFoundBattery"
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): tsenv.IsOnBattery is now $( $tsenv.IsOnBattery )"
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): TODO: GetDP" 
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): TODO: GetWDS" 
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): TODO: GetHostName" 
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): TODO: GetOSSKU" 
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): TODO: GetCurrentOSInfo" 
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): TEST: Virtualization" 
     
         $Win32_ComputerSystem = gwmi -Class Win32_ComputerSystem
         switch ( $Win32_ComputerSystem.model )
@@ -215,14 +176,9 @@
             Default                      { $tsenv:IsVM = "False" } }
 
     
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : Model is $( $Win32_ComputerSystem.model )" 
-
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : tsenv:IsVM is now $tsenv:IsVM" 
-    
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : TODO: BitLocker" 
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Model is $( $Win32_ComputerSystem.model )" 
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): tsenv:IsVM is now $tsenv:IsVM" 
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): TODO: BitLocker" 
 
       }
     }
@@ -232,17 +188,12 @@
         [ CmdletBinding () ] Param ( 
 
             [ ValidateNotNullOrEmpty () ]
-
-                [ Parameter ( ValueFromPipeline = $True , Mandatory = $True ) ] 
-        
-                    [ String ] $FilePath ,
+	    [ Parameter ( ValueFromPipeline = $True , Mandatory = $True ) ] [ String ]    $FilePath ,
 
             [ ValidateNotNullOrEmpty () ]
-         
-                [ Parameter ( ValueFromPipeline = $True , Mandatory = $True ) ] 
-
-                    [ String ] $MappingFile ) 
-        Begin
+	    [ Parameter ( ValueFromPipeline = $True , Mandatory = $True ) ] [ String ] $MappingFile ) 
+        
+	Begin
         {
                         $Global:iniFile = Get-IniContent $FilePath
             [ XML ]$Global:variableFile = Get-Content $MappingFile
@@ -262,8 +213,7 @@
                   $NewVar.Overwrite = "false"
                 $NewVar.Description = "Custom property"
             
-                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : Adding custom property $( $NewVar.ID )" 
+                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Adding custom property $( $NewVar.ID )" 
                 $Null = $Global:VariableFile.Properties.AppendChild( $NewVar ) }
             }
             $Global:Variables = $Global:VariableFile.Properties.Property
@@ -280,38 +230,27 @@
         [ CmdletBinding () ] Param( 
             
             [ ValidateNotNullOrEmpty () ]
-             
-                [ Parameter ( ValueFromPipeline = $True , Mandatory = $True ) ] 
-                
-                    [ String ] $RuleName ) 
+	    [ Parameter ( ValueFromPipeline = $True , Mandatory = $True ) ] [ String ] $RuleName ) 
+	    
         Begin
         {
-            # ooook ? uh lol Why is there even a 'Begin' here if this is gonna be left empty...
-            # started thinking of a billie mays commercial....
-            # "Are you tired of people asking you to do stuff for em? Trrrry this...
-            # Introducing.... 'Nothin'! You can't see it, it's not there, and people can try all day
-            # to take it from ya? But guess what- ain't 'Nothin' for em to take! "
-            # Sigh. Probably seemed more funny in my mind than typing it out.
-            # Anyway...
+	    Write-Output "Time to do some COOL stuff. What kind of stuff? Who knows."
         }
         Process
         {
-            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-            : Processing Rule $RuleName" 
+            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Processing Rule $RuleName" 
 
             $V = $Global:Variables | ? { $_.ID -ieq $RuleName }
             
             If ( $RuleName.ToUpper() -eq "DEFAULTGATEWAY" )
-            {   Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : TODO: Process default gateway" 
+            {   Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): TODO: Process default gateway" 
             }
             
             ElseIf ( $v )
             {
                 If ( $V.type -eq "list" )
                 {
-                    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                    : Processing values of $RuleName" 
+                    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Processing values of $RuleName" 
 
                     ( gi tsenvlist:$( $v.ID ) ).Value | Invoke-PSDRule
                 }
@@ -321,15 +260,13 @@
                     $S = ( gi tsenv:$( $v.ID ) ).Value
                     If ( $S -ne "" )
                     {
-                        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                        : Processing value of $RuleName" 
+                        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Processing value of $RuleName" 
                         Invoke-PSDRule $S
                     }
 
                     Else
                     {
-                        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                        : Skipping rule $RuleName, value is blank" 
+                        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Skipping rule $RuleName, value is blank" 
                     }
                 }
             }
@@ -362,28 +299,24 @@
             # Process special sections and exits
             If ( $Section.Contains( "UserExit" ) )
             {
-                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : TODO: Process UserExit Before" 
+                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): TODO: Process UserExit Before" 
             }
 
             If ( $Section.Contains( "SQLServer" ) )
             {
                 $SkipProperties = $True
-                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : TODO: Database" 
+                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): TODO: Database" 
             }
 
             If ( $Section.Contains( "WebService" ) )
             {
                 $SkipProperties = $True
-                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : TODO: WebService" 
+                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): TODO: WebService" 
             }
 
             If ( $Section.Contains( "Subsection" ) )
             {
-                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : Processing subsection"
+                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Processing subsection"
                 Invoke-PSDRule $Section[ "Subsection" ]
             }
 
@@ -409,16 +342,14 @@
                                     $value = "EMPTY"
                                 }
                 
-                                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                                : Changing PROPERTY $( $v.ID ) to $( $Section[ $SectionVar ] )
+                                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Changing PROPERTY $( $v.ID ) to $( $Section[ $SectionVar ] )
                                 , was $Value" 
                                 si tsenv:$( $v.id ) -Value $Section[ $SectionVar]
                             }
 
                             ElseIf ( ( gi tsenv:$v).Value -ne "" )
                             {
-                                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                                : Ignoring new value for $( $V.ID )" 
+                                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Ignoring new value for $( $V.ID )" 
                             }
                         }
 
@@ -555,14 +486,12 @@
                 $Ini[ $Section ][ $Name] = $Value 
             } 
         } 
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : Finished Processing file: $FilePath" 
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Finished Processing file: $FilePath" 
         Return $Ini 
     } 
          
     End 
     {
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : Function ended" 
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Function ended" 
     } 
 }
