@@ -1,23 +1,3 @@
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-#// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
-#\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
-#// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-#\\                                                                                                                   //#
-#//   <@[ Script-Initialization ]@>                        "Script Magistration by Michael C. 'Boss Mode' Cook Sr."   \\#
-#\\                                                                                                                   //#
-#//                        [ Secure Digits Plus LLC | Hybrid ] [ Desired State Controller ]                           \\#
-#\\                                                                                                                   //#
-#//                  [ https://www.securedigitsplus.com | Server/Client | Seedling/Spawning Script ]                  \\#
-#\\                                                                                                                   //#
-#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-#\\ - - [ PXD-Utility ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-
-# The following script is newly formatted and contains slight alterations or adjustments made by the aforementioned auth.
-# Although I am nowhere close to complete, I have given these scripts my full attention in attempting to optimize them.
-# There are definitely many issues that I have noticed, but making mistakes is part of life. Learning from them, and
-# making the effort to correct them is what matters the most. Comments, questions, mcook@securedigitsplus.com
-
 # // ***************************************************************************
 # // 
 # // PowerShell Deployment for MDT
@@ -30,7 +10,7 @@
 
 #$VerbosePreference = "SilentlyContinue"
 
-Import-Module Microsoft.BDD.TaskSequenceModule -Scope Global -Force -Verbose -ErrorAction Stop
+Import-Module Microsoft.BDD.TaskSequenceModule -Scope Global -Force -Verbose -ErrorAction Stop # <- This thing is still encrypted...
 
 #$verbosePreference = "Continue"
 
@@ -43,95 +23,74 @@ Function Get-PSDLocalDataPath
         [ Switch ] $Move
     )
     # Return the cached local data path if possible
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Return the cached local data path if possible"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Return the cached local data path if possible"
     If ( $global:PSUDataPath -ne "" -and ( -not $move ) )
     {
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : global:psuDataPath is $PSUDataPath, testing access"
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): global:psuDataPath is $PSUDataPath, testing access"
         If ( Test-Path $global:PSUDataPath )
         {
-            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-            : Returning data $PSUDataPath"
+            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Returning data $PSUDataPath"
             Return $global:PSUDataPath
         }
     }
 
     # Always prefer the OS volume
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Always prefer the OS volume"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Always prefer the OS volume"
 
     $LocalPath = ""
 
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : localpath is $LocalPath"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): localpath is $LocalPath"
     If ( $tsenv:OSVolumeGuid -ne "" )
     {
         If ( $tsenv:OSVolumeGuid -eq "MBR" )
         {
-            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-            : tsenv:OSVolumeGuid is now $( $tsenv:OSVolumeGuid )"
+            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): tsenv:OSVolumeGuid is now $( $tsenv:OSVolumeGuid )"
 
             If ( $tsenv:OSVersion -eq "WinPE" )
             {
-                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : tsenv:OSVersion is now $( $tsenv:OSVersion )"
-
+                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): tsenv:OSVersion is now $( $tsenv:OSVersion )"
                 # If the OS volume GUID is not set, we use the fake volume guid value "MBR"
-                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : Get the OS image details (MBR)"
-            
-                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : Using OS volume from tsenv:OSVolume: $( $tsenv:OSVolume )."
+                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Get the OS image details (MBR)"
+                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Using OS volume from tsenv:OSVolume: $( $tsenv:OSVolume )."
             
                 $LocalPath = "$( $tsenv:OSVolume ):\MININT"
 
-                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : localPath is now $LocalPath"
+                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): localPath is now $LocalPath"
             }
 
             Else
             {
-                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : tsenv:OSVersion is now $( $tsenv:OSVersion )"
+                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): tsenv:OSVersion is now $( $tsenv:OSVersion )"
 
                 # If the OS volume GUID is not set, we use the fake volume guid value "MBR"
-                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : Get the OS image details (MBR)"
+                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Get the OS image details (MBR)"
 
-                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : Using OS volume from env:SystemDrive $( $env:SystemDrive )."
+                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Using OS volume from env:SystemDrive $( $env:SystemDrive )."
                 $localPath = "$( $env:SystemDrive )\MININT"
 
-                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : localPath is now $LocalPath"
+                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): localPath is now $LocalPath"
             }
         }
         else
         {
             # If the OS volume GUID is set, we should use that volume (UEFI)
-            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-            : Get the OS image details (UEFI)"
+            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Get the OS image details (UEFI)"
 
-            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-            : Checking for OS volume using $( $tsenv:OSVolumeGuid )."
+            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Checking for OS volume using $( $tsenv:OSVolumeGuid )."
 
             Get-Volume `
             | ? { $_.UniqueID -like "*$( $tsenv:OSVolumeGuid )*" } `
             | % { $localPath = "$( $_.DriveLetter ):\MININT"     }
         }
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : localpath is now $localPath"
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): localpath is now $localPath"
     }
     
     if ( $localPath -eq "" )
     {
         # Look on all other volumes 
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : Look on all other volumes"
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Look on all other volumes"
 
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : Checking other volumes for a MININT folder."
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Checking other volumes for a MININT folder."
 
         Get-Volume `
         | ? {-not [String]::IsNullOrWhiteSpace( $_.DriveLetter ) } `
@@ -142,34 +101,28 @@ Function Get-PSDLocalDataPath
         | % {         $localPath = "$( $_.DriveLetter ):\MININT" }
         # [ MC ] I see you guys use '-not' quite a lot, does '!' not work in this ?
 
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : localpath is now $localPath"
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): localpath is now $localPath"
     }
     
     # Not found on any drive, create one on the current system drive
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Not found on any drive, create one on the current system drive"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Not found on any drive, create one on the current system drive"
     
     If ( $LocalPath -eq "" )
     {
         $LocalPath = "$( $env:SYSTEMDRIVE )\MININT"
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : localpath is now $localPath"
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): localpath is now $localPath"
     }
     
     # Create the MININT folder if it doesn't exist
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Create the MININT folder if it doesn't exist"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Create the MININT folder if it doesn't exist"
     
     If ( ( Test-Path $LocalPath ) -eq $False )
     {
         New-Item -ItemType Directory -Force -Path $localPath | Out-Null
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : localpath is now $localPath"
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): localpath is now $localPath"
     }
     
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : localpath set to $LocalPath"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): localpath set to $LocalPath"
     $global:PSUDataPath = $LocalPath
     Return $LocalPath
 }
@@ -189,8 +142,7 @@ Function Start-PSDLogging
     $logPath = "$( Get-PSDLocalDataPath )\SMSOSD\OSDLOGS"
     Initialize-PSDfolder $logPath
     Start-Transcript "$logPath\$caller.transcript.log" -Append
-    Write-Verbose -Message "$( $MyInvocation.MyCommand.Name )
-    : Logging transcript to $logPath\$caller.transcript.log"
+    Write-Verbose -Message "$( $MyInvocation.MyCommand.Name ): Logging transcript to $logPath\$caller.transcript.log"
 
     #Writing to CMtrace file
     #Set PSDLogPath
@@ -204,17 +156,14 @@ Function Start-PSDLogging
         New-Item $Global:PSDLogPath -Type File | Out-Null
     } 
 
-    Write-Verbose -Message "$( $MyInvocation.MyCommand.Name )
-    : Logging CMtrace logs to $Global:PSDLogPath"
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Logging CMtrace logs to $Global:PSDLogPath"
+    Write-Verbose -Message "$( $MyInvocation.MyCommand.Name ): Logging CMtrace logs to $Global:PSDLogPath"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Logging CMtrace logs to $Global:PSDLogPath"
 }
 
 Function Stop-PSDLogging
 {
     Stop-Transcript
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Stop Transcript Logging"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Stop Transcript Logging"
 }
 
 Function Write-PSDLog
@@ -298,8 +247,7 @@ Start-PSDLogging
 
 Function Save-PSDVariables
 {
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Save-PSDVariables"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Save-PSDVariables"
 
     $V = [ XML ]"<?xml version=`"1.0`" ?><MediaVarList Version=`"4.00.5345.0000`"></MediaVarList>"
     gci TSEnv: | % `
@@ -317,8 +265,7 @@ Function Save-PSDVariables
 Function Restore-PSDVariables
 {
     $Path = "$( Get-PSDLocaldataPath )\Variables.dat"
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Restore-PSDVariables from $Path"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Restore-PSDVariables from $Path"
     
     If ( Test-Path -Path $Path )
     {
@@ -328,25 +275,16 @@ Function Restore-PSDVariables
     Return $Path
 }
 
-Function Clear-PSDInformation # What if we disabled this part ? For instance, 
-# if an installation stalls, but the files were already copied over... Bet it 
-# produces a log file that shows some pretty important stuff - and I happen to 
-# have seen what it says. Not exactly cool with what I saw, but, that's why you
-# need help with this. I'll help you finish this, but it needs to be done the
-# right way. Until you add me to the PSD project so I can make changes, these 
-# files will remain as PXD-Master.
-
+Function Clear-PSDInformation 
 {
     # Create a folder for the logs
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Create a folder for the logs"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Create a folder for the logs"
 
     $LogDest = "$( $env:SystemRoot )\Temp\DeploymentLogs"
     Initialize-PSDFolder $LogDest
 
     # Process each volume looking for MININT folders
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Process each volume looking for MININT folders"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Process each volume looking for MININT folders"
     Get-Volume `
     | ? { -not [ String ]::IsNullOrWhiteSpace( $_.DriveLetter ) } `
     | ? {                              $_.DriveType -eq 'Fixed' } `
@@ -358,8 +296,7 @@ Function Clear-PSDInformation # What if we disabled this part ? For instance,
     $localPath = "$( $_.DriveLetter ):\MININT"
 
         # Copy PSD logs
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : Copy PSD logs"
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Copy PSD logs"
         
         If ( Test-Path "$localPath\SMSOSD\OSDLOGS" )
         {
@@ -367,8 +304,7 @@ Function Clear-PSDInformation # What if we disabled this part ? For instance,
         }
 
         # Copy Panther logs
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : Copy Panther logs"
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Copy Panther logs"
         
         If ( Test-Path "$localPath\Logs" )
         {
@@ -376,8 +312,7 @@ Function Clear-PSDInformation # What if we disabled this part ? For instance,
         }
 
         # Copy SMSTS log
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : Copy SMSTS log"
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Copy SMSTS log"
 
         If ( Test-Path "$localPath\Logs" )
         {
@@ -387,21 +322,15 @@ Function Clear-PSDInformation # What if we disabled this part ? For instance,
         # Check if DEVRunCleanup is set to NO
         If ( $( $tsenv:DEVRunCleanup ) -eq "NO" )
         {
-            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-            : tsenv:DEVRunCleanup is now $tsenv:DEVRunCleanup"
-
-            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-            : Cleanup will not remove MININT or Drivers folder"
+            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): tsenv:DEVRunCleanup is now $tsenv:DEVRunCleanup"
+            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Cleanup will not remove MININT or Drivers folder"
         }
 
         Else
         {
 
-            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-            : tsenv:DEVRunCleanup is now $tsenv:DEVRunCleanup"
-
-            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-            : Cleanup will remove MININT and Drivers folder"
+            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): tsenv:DEVRunCleanup is now $tsenv:DEVRunCleanup"
+            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Cleanup will remove MININT and Drivers folder"
 
             # Remove the MININT folder
             Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
@@ -414,13 +343,11 @@ Function Clear-PSDInformation # What if we disabled this part ? For instance,
 
             Catch
             {
-                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-                : Unable to completely remove $LocalPath."
+                Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Unable to completely remove $LocalPath."
             }
 
             # Remove the Drivers folder
-            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-            : Remove the Drivers folder"
+            Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Remove the Drivers folder"
 
             Try
             {
@@ -435,11 +362,9 @@ Function Clear-PSDInformation # What if we disabled this part ? For instance,
     }
 
     # Cleanup start folder
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Cleanup start folder"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Cleanup start folder"
 
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Removing link to re-run $PSCommandPath from the all users Startup folder"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Removing link to re-run $PSCommandPath from the all users Startup folder"
 
     # Remove shortcut to PSDStart.ps1 if it exists
     $AllUsersStartup = [ Environment ]::GetFolderPath( 'CommonStartup' )
@@ -450,8 +375,7 @@ Function Clear-PSDInformation # What if we disabled this part ? For instance,
     }
 
     # Cleanup AutoLogon
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Cleanup AutoLogon"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Cleanup AutoLogon"
 
     $WinLogon = 
     @{  Path  = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
@@ -473,8 +397,7 @@ Function Copy-PSDFolder
 
     $Copy = ( $Source , $Destination ).TrimEnd( "\" )
 
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Copying folder $( $Copy[0] ) to $( $Copy[1] ) using XCopy"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Copying folder $( $Copy[0] ) to $( $Copy[1] ) using XCopy"
 
     & Xcopy ( $s = $Copy[0] ) ( $d = $Copy[1] ) /s /e /v /d /y /i | Out-Null
 }
@@ -482,13 +405,7 @@ Function Copy-PSDFolder
 Function Test-PSDNetCon
 {
     Param ( $HostName , $Protocol )
-    
-    Switch ( $Protocol )
-    {   SMB   { $Port =  445 }
-        HTTP  { $Port =   80 }
-        HTTPS { $Port =  443 }
-        WINRM { $Port = 5985 }
-      Default {         Exit }  }
+    Switch ( $Protocol ) { SMB { $Port = 445 } HTTP { $Port = 80 } HTTPS { $Port = 443 } WINRM { $Port = 5985 } Default { Exit } }
 
     Try
     {
@@ -568,14 +485,8 @@ Function Get-PSDDriverInfo
 
     ElseIf ( $Provider.Length -gt 0 -And $Provider -is [ System.Array ] )
     {
-        If ( $Provider.Length -gt 1 -And $Provider[0].Trim( " " ).StartsWith( "%" ) )
-        {
-            $Provider = $Provider[1] ;
-        } 
-        Else 
-        {
-            $Provider = $Provider[0]
-        }
+        If ( $Provider.Length -gt 1 -And $Provider[0].Trim( " " ).StartsWith( "%" ) ) { $Provider = $Provider[1] } 
+        Else { $Provider = $Provider[0] }
     }
 
     $Provider = $Provider.Trim( ' ' )
@@ -586,34 +497,17 @@ Function Get-PSDDriverInfo
         $Manufacter = ( $Content | Select-String "^$Provider\s*=" ) -Replace '.*=(.*)' , '$1'
     }
 
-    Else 
-    {
-        $Manufacter = ""
-    }    
+    Else { $Manufacter = "" }    
 
-    If ( $Manufacter.Length -eq 0 )
-    {
-        $Manufacter = $Provider
-    } 
+    If ( $Manufacter.Length -eq 0 ) { $Manufacter = $Provider } 
     ElseIf ( $Manufacter.Length -gt 0 -And $Manufacter -is [ System.Array ] )
     {
-        If ( $Manufacter.Length -gt 1 -And $Manufacter[0].Trim( " " ).StartsWith( "%" ) )
-        {
-            $Manufacter = $Manufacter[1] ;
-        }
-        Else
-        {
-            $Manufacter = $Manufacter[0]
-        }
+        If ( $Manufacter.Length -gt 1 -And $Manufacter[0].Trim( " " ).StartsWith( "%" ) ) { $Manufacter = $Manufacter[1] }
+        Else { $Manufacter = $Manufacter[0] }
     }
     $Manufacter = $Manufacter.Trim( ' ' ).Trim( '"' )
 
-    $HashTable = [ Ordered ] `
-    @{  Name         =       $InfName
-        Manufacturer =    $Manufacter
-        Class        =         $Class
-        Date         =  $DriverVer[0]
-        Version      = $DriverVersion }
+    $HashTable = [ Ordered ] @{ Name = $InfName ; Manufacturer = $Manufacter ; Class = $ClassDate = $DriverVer[0] ; Version = $DriverVersion }
     
     New-Object -TypeName PSObject -Property $HashTable
 }
@@ -692,8 +586,7 @@ Function Show-PSDInfo
     {
         Add-Type -AssemblyName System.Windows.Forms -IgnoreWarnings
         [ System.Windows.Forms.Application ]::EnableVisualStyles()
-    } # It's 2019, we don't want to use Forms anymore. I'll get this running with WPF/XAML when I know more about the process
-      # Hell. I'm thinking of getting 'a cool idea I have for [ Virtualized ASP.Net MVC ] ' into this environment.
+    }
 
     Catch [ System.UnauthorizedAccessException ]
     {
@@ -817,8 +710,7 @@ Function Get-PSDInputFromScreen
              $TextBox = New-Object System.Windows.Forms.TextBox ,
     @{       Location = New-Object System.Drawing.Point(   10 , 40 )
                  Size = New-Object System.Drawing.Size(   360 , 20 ) }
-
-
+		 
     $Form.Controls.AddRange( @( $Button1 , $Label1 , $TextBox ) )
     $Form.Topmost = $True
     $Form.Add_Shown( { $TextBox.Select() } )
@@ -835,17 +727,10 @@ Function Invoke-PSDHelper
     & Net Use $MDTDeploySharePath $Password /USER:$UserName
 
     #Import Env
-    Import-Module Microsoft.BDD.TaskSequenceModule -Scope Global `
-        -Force -Verbose
-
-    Import-Module PSDUtility `
-        -Force -Verbose
-
-    Import-Module PSDDeploymentShare `
-        -Force -Verbose
-
-    Import-Module PSDGather `
-        -Force -Verbose
+    Import-Module Microsoft.BDD.TaskSequenceModule -Scope Global -Force -Verbose # <- This thing is still encrypted
+    Import-Module PSDUtility -Force -Verbose
+    Import-Module PSDDeploymentShare -Force -Verbose
+    Import-Module PSDGather -Force -Verbose
 
     Dir tsenv: | Out-File "$( $env:SystemDrive )\DumpVars.log"
     Get-Content -Path "$( $env:SystemDrive )\DumpVars.log"
@@ -985,43 +870,34 @@ Function Write-PSDEvent
         Return
     }
     
-    # a Deployment has started                ( EventID 41016 )
-    # a Deployment completed successfully     ( EventID 41015 )
-    # a Deployment failed                     ( EventID 41014 )
-    # an error occurred                       ( EventID     3 )
-    # a warning occurred                      ( EventID     2 )
+    # A Deployment...
+    # Has started                 ( EventID 41016 )
+    # Has completed successfully  ( EventID 41015 )
+    # Has failed                  ( EventID 41014 )
+    # Error occurred              ( EventID     3 )
+    # Warning occurred            ( EventID     2 )
 
     If ( $tsenv:LTIGUID -eq "" )
     {
         $LTIGUID = ( [ guid ]::NewGuid() ).GUID
         New-Item -Path TSEnv: -Name "LTIGUID" -Value "$LTIGUID" -Force
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : tsenv:LTIGUID is now: $tsenv:LTIGUID"
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): tsenv:LTIGUID is now: $tsenv:LTIGUID"
         Save-PSDVariables
     }
 
-         $MacAddress = $tsenv:MacAddress001
-              $Lguid = $tsenv:LTIGUID
-                 $id = $tsenv:UUID
-             $vmhost = 'NA'
+	( $MacAddress , $LGUID , $ID , $VMHost ) = ( $tsenv:MacAddress001 , $tsenv:LTIGUID , $tsenv:UUID , 'NA' )
        $ComputerName = $tsenv:OSDComputerName
 
         $CurrentStep = $tsenv:_SMSTSNextInstructionPointer
 
-	If ( $CurrentStep -eq "" )
-    {
-        $CurrentStep = '0'
-    }
+    If ( $CurrentStep -eq "" ) { $CurrentStep = '0' }
 
-	     $TotalSteps = $tsenv:_SMSTSInstructionTableSize
+    $TotalSteps = $tsenv:_SMSTSInstructionTableSize
 
- 	If ( $TotalSteps -eq "")
-    {
-        $TotalSteps  = '0'
-    }
+    If ( $TotalSteps -eq "") { $TotalSteps  = '0' }
 
     # Sends reports to the MDT Monitoring Service, AKA BDD.Utility
-    $MDTMonitorService = 
+    $IWR = 
     "$tsenv:EventService/MDTMonitorEvent/PostEvent?" , # Name
     "uniqueID=$Lguid"                                , # GUID
     "&computerName=$ComputerName"                    , # Host Name
@@ -1036,6 +912,8 @@ Function Write-PSDEvent
     "&dartTicket="                                   , # DART Ticket ( Unused )
     "&vmHost=$vmhost"                                , # VM Host Name / Used for VMS
     "&vmName=$ComputerName"                            # VM HostName 
+    
+    $MDTMonitorService = $IWR -join ''
 
-    $Return = Invoke-WebRequest ( -join $MDTMonitorService[0..13] ) -UseBasicParsing
+    $Return = Invoke-WebRequest $MDTMonitorService -UseBasicParsing
 }
