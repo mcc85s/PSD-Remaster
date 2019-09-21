@@ -47,7 +47,7 @@
     Param ( )
 
     # Load core modules
-    Import-Module Microsoft.BDD.TaskSequenceModule -Scope Global
+    Import-Module Microsoft.BDD.TaskSequenceModule -Scope Global # <- This thing is still encrypted...
     Import-Module DISM
     Import-Module PSDUtility
     Import-Module PSDDeploymentShare
