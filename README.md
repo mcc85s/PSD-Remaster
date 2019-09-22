@@ -2,7 +2,7 @@
 Enhancements for customizing and automating the PSD-Master Project found at 'FriendsOfMDT' and...
 
 # ¯¯\\_(ツ)_/¯¯
-^ Finding out who this guy *really* is. He's always there... With that smug look on his face... hands on the air like he's trying to say "who knows." Well *I'll* tell you my theory... cause that's all I've got so far... I think he's the guy who REALLY runs Microsoft... If I find out who he is, I will gladly let everyone know his true identity. But until then? His identity remains unknown.
+^ Finding out who this guy *really* is. He's always there... With that smug look on his face... hands in the air like he's trying to say "who knows." Well *I'll* tell you my theory... cause that's all I've got so far... I think he's the guy who REALLY runs Microsoft... If I find out who he is, I will gladly let everyone know his true identity. But until then? His identity remains unknown.
 
 # Hybrid | Desired State Controller
 This is a personal fork of the project I am working on found here, github.com/secure-digits-plus-llc/Hybrid-DesiredStateController
