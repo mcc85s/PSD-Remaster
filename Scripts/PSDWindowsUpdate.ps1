@@ -42,7 +42,7 @@
 
     "Utility" , "DeploymentShare" | % { Import-Module "PSD$_" }
 
-    If ( ( "Windows" | % { IEX "( [ $( $_ )Principal ][ $( $_ )Identity ]::GetCurrent() ).IsInRole( 'Administrator' )" } ) -eq $True ) { $Admin = 1 }
+    $Admin = "Windows" | % { IEX "( [ $( $_ )Principal ][ $( $_ )Identity ]::GetCurrent() ).IsInRole( 'Administrator' )" }
 
     $VerbosePreference = "Continue"
     Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Load core modules"
@@ -188,7 +188,7 @@
 
         $TaskName = "SMEWindowsUpdateFindUpdates$fileprefix"
 
-        If ( $Admin -eq 1 ) { $Arg   = "-NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -File $ScriptFile" }
+        If ( $Admin -eq $True ) { $Arg   = "-NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -File $ScriptFile" }
         Else { Write-Warning "To perform some operations you must run an elevated Windows PowerShell console." }
 
         $Scheduler = New-Object -ComObject Schedule.Service
@@ -386,7 +386,7 @@
     
         If ( ! ( Test-Path $ScriptFile ) ) { Write-Error "Failed to create file:$ScriptFile" ; Return }
         $TaskName                     = "SMEWindowsUpdateInstallUpdates"
-        If ( $Admin -eq 1 ) { $Arg    = "-NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -File $ScriptFile" }
+        If ( $Admin -eq $True ) { $Arg    = "-NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -File $ScriptFile" }
         Else { Write-Warning "To perform some operations you must run an elevated Windows PowerShell console." }
 
         $Scheduler = New-Object -ComObject Schedule.Service
