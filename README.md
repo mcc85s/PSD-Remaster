@@ -33,3 +33,11 @@ Because SCCM and MDT currently use a painfully slow set of older tools like vbsc
 
 Johan's crew is attempting to 'use the old model and make it backward compatible with Powershell natively. I'm attempting to 'Create an 
 entirely new process that "doesn't use VBScript OR cscript.exe". That means, PowerShell natively in the boot environment, ASP.Net accessibile from PXE, Dynamic driver templates that don't require packaging, as well as Applications that can be automatically packaged up and distributed before Windows even fully starts. The biggest problem in that regard is WinPE/ADK. *I'm not looking forward to reengineering WinPE... but, whatevs...* 
+
+# You don't sound like a sane individual...
+I mean... things like 'sanity' vary from moment to moment. I like to refer to this whole process as "attempting to play Bobby Fisher" at chess, and, for every move that HE makes in about idk, a single second? I get the wonderful task of having to be confused as to what the next move is for 'several fricken days straight' It's sort of like 'Bobby lets me actually move the pieces and then analyze what he might do next, and if I feel like it was a dumb move, Bobby doesn't care if I move my piece back to the spot it was last in. So, yeah. IDK if YOU have ever played Bobby Fisher in chess, but, it's about a 700 out of 10 in terms of difficulty , so... guess what. "I swear at my computer. A lot."
+
+# At least you have a sense of humor, so that's a plus.
+I mean there are two types of people in the world, there are the negative Nancy's, and the positive Pam's. Granted, you could make the case that there are some sideways Sara's or maybe some halfway harry's... I guess either way you look at it? The challenge is being able to make the most out of the experience. That said...?
+
+# Making some stuff happen with some pretty cool awesome things? It's pretty cool stuff.
