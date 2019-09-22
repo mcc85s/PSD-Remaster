@@ -1,24 +1,3 @@
-#\\- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//#
-#// /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ \\#
-#\\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ \/ /\ //#
-#// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \\#
-#\\                                                                                                                   //#
-#//   <@[ Script-Initialization ]@>                        "Script Magistration by Michael C. 'Boss Mode' Cook Sr."   \\#
-#\\                                                                                                                   //#
-#//                        [ Secure Digits Plus LLC | Hybrid ] [ Desired State Controller ]                           \\#
-#\\                                                                                                                   //#
-#//                  [ https://www.securedigitsplus.com | Server/Client | Seedling/Spawning Script ]                  \\#
-#\\                                                                                                                   //#
-#//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-#\\ - - [ PXD-Applications ]- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //#
-# # #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\#
-
-# The following script is newly formatted and contains slight alterations or adjustments made by the aforementioned auth.
-# Although I am nowhere close to complete, I have given these scripts my full attention in attempting to optimize them.
-# There are definitely many issues that I have noticed, but making mistakes is part of life. Learning from them, and
-# making the effort to correct them is what matters the most. Comments, questions, mcook@securedigitsplus.com
-
-
 # // ***************************************************************************
 # // 
 # // PowerShell Deployment for MDT
@@ -39,14 +18,11 @@ Import-Module PSDDeploymentShare
 $VerbosePreference = "Continue"
 
 #Write-Verbose -Message "$($MyInvocation.MyCommand.Name): Load core modules"
-Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-: Load core modules"
+Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Load core modules"
 
-Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-: Deployroot is now $( $TSenv:DeployRoot)"
+Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Deployroot is now $( $TSenv:DeployRoot)"
 
-Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-: env:PSModulePath is now $Env:PSModulePath"
+Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): env:PSModulePath is now $Env:PSModulePath"
 
 # Internal functions
 
@@ -56,20 +32,17 @@ Function Install-PSDApplication
     Param ( [ Parameter ( Mandatory = $True , ValueFromPipeline = $True ) ] [ String ] $ID )
 
     # Make sure we access to the application folder
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Make sure we access to the application folder"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Make sure we access to the application folder"
 
     $Apps = "DeploymentShare:\Applications"
     If ( ( Test-Path $apps ) -ne $true)
     {   
-        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-        : no access to $Apps , skipping."
+        Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): no access to $Apps , skipping."
         Return 0
     }
 
     # Make sure the app exists
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Make sure the app exists $Apps\$ID"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Make sure the app exists $Apps\$ID"
     If ( ( Test-Path "$Apps\$id") -ne $true)
     {
         Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Unable to find application $id, skipping."
@@ -77,16 +50,13 @@ Function Install-PSDApplication
     }
 
     # Get the app
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Get the app"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Get the app"
     $App = gi "$Apps\$id"
 
-    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name )
-    : Processing :$( $App.Name )"
+    Write-PSDLog -Message "$( $MyInvocation.MyCommand.Name ): Processing :$( $App.Name )"
 
     # Process dependencies (recursive)
-    Write-PSDLog -Message "$($MyInvocation.MyCommand.Name)
-    : Process dependencies (recursive)"
+    Write-PSDLog -Message "$($MyInvocation.MyCommand.Name): Process dependencies (recursive)"
     If ( $App.Dependency.Count -ne 0 )
     {
         $App.Dependency | Install-PSDApplication
