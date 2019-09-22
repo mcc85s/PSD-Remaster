@@ -1,10 +1,8 @@
 # PSD-Remaster
-Enhancements for customizing and automating the PSD-Master Project found at 'FriendsOfMDT'
+Enhancements for customizing and automating the PSD-Master Project found at 'FriendsOfMDT' and...
 
-# ...And
-¯¯\_(ツ)_/¯¯
-^ Finding out who this guy *really* is
-He's always there. With that smug look on his face... hands on the air like he's trying to say "who knows." Well *I'll* tell you who this guy really is... or at least what I think... I think he's the guy who REALLY runs Microsoft... So... until I find out... It is what it is...
+# ¯¯\_(ツ)_/¯¯
+^ Finding out who this guy *really* is. He's always there... With that smug look on his face... hands on the air like he's trying to say "who knows." Well *I'll* tell you who I think this guy really is... I think he's the guy who REALLY runs Microsoft... So... until I find out..? Then he's everywhere.
 
 # Hybrid | Desired State Controller
 This is a personal fork of the project I am working on found here, github.com/secure-digits-plus-llc/Hybrid-DesiredStateController
@@ -45,9 +43,3 @@ before Windows even fully starts.
 # In other words...
 It's "Dynamically Engineered Digital Security, Application Development, and Hardware/Networking Magistration"
 ... making magic happen with 0's and 1's.
-
-# Yeah..... You're nuts.
-How about you actually take a look at the code, you might find that I'm doing it.
-
-# I don't want to read through all of that...
-Then don't judge me.
