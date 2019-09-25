@@ -104,14 +104,14 @@
             [ Parameter ( Position = 1 , ParameterSetName = "3" ) ]
             [ Parameter ( Position = 1 , ParameterSetName = "4" ) ]
             [ Parameter ( Position = 1 , ParameterSetName = "5" ) ][ Switch ] $Wrap ,
-            [ ValidateSet ( 0 , 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 , 13 , 14 , 15 ) ]
+            [ ValidateSet (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15) ]
             [ Parameter ( Position = 3 , ParameterSetName = "0" ) ]
             [ Parameter ( Position = 2 , ParameterSetName = "1" ) ]
             [ Parameter ( Position = 2 , ParameterSetName = "2" ) ]
             [ Parameter ( Position = 2 , ParameterSetName = "3" ) ]
             [ Parameter ( Position = 1 , ParameterSetName = "4" ) ]
             [ Parameter ( Position = 1 , ParameterSetName = "5" ) ][ Alias ( "F" )][ String ] $ForegroundColor ,
-            [ ValidateSet ( 0 , 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 , 13 , 14 , 15 ) ]
+            [ ValidateSet (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15) ]
             [ Parameter ( Position = 4 , ParameterSetName = "0" ) ]
             [ Parameter ( Position = 3 , ParameterSetName = "1" ) ]
             [ Parameter ( Position = 2 , ParameterSetName = "2" ) ]
@@ -153,13 +153,13 @@
 
             If ( $Function )                                                                                                         # Function Wrapper
             {   $FA = $Function ; If ( $FA.Length -gt 58 ) { $FA = "$( $FA.SubString( 0 , 58 ) )..." } 
-                "[ $FA ]" | % { $FA = "$_$( "_" * ( 65 - $_.Length ) )" }
+                "[ $FA ]" | % { $FA = "$_$( "_" * ( 66 - $_.Length ) )" }
 
-                $OP += " ____ $( " " * 71  ) $( ( "____    "        ) * 4 )____  " , 
-                       "//¯¯\\$( "_" * 71  )/$( ( $F[0..1] -join '' ) * 4 )/¯¯\\ " , 
-                       "\\__//$( "¯" * 71  )\$( ( $F[1..0] -join '' ) * 4 )\__// " , 
-                       " ¯¯¯\\___$( $FA )___/$( ( $F[0..1] -join '' ) * 4 )/¯¯¯  " ,
-                       "     ¯$( "¯" * 71  )¯$( ( "    ¯¯¯¯"        ) * 4 )      "
+                $OP += "  ____ $( " " * 70  ) $( ( "____    "        ) * 4 )____  " , 
+                       " //¯¯\\$( "_" * 70  )/$( ( $F[0..1] -join '' ) * 4 )/¯¯\\ " , 
+                       " \\__//$( "¯" * 70  )\$( ( $F[1..0] -join '' ) * 4 )\__// " , 
+                       "  ¯¯¯\\__$(   $FA )__/$( ( $F[0..1] -join '' ) * 4 )/¯¯¯  " ,
+                       "      ¯$( "¯" * 70  )¯$( ( "    ¯¯¯¯"        ) * 4 )      "
             }
 
             If (  $Array ) { $Array | % { $OP += $_ } }                                                                                 # Array Wrapper
@@ -190,20 +190,15 @@
                     If ( $Index.Count -gt 1 )                                                                                             # If Multiple
                     {   
                         If   ( $C -ne $Null ) { $C = $C + 1 }                                                                        # Starts the index
-                        If ( ( $C -eq $Null ) -and ( $Name -eq $Null ) ) { $C =      0 }
+                        If ( ( $C -eq $Null ) -and ( $Name -eq $Null ) ) { $C = 0 }
                         $Name = $Index[$C] ; $Item = $Section[$C]
                     }
 
                     If ( $Index.Count -eq 1 ) { $Name = [ String ]$Index ; $Item = $Section }                                               # If Single
                     If ( $Name.Length -gt 93 ) { $Name = "$( $Name.Substring( 0 , 93 ) ) ... " }
 
-                    $U = 98 - $Name.Length ; $V = $Total % 2 ; $W = ( 1 - $V )                                                       # Process Sections
-                    $SHeader = "_" , "¯" | % { "$( $L[$V] + ( "$_" * 108 ) + $R[$V] )" }
-                    $SLine = $L[$W] + ( "-" * 10 ) + $Name + ( "-" * $U ) + $R[$W]
-                    
-                    $OP += $SHeader[0] , $SLine , $SHeader[1]
-                    
-                    $Total = $Total + 3
+                    $U = 98 - $Name.Length ; $V = $Total % 2 ; $W = ( 1 - $V ) ;$SHeader = "_" , "¯" | % { "$( $L[$V] + ( "$_" * 108 ) + $R[$V] )" }
+                    $SLine = $L[$W] + ( "-" * 10 ) + $Name + ( "-" * $U ) + $R[$W] ; $OP += $SHeader[0] , $SLine , $SHeader[1] ; $Total = $Total + 3
 
                     $Keys = @( $Item.Keys )
 
@@ -223,44 +218,49 @@
 
             If ( $Free )
             {
-                $FL  = " // /¯¯\\    " , " \\ \__//    " ; $RL = "    //¯¯\ \\ " , "    \\__/ // " ; $B1 = "[=]" ; $B2 = "\_/"      # Compression Index
-                $BL = "$B1$B2$B1" ; $WL = "| |" ; $S1 = "  *   " * 6 ; $S2 = "$( "     *" * 5 )      " 
-                $A1 = "//¯" ; $A2 = "\\ " ; $A3 = "// " ; $A4 = "\\_"
-                $T1 = "¯" * 48 ; $T2 = "_" * 48 ; $T3 = "_" * 32 ; $T4 = "¯" * 32 
-                $T5 = " " * 32 ; $T6 = "_" * 17 ; $T7 = "¯" * 17 ; $T8 = " " * 28 ; $X1 = "$A2$S1]$T2//" ; $X2 = "$A3$S2]$T1\\"
+                $PI = "($( [ Char ] 960 ))" ; $DA = ( "m" , "d" , "Y" | % { Get-Date -UFormat "%$_" } | % { "$( $_.ToCharArray() )" } ) -join ' / '
+                $A = " //¯" , " \\" , " //" , " \\_" ; $E = "[=]" , "\_/" , "| |" ; $BL = -Join $E[0,1,0] ; $SX = ( "  *   " * 6 ) , "$( "     *" * 5 )      "
+                $M1 = 0..120 | % { "¯" * $_ } ; $M2 = 0..120 | % { "_" * $_ } ; $M3 = 0..120 | % { " " * $_ }
+                
+                $X = "$($A[1]+$SX[1])]$($M2[48])_// " , "$($A[2]+$SX[0])]$($M1[48])¯\\ " ; 
+                
+                
+                $FL = " // /¯¯\\   " , " \\ \__//   "
+                
+                $RL = "   //¯¯\ \\ " , "   \\__/ // "
 
-                $ST  = "Beginning the fight against Technological Tyranny and Cyber Criminal Activities" ,                                 # String Dex
-                       "Dynamically Engineered Digital Security" , "Application Development - Virtualization" , 
-                       "Network & Hardware Magistration" , "What America Once Stood For" , "HYBRID" , "BY" , "SECURE-DIGITS-PLUS-LLC" , 
-                       "MICHAEL C COOK SR" , "A Heightened Sense Of Security"
+                $STR  = "Beginning the fight against Technological Tyranny and Cyber Criminal Activities" , "Dynamically Engineered Digital Security" , 
+                "Application Development - Virtualization" , "Network & Hardware Magistration" ,   "What America Once Stood For" , 
+                "$Pi A Heightened Sense Of Security $Pi" , "HYBRID" , "BY" , "SECURE-DIGITS-PLUS-LLC" , "MICHAEL C COOK SR"
 
-                $EC  = 0..3 + 9 | % { $ST[$_] } | % { "[ $_ ]" } ; $BR  = 5..8 | % { $ST[$_] } | % { "$( $_.ToCharArray() )" }    # String Manipulation
-                $DA  = ( "m" , "d" , "Y" | % { Get-Date -UFormat "%$_" } | % { "$( $_.ToCharArray() )" } ) -join ' / ' ; 
-                $Sig = $DA + '  |  ' + $BR[3].Replace( '   ' , '  ' )
-
+                $STR  = @( 0..5 | % { $STR[$_] } | % { "[ $_ ]" } ; 6..9 | % { $STR[$_] } | % { "$( $_.ToCharArray() )" } ) ; 
+                $Sig = $DA + '  |  ' + $STR[9].Replace( "  " , " " )
+                
                 $Out = @( )
 
-                If ( !$Wrap ) { $OP += "  $( "_" * 112 )  " , $D[0] , $D[1] , " // /¯¯\\   $( ( "¯¯¯¯    " ) * 11 )¯¯¯¯   //¯¯\ \\ " }
-                If (  $Wrap ) { $OP += " // /¯¯\\$( " " * 98 )//¯¯\ \\ " }
+                If ( !$Wrap ) { $OP += "  $($M2[112])  " , $D[0] , $D[1] , "$( $FL[0] )$( ( "¯¯¯¯    " ) * 11 )¯¯¯¯$( $RL[0] )" }
+                If (  $Wrap ) { $OP += "$( $FL[0] ) $( $M3[90] ) $( $RL[0] )" }
 
                 # Utter Insanity [ I would never recommend going this far with this... but I did it to make a point ]
                 # ----- --------   -       ----- ---------                                             ---- - -----
 
-                $Out += "   $( $EC[0] )    " , " $( "_" * 88 ) " , "$A1$( "¯" * 36 )]$T1\\" , "$X1" ,  "$X2" ,                    # Yeah, it's the flag
-                "$A2$S1]___$( $EC[1] )__//" , "$X2" , "$X1" , "$X2" , "$A2$S1]__$(  $EC[2] )__//" , "$X2" , "$X1" , "$X2" ,       # <---  ---- --- ----
-                "$A2$S1]_______$( $EC[3] )______//" , "$A3    $( $ST[4] )     ]$T1\\" , "$A2$( "_" * 36 )]$T2//" , 
-                "$A3$( "¯" * 84 )¯\\" , "$A4$T3$BL$B2$BL$T3//" , "$A1$T4$WL$( "¯" * 15 )$WL$T4\\" , "$A4$T3$B1  $( $BR[0] )  $B1$T3//" , 
-                "$A1$T4$WL  $( "¯" * 11 )  $WL$T4\\" , "$A4$T6$( $BL * 2 )$( " " * 6 )$( $BR[1] )$( " " * 6 )$( $BL * 2 )$T6//" , 
-                "$A1$T7$WL$( "¯" * 15 )      $( "¯" * 3 )      $( "¯" * 15 )$WL$T7\\" , "$A4$T6$B1 $( $BR[2] ) $B1$T6//" , 
-                "$A1$T7$B2 $( "¯" * 43 ) $B2$T7\\" , "$A4$( "_" * 10 )$( $BL * 3 )$B1\___/$B1$( $BL * 3 )$( "_" * 10 )//" , 
-                "$A1$( "¯" * 10 )$B1$( "¯" * 59 )$B1$( "¯" * 10 )\\" , "$A4$( "_" * 10 )$B1  $( $Sig )   $B1$( "_" * 10 )//" , 
-                " $( "¯" * 15 )  $T7¯¯     $( "¯" * 30 )   $( "¯" * 14 ) " , "$T8$( $EC[4] )$T8"
+                $Out += "     $( $STR[0] )    " , "  $( $M2[88] )  " , "$($A[0]+$M1[35])]$($M1[48])¯\\ " , 
+                $X[0] , $X[1] , "$($A[1]+$SX[1])]___$($STR[1])___// " , $X[1] , $X[0] , $X[1] , "$($A[1]+$SX[1])]__$( $STR[2])___// " , 
+                $X[1] , $X[0] , $X[1] , "$($A[1]+$SX[1])]_______$($STR[3])_______// " , "$($A[2])  $($STR[4])   ]$($M1[48] )¯\\ " , 
+                "$($A[3]+$M2[35])]$($M2[48])_// " , "$($A[0]+$M1[85])\\ " , "$($A[3]+$M2[32]+$BL+$E[1]+$BL+$M2[32])// " , 
+                "$($A[0]+$M1[32]+$E[2]+$M3[15]+$E[2]+$M1[32])\\ " , "$($A[3]+$M2[32]+$E[0])  $($STR[6])  $($E[0]+$M2[32])// " , 
+                "$($A[0]+$M1[32]+$E[2])  $($M1[11])  $($E[2]+$M1[32])\\ " , "$($A[3]+$M2[17]+$BL*2+$M3[6]+$STR[7]+$M3[6]+$BL*2+$M2[16])_// " , 
+                "$($A[0]+$M1[17]+$E[2]+$M1[15]+$M3[6]+$M1[3]+$M3[6]+$M1[15]+$E[2]+$M1[16])¯\\ " ,
+                "$($A[3]+$M2[17]+$E[0]) $($STR[8]) $($E[0]+$M2[16])_// " , "$($A[0]+$M1[17]+$E[1]) $($M1[43]) $($E[1]+$M1[16])¯\\ " ,
+                "$($A[3]+$M2[10]+$BL*3+$E[0])\__/$($E[0]+$BL*3+$M2[10])_// " , "$($A[0]+$M1[10]+$E[0]+$M1[58]+$E[0]+$M1[10])¯\\ " ,
+                "$($A[3]+$M2[10]+$E[0])  $SIG  $($E[0]+$M2[10])_// " , "  $($M1[15])  $($M1[19])     $($M1[30])  $($M1[15])  " , 
+                " $($M3[24]+$STR[5]+$M3[24]) "
 
                 $C = 1
                 $Out | % { $Y = $C % 2 ; $OP += "$( $FL[$Y] )$_$( $RL[$Y] )" ; $C++ }
 
-                If (  $Wrap ) { $OP += " \\ \__//    $T8$( "¯" * 34 )$T8    \\__/ // " }
-                If ( !$Wrap ) { $OP += " \\ \__//   $( ( "____    " ) * 11 )____   \\__/ // " , $D[0] , $D[1] , "  $( "¯" * 112 )  " }
+                If (  $Wrap ) { $OP += "$( $FL[1] ) $($M3[28]+$M2[34]+$M3[28]) $( $RL[1] )" }
+                If ( !$Wrap ) { $OP += "$( $FL[1] )$( ( "____    " ) * 11 )____$( $RL[1] )" , $D[0] , $D[1] , "  $( $M1[112] )  " }
             }
 
             If ( $Foot )
@@ -302,8 +302,22 @@
             If ( (  $BackgroundColor ) -and ( !$ForegroundColor ) ) { $OP | % { Write-Host -B $BackgroundColor $_ } }
             If ( (  $ForegroundColor ) -and ( !$BackgroundColor ) ) { $OP | % { Write-Host -F $ForegroundColor $_ } }
             If ( ( !$ForegroundColor ) -and ( !$BackgroundColor ) ) { $OP | % { Write-Host $_ } }
-            If ( $Log ) { "$( ( "Y" , "m" , "d" | % { Get-Date -UFormat "%$_" } ) -join '' )_$Log.log" 
-            
+            If ( $Log ) 
+            {
+                $Name = "$( ( "Y" , "m" , "d" | % { Get-Date -UFormat "%$_" } ) -join '' )_$( $MyInvocation.MyCommand.Path ).log"
+
+                If ( Test-Path $Log ) 
+                { 
+                    If ( Test-Path "$Log\$Name" )
+                    {
+                        AC "$Log\$Name" $OP
+                    }
+
+                    Else
+                    {
+                        SC "$Log\$Name" $OP
+                    }
+                }
             }
         }
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
@@ -329,6 +343,7 @@
     {#\______________________________________________________________________________//¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
         
         Param ( [ Parameter ( Mandatory ) ] [ Windows.Window ] $GUI )
+
         $OP = $Null ; $Null = $GUI.Dispatcher.InvokeAsync{ $OP = $GUI.ShowDialog() ; SV -Name OP -Value $OP -Scope 1 }.Wait() ; $OP 
 
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
@@ -339,77 +354,52 @@
     
         [ CmdLetBinding () ] Param ( 
         
-            [ Parameter ( Position = 0 , ParameterSetName = "0" ) ][ Switch ] $DNS     , 
-            [ Parameter ( Position = 0 , ParameterSetName = "1" ) ][ Switch ] $Subnet  ,
-            [ Parameter ( Position = 0 , ParameterSetName = "2" ) ][ Switch ] $IPv4    ,
-            [ Parameter ( Position = 0 , ParameterSetName = "3" ) ][ Switch ] $NetBIOS ,
-            [ Parameter ( Position = 1 , ParameterSetName = "3" ) ][ Switch ] $Full    ,
-            [ Parameter ( Position = 2 , ParameterSetName = "3" ) ][ Switch ] $DC      )
+            [ Parameter ( Position = 0 , Mandatory = $True , ParameterSetName = "0" ) ][ Switch ] $DNS     , 
+            [ Parameter ( Position = 0 , Mandatory = $True , ParameterSetName = "1" ) ][ Switch ] $Subnet  ,
+            [ Parameter ( Position = 0 , Mandatory = $True , ParameterSetName = "2" ) ][ Switch ] $IPv4    ,
+            [ Parameter ( Position = 0 , Mandatory = $True , ParameterSetName = "3" ) ][ Switch ] $NetBIOS )
         
-        $I = $( If ( $DNS ) { "Connection-Specific DNS Suffix" } If ( $Subnet ) { "Subnet Mask" } If ( $IPv4 ) { "IPv4 Address" } Else { $Null } ) 
+        $I = $( If ( $DNS ) { "Connection-Specific DNS Suffix" } If ( $Subnet ) { "Subnet Mask" } If ( $IPv4 ) { "IPv4 Address" } Else { $Null } )
+
         $OP = @( )
 
         If ( $I -ne $Null )
         {
-            ipconfig /all | ? { $_ -like "*$i*" } | % { $_.Split( ':' )[1].Replace(" ","") } | ? { $_.Length -ne 0 } | % { 
-
-                If ( $_ -notin $OP ) { $OP += $_ } 
-            }
-
-            "(Preferred)" | ? { $OP -like "*$_*" } | % { $OP = $OP.Replace( "$_" , "" ) }
-
-            If ( $OP -eq $Null ) { $OP += "<NOT DETECTED>" }
+            ipconfig /all | ? { $_ -like "*$i*" } | % { $_.Split( ':' )[1].Replace( " " , "" ) } | ? { $_.Length -ne 0 } | % { 
+                If ( $_ -notin $OP ) { $OP += $_ } } 
+            "(Preferred)" | ? { $OP -like "*$_*" } | % { $OP = $OP.Replace( "$_" , "" ) } ; If ( $OP -eq $Null ) { $OP += "<NOT DETECTED>" }
         }
 
         If ( $NetBIOS )
         {
-            $Y , $Item , $Count , $NBT = 0..3 | % { $Null } ; $C = 0
-            $NBTStat = @( NBTSTAT -n | ? { $_ -like "*Registered*" } ) ; $NBTStat | % { $C ++ }
-            $X       = $NBTStat.Count - 1
-
+            $NBTStat = NBTSTAT -n | ? { $_ -like "*Registered*" } ; $X = $NBTStat.Count - 1 ; $C = 0 ; $NBT = @( )
             $NBTStat | % { 
-
-                If ( $X -gt 0 ) 
-                { 
-                    If ( $Y -ne $Null ) { $Y ++ } If ( ( $NBT -eq $Null ) -and ( $Y -eq $Null ) ) { $NBT = 0..$X ; $Y = 0 } ; $Item = $NBTStat[$Y]
-                }
-
-                If ( $X -eq 0 ) 
-                { 
-                    $Item = $NBTStat 
-                }
-                
-                $Z = $Item | % { $_[0..18] , $_[19..22] , $_[25..36] | % { $_ -join '' } | % { $_.Replace( ' ' , '' ) } }
-                
-                If ( $X -gt 0 ) { $NBT[$Y] = [ PSCustomObject ]@{ Name = $Z[0] ; ID = $Z[1] ; Type = $Z[2] } }
-                If ( $X -eq 0 ) {     $NBT = [ PSCustomObject ]@{ Name = $Z[0] ; ID = $Z[1] ; Type = $Z[2] } }
+                $Item = $( If ( $X -gt 1 ) { $NBTStat[$C] } If ( $X -eq 1 ) { $NBTStat } )
+                $Item = @( $Item | % { $_[0..18] , $_[19..22] , $_[25..36] | % { $_ -join '' } | % { $_.Replace( ' ' , '' ) } } )
+                $NBT += [ PSCustomObject ]@{ Name = $Item[0] ; ID = $Item[1] ; Type = $Item[2] } 
+                $C ++
             }
 
-            If (  $Full ) { $OP += $NBT }
-
-            If ( !$Full ) 
+            ForEach ( $I in $NBT ) 
             { 
-                $OP += $NBT | ? { $_.ID -eq "<00>" -and $_.Type -eq  "GROUP" } | % { $_.Name } 
-                If ( $DC )
-                {
-                    $NBID = $NBT | ? { $_.ID -eq "<1C>" -and $_.Type -eq "UNIQUE" } | % { $_.Name } 
-                    $OP += If ( $NBID -ne $Null ) { $NBID } Else { "<NOT DETECTED>" }
-                    $OP = $OP -join ' '
+                Get-NetBIOSServices | ? { $_.ID -eq $I.ID -and $_.Type -eq $I.Type } | % {
+
+                    $OP += [ PSCustomObject ]@{ Name = $I.Name ; ID = $_.ID ; Type = $_.Type ; Service = $_.Service } 
                 }
             }
         }
-
         Return $OP
-
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
     Function Get-HostRange # Obtains a range of potential hosts                   ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
+        
         $Class  = "Network" , "A" , "B" , "C" , "D / MC" , "E / R&D" , "Broadcast" , "Loopback"
         $Range  = [ Ordered ]@{ 0 = 0 ; 1 = 1..126 ; 2 = 128..191 ; 3 = 192..223 ; 4 = 224..239 ; 5 = 240..254 ; 6 = 6 ; 7 = 127 }
-        $IP     = ( Get-NetworkInfo -IPv4 ).Split( '.' ) ; $SM = ( Get-NetworkInfo -Subnet ).Split( '.' )
+        $IP     = ( Get-NetworkInfo -IPv4 ).Split( '.' )
+        $SM     = ( Get-NetworkInfo -Subnet ).Split( '.' )
             
         $Full   = @( ) ; $Concat = 0 ; $Close  = 0
 
@@ -420,111 +410,138 @@
                 If ( $SM[$I] -eq 255 ) { $Full += $IP[$I] } If ( $SM[$I] -ne 255 ) { $Concat = 1 }
                 If ( $Concat -eq 1 )
                 {
-                    $NW   = $Full -Join "."
-                    $Full = $NW
-
-                    If ( $SM[$I] -eq 0 )
-                    {
-                        $NW , $Start , $End , $BC = 0 , 1 , 254 , 255 | % { "$Full.$_" }
-                    }
-
+                    $NW   = $Full -Join "." ; $Full = $NW
+                    If ( $SM[$I] -eq 0 ) { $NW , $Start , $End , $BC = 0 , 1 , 254 , 255 | % { "$Full.$_" } }
                     Else
                     {
-                        ForEach ( $J in 1..5 )
+                        ForEach ( $J in 1..5 ) 
                         { 
                             If ( $SM[$I] -in $Range[$J] )
                             {
-                                $X  = $Range[$J]
-                                $Y  = $X | Select -First 1  , $X | Select -Last  1
-                                $Y += $Y[1] + 1
-                                    
+                                $X  = $Range[$J] ; $Y  = $X | Select -First 1  , $X | Select -Last  1 ; $Y += $Y[1] + 1
                                 $NW , $Start , $End , $BC = $Y[0..2] | % { "$Full.$_" }
                             }
                         }
                     }
-
                     $Close = 1
                 }
             }
+            If ( $Close -eq 1 ) { If ( $I -ne 3 ) { $NW , $BC , $Start , $End | % { "$_.0" } } }
+        }
             
-            If ( $Close -eq 1 )
-            {
-                If ( $I -ne 3 )
-                {
-                    $NW , $BC , $Start , $End | % { "$_.0" }
+        Return [ PSCustomObject ]@{ Class = ForEach ( $k in 1..5 ) { If ( $IP[0] -in $Range[$k] ) { "Class $( $Class[$k] ) Address" } }
+        Prefix = $Full ; IPV4  = $IP -Join "." ; NetMask = $SM -Join "." ; Subnet = $NW ; Start = $Start ; End = $End ; Echo = $BC }
+
+    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+    Function Get-HostMask # Obtains NetMask Chart, number of hosts and etc.       ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+    
+        [ CmdLetBinding () ] Param (
+
+            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ][ Switch ]  $Locate ,
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ][ Switch ] $HostMap ,
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True ) ][ Switch ]   $Table )
+
+            $V  = @( 0..9 | % { "  $_" }  ; 10..99 | % { " $_" } ; 100..255 | % { "$_" } ) | % { "[$_]" } ; $W = $V.Replace( " " , "¯" ) 
+            $CT = 0 ; $OB = 0..126 ; $Bot = 0..15 | % { "¯" * $_ } ; $Top = 0..15 | % { "_" * $_ } ; $Items = 0..3 ;
+            $GX = "Mask" , "Start" , "End" , "Broad" | % { "[$( "¯" * ( 6 - $_.Length ) )$( $_ ):¯" } 
+            
+            ForEach ( $i in 0..3 ) { $J = $( If ( $I -eq 0 ) { $W } Else { $V } ) ; $Items[$I] = $J | % { $GX[$I] , $_ -join '' } }
+            $Subnet , $Start , $End , $Echo = $Items[0..3] ; $OP = @( )
+
+            1 , 2 , 4 , 8 , 16 , 32 , 64 | % { 
+                $I = $_ ; $X = 256 / $I ; If ( $I -gt 1 ) { $C = $I..1 } Else { $C = 1 } ; $Y = $C | % { 256 - ( $X ) * $_ } ; If ( $I -gt 1 ) { $C = 0..( $I - 1 ) }
+                $C | % { $X * $_ } | % {  If ( $I -eq 1 ) { $OB[$CT] = [ PSCustomObject ]@{ Count = 1 ; Subnet = 0 ; Start = 1 ; End = 254 ; Echo = 255 } }
+                    Else { $OB[$CT] = [ PSCustomObject ]@{ Count = "$( $_ / $X + 1 )/$I" ; Subnet = $_ ; Start = $_ + 1 ; End   = $_ + ( $X - 2 ) ; Echo  = $_ + ( $X - 1 ) } }
+                    $CT ++
                 }
             }
-        }
-            
-        $DHCP = [ Ordered ]@{ 
-            Class      = ForEach ( $k in 1..5 ) { If ( $IP[0] -in $Range[$k] ) { "Class $( $Class[$k] ) Address" } }
-            IPAddress  = $IP   -Join "." 
-            SubnetMask = $SM   -Join "."
-            Network    = $Full   
-            Start      = $Start
-            End        = $End 
-            Broadcast  = $BC   }
-    
-        Echo $DHCP
-    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
-#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-    Function Get-HostMask # Obtains NetMask                                       ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+
+            If ( $Table ) { Return $OB }
+
+            $Hosts = @( Get-HostRange | Select @{ Name = "Subnet" ; Expression = { $_.Subnet.Replace( "$( $_.Prefix )." , "" ) } } , 
+                                               @{ Name =  "Start" ; Expression = {  $_.Start.Replace( "$( $_.Prefix )." , "" ) } } ,
+                                               @{ Name =    "End" ; Expression = {    $_.End.Replace( "$( $_.Prefix )." , "" ) } } , 
+                                               @{ Name =   "Echo" ; Expression = {   $_.Echo.Replace( "$( $_.Prefix )." , "" ) } } , Prefix )
+
+            $Out = $OB | ? { $_.Subnet -eq $Hosts.Subnet -and $_.Start -eq $Hosts.Start -and $_.End -eq $Hosts.End -and $_.Echo -eq $Hosts.Echo } | % { $_ }
+
+            If (  $Locate ) { Return $Out , ( "-" * 20 ) , "Prefix: $( $Hosts.Prefix )" }
+            If ( $HostMap )
+            {
+                $OB | ? { $_.Count -eq "1" } | % { $Top[14] , "[ 1 _________]" , $Subnet[$_.Subnet] , $Start[$_.Start] , $End[$_.End] , $Echo[ $_.Echo] , $Bot[14] | % { $OP += $_ } }
+                ForEach ( $I in 2 , 4 , 8 , 16 , 32 , 64 )
+                {
+                    $Object = $OB | ? { $_.Count -like  "*/$I*" } ; $OC = $Object.Count - 1 ; $LJ = 0..$OC
+                    ForEach ( $I in $LJ )
+                    {
+                        $Object[$I] | % { $NWQ = $_.Count | % { "[_ $_ $( "_" * ( 9 - $_.Length ) )]" }
+                            $LJ[$I] = [ PSCustomObject ]@{ 0 = $Top[14] ; 1 = $NWQ ; 2 = $Subnet[$_.Subnet] ; 3 = $Start[$_.Start] ; 4 = $End[$_.End] ; 5 = $Echo[$_.Echo] ; 6 = $Bot[14] } 
+                        }
+                    }
         
-        $Base = 1 , 2 , 4 , 8 , 16 , 32 , 64 ; $Hash = [ Ordered ]@{ }
-        ForEach ( $y in ( 0..( $Base.Count - 1 ) ) )
-        {
-            $X = $Base[$y] ; $Q = 256 / $X
-            If ( $X -eq 1 )
-            {
-                $X | % { $A = 256 - $Q ; $B = $A + $_ ; $C = 256 - ( $_ * 2 ) ; $D = 256 - $_ }
-                $Hash.$y = [ Ordered ]@{ Netmask = $A ; Network = $B ; Hosts = $C ; Broadcast = $D }
+                    If ( $I -eq $OC )
+                    {   
+                        $OP += 0..6 | % { $LJ[0..7].$_ -join '' }
+                        If ( $I -gt 8 ) { $Loop = ( $Object.Count / 8 ) - 1 ; $L = 0 ; $H = 7 ; 
+                        Do { $L += 8 ; $H += 8 ; $OP += 0..6 | % { $LJ[$L..$H].$_ -join '' } ; $Loop -= 1 } Until ( $Loop -eq 0 ) }
+                    }
+                }
+                Return $OP
             }
-
-            If ( $X -gt 1 )
-            {
-                $A , $B , $C , $D = 0..3 | % { @( ) }
-                    
-                $A += 0..( $X - 1 ) | % { $Q * $_ } ; $B += $A | % { $_ + 1 } ; $C += $A | % { $_ + ( $Q - 2 ) } ; $D += $A | % { $_ + ( $Q - 1 ) }
-
-                $Hash.$y = [ Ordered ]@{ Netmask = @( $A ) ; Network = @( $B ) ; Hosts = @( $C ) ; Broadcast = @( $D ) }
-            }
-        }
-        Return $Hash
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-    Function Get-NetworkHosts # Gets a range of potential host addresses          ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    Function Get-NetworkHosts # Gets actual used network host addresses           ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
-        $Return = @( ) ; $List = @( ) ; $ARP = @( arp -a ) ; $Net = ( Get-HostRange ).Network
+        $ARP  = arp -a | ? { $_ -like "*$( ( Get-HostRange ).Prefix )*" -and $_ -notlike "*Interface*" }
+        $RARP = $( If ( $ARP.Count -gt 1 ) { 0..( $ARP.Count - 1 ) } Else { 0 } )
 
-        Foreach ( $i in ( 0..( $ARP.count - 1 ) ) )
+        ForEach ( $I in $RARP ) 
         { 
-            If ( ( $ARP[$i] -like "*$Net*" ) -and ( $ARP[$i] -notlike "*Interface*" ) ) { $List += $ARP[$i] }
+            $Values = $ARP[$I] | % { $_[0..23] , $_[24..40] , $_[41..56] } | % { $_ -join '' } | % { $_.Replace( ' ' , '' ) }
+            $RARP[$I] = [ PSCustomObject ]@{ HostIP = $Values[0] ; HostMAC = $Values[1] ; LeaseType = $Values[2] }
         }
 
-        ForEach ( $i in ( 0..( $List.Count - 1 ) ) )
-        {
-            $X = $List[$i]
-            $Rarp = @{ INet = @( ) ; Phy = @( ) ; Type = @( ) }
-            $INet , $Phy , $Type = 0..2 | % { @( ) }
-            $X[ 0..23] | ? { $_ -ne " " } | % {   $INet += $_ } 
-            $X[24..40] | ? { $_ -ne " " } | % {    $Phy += $_ }
-            $X[41..56] | ? { $_ -ne " " } | % {   $Type += $_ }
+        Return $RARP
 
-            $RARP | % {   $_.INet +=   $INet -join ''
-                           $_.Phy +=    $Phy -join ''
-                          $_.Type +=   $Type -join '' }
+    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+    Function Get-NetBIOSServices # Maps service nodes found on a NetBIOS Domain   ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
-            $Return += $RARP
-        }
-    
-        $Return | ? { $_ -ne $Null } | % { Return $_ }
+        $ID =  "00" , "01" , "01" , "03" , "06" , "1F" , "20" , "21" , "22" , "23" , "24" , "30" , "31" , "43" , "44" , "45" , "46" , "4C" , "42" , 
+        "52" , "87" , "6A" , "BE" , "BF" , "03" , "00" , "1B" , "1C" , "1D" , "1E" , "1C" , "00" , "2B" , "2F" , "33" , "20" | % { "<$_>" }
+
+        $TypeList = ( "UNIQUE" , "GROUP" )[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,1,0,0,1,1,1]
+
+        $SVC      = "Workstation" , "Messenger" , "Master Browser" , "Messenger" , "RAS Server" , 
+                         "NetDDE" , "File Server" ,  "RAS Client" , "Interchange(MSMail Connector)" , "Store" , 
+                      "Directory" , "Server" , "Client" , "Control" , "SMS Administrators Remote Control Tool" , 
+                           "Chat" , "Transfer" , "on Windows NT" , "mccaffee anti-virus" , "on Windows NT" , 
+                            "MTA" , "IMC" , "Network Monitor Agent" , "Network Monitor Application" , "Messenger" , 
+                           "Name" , "Master Browser" , "Controllers" , "Master Browser" , "Browser Service Elections" , 
+                            "IIS" , "IIS" , "Server" , "" , "" , "DCA IrmaLan Gateway Server" 
+
+        0,1,3,4,5,6,7,11,12,24,32 | % { $SVC[$_] =                     "$( $SVC[$_] ) Service" }
+        8,9,10,20,21              | % { $SVC[$_] =          "Microsoft Exchange $( $SVC[$_] )" }
+        32,33,34                  | % { $SVC[$_] =                 "Lotus Notes $( $SVC[$_] )" }
+        11,12                     | % { $SVC[$_] =               "Modem Sharing $( $SVC[$_] )" }
+        13,15,16                  | % { $SVC[$_] =          "SMS Clients Remote $( $SVC[$_] )" }
+        25,26,27                  | % { $SVC[$_] =                      "Domain $( $SVC[$_] )" }
+        17,19                     | % { $SVC[$_] = "DEC Pathworks TCPIP service $( $SVC[$_] )" }
+
+        $List = 0..35
+        0..35 | % { $List[$_] = [ PSCustomObject ]@{ ID = $IDList[$_] ; Type = $TypeList[$_] ; Service = $SVC[$_] } }
+
+        Return $List
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
         Write-Echo -Free -F 10 -B 0 ; Sleep 1 # What Free Actually Means         #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
      #\______________________________________________________________________________//¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
-     #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯                                                                   
+     #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ 
