@@ -16,7 +16,11 @@
 #//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\
 #\\  [ ViperBomb-Services ] @: Configures System Service Configuration through GUI. Originally by BlackViper, PowerShell by MadBomb122.      //¯¯\\__//
 #//  This version is extensively modified, and is still a work in progress. Would not call this functional yet.                                \\__//¯¯\\
-#\\  [ Update 9/20/2019 @ by MC ] MadBomb122 updated his service utility that this script is based on. "https://github.com/madbomb122/BlackViperScript"                                                                                                                                         //¯¯\\__//
+#\\  [ Update 9/27/2019 @ by MC ] MadBomb122 updated his service utility that this script is based on. 
+#//  https://github.com/madbomb122/BlackViperScript
+#\\  
+#//  I've also completely renovated his XAML script. I will be processing the rest of this utility now that is complete, in addition to
+#\\  developing service configurations that the process sorely needs, in addition to making configurations for Server2016/19 & 10 Education   /¯¯\\__//
 #//__________________________________________________________________________________________________________________________________________\\__//¯¯\\
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
                                                                                                                                      #\__//¯¯\\__//¯¯\\
@@ -34,10 +38,9 @@
 #  Author: Charles "Black Viper" Sparks
 # Website: http://www.BlackViper.com/
 #
-$Script_Version = '6.1.1'
-$Script_Date    = 'June-07-2019'
-$Release_Type   = 'Stable'
-##########
+
+$Script_Version , $Script_Date , $Release_Type = '6.0.0' , 'Sept-27-2019' , 'Stable'
+
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # !!                                         !!
