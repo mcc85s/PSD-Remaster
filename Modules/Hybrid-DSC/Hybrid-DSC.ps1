@@ -530,125 +530,62 @@
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-    Function Start-PingSweep # Gets actual used network host addresses            ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    Function Start-PingSweep  # Gets actual used network host addresses           ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
-     # modified  version of ( @ 2014-08-30 G.A.F.F. Jakobs )
-     # modified Revision of ( @ 2016-01-09 Kory Gill )
-     # Already had a working method of extracting the IP address information, the sync is what I needed.
+        [ CmdletBinding ( ) ] Param ( [ Parameter ( Position = 0 ) ] [ Switch ] $Report )
 
-        [ CmdletBinding ( ) ] Param (
-            
-            [ Parameter ( Mandatory = $True , Position = 0 ) ] [    Int ] $Interval  = 30     ,
-                                                               [ Switch ] $RawOutput = $False )
+        $Hosts = @( ) ; $Return = @{ Success = @( ) ; Failure = @( ) }
 
-        $Hosts   = @( ) ; $Report  = @{ Success = @( ) ; Failed = @( ) }
-
-        Get-NetworkInfo | % { $NetMask = $_.NetMask ; $IP        = $_.IPv4 ; $Hosts += $IP }
-        Get-HostRange   | % { $PFX     = $_.Prefix  ; $Broadcast = $_.Echo }
-
+        Get-NetworkInfo          | % { $NetMask = $_.NetMask ; $IP        = $_.IPv4 ; $Hosts += $IP }
+        Get-HostRange            | % { $PFX     = $_.Prefix  ; $Broadcast = $_.Echo }
         Get-NetworkHosts -HostIP | % { $Hosts   += @( $_ ) }
-        Get-HostMask     -Locate | % { $HostList = @( $_.Start..$_.End | % { "$PFX.$_" } | ? { $_ -notin $Hosts } ) }
+        Get-HostMask     -Locate | % { $HostList = $_.Start..$_.End | % { "$PFX.$_" } }
 
-        $List = $HostList | % { [ IPAddress ] $_ } ; $Timeout = 650  ; $Total = $List.Count ; $Range   = 0..( $Total - 1 )
+        $CPU = GCIM Win32_Processor | % { $_.ThreadCount , $_.LoadPercentage }
 
-        "ID-Ping*" | % { 
-            Get-Event           -SourceIdentifier $_ |     Remove-Event
-            Get-EventSubscriber -SourceIdentifier $_ | Unregister-Event 
-        }
+        # Utilizing Multithreading/Runspace approach based on 'Drew Furgiuele's video here https://www.youtube.com/watch?v=kvSbb6g0tMA
+        # Made some significant changes to automatically select the throttle
 
-        ForEach ( $i in $Range )
-        {
-            [ String ]$Ping = "Ping_$( $List[$I].Address )"
+        $RSP = [ RunspaceFactory ]::CreateRunspacePool( 1 , $CPU[0] )
 
-            NV -Name  $Ping -Value ( New-Object System.Net.NetworkInformation.Ping )
-            
-            $Register = @{ InputObject = GV $Ping -ValueOnly ; EventName = "PingCompleted" ; SourceIdentifier = "ID-$Ping" }
-            
-            Register-ObjectEvent @Register
+        $RSP.ApartmentState = $( If ( $CPU[0] -gt 1 ) { "MTA" } Else { "STA" } )
 
-            ( GV $Ping -ValueOnly ).SendPingAsync( $_ , $Timeout , $Ping )
+        $RSP.Open() 
 
-            RV $Ping
-            
-            Try { $Pending = ( Get-Event -SourceIdentifier "ID-Ping*" ).Count }
-
-            Catch [ System.InvalidOperationException ] { $Pending = 0  }
-
-            $Progress = @{ Activity = "Pinging: $( $HostList[$i] )" ; ID = 1 ; Status = "$( $HostList[$i] )" ; PercentComplete = ( $I / $Total ) * 100 }
-
-            Write-Progress @Progress
-
-            $Percent = ( $( $I - $Total ), 0 | Measure -Maximum ).Maximum
-
-            $Progress = @{ Activity = "Echo requests pending" ; ID = 2 ; ParentID = 1 ; Status = $I / $Pending ; PercentComplete = ( $Percent / $Total ) * 100 }
-
-            Sleep -M $Interval
-
-        }
+        $AddScript = { Param ( [ String ] $ComputerName )
         
-        Write-Progress -Activity "All Echo Requests transmitted" -Id 1 -Status 'Waiting' -PercentComplete 100 
-
-        While ( $Pending -lt $Total )
-        {
-            Wait-Event -SourceIdentifier "ID-Ping*" | Out-Null
-
-            Sleep -M 10
-
-            Try { $Pending = ( Get-Event -SourceIdentifier "ID-Ping*" ).Count }
-
-            Catch [ System.InvalidOperationException ] { $Pending = 0 }
-
-            $Percentage = ( $( $I - $Total ), 0 | Measure -Maximum ).Maximum
-
-            $Progress = @{ Activity = "Echo Sent" ; ID = 2 ; ParentID = 1 ; Status = $I / $Pending ; PercentComplete = ( $Percent / $Total ) * 100 }
-
-            Write-Progress @Progress
+            IEX "Using Namespace System.Net.NetworkInformation"
+            $B = @( 1..9 + "abcdef".ToCharArray() | % { "0x6$_" } ; 0..7 | % { "0X7$_" } ; 1..9 | % { "0x6$_" } ) # < - Condensed version of Test-ConnectionAsync by Boe Prox
+            New-Object PingOptions | % { $O = $_ ; $_.TTL = 128 ; $_.DontFragment = $False }
+            $Object = ( New-Object Ping ).SendPingAsync( $ComputerName , 100 , $B , $O )
+            Return $Object
         }
 
-        Write-Progress -Completed -ID 2 -ParentID 1 -Activity "Completed"
-        Write-Progress -Completed -ID 1 -Activity "Completed"
+        $Threads = @( )
 
-        $Reply = @( )
-
-        If ( $RawOutput )
+        ForEach ( $H in $Hostlist )
         {
-            Get-Event -SourceIdentifier "ID-Ping*" | % { 
-
-                If ( $_.SourceEventArgs.Reply.Status -eq "Success" )
-                {
-                    $Reply += $_.SourceEventArgs.Reply
-                }
-                Unregister-Event $_.SourceIdentifier
-                Remove-Event     $_.SourceIdentifier
-            }
+            $RSO = [ PSCustomObject ]@{ Runspace = [ PowerShell ]::Create() ; Invoker = $Null }
+            $RSO.Runspace | % { $_.RunspacePool = $RSP ; [ Void ]$_.AddScript( $AddScript ) ; [ Void ]$_.AddArgument( $H ) }
+            $RSO.Invoker  = $RSO.Runspace.BeginInvoke()
+            $Threads += $RSO
         }
 
-        Else
+        While ( $Threads.Invoker.IsCompleted -contains $False ) { }
+
+        $ThreadResults = @( )
+
+        ForEach ( $T in $Threads )
         {
-            Get-Event -SourceIdentifier "ID-Ping*" | % {
-                
-                If ( $_.SourceEventArgs.reply.Status -eq "Success" )
-                {
-                    $_.SourceEventArgs.Reply | % { 
-                    $Pinger = @{ IPAddress    = $_.Address
-                                 Bytes        = $_.Buffer.Length
-                                 TTL          = $_.Options.TTL
-                                 ResponseTime = $_.RoundTripTime }
-                    }
-                    $Reply += New-Object PSCustomObject -Property $Pinger
-                }
-                Unregister-Event $_.SourceIdentifier
-                Remove-Event     $_.SourceIdentifier
-            }
+            $ThreadResults += $T.Runspace.Endinvoke( $T.Invoker )
+            $T.Runspace.Dispose()
         }
 
-        If ( $Reply.Count -eq 0 )
-        {
-            Write-Echo -Function "Ping-IPRange : No Echo Responses Received." -F 11 0
-        }
+        $Return = @( )
 
-        Return $Reply
+        $ThreadResults.Result | % { If ( $_.Status -eq "Success" ) { Echo $_.Address.ToString() } }
+
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
