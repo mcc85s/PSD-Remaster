@@ -135,7 +135,7 @@
                 "  _ $("____    " * 13 )____ _  " , 
                 " ///$("/¯¯\\__/" * 13 )/¯¯\\\\ " , 
                 " \\\$("\__//¯¯\" * 13 )\__//// " , 
-                " ///$("¯¯¯¯    " * 13 )¯¯¯¯\\\ " | % { $OP += $_ }
+                " // $("¯¯¯¯    " * 13 )¯¯¯¯ \\ " | % { $OP += $_ }
             } 
 
             If ( $Action ) #//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
@@ -180,18 +180,18 @@
 
                 $Title = $Title.Replace( ' ' , '-' ) | % { "[ $_ ]" }
 
-                If ( $Title.Length -gt 103 ) { $Title = "$( $Title.Substring( 0 , 103 ) ) ... " }
+                If ( $Title.Length -gt 103 ) { $Title = "$( $Title[0..103] -join '' ) ... " }
 
                 $TT = 108 - $Title.Length
                 $TX = $TT % 4
                 $TY = ( $TT - $TX ) / 4
                 $TL , $TR = "_¯" , "¯_" | % { $_ * $TY }
 
-                $T = ( $Title | % { "$_" , "$_-" , "$_ " , " $_ -" } )[ $TX ]
+                $T = ( $Title | % { "$_" , "$_ " , "$_ " , " $_  " } )[ $TX ]
 
                 $Title = $S[0] + $TL + $T + $TR + $S[1] 
 
-                $OP += " \\\$( "_" * 108 )/// " , $Title , " \\ $( "¯" * 108 ) // " 
+                $OP += " \\_$( "_" * 108 )_// " , $Title , " \\¯$( "¯" * 108 )¯// " 
                 
                 $ID | ? { $_.Name -like      "*ID:*" } | % { $Index   += $Table.$( $_.Name ) }
                 $ID | ? { $_.Name -like "*Section:*" } | % { $Section += $Table.$( $_.Name ) }
@@ -305,9 +305,15 @@
 
             If ( $Table -or $Wrap ) 
             { 
-                If ( ( $OP.Count | Select -Last 1 ) % 2 -ne 1 ) { $OP += " \\ $( "____    " * 13 )____ // " } 
+                If ( ( $OP.Count | Select -Last 1 ) % 2 -ne 0 ) { $OP += " // $( " " * 108 ) \\ " } 
 
-                $OP +=  " ///$("/¯¯\\__/" * 13 )/¯¯\\\\ " , " \\\$("\__//¯¯\" * 13 )\__//// " , "  ¯ $("¯¯¯¯    " * 13 )¯¯¯¯ ¯  "
+                $OP +=  
+                " \\_$(           "_" * 108 )_// " , 
+                " //¯$(           "¯" * 108 )¯\\ " , 
+                " \\ $( "____    " * 13 )____ // " ,
+                " ///$( "/¯¯\\__/" * 13 )/¯¯\\\\ " , 
+                " \\\$( "\__//¯¯\" * 13 )\__//// " , 
+                "  ¯ $( "¯¯¯¯    " * 13 )¯¯¯¯ ¯  "
             }
         }
 
@@ -535,9 +541,9 @@
         
         [ CmdLetBinding () ] Param ( 
         
-            [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True ) ][ Alias (  "C" ) ][ String ] $Company     ,
-            [ Parameter ( Position = 1 ,                     ValueFromPipeline = $True ) ][ Alias (  "D" ) ][ String ] $Domain      ,
-            [ Parameter ( Position = 2                                                 ) ][ Alias ( "DN" ) ][ Switch ] $Certificate )
+            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ][ Alias (  "C" ) ][ String ] $Company     = "Secure Digits Plus LLC" ,
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ][ Alias (  "D" ) ][ String ] $Domain      =   "securedigitsplus.com",
+            [ Parameter ( Position = 2                             ) ][ Alias ( "DN" ) ][ Switch ] $Certificate )
 
         If ( !$Domain ) { $Domain = ( Get-NetworkInfo ).DNS }
 
@@ -684,50 +690,63 @@
     Function Start-NetworkInfo  # Collects all needed interface data              ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
-        $Subtable     = 0..4
-        $Section      = @( )
+        $Subtable     = 0..4 ; $Section = @( )
 
         $NetworkInfo  = @( Get-NetworkInfo )
         $Section     += "Network Information"
         $Names        = @( $NetworkInfo | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )
         $Values       = @( $Names | % { $NetworkInfo.$( $_ ) } )
-
         $Subtable[0]  = New-Subtable -Items $Names -Values $Values
 
         $HostRange    = @( Get-HostRange )
         $Section     += "Host Range Information"
-        $Names        = @(   $Hostrange | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[0,5,3,4,7,6,2,1]
-        $Values       = @( $Names | % { $HostRange.$( $_ ) } )
-
-        $Subtable[1] = New-Subtable -Items $Names -Values $Values
+        $Names        = @( $Hostrange | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[0,5,3,4,7,6,2,1]
+        $Values       = @(     $Names | % { $HostRange.$( $_ ) } )
+        $Subtable[1]  = New-Subtable -Items $Names -Values $Values
 
         $NetworkHosts = @( Get-NetworkHosts -All )
         $Section     += "Network Host IP/MAC"
         $Names        = @( $NetworkHosts | % { $_.HostIP  } )
         $Values       = @( $NetworkHosts | % { $_.HostMAC } )
-
-        $Subtable[2] = New-Subtable -Items $Names -Values $Values
+        $Subtable[2]  = New-Subtable -Items $Names -Values $Values
 
         $NetBIOS      = @( Get-NetworkInfo -NetBIOS )
         $Section     += "NetBIOS / Domain Information"
         $Names        = @( $NetBIOS | % { $_.Name    } )
         $Values       = @( $NetBIOS | % { $_.Service } )
-
         $SubTable[3]  = New-Subtable -Items $Names -Values $Values
 
-        $Certificate  = @( Get-TelemetryData -Company "Secure Digits Plus LLC" -Domain "securedigitsplus.com" -TimeZone )
+        $Certificate  = @( Get-TelemetryData )
         $Section     += "Certificate / Location Information"
         $Names        = @( $Certificate | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,6,4,0,3,1,7,8,5]
         $Values       = @(       $Names | % { $Certificate.$( $_ ) } )
-
         $SubTable[4]  = New-Subtable -Items $Names -Values $Values
 
         $Table        = New-Table -Title "Domain Controller Bootstrap" -Depth 5 -ID ( $Section | % { "( $_ )" } ) -Table $Subtable
 
         Write-Echo -Table $Table 10 0
 
+        $NB           = $NetBIOS | ? { $_.ID -eq "<1C>" } | % { $_.Name } ; If ( $NB -eq $Null ) { $NB = ( gcim Win32_ComputerSystem ).Domain }
+        $Hosts        = @( )
+        $Hosts       += $HostRange | % { $_.SubNet , $_.Start , $_.End , $_.Echo }
+        $HostIPList   = $NetworkHosts  | ? { $_.HostIP -notin $Hosts } | % { $_.HostIP }
+        $HostMACList  = $NetworkHosts  | ? { $_.HostIP -notin $Hosts } | % { $_.HostMAC }
 
-
+        Return  [ PSCustomObject ]@{ 
+                DNS         = $NetworkInfo.DNS
+                NetBIOS     = $NB
+                IPv4        = $NetworkInfo.IPv4
+                NetMask     = $NetworkInfo.NetMask
+                Class       = $HostRange.Class
+                Prefix      = $HostRange.Prefix
+                SubNet      = $HostRange.Subnet
+                Start       = $HostRange.Start
+                End         = $HostRange.End
+                Echo        = $Hostrange.Echo 
+                HostIP      = @( $HostIPList  )
+                HostMAC     = @( $HostMACList )
+                SiteLink    = $Certificate.SiteLink
+        }
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
