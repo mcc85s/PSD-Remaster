@@ -3,11 +3,11 @@
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
 #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\   ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯   //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//  [ Secure Digits Plus LLC | Hybrid | Desired State Controller ]  \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-#//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯     ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-#\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯                 Dynamically Engineered Digital Security                    ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-#//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\                    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯                       //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-#\\__//¯¯\\__//¯¯\\__//¯¯\\__//   Application Development | Virtualization | Network and Hardware Magistration   \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-#//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+#//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯       _____________________________________________________        ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+#\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯        __/¯¯\__[ Dynamically Engineered Digital Security ]__/¯¯\__         ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+#//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\  _________________________ ________________ ___________________________________  //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+#\\__//¯¯\\__//¯¯\\__//¯¯\\__// | Application Development | Virtualization | Network and Hardware Magistration | \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+#//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\  ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯  //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//   https://www.securedigitsplus.com | Server-Client | Seedling-Spawning Script    \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
 #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\   [ Provisional Author : Michael C Cook Sr. | "The Buck Stops Here" ]    //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
@@ -29,20 +29,21 @@
         
         [ CmdLetBinding ( ) ] Param (
 
-            [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True , HelpMessage =  "Section Items" ) ][ String [] ]  $Items ,
-            [ Parameter ( Position = 1 , Mandatory = $True , ValueFromPipeline = $True , HelpMessage = "Section Values" ) ][ String [] ] $Values )
+            [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True ) ][ String [] ]  $Items ,
+            [ Parameter ( Position = 1 , Mandatory = $True , ValueFromPipeline = $True ) ][ String [] ] $Values )
 
-        $Table = [ PSCustomObject ]@{ }                                                                                       # Declares an empty table
+        $Table = [ PSCustomObject ]@{ }
 
-        If ( $Items.Count -eq $Values.Count )                                                                            # Prepares the key/value pairs
+        If ( $Items.Count -eq $Values.Count )
         {
             If ( $Items.Count -gt 1 ) { $Count = 0..( $Items.Count - 1 ) }
-            $Count | % { $Table | Add-Member -MemberType NoteProperty -Name "Item:$_" -Value @{ ID = "$( $Items[$_] )" ; Value = "$( $Values[$_] )" } }
+            $Count | % { 
+                $Table | Add-Member -MemberType NoteProperty -Name "Item:$_" -Value @{ ID = "$( $Items[$_] )" ; Value = "$( $Values[$_] )" } }
         }
 
-        If ( $Items.Count -ne $Values.Count ) { Throw '$Items -ne $Values' }                                                           # Error handling
+        If ( $Items.Count -ne $Values.Count ) { Throw '$Items -ne $Values' }
 
-        Return $Table                                                                                                              # Outputs the object
+        Return $Table
 
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
@@ -52,35 +53,35 @@
 
         [ CmdLetBinding ( ) ] Param (
 
-            [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True , HelpMessage = "Name or Header" ) ][     String    ] $Title ,
-            [ Parameter ( Position = 1 , Mandatory = $True , ValueFromPipeline = $True , HelpMessage = "Section Quantity" ) ][      Int    ] $Depth ,
-            [ Parameter ( Position = 2 , Mandatory = $True , ValueFromPipeline = $True , HelpMessage = "Section Names" ) ][      String [] ] $ID    ,
-            [ Parameter ( Position = 3 , Mandatory = $True , ValueFromPipeline = $True , HelpMessage = "Subtables"  ) ][ PSCustomObject [] ] $Table )
+            [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True ) ][         String    ] $Title ,
+            [ Parameter ( Position = 1 , Mandatory = $True , ValueFromPipeline = $True ) ][            Int    ] $Depth ,
+            [ Parameter ( Position = 2 , Mandatory = $True , ValueFromPipeline = $True ) ][         String [] ] $ID    ,
+            [ Parameter ( Position = 3 , Mandatory = $True , ValueFromPipeline = $True ) ][ PSCustomObject [] ] $Table )
 
-        $Object = [ PSCustomObject ]@{ Class = $Title }                                                                           # Title and Sync Root
+        $Object = [ PSCustomObject ]@{ Class = $Title }
 
-        If ( ( $ID.Count -ne $Depth ) -or ( $Table.Count -ne $Depth ) ) { Throw '$Depth -ne $ID.Count or $Table.Count' }               # Error handling
-        If ( $Depth -eq 1 ) { $Count = 1 } If ( $Depth -gt 1 ) { $Count = 0..( $Depth - 1 ) }                                   # Single/Multiple Count
+        If ( ( $ID.Count -ne $Depth ) -or ( $Table.Count -ne $Depth ) ) { Throw '$Depth -ne $ID.Count or $Table.Count' }
+        If ( $Depth -eq 1 ) { $Count = 1 } If ( $Depth -gt 1 ) { $Count = 0..( $Depth - 1 ) }
 
-        $C = $Null                                                                                                          # Ensures index starts at 0
+        $C = $Null
 
-        $Count | % {                                                                                                                  # Begins the loop
+        $Count | % {
     
-            If ( $Depth -gt 1 )                                                                                                   # If multiple objects
+            If ( $Depth -gt 1 )
             {   If ( $C -ne $Null ) { $C = $C + 1 } If ( $C -eq $Null ) { $C = 0 } $Index = $ID[$C] ; $Section = $Table[$C] }
 
-            If ( $Depth -eq 1 )                                                                                                    # If a single object
+            If ( $Depth -eq 1 )
             {   $C = 0 ; $Index = $ID ; $Section = $Table }
 
-            $Object | Add-Member -MemberType NoteProperty -Name "ID:$C" -Value $Index                           # ^ Same core logic used in either case
+            $Object | Add-Member -MemberType NoteProperty -Name "ID:$C" -Value $Index
             $Keys = @( $Section | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )
 
-            ForEach ( $S in $Keys )                                                                             # Prepares the subtable key/value pairs
-            {   $SubTable = [ Ordered ]@{ }                                                                                      # Declares empty table
-                ForEach ( $K in $Keys )                                                                                                  # Outputs info
+            ForEach ( $S in $Keys )
+            {   $SubTable = [ Ordered ]@{ }
+                ForEach ( $K in $Keys )
                 {   $Section.$K | % { $SubTable.Add( "$K" , @{ ID = $_.ID ; Value = $_.Value } ) } } } 
 
-            $Object | Add-Member -MemberType NoteProperty -Name "Section:$C" -Value $SubTable                             # Outputs temporary hashtable
+            $Object | Add-Member -MemberType NoteProperty -Name "Section:$C" -Value $SubTable
         }
 
         Return $Object
@@ -101,113 +102,141 @@
             [ Parameter ( Position = 1 , Mandatory = $True , ParameterSetName = "0" ) ][ String ] $Type ,
             [ Parameter ( Position = 2 , Mandatory = $True , ParameterSetName = "0" ) ][ String ] $Info ,
             [ Parameter ( Position = 1 , ParameterSetName = "2" ) ]
-            [ Parameter ( Position = 1 , ParameterSetName = "3" ) ]
-            [ Parameter ( Position = 1 , ParameterSetName = "4" ) ]
-            [ Parameter ( Position = 1 , ParameterSetName = "5" ) ][ Switch ] $Wrap ,
+            [ Parameter ( Position = 1 , ParameterSetName = "3" ) ][ Switch ] $Wrap ,
             [ ValidateSet (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15) ]
             [ Parameter ( Position = 3 , ParameterSetName = "0" ) ]
             [ Parameter ( Position = 2 , ParameterSetName = "1" ) ]
             [ Parameter ( Position = 2 , ParameterSetName = "2" ) ]
             [ Parameter ( Position = 2 , ParameterSetName = "3" ) ]
-            [ Parameter ( Position = 1 , ParameterSetName = "4" ) ]
-            [ Parameter ( Position = 1 , ParameterSetName = "5" ) ][ Alias ( "F" )][ String ] $ForegroundColor ,
+            [ Parameter ( Position = 2 , ParameterSetName = "4" ) ]
+            [ Parameter ( Position = 2 , ParameterSetName = "5" ) ][ Alias ( "F" )][ String ] $ForegroundColor ,
             [ ValidateSet (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15) ]
             [ Parameter ( Position = 4 , ParameterSetName = "0" ) ]
             [ Parameter ( Position = 3 , ParameterSetName = "1" ) ]
             [ Parameter ( Position = 2 , ParameterSetName = "2" ) ]
             [ Parameter ( Position = 3 , ParameterSetName = "3" ) ]
-            [ Parameter ( Position = 1 , ParameterSetName = "4" ) ]
-            [ Parameter ( Position = 1 , ParameterSetName = "5" ) ][ Alias ( "B" )][ String ] $BackgroundColor ,
+            [ Parameter ( Position = 3 , ParameterSetName = "4" ) ]
+            [ Parameter ( Position = 3 , ParameterSetName = "5" ) ][ Alias ( "B" )][ String ] $BackgroundColor ,
             [ Parameter ( Position = 5 , ParameterSetName = "0" ) ]
             [ Parameter ( Position = 4 , ParameterSetName = "1" ) ]
             [ Parameter ( Position = 3 , ParameterSetName = "2" ) ]
             [ Parameter ( Position = 4 , ParameterSetName = "3" ) ]
-            [ Parameter ( Position = 2 , ParameterSetName = "4" ) ]
-            [ Parameter ( Position = 2 , ParameterSetName = "5" ) ][ Alias ( "L" )][ String ] $Log )
+            [ Parameter ( Position = 5 , ParameterSetName = "4" ) ]
+            [ Parameter ( Position = 5 , ParameterSetName = "5" ) ][ Alias ( "L" )][ String ] $Log )
 
-        Begin                                                                                                                        # Selects textures
+        Begin
         {
-            $B  = @{ 0 = 0..1 ; 1 = 1..0 } ; $Z = "  " , "¯-" , "-_" | % { $_ * 54 } ; $S = " // " , " \\ " ; $F = "/¯¯\" , "\__/" 
-            $FR = 0..1 | % { ( $F[( $B[$_] )] ) * 13 -join '' } ; $D  = 0..1 | % { $X , $Y = $B[$_][0..1] ; "$( $S[$X] + $FR[$_] + $F[$X] + $S[$Y] )" }
-            $L , $R = $S , $S[1..0] ; $LI = 0..1 | % { $L[$_] + $Z[0] + $R[$_] } ; $OP = @( ) ;
+            $S  = " // " , " \\ " ; $F  = "/¯¯\" , "\__/" ; $OP = @( ) ;
         }
 
-        Process                                                                                                                     # Process Selection
+        Process
         {   
-            If (   $Wrap ) { $OP += "  $( "_" * 112 )  " , $D[0] , $D[1] , " //$( "¯" * 110 )\\ " , $LI[1] }                              # Top Wrapper
+            If ( $Wrap ) #//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+            {
+                "  _ $("____    " * 13 )____ _  " , 
+                " ///$("/¯¯\\__/" * 13 )/¯¯\\\\ " , 
+                " \\\$("\__//¯¯\" * 13 )\__//// " , 
+                " ///$("¯¯¯¯    " * 13 )¯¯¯¯\\\ " | % { $OP += $_ }
+            } 
 
-            If ( $Action )                                                                                                             # Action Wrapper
-            {   $T , $I = $Type , $Info                                                                                    # Concat Type/Info Variables
-                If ( $T.Length -gt 20 ) { $T = " $( $T.SubString( 0 , 20 ) )...." }                                              # For Left side length
-                Else                    { $T = $T | % { "$( " " * ( 25 - $_.Length ) )$_" } } 
-                If ( $I.Length -gt 75 ) { $I = $I.SubString( 0 , 75 ) + ".... " }                                               # For Right side length
-                Else                    { $I = $I | % { "$_$( " " * ( 80 - $_.Length ) )" } }
-                
-                $ST , $SI = ( 25 - $T.Length ) , ( 80 - $I.Length ) | % { " " * $_ }                                  # Calculate Type/Info Positioning
-                $Sub = "$( $S[1] )$ST$T : $I$SI$( $S[0] )" ; $AT , $AB = 1..2 | % { $S[0] + $Z[$_] + $S[1] }
-
-                $OP += "" , $AT , $Sub , $AB , ""                                                                                     # Output to Array
-            }
-
-            If ( $Function )                                                                                                         # Function Wrapper
-            {   $FA = $Function ; If ( $FA.Length -gt 58 ) { $FA = "$( $FA.SubString( 0 , 58 ) )..." } 
-                "[ $FA ]" | % { $FA = "$_$( "_" * ( 66 - $_.Length ) )" }
-
-                $OP += "  ____ $( " " * 70  ) $( ( "____    "        ) * 4 )____  " , 
-                       " //¯¯\\$( "_" * 70  )/$( ( $F[0..1] -join '' ) * 4 )/¯¯\\ " , 
-                       " \\__//$( "¯" * 70  )\$( ( $F[1..0] -join '' ) * 4 )\__// " , 
-                       "  ¯¯¯\\__$(   $FA )__/$( ( $F[0..1] -join '' ) * 4 )/¯¯¯  " ,
-                       "      ¯$( "¯" * 70  )¯$( ( "    ¯¯¯¯"        ) * 4 )      "
-            }
-
-            If (  $Array ) { $Array | % { $OP += $_ } }                                                                                 # Array Wrapper
-
-            If (  $Table )                                                                                                          # Hashtable Wrapper
+            If ( $Action ) #//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
             {   
-                $Index = @( ) ; $Section = @( ) ; $Name = $Null ; $Item = $Null ; $C = $Null                         # Open Arrays, & Nullify Variables
-                $ID = $Table | GM | ? { $_.MemberType -eq "NoteProperty" } 
-                $ID | ? { $_.Name -eq "Class" } | % { $Title = $Table.$( $_.Name ) }                                                    # Title Wrapper
+                $T , $I = $Type , $Info
+
+                $X = $( If ( $T.Length -gt 18 ) { "...$( $T[ 0..18 ])" } Else { "$( " " * ( 21 - $T.Length ) )$T" } )
+                $Y = $( If ( $I.Length -gt 66 ) { "$( $I[0..66]  )..." } Else { "$I$( " " * ( 69 - $I.Length ) )" } )
+
+                "  ____    __$( "_" * 96     )__      " ,
+                " //¯¯\\__//$(  "¯" * 98      )\\___  " ,
+                " \\__//¯¯¯ $( "$X : $Y" )  ___//¯¯\\ " ,
+                "  ¯¯¯\\$(     "_" *  98  )//¯¯\\__// " ,
+                "      $(      "¯" * 100   )    ¯¯¯¯  " | % { $OP += $_ }
+            }
+
+            If ( $Function ) #//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+            {   
+                $FA = $Function 
+                $X = $( If ( $FA.Length -gt 58 ) { "$( $FA[0..58] -join '' )... ]" } Else { "$FA ]$( "_" * ( 62 - $FA.Length ) )" } )
+
+                "  ____ $( " " * 70  ) $( ( "____    " ) * 4 )____  " , 
+                " //¯¯\\$( "_" * 70  )/$( ( "/¯¯\\__/" ) * 4 )/¯¯\\ " , 
+                " \\__//$( "¯" * 70  )\$( ( "\__//¯¯\" ) * 4 )\__// " , 
+                "  ¯¯¯\\__[ $(  $X )__/$( ( "/¯¯\\__/" ) * 4 )/¯¯¯  " ,
+                "      ¯$( "¯" * 70  )¯$( ( "    ¯¯¯¯" ) * 4 )      " | % { $OP += $_ }
+            }
+
+            If (  $Array ) { $Array | % { $OP += $_ } }
+
+            If (  $Table )
+            {   
+                $OP += " \\\$( "_" * 108 )/// " , " \\ $( "¯" * 108 ) // " 
+
+                $Index   = @( )
+                $Section = @( )
+                $Name    = $Null
+                $Item    = $Null
+                $C       = $Null
+
+                $ID    = $Table | GM | ? { $_.MemberType -eq "NoteProperty" }
+
+                $ID | ? { $_.Name -eq "Class" } | % { $Title = $Table.$( $_.Name ) }
 
                 $Title = $Title.Replace( ' ' , '-' ) | % { "[ $_ ]" }
+
                 If ( $Title.Length -gt 103 ) { $Title = "$( $Title.Substring( 0 , 103 ) ) ... " }
 
-                $TT = 108 - $Title.Length ; $TX = $TT % 4 ; $TY = ( $TT - $TX ) / 4 ; $TL , $TR = "_¯" , "¯_" | % { $_ * $TY }
-                $T = ( $Title | % { "$_" , "$_-" , "$_ " , " $_ -" } )[ $TX ] ; $Title = $S[0] + $TL + $T + $TR + $S[1] ; 
-                $OP += $Title , $LI[1]                                                                                                 # Title -> Array
+                $TT = 108 - $Title.Length
+                $TX = $TT % 4
+                $TY = ( $TT - $TX ) / 4
+                $TL , $TR = "_¯" , "¯_" | % { $_ * $TY }
+
+                $T = ( $Title | % { "$_" , "$_-" , "$_ " , " $_ -" } )[ $TX ]
+
+                $Title = $S[0] + $TL + $T + $TR + $S[1] 
+
+                $OP += $Title , $LI[1]
                 
-                $ID | ? { $_.Name -like      "*ID:*" } | % { $Index   += $Table.$( $_.Name ) }                                            # ID Selector
-                $ID | ? { $_.Name -like "*Section:*" } | % { $Section += $Table.$( $_.Name ) }                                       # Section Selector
+                $ID | ? { $_.Name -like      "*ID:*" } | % { $Index   += $Table.$( $_.Name ) }
+                $ID | ? { $_.Name -like "*Section:*" } | % { $Section += $Table.$( $_.Name ) }
 
                 $Count = $Index.Count - 1
-                $Total = 0                                                                                              # Starts the count ( Critical )
+
+                $Total = 0
 
                 If ( $Count -gt 0 ) { $Count = 0..$Count }
 
                 $Count | % {
 
-                    If ( $Index.Count -gt 1 )                                                                                             # If Multiple
+                    If ( $Index.Count -gt 1 )
                     {   
-                        If   ( $C -ne $Null ) { $C = $C + 1 }                                                                        # Starts the index
+                        If   ( $C -ne $Null ) { $C = $C + 1 }
                         If ( ( $C -eq $Null ) -and ( $Name -eq $Null ) ) { $C = 0 }
                         $Name = $Index[$C] ; $Item = $Section[$C]
                     }
 
-                    If ( $Index.Count -eq 1 ) { $Name = [ String ]$Index ; $Item = $Section }                                               # If Single
-                    If ( $Name.Length -gt 93 ) { $Name = "$( $Name.Substring( 0 , 93 ) ) ... " }
+                    If ( $Index.Count -eq  1 ) { $Name = [ String ]$Index ; $Item = $Section }
+                    If ( $Name.Length -gt 93 ) { $Name = "$( $Name[0..93] -join '' ) ) ... " }
 
-                    $U = 98 - $Name.Length ; $V = $Total % 2 ; $W = ( 1 - $V ) ; $SHeader = "_" , "¯" | % { "$( $L[$V] + ( "$_" * 108 ) + $R[$V] )" }
-                    $SLine = $L[$W] + ( "-" * 10 ) + $Name + ( "-" * $U ) + $R[$W] ; $OP += $SHeader[0] , $SLine , $SHeader[1] ; $Total = $Total + 3
+                    $U = 98 - $Name.Length
+
+                    $V = $Total % 2
+
+                    $W = ( 1 - $V )
+
+                    $SHeader = "_" , "¯" | % { "$( $L[$V] + ( "$_" * 108 ) + $R[$V] )" }
+
+                    $SLine = $L[$W] + ( "-" * 10 ) + $Name + ( "-" * $U ) + $R[$W]
+                    
+                    $OP   += $SHeader[0] , $SLine , $SHeader[1] ; $Total = $Total + 3
 
                     $Keys = @( $Item.Keys )
 
-                    ForEach ( $IX in ( 0..( $Item.Keys.Count - 1 ) ) )                                                              # Process Key Pairs
+                    ForEach ( $IX in ( 0..( $Item.Keys.Count - 1 ) ) )
                     {
                         $Item."Item:$IX" | % { $Key = $_.ID ; $Value = $_.Value } ; $Y = $Total % 2
 
-                        If (   $Key.Length -gt 20 ) {   $Key = $Key.SubString( 0 , 20 ) + " ... " } 
-                        Else                        {   $Key = $Key | % { "$( " " * ( 25 - $_.Length ) )$_" } }
-                        If ( $Value.Length -gt 75 ) { $Value = $Value.SubString( 0 , 75 ) + " ... " } 
-                        Else                        { $Value = $Value | % { "$_$( " " * ( 80 - $_.Length ) )" } }
+                        $Key   = $( If (   $Key.Length -gt 20 ) { "$(   $Key[0..20] -join '' ) ... " } Else { "$( " " * ( 25 - $Key.Length ) )$Key" } )
+                        $Value = $( If ( $Value.Length -gt 75 ) { "$( $Value[0..75] -join '' ) ... " } Else { "$Value$( " " * ( 80 - $Value.Length ) )" } )
 
                         $OP += "$( $L[$Y] + $Key ) : $( $Value + $R[$Y] )" ; $Total ++
                     }
@@ -216,72 +245,72 @@
 
             If ( $Free )
             {
-                $PI = "($( [ Char ] 960 ))" ; $DA = ( "m" , "d" , "Y" | % { Get-Date -UFormat "%$_" } | % { "$( $_.ToCharArray() )" } ) -join ' / '
-                $A = " //¯" , " \\" , " //" , " \\_" ; $E = "[=]" , "\_/" , "| |" ; $BL = -Join $E[0,1,0] ; $SX = ( "  *   " * 6 ) , "$( "     *" * 5 )      "
-                $M1 = 0..120 | % { "¯" * $_ } ; $M2 = 0..120 | % { "_" * $_ } ; $M3 = 0..120 | % { " " * $_ } ; $FL = " // /¯¯\\   " , " \\ \__//   "
-                $RL = "   //¯¯\ \\ " , "   \\__/ // " ; $X = "$($A[1]+$SX[1])]$($M2[48])_// " , "$($A[2]+$SX[0])]$($M1[48])¯\\ " ; 
+                $PI  = "($( [ Char ] 960 ))" ; $DA = ( "m" , "d" , "Y" | % { Get-Date -UFormat "%$_" } | % { "$( $_.ToCharArray() )" } ) -join ' / '
+                $A   = " //¯" , " \\" , " //" , " \\_" ; $E = "[=]" , "\_/" , "| |" ; $BL = -Join $E[0,1,0] ; $SX = ( "  *   " * 6 ) , "$( "     *" * 5 )      "
+                $M1  = 0..120 | % { "¯" * $_ } ; $M2 = 0..120 | % { "_" * $_ } ; $M3 = 0..120 | % { " " * $_ } ; $FL = " // /¯¯\\   " , " \\ \__//   "
+                $RL  = "   //¯¯\ \\ " , "   \\__/ // " ; $X = "$($A[1]+$SX[1])]$($M2[48])_// " , "$($A[2]+$SX[0])]$($M1[48])¯\\ "
 
-                $STR  = "Beginning the fight against Technological Tyranny and Cyber Criminal Activities" , "Dynamically Engineered Digital Security" , 
+                $STR = "Beginning the fight against Technological Tyranny and Cyber Criminal Activities" , "Dynamically Engineered Digital Security" , 
                 "Application Development - Virtualization" , "Network & Hardware Magistration" ,   "What America Once Stood For" , 
-                "$Pi A Heightened Sense Of Security $Pi" , "HYBRID" , "BY" , "SECURE-DIGITS-PLUS-LLC" , "MICHAEL C COOK SR"
+                "$PI A Heightened Sense Of Security $PI" , "HYBRID" , "BY" , "SECURE-DIGITS-PLUS-LLC" , "MICHAEL C COOK SR"
 
-                $STR  = @( 0..5 | % { $STR[$_] } | % { "[ $_ ]" } ; 6..9 | % { $STR[$_] } | % { "$( $_.ToCharArray() )" } ) ; 
-                $Sig = $DA + '  |  ' + $STR[9].Replace( "  " , " " ) ; $Out = @( )
+                #$STR = @( 0..5 | % { $STR[$_] } | % { "[ $_ ]" } ; 6..9 | % { $STR[$_] } | % { "$( $_.ToCharArray() )" } )
 
-                If ( !$Wrap ) { $OP += "  $($M2[112])  " , $D[0] , $D[1] , "$( $FL[0] )$( ( "¯¯¯¯    " ) * 11 )¯¯¯¯$( $RL[0] )" }
-                If (  $Wrap ) { $OP += "$( $FL[0] ) $( $M3[90] ) $( $RL[0] )" }
+                $STR = @( $STR[0..5] | % { "[ $_ ]" } ; $STR[6..9] | % { $_.ToCharArray() -join ' ' } )
 
-                # Utter Insanity [ I would never recommend going this far with this... but I did it to make a point ]
-                # ----- --------   -       ----- ---------                                             ---- - -----
+                $Sig = $DA + '  |  ' + $STR[9].Replace( "  " , " " )
+                
+                $Out = @( )
 
-                $Out += "     $( $STR[0] )    " , "  $( $M2[88] )  " , "$($A[0]+$M1[35])]$($M1[48])¯\\ " , $X[0] , $X[1] , 
+                $OP += "  ______$( " " * 10 )$( "_" * 81 )$( " " * 9 )______  " , " // /¯¯\\________/$( "¯" * 81 )\_______//¯¯\ \\ "
+
+                $Out += 
+                "     $( $STR[0] )    " , "  $( $M2[88] )  " , "$($A[0]+$M1[35])]$($M1[48])¯\\ " , $X[0] , $X[1] , 
                 "$($A[1]+$SX[1])]___$($STR[1])___// " , $X[1] , $X[0] , $X[1] , "$($A[1]+$SX[1])]__$( $STR[2])___// " , 
                 $X[1] , $X[0] , $X[1] , "$($A[1]+$SX[1])]_______$($STR[3])_______// " ,  " //  $($STR[4])   ]$($M1[48] )¯\\ " , 
                 "$($A[3]+$M2[35])]$($M2[48])_// " ,  "$($A[0]+$M1[85])\\ " , "$($A[3]+$M2[32]+$BL+$E[1]+$BL+$M2[32])// " , 
                 "$($A[0]+$M1[32]+$E[2]+$M3[15]+$E[2]+$M1[32])\\ " , "$($A[3]+$M2[32]+$E[0])  $($STR[6])  $($E[0]+$M2[32])// " , 
                 "$($A[0]+$M1[32]+$E[2])  $($M1[11])  $($E[2]+$M1[32])\\ " , "$($A[3]+$M2[17]+$BL*2+$M3[6]+$STR[7]+$M3[6]+$BL*2+$M2[16])_// " , 
-                "$($A[0]+$M1[17]+$E[2]+$M1[15]+$M3[6]+$M1[3]+$M3[6]+$M1[15]+$E[2]+$M1[16])¯\\ " , "$($A[3]+$M2[17]+$E[0]) $($STR[8]) $($E[0]+$M2[16])_// " , 
-                "$($A[0]+$M1[17]+$E[1]) $($M1[43]) $($E[1]+$M1[16])¯\\ " , "$($A[3]+$M2[10]+$BL*3+$E[0])\__/$($E[0]+$BL*3+$M2[10])_// " , 
+                "$($A[0]+$M1[17]+$E[2]+$M1[15]+$M3[6]+$M1[3]+$M3[6]+$M1[15]+$E[2]+$M1[16])¯\\ " , 
+                "$($A[3]+$M2[17]+$E[0]) $($STR[8]) $($E[0]+$M2[16])_// " , 
+                "$($A[0]+$M1[17]+$E[1]) $($M1[43]) $($E[1]+$M1[16])¯\\ " , 
+                "$($A[3]+$M2[10]+$BL*3+$E[0])\__/$($E[0]+$BL*3+$M2[10])_// " , 
                 "$($A[0]+$M1[10]+$E[0]+$M1[58]+$E[0]+$M1[10])¯\\ " , "$($A[3]+$M2[10]+$E[0])  $SIG  $($E[0]+$M2[10])_// " , 
                 "  $($M1[15])  $($M1[19])     $($M1[30])  $($M1[15])  " , " $($M3[24]+$STR[5]+$M3[24]) "
 
                 $C = 1
-                $Out | % { $Y = $C % 2 ; $OP += "$( $FL[$Y] )$_$( $RL[$Y] )" ; $C++ }
+                $Out | % { $Y = $C % 2 ; $OP += "$( $FL[$Y] )$_$( $RL[$Y] )" ; $C ++ }
 
-                If (  $Wrap ) { $OP += "$( $FL[1] ) $($M3[28]+$M2[34]+$M3[28]) $( $RL[1] )" }
-                If ( !$Wrap ) { $OP += "$( $FL[1] )$( ( "____    " ) * 11 )____$( $RL[1] )" , $D[0] , $D[1] , "  $( $M1[112] )  " }
+                $OP += " \\ \__//¯¯¯¯¯¯¯¯\$( "_" * 81 )/¯¯¯¯¯¯¯\\__/ // " , "  ¯¯¯¯¯¯$( " " * 10 )$( "¯" * 81 )$( " " * 9 )¯¯¯¯¯¯  "
             }
 
             If ( $Foot )
             {
-                $FX = $F[0,1,0,1,0] , $F[1,0,1,0,1] , $F[0,1,0,1] , $F[1,0,1,0] , $F[1,0,1] , $F[0,1,0]                      # Block Selection / Concat
-                $F1 , $F2 , $F3 , $F4 , $F5 , $F6  = $FX | % { $_ -join '' } ; $F7 = ( ( $F[1,0] ) * 13 + $F[1] ) -join ''
+                $F = "/¯¯\" , "\__/" ;  $BL = 0..100 | % { "_" * $_ } ; $TL = 0..100 | % { "¯" * $_ }
+                $FZ = 0..13 | % { ( $F[0..1] -join '' ) * $_ } ; $FY = 0..13 | % { ( $F[1..0] -join '' ) * $_ }
+                
+                $ST = "Secure Digits Plus LLC" , "Hybrid | Desired State Controller" , "Dynamically Engineered Digital Security" , "Application Development" , 
+                "Virtualization" , "Network and Hardware Magistration" , "https://www.securedigitsplus.com" , "Server-Client" , "Seedling-Spawning Script" , 
+                "Provisional Author : Michael C Cook Sr." , "'The Buck Stops Here'"
+                
+                $Title , $Strength , $Domain , $Author = ( 0..1 ) , ( 3..5 ) , ( 6..8 ) , ( 9..10 ) | % { $ST[$_] -join ' | ' }
 
-                $ST = "Secure Digits Plus LLC" , "Hybrid | Desired State Controller" , "Dynamically Engineered Digital Security" ,         # String Dex
-                "Application Development" , "Virtualization" , "Network and Hardware Magistration" , "https://www.securedigitsplus.com" ,
-                "Server-Client" , "Seedling-Spawning Script" , "You've Just deployed a heightened sense of security"
-
-                $Focus = "$( "-="* 7 | % { "$_-[ $( $ST[2] ) ]-=$_" } )"
-                $Title , $Strength , $Domain = $ST[0,1] , $ST[3,4,5] , $ST[6,7,8] | % { $_ -join ' | ' } 
-
-                $Out = @( "$F1\    $( "_" * 58 )    /$F1" , "$F2/    $( $Title )    \$F2" , "$F3/¯¯¯     $( "¯" * 58 )     ¯¯¯\$F4" ,     # Output Prep
-                "$F5/¯¯¯ $( $Focus  ) ¯¯¯\$F5"  , "$F6\    $( "¯" * 15 )$( " " * 43 )$( "¯" * 16 )    /$F6" , 
-                "$F5/   $( $Strength )   \$F5"  , "$F6\   $( "¯" * 76  )   /$F6" , "$F5/   $(   $Domain )    \$F5" , 
-                "$F6\___$( "¯" * 75  ) ___/$F6" , "$F4\___$( " " * 8 )$( $ST[9] )$( " " * 9 )___/$F3" , 
-                "$F1\___$( ( ( " " * 4 ) + ( "_" * 4 ) ) * 7 )    ___/$F1" , "$F7" )
-
-                If ( !$Wrap ) { $OP += "  $( "_" * 112 )  " }                                                                          # Send to Output
-
-                $C = 0
-                $Out | % { $Y = $C % 2 ; $OP += "$( $L[$Y] )$_$( $R[$Y] )" ; $C ++ }
-
-                If ( !$Wrap ) { $OP += "  $( "¯" * 112 )  " }
+                $OP += "  ____$( " -- ____" * 13 )  " , " /$( $FZ[13] )/¯¯\\ " , " \$( $FY[13] )\__// " , 
+                " /$( $FZ[ 2] )/¯¯\\ $( "  ¯¯¯¯  " * 8 ) //¯¯\$( $FY[2] )\ " ,
+                " \$( $FY[ 2] )\__//  [ $Title ]  \\__/$( $FZ[2] )/ " , " /$( $FZ[ 2] )/¯¯¯    ¯¯¯\__/$( "¯" * 47 )\__/¯¯    ¯¯¯\$( $FY[2] )\ " ,
+                " \$( $FY[ 1] )\__//¯¯¯         __/¯¯\ ([ $( $ST[2] ) ]) /¯¯\__        ¯¯¯\\__/$( $FZ[1] )/ " ,
+                " /$( $FZ[ 1] )/¯¯\\  _________/¯¯\__/_________ $( $BL[16] ) $( $BL[20] )\__/¯¯\________  //¯¯\$( $FY[1] )\ " ,
+                " \$( $FY[ 1] )\__// | $Strength | \\__/$( $FZ[1] )/ " , " /$( $FZ[ 1] )/¯¯\\  $( $TL[25] ) $( $TL[16] ) $( $TL[35] )  //¯¯\$( $FY[1] )\ " ,
+                " \$( $FY[ 1] )\__//   $Domain    \\__/$( $FZ[1] )/ " , " /$( $FZ[ 1] )/¯¯\\___$( $TL[32] )   $( $TL[13] )   $( $TL[24] ) ___//¯¯\$( $FY[1] )\ " ,
+                " \$( $FY[ 2] )\   [  $Author ]   /$( $FZ[2] )/ " , " /$( $FZ[ 2] )/ $( "  ____  " * 9 ) \$( $FY[2] )\ " , 
+                " \$( $FY[13] )\__// " , "  ¯¯¯¯$( " -- ¯¯¯¯" * 13 )  "
             }
 
             If ( $Wrap ) 
             { 
-                If ( ( $OP.Count | Select -Last 1 ) % 2 -ne 0 ) { $OP += $LI[0] } 
-                $OP += " \\$( "_" * 110 )// " , $D[0] , $D[1] , "  $( "¯" * 112 )  " 
+                If ( ( $OP.Count | Select -Last 1 ) % 2 -ne 0 ) { $OP += " \\ $( "____    " * 13 )____ // " } 
+
+                $OP +=  " ///$("/¯¯\\__/" * 13 )/¯¯\\\\ " , " \\\$("\__//¯¯\" * 13 )\__//// " , "  ¯ $("¯¯¯¯    " * 13 )¯¯¯¯ ¯  "
             }
         }
 
@@ -335,32 +364,25 @@
     {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
         $ID =  "00" , "01" , "01" , "03" , "06" , "1F" , "20" , "21" , "22" , "23" , "24" , "30" , "31" , "43" , "44" , "45" , "46" , "4C" , "42" , 
-        "52" , "87" , "6A" , "BE" , "BF" , "03" , "00" , "1B" , "1C" , "1D" , "1E" , "1C" , "00" , "2B" , "2F" , "33" , "20" , "01" | % { "<$_>" }
+        "52" , "87" , "6A" , "BE" , "BF" , "03" , "00" , "1B" , "1C" , "1D" , "1E" , "2B" , "2F" , "33" , "20" , "01" | % { "<$_>" }
 
-        $Type = ( "UNIQUE" , "GROUP" )[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,1,0,0,1,1,1,1]
+        $Type = ( "UNIQUE" , "GROUP" )[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,1,1,1]
 
         $Service = "Workstation" , "Messenger" , "Master Browser" , "Messenger" , "RAS Server" , "NetDDE" , "File Server" ,  "RAS Client" , 
         "Interchange(MSMail Connector)" , "Store" , "Directory" , "Server" , "Client" , "Control" , "SMS Administrators Remote Control Tool" , 
         "Chat" , "Transfer" , "on Windows NT" , "mccaffee anti-virus" , "on Windows NT" , "MTA" , "IMC" , "Network Monitor Agent" , 
         "Network Monitor Application" , "Messenger" , "Name" , "Master Browser" , "Controllers" , "Master Browser" , "Browser Service Elections" , 
-        "IIS" , "IIS" , "Server" , "" , "" , "DCA IrmaLan Gateway Server" , "MS NetBIOS Browse"
+        "Server" , "" , "" , "DCA IrmaLan Gateway Server" , "MS NetBIOS Browse"
 
-        0,1,3,4,5,6,7,11,12,24,32,36  | % { $Service[$_] =                     "$( $Service[$_] ) Service" }
-        8,9,10,20,21                  | % { $Service[$_] =          "Microsoft Exchange $( $Service[$_] )" }
-        32,33,34                      | % { $Service[$_] =                 "Lotus Notes $( $Service[$_] )" }
-        11,12                         | % { $Service[$_] =               "Modem Sharing $( $Service[$_] )" }
-        13,15,16                      | % { $Service[$_] =          "SMS Clients Remote $( $Service[$_] )" }
-        25,26,27                      | % { $Service[$_] =                      "Domain $( $Service[$_] )" }
-        17,19                         | % { $Service[$_] = "DEC Pathworks TCPIP service $( $Service[$_] )" }
+        ( 0,1,3,4,5,6,7,11,12,24,30,34 )  | % { $Service[$_] =                     "$( $Service[$_] ) Service" }
+        ( 8,9,10,20,21 )                  | % { $Service[$_] =          "Microsoft Exchange $( $Service[$_] )" }
+        ( 30,31,32 )                      | % { $Service[$_] =                 "Lotus Notes $( $Service[$_] )" }
+        ( 11,12 )                         | % { $Service[$_] =               "Modem Sharing $( $Service[$_] )" }
+        ( 13,15,16 )                      | % { $Service[$_] =          "SMS Clients Remote $( $Service[$_] )" }
+        ( 25,26,27 )                      | % { $Service[$_] =                      "Domain $( $Service[$_] )" }
+        ( 17,19 )                         | % { $Service[$_] = "DEC Pathworks TCPIP service $( $Service[$_] )" }
 
-        $List = @( ) 
-        
-        ForEach ( $i in 0..36 ) 
-        { 
-            $List += [ PSCustomObject ]@{ ID = $ID[$i] ; Type = $Type[$i] ; Service = $Service[$i] } 
-        }
-        
-        Return $List
+        $List = @( ) ; ForEach ( $i in 0..34 ) { $List += [ PSCustomObject ]@{ ID = $ID[$i] ; Type = $Type[$i] ; Service = $Service[$i] } } ; Return $List
 
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
@@ -388,8 +410,14 @@
         {
             $Report = @( )
 
+            $C = 0
+
             $OP = @( NBTSTAT -n | ? { $_ -like "*Registered*" } ) +
-            @( Start-PingSweep | ? { $_.Success -ne $Null } | % { $_.Success } | % { NBTSTAT -A $_ } | ? { $_ -like "*Registered*" } )
+            @( Start-PingSweep | ? { $_.Success -ne $Null } | % { $_.Success } | % { 
+            
+            Write-Echo -Function "Host # $C / Scanning for NetBIOS/Domain Controller" 10 0
+            $C ++
+            NBTSTAT -A $_ } | ? { $_ -like "*Registered*" } )
 
             ForEach ( $I in ( 0..( $OP.Count - 1 ) ) ) 
             { 
@@ -535,12 +563,8 @@
 
         [ CmdletBinding ( ) ] Param ( [ Parameter ( Position = 0 ) ] [ Switch ] $Report )
 
-        $Hosts = @( )
-
-        Get-NetworkInfo          | % { $NetMask = $_.NetMask ; $IP        = $_.IPv4 ; $Hosts += $IP }
-        Get-HostRange            | % { $PFX     = $_.Prefix  ; $Broadcast = $_.Echo }
-        Get-NetworkHosts -HostIP | % { $Hosts   += @( $_ ) }
-        Get-HostMask     -Locate | % { $HostList = $_.Start..$_.End | % { "$PFX.$_" } }
+        Get-HostRange | % { $PFX = $_.Prefix }
+        Get-HostMask -Locate | % { $HostList = $_.Start..$_.End | % { "$PFX.$_" } }
 
         $CPU = GCIM Win32_Processor | % { $_.ThreadCount , $_.LoadPercentage }
 
@@ -564,7 +588,7 @@
 
         $Threads = @( )
 
-        Write-Echo -Function "Beginning Subnet Ping-Sweep, please wait" -F 10 -B 0
+        Write-Echo -Function "Beginning Subnet Ping-Sweep, please wait" 10 0
 
         $Stopwatch = [ System.Diagnostics.Stopwatch ]::StartNew()
 
@@ -580,7 +604,7 @@
 
         $Stopwatch.Stop()
 
-        Write-Echo -Function "Ping-Sweep Complete @: $( $Stopwatch.Elapsed )" -F 10 -B 0
+        Write-Echo -Function "Ping-Sweep Complete @: $( $Stopwatch.Elapsed )" 10 0
 
         $ThreadResults = @( )
         ForEach ( $T in $Threads )
@@ -606,12 +630,57 @@
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+    Function Collect-NetworkInfo  # Collects all needed interface data            ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+
+        $Subtable     = 0..3
+        $Section      = @( )
+
+        $NetworkInfo  = @( Get-NetworkInfo )
+        $Section      += "Network Information"
+        $Names        = @( $NetworkInfo | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )
+        $Values       = @( $Names | % { $NetworkInfo.$( $_ ) } )
+
+        $Subtable[0] = New-Subtable -Items $Names -Values $Values
+
+        $HostRange    = @( Get-HostRange )
+        $Section      += "Host Range Information"
+        $Names        = @(   $Hostrange | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[0,5,3,4,7,6,2,1]
+        $Values       = @( $Names | % { $HostRange.$( $_ ) } )
+
+        $Subtable[1] = New-Subtable -Items $Names -Values $Values
+
+        $NetworkHosts = @( Get-NetworkHosts -All )
+        $Section      += "Network Host IP/MAC"
+        $Names        = @( $NetworkHosts | % { $_.HostIP  } )
+        $Values       = @( $NetworkHosts | % { $_.HostMAC } )
+
+        $Subtable[2] = New-Subtable -Items $Names -Values $Values
+
+        $NetBIOS      = @( Get-NetworkInfo -NetBIOS )
+        $Section      += "NetBIOS / Domain Information"
+        $Names        = @( $NetBIOS | % { $_.Name    } )
+        $Values       = @( $NetBIOS | % { $_.Service } )
+
+        $SubTable[3] = New-Subtable -Items $Names -Values $Values
+
+        $Table = New-Table -Title "Domain Controller Bootstrap" -Depth 4 -ID ( $Section | % { "( $_ )" } ) -Table $Subtable
+
+        Write-Echo -Table $Table -Wrap 10 0
+
+        
+
+    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____ 
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
     Function Get-NetworkStatistics                                               #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
         $OP     = netstat -ant | ? { $_ -like "*TCP*" -or $_ -like "*UDP*" }
+
         $OP     | ? { $_ -notmatch '\*' } | % { $X = $_.Split( ' ' ) | ? { $_.Length -gt 0 }
         Return  [ PSCustomObject ]@{ Protocol = $X[0] ; Local = $X[1] ; Foreign = $X[2] ; LinkState = $X[3] ; Stream = $X[4] } }
+
         $OP     | ? { $_    -match '\*' } | % { $X = $_.Split( ' ' ) | ? { $_.Length -gt 0 }
         Return  [ PSCustomObject ]@{ Protocol = $X[0] ; Local = $X[1] ; Foreign = "*:*" ; LinkState = "*:*" ; Stream = "*:*" } }
 
@@ -621,3 +690,4 @@
         Write-Echo -Free -F 10 -B 0 ; Sleep 1 # What Free Actually Means         #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
      #\______________________________________________________________________________//¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
      # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ 
+
