@@ -234,37 +234,16 @@
                 # Utter Insanity [ I would never recommend going this far with this... but I did it to make a point ]
                 # ----- --------   -       ----- ---------                                             ---- - -----
 
-                $Out += 
-                "     $( $STR[0] )    " , 
-                "  $( $M2[88] )  " , 
-                "$($A[0]+$M1[35])]$($M1[48])¯\\ " , 
-                $X[0] , 
-                $X[1] , 
-                "$($A[1]+$SX[1])]___$($STR[1])___// " , 
-                $X[1] , 
-                $X[0] , 
-                $X[1] ,
-                "$($A[1]+$SX[1])]__$( $STR[2])___// " , 
-                $X[1] , 
-                $X[0] , 
-                $X[1] , 
-                "$($A[1]+$SX[1])]_______$($STR[3])_______// " , 
-                " //  $($STR[4])   ]$($M1[48] )¯\\ " , 
-                "$($A[3]+$M2[35])]$($M2[48])_// " , 
-                "$($A[0]+$M1[85])\\ " , 
-                "$($A[3]+$M2[32]+$BL+$E[1]+$BL+$M2[32])// " , 
-                "$($A[0]+$M1[32]+$E[2]+$M3[15]+$E[2]+$M1[32])\\ " , 
-                "$($A[3]+$M2[32]+$E[0])  $($STR[6])  $($E[0]+$M2[32])// " , 
-                "$($A[0]+$M1[32]+$E[2])  $($M1[11])  $($E[2]+$M1[32])\\ " ,
-                "$($A[3]+$M2[17]+$BL*2+$M3[6]+$STR[7]+$M3[6]+$BL*2+$M2[16])_// " , 
-                "$($A[0]+$M1[17]+$E[2]+$M1[15]+$M3[6]+$M1[3]+$M3[6]+$M1[15]+$E[2]+$M1[16])¯\\ " ,
-                "$($A[3]+$M2[17]+$E[0]) $($STR[8]) $($E[0]+$M2[16])_// " , 
-                "$($A[0]+$M1[17]+$E[1]) $($M1[43]) $($E[1]+$M1[16])¯\\ " ,
-                "$($A[3]+$M2[10]+$BL*3+$E[0])\__/$($E[0]+$BL*3+$M2[10])_// " , 
-                "$($A[0]+$M1[10]+$E[0]+$M1[58]+$E[0]+$M1[10])¯\\ " ,
-                "$($A[3]+$M2[10]+$E[0])  $SIG  $($E[0]+$M2[10])_// " , 
-                "  $($M1[15])  $($M1[19])     $($M1[30])  $($M1[15])  " , 
-                " $($M3[24]+$STR[5]+$M3[24]) "
+                $Out += "     $( $STR[0] )    " , "  $( $M2[88] )  " , "$($A[0]+$M1[35])]$($M1[48])¯\\ " , $X[0] , $X[1] , 
+                "$($A[1]+$SX[1])]___$($STR[1])___// " , $X[1] , $X[0] , $X[1] , "$($A[1]+$SX[1])]__$( $STR[2])___// " , 
+                $X[1] , $X[0] , $X[1] , "$($A[1]+$SX[1])]_______$($STR[3])_______// " ,  " //  $($STR[4])   ]$($M1[48] )¯\\ " , 
+                "$($A[3]+$M2[35])]$($M2[48])_// " ,  "$($A[0]+$M1[85])\\ " , "$($A[3]+$M2[32]+$BL+$E[1]+$BL+$M2[32])// " , 
+                "$($A[0]+$M1[32]+$E[2]+$M3[15]+$E[2]+$M1[32])\\ " , "$($A[3]+$M2[32]+$E[0])  $($STR[6])  $($E[0]+$M2[32])// " , 
+                "$($A[0]+$M1[32]+$E[2])  $($M1[11])  $($E[2]+$M1[32])\\ " , "$($A[3]+$M2[17]+$BL*2+$M3[6]+$STR[7]+$M3[6]+$BL*2+$M2[16])_// " , 
+                "$($A[0]+$M1[17]+$E[2]+$M1[15]+$M3[6]+$M1[3]+$M3[6]+$M1[15]+$E[2]+$M1[16])¯\\ " , "$($A[3]+$M2[17]+$E[0]) $($STR[8]) $($E[0]+$M2[16])_// " , 
+                "$($A[0]+$M1[17]+$E[1]) $($M1[43]) $($E[1]+$M1[16])¯\\ " , "$($A[3]+$M2[10]+$BL*3+$E[0])\__/$($E[0]+$BL*3+$M2[10])_// " , 
+                "$($A[0]+$M1[10]+$E[0]+$M1[58]+$E[0]+$M1[10])¯\\ " , "$($A[3]+$M2[10]+$E[0])  $SIG  $($E[0]+$M2[10])_// " , 
+                "  $($M1[15])  $($M1[19])     $($M1[30])  $($M1[15])  " , " $($M3[24]+$STR[5]+$M3[24]) "
 
                 $C = 1
                 $Out | % { $Y = $C % 2 ; $OP += "$( $FL[$Y] )$_$( $RL[$Y] )" ; $C++ }
@@ -356,25 +335,32 @@
     {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
         $ID =  "00" , "01" , "01" , "03" , "06" , "1F" , "20" , "21" , "22" , "23" , "24" , "30" , "31" , "43" , "44" , "45" , "46" , "4C" , "42" , 
-        "52" , "87" , "6A" , "BE" , "BF" , "03" , "00" , "1B" , "1C" , "1D" , "1E" , "1C" , "00" , "2B" , "2F" , "33" , "20" | % { "<$_>" }
+        "52" , "87" , "6A" , "BE" , "BF" , "03" , "00" , "1B" , "1C" , "1D" , "1E" , "1C" , "00" , "2B" , "2F" , "33" , "20" , "01" | % { "<$_>" }
 
-        $Type = ( "UNIQUE" , "GROUP" )[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,1,0,0,1,1,1]
+        $Type = ( "UNIQUE" , "GROUP" )[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,1,0,0,1,1,1,1]
 
         $Service = "Workstation" , "Messenger" , "Master Browser" , "Messenger" , "RAS Server" , "NetDDE" , "File Server" ,  "RAS Client" , 
         "Interchange(MSMail Connector)" , "Store" , "Directory" , "Server" , "Client" , "Control" , "SMS Administrators Remote Control Tool" , 
         "Chat" , "Transfer" , "on Windows NT" , "mccaffee anti-virus" , "on Windows NT" , "MTA" , "IMC" , "Network Monitor Agent" , 
         "Network Monitor Application" , "Messenger" , "Name" , "Master Browser" , "Controllers" , "Master Browser" , "Browser Service Elections" , 
-        "IIS" , "IIS" , "Server" , "" , "" , "DCA IrmaLan Gateway Server" 
+        "IIS" , "IIS" , "Server" , "" , "" , "DCA IrmaLan Gateway Server" , "MS NetBIOS Browse"
 
-        0,1,3,4,5,6,7,11,12,24,32 | % { $Service[$_] =                     "$( $Service[$_] ) Service" }
-        8,9,10,20,21              | % { $Service[$_] =          "Microsoft Exchange $( $Service[$_] )" }
-        32,33,34                  | % { $Service[$_] =                 "Lotus Notes $( $Service[$_] )" }
-        11,12                     | % { $Service[$_] =               "Modem Sharing $( $Service[$_] )" }
-        13,15,16                  | % { $Service[$_] =          "SMS Clients Remote $( $Service[$_] )" }
-        25,26,27                  | % { $Service[$_] =                      "Domain $( $Service[$_] )" }
-        17,19                     | % { $Service[$_] = "DEC Pathworks TCPIP service $( $Service[$_] )" }
+        0,1,3,4,5,6,7,11,12,24,32,36  | % { $Service[$_] =                     "$( $Service[$_] ) Service" }
+        8,9,10,20,21                  | % { $Service[$_] =          "Microsoft Exchange $( $Service[$_] )" }
+        32,33,34                      | % { $Service[$_] =                 "Lotus Notes $( $Service[$_] )" }
+        11,12                         | % { $Service[$_] =               "Modem Sharing $( $Service[$_] )" }
+        13,15,16                      | % { $Service[$_] =          "SMS Clients Remote $( $Service[$_] )" }
+        25,26,27                      | % { $Service[$_] =                      "Domain $( $Service[$_] )" }
+        17,19                         | % { $Service[$_] = "DEC Pathworks TCPIP service $( $Service[$_] )" }
 
-        $List = @( ) ; ForEach ( $i in 0..35 ) { $List += [ PSCustomObject ]@{ ID = $ID[$i] ; Type = $Type[$i] ; Service = $Service[$i] } } ; Return $List
+        $List = @( ) 
+        
+        ForEach ( $i in 0..36 ) 
+        { 
+            $List += [ PSCustomObject ]@{ ID = $ID[$i] ; Type = $Type[$i] ; Service = $Service[$i] } 
+        }
+        
+        Return $List
 
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
@@ -382,7 +368,9 @@
     Function Get-NetworkInfo # Obtains DNS, Subnet, IPV4, NetBIOS                 ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
     
-        [ CmdLetBinding () ] Param ( [ Parameter ( Position = 0 , Mandatory = $False ) ] [ Switch ] $NetBIOS )
+        [ CmdLetBinding () ] Param ( 
+        
+            [ Parameter ( Position = 0 , Mandatory = $False ) ] [ Switch ] $NetBIOS )
 
         $OP = @( )
 
@@ -398,11 +386,23 @@
 
         If ( $NetBIOS )
         {
-            NBTSTAT -n | ? { $_ -like "*Registered*" } | % { $T = $_[0..18] , $_[19..22] , $_[25..36] | % { $_ -join '' } | % { $_.Replace( ' ' , '' ) }
-            Get-NBSVC | ? { $T[1] -eq $_.ID -and $T[2] -eq $_.Type } | % { $OP += [ PSCustomObject ]@{ Name = $T[0] ; ID = $T[1] ; Type = $T[2] ; Service = $_.Service } } }
-            Return $OP
-        }
+            $Report = @( )
 
+            $OP = @( NBTSTAT -n | ? { $_ -like "*Registered*" } ) +
+            @( Start-PingSweep | ? { $_.Success -ne $Null } | % { $_.Success } | % { NBTSTAT -A $_ } | ? { $_ -like "*Registered*" } )
+
+            ForEach ( $I in ( 0..( $OP.Count - 1 ) ) ) 
+            { 
+                If ( $OP[$I] -like "*__MSBROWSE__*" ) { $OP[$I] = "    MSBROWSE      <01>  GROUP       Registered " }
+                
+                $X = $OP[$I].Split( ' ' ) | ? { $_.Length -gt 0 } 
+
+                Get-NBSVC | ? { $X[1] -eq $_.ID -and $X[2] -eq $_.Type } | % { $Service = $_.Service
+                    Return [ PSCustomObject ]@{ Name = $X[0] ; ID = $X[1] ; Type = $X[2] ; Service = $Service }
+
+                }
+            }
+        }
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
@@ -535,7 +535,7 @@
 
         [ CmdletBinding ( ) ] Param ( [ Parameter ( Position = 0 ) ] [ Switch ] $Report )
 
-        $Hosts = @( ) ; $Return = @{ Success = @( ) ; Failure = @( ) }
+        $Hosts = @( )
 
         Get-NetworkInfo          | % { $NetMask = $_.NetMask ; $IP        = $_.IPv4 ; $Hosts += $IP }
         Get-HostRange            | % { $PFX     = $_.Prefix  ; $Broadcast = $_.Echo }
@@ -551,7 +551,7 @@
 
         $RSP.ApartmentState = $( If ( $CPU[0] -gt 1 ) { "MTA" } Else { "STA" } )
 
-        $RSP.Open() 
+        $RSP.Open()
 
         $AddScript = { Param ( [ String ] $ComputerName )
         
@@ -564,6 +564,10 @@
 
         $Threads = @( )
 
+        Write-Echo -Function "Beginning Subnet Ping-Sweep, please wait" -F 10 -B 0
+
+        $Stopwatch = [ System.Diagnostics.Stopwatch ]::StartNew()
+
         ForEach ( $H in $Hostlist )
         {
             $RSO = [ PSCustomObject ]@{ Runspace = [ PowerShell ]::Create() ; Invoker = $Null }
@@ -574,17 +578,42 @@
 
         While ( $Threads.Invoker.IsCompleted -contains $False ) { }
 
-        $ThreadResults = @( )
+        $Stopwatch.Stop()
 
+        Write-Echo -Function "Ping-Sweep Complete @: $( $Stopwatch.Elapsed )" -F 10 -B 0
+
+        $ThreadResults = @( )
         ForEach ( $T in $Threads )
         {
-            $ThreadResults += $T.Runspace.Endinvoke( $T.Invoker )
+            $ThreadResults += $T.Runspace.EndInvoke( $T.Invoker )
             $T.Runspace.Dispose()
         }
 
-        $Return = @( )
+        $Return = @{ Success = @( ) ; Failure = @( ) }
 
-        $ThreadResults.Result | % { If ( $_.Status -eq "Success" ) { Echo $_.Address.ToString() } }
+        $ThreadResults.Result | % { 
+        
+            If ( $_.Status -eq "Success" ) 
+            {
+                $Return.Success += $_.Address.ToString()
+            }
+        }
+
+        $HostList | ? { $_ -notin $Return.Success } | % { $Return.Failure += $_ }
+
+        Return $Return
+
+    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+    Function Get-NetworkStatistics                                               #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+
+        $OP     = netstat -ant | ? { $_ -like "*TCP*" -or $_ -like "*UDP*" }
+        $OP     | ? { $_ -notmatch '\*' } | % { $X = $_.Split( ' ' ) | ? { $_.Length -gt 0 }
+        Return  [ PSCustomObject ]@{ Protocol = $X[0] ; Local = $X[1] ; Foreign = $X[2] ; LinkState = $X[3] ; Stream = $X[4] } }
+        $OP     | ? { $_    -match '\*' } | % { $X = $_.Split( ' ' ) | ? { $_.Length -gt 0 }
+        Return  [ PSCustomObject ]@{ Protocol = $X[0] ; Local = $X[1] ; Foreign = "*:*" ; LinkState = "*:*" ; Stream = "*:*" } }
 
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
