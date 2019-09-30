@@ -101,8 +101,7 @@
             [ Parameter ( Position = 0 , Mandatory = $True , ParameterSetName = "5" ) ][ Switch ] $Foot ,
             [ Parameter ( Position = 1 , Mandatory = $True , ParameterSetName = "0" ) ][ String ] $Type ,
             [ Parameter ( Position = 2 , Mandatory = $True , ParameterSetName = "0" ) ][ String ] $Info ,
-            [ Parameter ( Position = 1 , ParameterSetName = "2" ) ]
-            [ Parameter ( Position = 1 , ParameterSetName = "3" ) ][ Switch ] $Wrap ,
+            [ Parameter ( Position = 1 , ParameterSetName = "2" ) ][ Switch ] $Wrap ,
             [ ValidateSet (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15) ]
             [ Parameter ( Position = 3 , ParameterSetName = "0" ) ]
             [ Parameter ( Position = 2 , ParameterSetName = "1" ) ]
@@ -131,7 +130,7 @@
 
         Process
         {   
-            If ( $Wrap ) #//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+            If ( $Table -or $Wrap ) #//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
             {
                 "  _ $("____    " * 13 )____ _  " , 
                 " ///$("/¯¯\\__/" * 13 )/¯¯\\\\ " , 
@@ -169,8 +168,6 @@
 
             If (  $Table )
             {   
-                $OP += " \\\$( "_" * 108 )/// " , " \\ $( "¯" * 108 ) // " 
-
                 $Index   = @( )
                 $Section = @( )
                 $Name    = $Null
@@ -194,7 +191,7 @@
 
                 $Title = $S[0] + $TL + $T + $TR + $S[1] 
 
-                $OP += $Title , $LI[1]
+                $OP += " \\\$( "_" * 108 )/// " , $Title , " \\ $( "¯" * 108 ) // " 
                 
                 $ID | ? { $_.Name -like      "*ID:*" } | % { $Index   += $Table.$( $_.Name ) }
                 $ID | ? { $_.Name -like "*Section:*" } | % { $Section += $Table.$( $_.Name ) }
@@ -306,9 +303,9 @@
                 " \$( $FY[13] )\__// " , "  ¯¯¯¯$( " -- ¯¯¯¯" * 13 )  "
             }
 
-            If ( $Wrap ) 
+            If ( $Table -or $Wrap ) 
             { 
-                If ( ( $OP.Count | Select -Last 1 ) % 2 -ne 0 ) { $OP += " \\ $( "____    " * 13 )____ // " } 
+                If ( ( $OP.Count | Select -Last 1 ) % 2 -ne 1 ) { $OP += " \\ $( "____    " * 13 )____ // " } 
 
                 $OP +=  " ///$("/¯¯\\__/" * 13 )/¯¯\\\\ " , " \\\$("\__//¯¯\" * 13 )\__//// " , "  ¯ $("¯¯¯¯    " * 13 )¯¯¯¯ ¯  "
             }
@@ -415,7 +412,7 @@
             $OP = @( NBTSTAT -n | ? { $_ -like "*Registered*" } ) +
             @( Start-PingSweep | ? { $_.Success -ne $Null } | % { $_.Success } | % { 
             
-            Write-Echo -Function "Host # $C / Scanning for NetBIOS/Domain Controller" 10 0
+            Write-Echo -Function "Host # $C / Scanning for NetBIOS/Domain Controller" 14 0
             $C ++
             NBTSTAT -A $_ } | ? { $_ -like "*Registered*" } )
 
@@ -533,6 +530,60 @@
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+    Function Get-TelemetryData # Accesses Internet API's to recover Settings      ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+        
+        [ CmdLetBinding () ] Param ( 
+        
+            [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True ) ][ Alias (  "C" ) ][ String ] $Company     ,
+            [ Parameter ( Position = 1 ,                     ValueFromPipeline = $True ) ][ Alias (  "D" ) ][ String ] $Domain      ,
+            [ Parameter ( Position = 2                                                 ) ][ Alias ( "DN" ) ][ Switch ] $Certificate )
+
+        If ( !$Domain ) { $Domain = ( Get-NetworkInfo ).DNS }
+
+        [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
+
+        $X = IRM -URI "http://ipinfo.io/$( ( IWR -URI 'http://ifconfig.me/ip' ).Content )" # < - [ Chrissy LeMaire ]
+
+        $Info  = [ PSCustomObject ]@{ 
+            ExternalIP   = $X.IP
+            State        = $X.Region
+            Organization = $Company
+            CommonName   = $Domain
+            Location     = $X.City
+            Country      = $X.Country
+            ZipCode      = $X.Postal
+            TimeZone     = $X.TimeZone 
+            SiteLink     = "" } 
+        
+        $Key = "tZqSUOHxpjLy9kyOLKspvyZmjciB0nWpxz6PMl3KQNQBNEnW5sCbTKkKBPalSOBk"
+
+        IRM -URI "https://www.zipcodeapi.com/rest/$Key/info.json/$( $X.Postal )/degrees" -Method Get | % {
+            $Info.Location = $_.City
+            $Info.SiteLink = "$( ( $_.City.Split(' ') | % { $_[0] } ) -join '' )-$( $X.Postal )" }
+
+        If ( $Certificate ) 
+        {   
+            $Info | % { 
+            Return [ PSCustomObject ]@{ 
+            
+                IP   = $_.ExternalIP
+                ST   = $_.State
+                O    = $_.Organization
+                CN   = $_.CommonName
+                L    = $_.Location
+                C    = $_.Country
+                Z    = $_.ZipCode
+                TZ   = $_.TimeZone 
+                NTDS = $_.SiteLink }
+            }
+        }
+
+        Else { Return $Info }
+
+    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
     Function Get-NetworkHosts # Gets actual used network host addresses           ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
@@ -630,47 +681,54 @@
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-    Function Collect-NetworkInfo  # Collects all needed interface data            ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    Function Start-NetworkInfo  # Collects all needed interface data              ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
-        $Subtable     = 0..3
+        $Subtable     = 0..4
         $Section      = @( )
 
         $NetworkInfo  = @( Get-NetworkInfo )
-        $Section      += "Network Information"
+        $Section     += "Network Information"
         $Names        = @( $NetworkInfo | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )
         $Values       = @( $Names | % { $NetworkInfo.$( $_ ) } )
 
-        $Subtable[0] = New-Subtable -Items $Names -Values $Values
+        $Subtable[0]  = New-Subtable -Items $Names -Values $Values
 
         $HostRange    = @( Get-HostRange )
-        $Section      += "Host Range Information"
+        $Section     += "Host Range Information"
         $Names        = @(   $Hostrange | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[0,5,3,4,7,6,2,1]
         $Values       = @( $Names | % { $HostRange.$( $_ ) } )
 
         $Subtable[1] = New-Subtable -Items $Names -Values $Values
 
         $NetworkHosts = @( Get-NetworkHosts -All )
-        $Section      += "Network Host IP/MAC"
+        $Section     += "Network Host IP/MAC"
         $Names        = @( $NetworkHosts | % { $_.HostIP  } )
         $Values       = @( $NetworkHosts | % { $_.HostMAC } )
 
         $Subtable[2] = New-Subtable -Items $Names -Values $Values
 
         $NetBIOS      = @( Get-NetworkInfo -NetBIOS )
-        $Section      += "NetBIOS / Domain Information"
+        $Section     += "NetBIOS / Domain Information"
         $Names        = @( $NetBIOS | % { $_.Name    } )
         $Values       = @( $NetBIOS | % { $_.Service } )
 
-        $SubTable[3] = New-Subtable -Items $Names -Values $Values
+        $SubTable[3]  = New-Subtable -Items $Names -Values $Values
 
-        $Table = New-Table -Title "Domain Controller Bootstrap" -Depth 4 -ID ( $Section | % { "( $_ )" } ) -Table $Subtable
+        $Certificate  = @( Get-TelemetryData -Company "Secure Digits Plus LLC" -Domain "securedigitsplus.com" -TimeZone )
+        $Section     += "Certificate / Location Information"
+        $Names        = @( $Certificate | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,6,4,0,3,1,7,8,5]
+        $Values       = @(       $Names | % { $Certificate.$( $_ ) } )
 
-        Write-Echo -Table $Table -Wrap 10 0
+        $SubTable[4]  = New-Subtable -Items $Names -Values $Values
 
-        
+        $Table        = New-Table -Title "Domain Controller Bootstrap" -Depth 5 -ID ( $Section | % { "( $_ )" } ) -Table $Subtable
 
-    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____ 
+        Write-Echo -Table $Table 10 0
+
+
+
+    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
     Function Get-NetworkStatistics                                               #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
@@ -687,7 +745,6 @@
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-        Write-Echo -Free -F 10 -B 0 ; Sleep 1 # What Free Actually Means         #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+        Write-Echo -Free 10 0 ; Sleep 1 # What Free Actually Means               #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
      #\______________________________________________________________________________//¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
      # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ 
-
