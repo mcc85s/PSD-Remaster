@@ -142,8 +142,8 @@
             {   
                 $T , $I = $Type , $Info
 
-                $X = $( If ( $T.Length -gt 18 ) { "...$( $T[ 0..18 ])" } Else { "$( " " * ( 21 - $T.Length ) )$T" } )
-                $Y = $( If ( $I.Length -gt 66 ) { "$( $I[0..66]  )..." } Else { "$I$( " " * ( 69 - $I.Length ) )" } )
+                $X = $( If ( $T.Length -gt 18 ) { "$( $T[0..17] -join '' )..." } Else { "$( " " * ( 21 - $T.Length ) )$T" } )
+                $Y = $( If ( $I.Length -gt 66 ) { "$( $I[0..65] -join '' )..." } Else { "$I$( " " * ( 69 - $I.Length ) )" } )
 
                 "  ____    __$( "_" * 96     )__      " ,
                 " //¯¯\\__//$(  "¯" * 98      )\\___  " ,
@@ -411,28 +411,37 @@
 
         If ( $NetBIOS )
         {
-            $Report = @( )
+            $OP = NBTSTAT -n | ? { $_ -like "*Registered*" }
 
-            $C = 0
+            $IP = Start-PingSweep | ? { $_.Success -ne $Null } | % { $_.Success }
 
-            $OP = @( NBTSTAT -n | ? { $_ -like "*Registered*" } ) +
-            @( Start-PingSweep | ? { $_.Success -ne $Null } | % { $_.Success } | % { 
-            
-            Write-Echo -Function "Host # $C / Scanning for NetBIOS/Domain Controller" 14 0
-            $C ++
-            NBTSTAT -A $_ } | ? { $_ -like "*Registered*" } )
+            $Hash = @( )
 
-            ForEach ( $I in ( 0..( $OP.Count - 1 ) ) ) 
-            { 
-                If ( $OP[$I] -like "*__MSBROWSE__*" ) { $OP[$I] = "    MSBROWSE      <01>  GROUP       Registered " }
+            ForEach ( $I in ( 0..( $IP.Count - 1 ) ) ) 
+            {
+                Write-Echo -Function "Host # $( $IP[$I] ) " 14 0
+
+                $IPV4      = $IP[$I]
+                $HN  = Resolve-DnsName $IP[$I] | % { $_.NameHost }
+
+                $X = NBTSTAT -A $IP[$I] | ? { $_ -like "*Registered*" }
                 
-                $X = $OP[$I].Split( ' ' ) | ? { $_.Length -gt 0 } 
-
-                Get-NBSVC | ? { $X[1] -eq $_.ID -and $X[2] -eq $_.Type } | % { $Service = $_.Service
-                    Return [ PSCustomObject ]@{ Name = $X[0] ; ID = $X[1] ; Type = $X[2] ; Service = $Service }
-
+                If ( $X.Count -gt 1 )
+                {
+                    ForEach ( $Y in ( 0..( $X.Count - 1 ) ) )
+                    {
+                        If ( $X[$Y] -like "*__MSBROWSE__*" ) 
+                        { 
+                            $X[$Y] = "    MSBROWSE       <01>  GROUP       Registered " 
+                        }
+                        
+                        $Z = $X[$Y] | % { $_[0..18] , $_[19..23] , $_[24..32] } | % { ( $_ -ne " " ) -join '' }
+                        Get-NBSVC | ? { $Z[1] -eq $_.ID -and $Z[2] -eq $_.Type } | % { $SVC = $_.Service }
+                        $Hash += [ PSCustomObject ]@{ IP = $IP[$I] ; Host = $HN ; Name = $Z[0] ; ID = $Z[1] ; Type = $Z[2] ; Service = $SVC }
+                    }
                 }
             }
+            Return $Hash
         }
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
@@ -710,10 +719,10 @@
         $Values       = @( $NetworkHosts | % { $_.HostMAC } )
         $Subtable[2]  = New-Subtable -Items $Names -Values $Values
 
-        $NetBIOS      = @( Get-NetworkInfo -NetBIOS )
+        $NetBIOS      = @( Get-NetworkInfo -NetBIOS | ? { $_.ID -like "*1C*" } )
         $Section     += "NetBIOS / Domain Information"
-        $Names        = @( $NetBIOS | % { $_.Name    } )
-        $Values       = @( $NetBIOS | % { $_.Service } )
+        $Names        = @( $NetBIOS | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,0,3,1,5,4]
+        $Values       = @( $Names | % { $NetBIOS.$( $_ ) } )
         $SubTable[3]  = New-Subtable -Items $Names -Values $Values
 
         $Certificate  = @( Get-TelemetryData )
@@ -726,15 +735,15 @@
 
         Write-Echo -Table $Table 10 0
 
-        $NB           = $NetBIOS | ? { $_.ID -eq "<1C>" } | % { $_.Name } ; If ( $NB -eq $Null ) { $NB = ( gcim Win32_ComputerSystem ).Domain }
+        $NetBIOS      = $NBIOS | ? { $_ -like "*1C*" } ; If ( $NBIOS -eq $Null ) { $NetBIOS = ( gcim Win32_ComputerSystem ).Domain }
         $Hosts        = @( )
         $Hosts       += $HostRange | % { $_.SubNet , $_.Start , $_.End , $_.Echo }
         $HostIPList   = $NetworkHosts  | ? { $_.HostIP -notin $Hosts } | % { $_.HostIP }
         $HostMACList  = $NetworkHosts  | ? { $_.HostIP -notin $Hosts } | % { $_.HostMAC }
 
-        Return  [ PSCustomObject ]@{ 
+        Return  [ PSCustomObject ]@{
                 DNS         = $NetworkInfo.DNS
-                NetBIOS     = $NB
+                NetBIOS     = $NetBIOS
                 IPv4        = $NetworkInfo.IPv4
                 NetMask     = $NetworkInfo.NetMask
                 Class       = $HostRange.Class
