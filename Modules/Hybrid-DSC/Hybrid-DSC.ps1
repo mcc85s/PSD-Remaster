@@ -36,9 +36,15 @@
 
         If ( $Items.Count -eq $Values.Count )
         {
-            If ( $Items.Count -gt 1 ) { $Count = 0..( $Items.Count - 1 ) }
+            If ( $Items.Count -gt 1 ) 
+            { 
+                $Count = 0..( $Items.Count - 1 ) 
+            }
+            
             $Count | % { 
-                $Table | Add-Member -MemberType NoteProperty -Name "Item:$_" -Value @{ ID = "$( $Items[$_] )" ; Value = "$( $Values[$_] )" } }
+                
+                $Table | Add-Member -MemberType NoteProperty -Name "Item:$_" -Value @{ ID = "$( $Items[$_] )" ; Value = "$( $Values[$_] )" } 
+            }
         }
 
         If ( $Items.Count -ne $Values.Count ) { Throw '$Items -ne $Values' }
@@ -68,18 +74,41 @@
         $Count | % {
     
             If ( $Depth -gt 1 )
-            {   If ( $C -ne $Null ) { $C = $C + 1 } If ( $C -eq $Null ) { $C = 0 } $Index = $ID[$C] ; $Section = $Table[$C] }
+            {   
+                If ( $C -ne $Null ) 
+                { 
+                    $C = $C + 1 
+                } 
+                
+                If ( $C -eq $Null ) 
+                { 
+                    $C = 0 
+                } 
+                
+                $Index   = $ID[$C]
+                $Section = $Table[$C] 
+            }
 
             If ( $Depth -eq 1 )
-            {   $C = 0 ; $Index = $ID ; $Section = $Table }
+            {   
+                $C       = 0
+                $Index   = $ID
+                $Section = $Table 
+            }
 
             $Object | Add-Member -MemberType NoteProperty -Name "ID:$C" -Value $Index
+
             $Keys = @( $Section | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )
 
             ForEach ( $S in $Keys )
-            {   $SubTable = [ Ordered ]@{ }
+            {   
+                $SubTable = [ Ordered ]@{ }
+
                 ForEach ( $K in $Keys )
-                {   $Section.$K | % { $SubTable.Add( "$K" , @{ ID = $_.ID ; Value = $_.Value } ) } } } 
+                {   
+                    $Section.$K | % { $SubTable.Add( "$K" , @{ ID = $_.ID ; Value = $_.Value } ) } 
+                } 
+            } 
 
             $Object | Add-Member -MemberType NoteProperty -Name "Section:$C" -Value $SubTable
         }
@@ -125,7 +154,10 @@
 
         Begin
         {
-            $S  = " // " , " \\ " ; $F  = "/¯¯\" , "\__/" ; $OP = @( ) ;
+            $S  = " // " , " \\ "
+            $F  = "/¯¯\" , "\__/"
+            $L , $R = $S , $S[1..0]
+            $OP = @( )
         }
 
         Process
@@ -242,10 +274,10 @@
 
             If ( $Free )
             {
-                $PI  = "($( [ Char ] 960 ))" ; $DA = ( "m" , "d" , "Y" | % { Get-Date -UFormat "%$_" } | % { "$( $_.ToCharArray() )" } ) -join ' / '
-                $A   = " //¯" , " \\" , " //" , " \\_" ; $E = "[=]" , "\_/" , "| |" ; $BL = -Join $E[0,1,0] ; $SX = ( "  *   " * 6 ) , "$( "     *" * 5 )      "
-                $M1  = 0..120 | % { "¯" * $_ } ; $M2 = 0..120 | % { "_" * $_ } ; $M3 = 0..120 | % { " " * $_ } ; $FL = " // /¯¯\\   " , " \\ \__//   "
-                $RL  = "   //¯¯\ \\ " , "   \\__/ // " ; $X = "$($A[1]+$SX[1])]$($M2[48])_// " , "$($A[2]+$SX[0])]$($M1[48])¯\\ "
+                $PI  = "($( [ Char ] 960 ))" ; $DA  = ( "m" , "d" , "Y" | % { Get-Date -UFormat "%$_" } | % { "$( $_.ToCharArray() )" } ) -join ' / '
+                $A   = " //¯" , " \\" , " //" , " \\_" ; $E   = "[=]" , "\_/" , "| |" ; $BL  = -Join $E[0,1,0] ; $SX  = ( "  *   " * 6 ) , "$( "     *" * 5 )      "
+                $M1  = 0..120 | % { "¯" * $_ } ; $M2  = 0..120 | % { "_" * $_ } ; $M3  = 0..120 | % { " " * $_ } ; $FL  = " // /¯¯\\   " , " \\ \__//   "
+                $RL  = "   //¯¯\ \\ " , "   \\__/ // " ; $X   = "$( $A[1] + $SX[1] )]$( $M2[48] )_// " , "$( $A[2] + $SX[0] )]$( $M1[48] )¯\\ "
 
                 $STR = "Beginning the fight against Technological Tyranny and Cyber Criminal Activities" , "Dynamically Engineered Digital Security" , 
                 "Application Development - Virtualization" , "Network & Hardware Magistration" ,   "What America Once Stood For" , 
@@ -254,20 +286,19 @@
                 #$STR = @( 0..5 | % { $STR[$_] } | % { "[ $_ ]" } ; 6..9 | % { $STR[$_] } | % { "$( $_.ToCharArray() )" } )
 
                 $STR = @( $STR[0..5] | % { "[ $_ ]" } ; $STR[6..9] | % { $_.ToCharArray() -join ' ' } )
-
                 $Sig = $DA + '  |  ' + $STR[9].Replace( "  " , " " )
                 
                 $Out = @( )
 
-                $OP += "  ______$( " " * 10 )$( "_" * 81 )$( " " * 9 )______  " , " // /¯¯\\________/$( "¯" * 81 )\_______//¯¯\ \\ "
+                $OP += "  ______$( $M3[10] )$( $M2[81] )$( $M3[9] )______  " , " // /¯¯\\________/$( $M2[81] )\_______//¯¯\ \\ "
 
-                $Out += 
-                "     $( $STR[0] )    " , "  $( $M2[88] )  " , "$($A[0]+$M1[35])]$($M1[48])¯\\ " , $X[0] , $X[1] , 
+                $Out += "     $( $STR[0] )    " , "  $( $M2[88] )  " , "$($A[0]+$M1[35])]$($M1[48])¯\\ " , $X[0] , $X[1] , 
                 "$($A[1]+$SX[1])]___$($STR[1])___// " , $X[1] , $X[0] , $X[1] , "$($A[1]+$SX[1])]__$( $STR[2])___// " , 
                 $X[1] , $X[0] , $X[1] , "$($A[1]+$SX[1])]_______$($STR[3])_______// " ,  " //  $($STR[4])   ]$($M1[48] )¯\\ " , 
                 "$($A[3]+$M2[35])]$($M2[48])_// " ,  "$($A[0]+$M1[85])\\ " , "$($A[3]+$M2[32]+$BL+$E[1]+$BL+$M2[32])// " , 
                 "$($A[0]+$M1[32]+$E[2]+$M3[15]+$E[2]+$M1[32])\\ " , "$($A[3]+$M2[32]+$E[0])  $($STR[6])  $($E[0]+$M2[32])// " , 
-                "$($A[0]+$M1[32]+$E[2])  $($M1[11])  $($E[2]+$M1[32])\\ " , "$($A[3]+$M2[17]+$BL*2+$M3[6]+$STR[7]+$M3[6]+$BL*2+$M2[16])_// " , 
+                "$($A[0]+$M1[32]+$E[2])  $($M1[11])  $($E[2]+$M1[32])\\ " , 
+                "$($A[3]+$M2[17]+$BL*2+$M3[6]+$STR[7]+$M3[6]+$BL*2+$M2[16])_// " , 
                 "$($A[0]+$M1[17]+$E[2]+$M1[15]+$M3[6]+$M1[3]+$M3[6]+$M1[15]+$E[2]+$M1[16])¯\\ " , 
                 "$($A[3]+$M2[17]+$E[0]) $($STR[8]) $($E[0]+$M2[16])_// " , 
                 "$($A[0]+$M1[17]+$E[1]) $($M1[43]) $($E[1]+$M1[16])¯\\ " , 
@@ -303,9 +334,9 @@
                 " \$( $FY[13] )\__// " , "  ¯¯¯¯$( " -- ¯¯¯¯" * 13 )  "
             }
 
-            If ( $Table -or $Wrap ) 
+            If ( $Table -or $Wrap )
             { 
-                If ( ( $OP.Count | Select -Last 1 ) % 2 -ne 0 ) { $OP += " // $( " " * 108 ) \\ " } 
+                If ( ( $OP.Count | Select -Last 1 ) % 2 -ne 0 ) { $OP += " // $( " " * 108 ) \\ " }
 
                 $OP +=  
                 " \\_$(           "_" * 108 )_// " , 
@@ -317,8 +348,8 @@
             }
         }
 
-        End  
-        {             
+        End
+        {
             If ( (  $ForegroundColor ) -and (  $BackgroundColor ) ) { $OP | % { Write-Host -F $ForegroundColor -B $BackgroundColor $_ } }
             If ( (  $BackgroundColor ) -and ( !$ForegroundColor ) ) { $OP | % { Write-Host -B $BackgroundColor $_ } }
             If ( (  $ForegroundColor ) -and ( !$BackgroundColor ) ) { $OP | % { Write-Host -F $ForegroundColor $_ } }
@@ -348,7 +379,7 @@
         
         $NE | % { $OP | Add-Member -MemberType NoteProperty -Name $_ -Value $OP.FindName( $_ ) -Force }
  
-        If ( $PassThru ) { $OP } Else { $Null = $GUI.Dispatcher.InvokeAsync({ $OP = $GUI.ShowDialog() ; SV -Name OP -Value $OP -Scope 1 }).Wait() ; $OP }
+        If ( $PassThru ) { $OP } Else { $Null = $GUI.Dispatcher.InvokeAsync( { $OP = $GUI.ShowDialog() ; SV -Name OP -Value $OP -Scope 1 } ).Wait() ; $OP }
 
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
@@ -358,7 +389,7 @@
         
         Param ( [ Parameter ( Mandatory ) ] [ Windows.Window ] $GUI )
 
-        $OP = $Null ; $Null = $GUI.Dispatcher.InvokeAsync({ $OP = $GUI.ShowDialog() ; SV -Name OP -Value $OP -Scope 1 }).Wait() ; $OP 
+        $OP = $Null ; $Null = $GUI.Dispatcher.InvokeAsync( { $OP = $GUI.ShowDialog() ; SV -Name OP -Value $OP -Scope 1 } ).Wait() ; $OP 
 
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
@@ -411,20 +442,24 @@
 
         If ( $NetBIOS )
         {
-            $OP = NBTSTAT -n | ? { $_ -like "*Registered*" }
+            $OP   = NBTSTAT -n | ? { $_ -like "*Registered*" }
+            $IP   = @( Start-PingSweep | ? { $_.Success -ne $Null } | % { $_.Success } )
+            $Hash = 0..( $IP.Count - 1 ) 
 
-            $IP = Start-PingSweep | ? { $_.Success -ne $Null } | % { $_.Success }
-
-            $Hash = @( )
+            $IPV    = @( )
+            $DNS    = @( )
 
             ForEach ( $I in ( 0..( $IP.Count - 1 ) ) ) 
             {
-                Write-Echo -Function "Host # $( $IP[$I] ) " 14 0
+                $IPV4 = $IP[$I]
 
-                $IPV4      = $IP[$I]
-                $HN  = Resolve-DnsName $IP[$I] | % { $_.NameHost }
+                Write-Echo -Function "Host # $IPV4" 14 0
 
-                $X = NBTSTAT -A $IP[$I] | ? { $_ -like "*Registered*" }
+                $DNS  = Resolve-DnsName -Name $IPV4 -EA 0
+                $DNS  = $( If ( $DNS.Length -eq 0 ) { "*No Hostname*" } Else { $DNS.NameHost } )
+
+
+                $X    = NBTSTAT -A $IPV4 | ? { $_ -like "*Registered*" }
                 
                 If ( $X.Count -gt 1 )
                 {
@@ -437,8 +472,13 @@
                         
                         $Z = $X[$Y] | % { $_[0..18] , $_[19..23] , $_[24..32] } | % { ( $_ -ne " " ) -join '' }
                         Get-NBSVC | ? { $Z[1] -eq $_.ID -and $Z[2] -eq $_.Type } | % { $SVC = $_.Service }
-                        $Hash += [ PSCustomObject ]@{ IP = $IP[$I] ; Host = $HN ; Name = $Z[0] ; ID = $Z[1] ; Type = $Z[2] ; Service = $SVC }
+                        $Hash += [ PSCustomObject ]@{ IP = $IPV4 ; Host = $DNS ; Name = $Z[0] ; ID = $Z[1] ; Type = $Z[2] ; Service = $SVC }
                     }
+                }
+
+                Else
+                {
+                    $Hash += [ PSCustomObject ]@{ IP = $IPV4 ; Host = $DNS ; Name = "N/A" ; ID = "N/A" ; Type = "N/A" ; Service = "N/A" }
                 }
             }
             Return $Hash
@@ -450,40 +490,89 @@
     {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
         $Class = "Network" , "A" , "B" , "C" , "D / MC" , "E / R&D" , "Broadcast" , "Loopback"
+
         $Range = [ Ordered ]@{ 0 = 0 ; 1 = 1..126 ; 2 = 128..191 ; 3 = 192..223 ; 4 = 224..239 ; 5 = 240..254 ; 6 = 6 ; 7 = 127 }
+
         Get-NetworkInfo | % { $IP = $_.IPV4.Split( '.' ) ; $SM = $_.NetMask.Split( '.' ) }
             
-        $Full   = @( ) ; $Concat = 0 ; $Close  = 0
+        $Full   = @( )
+
+        $Concat = 0
+
+        $Close  = 0
 
         ForEach ( $I in 0..3 )
         {
             If ( $Close -eq 0 )
             {
-                If ( $SM[$I] -eq 255 ) { $Full += $IP[$I] } If ( $SM[$I] -ne 255 ) { $Concat = 1 }
+                If ( $SM[$I] -eq 255 ) 
+                { 
+                    $Full += $IP[$I] 
+                } 
+                
+                If ( $SM[$I] -ne 255 ) 
+                { 
+                    $Concat = 1 
+                }
+
                 If ( $Concat -eq 1 )
                 {
-                    $NW   = $Full -Join "." ; $Full = $NW
-                    If ( $SM[$I] -eq 0 ) { $NW , $Start , $End , $BC = 0 , 1 , 254 , 255 | % { "$Full.$_" } }
+                    $NW   = $Full -Join "."
+
+                    $Full = $NW
+
+                    If ( $SM[$I] -eq 0 ) 
+                    { 
+                        $NW , $Start , $End , $BC = 0 , 1 , 254 , 255 | % { "$Full.$_" } 
+                    }
+
                     Else
                     {
                         ForEach ( $J in 1..5 ) 
                         { 
                             If ( $SM[$I] -in $Range[$J] )
                             {
-                                $X  = $Range[$J] ; $Y  = $X | Select -First 1  , $X | Select -Last  1 ; $Y += $Y[1] + 1
+                                $X  = $Range[$J]
+
+                                $Y  = $X | Select -First 1  , $X | Select -Last  1
+
+                                $Y += $Y[1] + 1
+
                                 $NW , $Start , $End , $BC = $Y[0..2] | % { "$Full.$_" }
                             }
                         }
                     }
+
                     $Close = 1
                 }
             }
-            If ( $Close -eq 1 ) { If ( $I -ne 3 ) { $NW , $BC , $Start , $End | % { "$_.0" } } }
+
+            If ( $Close -eq 1 ) 
+            { 
+                If ( $I -ne 3 ) 
+                { 
+                    $NW , $BC , $Start , $End | % { "$_.0" } 
+                } 
+            }
         }
             
-        Return [ PSCustomObject ]@{ Class = ForEach ( $k in 1..5 ) { If ( $IP[0] -in $Range[$k] ) { "Class $( $Class[$k] ) Address" } }
-        Prefix = $Full ; IPV4  = $IP -Join "." ; NetMask = $SM -Join "." ; Subnet = $NW ; Start = $Start ; End = $End ; Echo = $BC }
+        Return [ PSCustomObject ]@{ 
 
+            Class   = ForEach ( $k in 1..5 ) 
+            { 
+                If ( $IP[0] -in $Range[$k] ) 
+                { 
+                    "Class $( $Class[$k] ) Address" 
+                }
+            }
+            Prefix  = $Full
+            IPV4    = $IP -Join "."
+            NetMask = $SM -Join "."
+            Subnet  = $NW 
+            Start   = $Start
+            End     = $End
+            Echo    = $BC 
+        }
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
@@ -496,39 +585,107 @@
             [ Parameter ( Position = 0 , Mandatory = $True , ParameterSetName = "1" ) ][ Switch ] $HostMap , 
             [ Parameter ( Position = 0 , Mandatory = $True , ParameterSetName = "2" ) ][ Switch ] $Table   )
 
-            $V  = @( 0..9 | % { "  $_" }  ; 10..99 | % { " $_" } ; 100..255 | % { "$_" } ) | % { "[$_]" } ; $W  = $V.Replace( " " , "¯" ) ; $CT = 0 ;
-            $OB = 0..126 ; $Bot = 0..15  | % { "¯" * $_ } ; $Top = 0..15 | % { "_" * $_ } ; $Items = 0..3 ; $GT = $W , $V , $V , $V
-            $GX = "Mask" , "Start" , "End" , "Broad" | % { "[$( "¯" * ( 6 - $_.Length ) )$( $_ ):¯" } 
+            $V     = @( 0..9 | % { "  $_" }  ; 10..99 | % { " $_" } ; 100..255 | % { "$_" } ) | % { "[$_]" } 
+
+            $W     = $V.Replace( " " , "¯" )
             
-            ForEach ( $i in 0..3 ) { $Items[$I] = $GT[$I] | % { $GX[$I] , $_ -join '' } } ; $Subnet , $Start , $End , $Echo = $Items[0..3] ; $OP = @( )
+            $CT    = 0
+
+            $OB    = 0..126 
+
+            $Bot   = 0..15 | % { "¯" * $_ }
+
+            $Top   = 0..15 | % { "_" * $_ }
+
+            $Items = 0..3 
+
+            $GT    = $W , $V , $V , $V
+
+            $GX    = "Mask" , "Start" , "End" , "Broad" | % { "[$( "¯" * ( 6 - $_.Length ) )$( $_ ):¯" } 
+            
+            ForEach ( $i in 0..3 ) 
+            { 
+                $Items[$I] = $GT[$I] | % { $GX[$I] , $_ -join '' } 
+            }
+            
+            $Subnet , $Start , $End , $Echo = $Items[0..3]
+            
+            $OP = @( )
 
             1 , 2 , 4 , 8 , 16 , 32 , 64 | % { 
-                $I = $_ ; $X = 256 / $I ; If ( $I -gt 1 ) { $C = $I..1 } Else { $C = 1 } ; $Y = $C | % { 256 - ( $X ) * $_ } ; If ( $I -gt 1 ) { $C = 0..( $I - 1 ) }
-                $C | % { $X * $_ } | % {  If ( $I -eq 1 ) { $OB[$CT] = [ PSCustomObject ]@{ Count = 1 ; Subnet = 0 ; Start = 1 ; End = 254 ; Echo = 255 } }
-                    Else { $OB[$CT] = [ PSCustomObject ]@{ Count = "$( $_ / $X + 1 )/$I" ; Subnet = $_ ; Start = $_ + 1 ; End   = $_ + ( $X - 2 ) ; Echo  = $_ + ( $X - 1 ) } }
+
+                $I = $_
+
+                $X = 256 / $I
+
+                If ( $I -gt 1 ) { $C = $I..1 } Else { $C = 1 }
+                
+                $Y = $C | % { 256 - ( $X ) * $_ }
+                
+                If ( $I -gt 1 ) { $C = 0..( $I - 1 ) }
+
+                $C | % { $X * $_ } | % { 
+                
+                    If ( $I -eq 1 ) 
+                    { 
+                        $OB[$CT] = [ PSCustomObject ]@{ Count = 1 ; Subnet = 0 ; Start = 1 ; End = 254 ; Echo = 255 } 
+                    }
+
+                    Else 
+                    {
+                        $OB[$CT] = [ PSCustomObject ]@{ Count = "$( $_ / $X + 1 )/$I" ; Subnet = $_ ; Start = $_ + 1 ; End   = $_ + ( $X - 2 ) ; Echo  = $_ + ( $X - 1 ) } 
+                    }
+                    
                     $CT ++
                 }
             }
 
             If (   $Table ) { Return $OB }
+
             If (  $Locate ) 
             { 
-                $Hosts = Get-HostRange ; $PFX = $Hosts.Prefix ; $K = $Hosts | Select Subnet , Start , End , Echo
-                $Comp  = $OB | Select @{ Name = "Subnet" ; Expression = { "$PFX.$( $_.Subnet )" } } , @{ Name =  "Start" ; Expression = { "$PFX.$( $_.Start  )" } } , 
-                                      @{ Name =    "End" ; Expression = { "$PFX.$( $_.End    )" } } , @{ Name =   "Echo" ; Expression = { "$PFX.$( $_.Echo   )" } }
-                $I = 0 ; $Comp | % { If ( $_.Subnet -eq $K.Subnet -and $_.Start -eq $K.Start -and $_.End -eq $K.End -and $_.Echo -eq $K.Echo ) { $Select = $OB[$I] } Else { $I++ } }
+                $Hosts = Get-HostRange
+
+                $PFX   = $Hosts.Prefix 
+
+                $K     = $Hosts | Select Subnet , Start , End , Echo
+
+                $Comp  = $OB | Select @{ Name = "Subnet" ; Expression = { "$PFX.$( $_.Subnet )" } } , 
+                                      @{ Name =  "Start" ; Expression = { "$PFX.$( $_.Start  )" } } , 
+                                      @{ Name =    "End" ; Expression = { "$PFX.$( $_.End    )" } } , 
+                                      @{ Name =   "Echo" ; Expression = { "$PFX.$( $_.Echo   )" } }
+
+                $I     = 0
+
+                $Comp  | % { 
+                    
+                    If ( $_.Subnet -eq $K.Subnet -and $_.Start -eq $K.Start -and $_.End -eq $K.End -and $_.Echo -eq $K.Echo ) 
+                    { 
+                        $Select = $OB[$I] 
+                    } 
+                    
+                    Else { $I++ } 
+                }
+
                 Return $Select
             }
 
             If ( $HostMap )
             {
                 $OB | ? { $_.Count -eq "1" } | % { $Top[14] , "[ 1 _________]" , $Subnet[$_.Subnet] , $Start[$_.Start] , $End[$_.End] , $Echo[ $_.Echo] , $Bot[14] | % { $OP += $_ } }
+                
                 ForEach ( $I in 2 , 4 , 8 , 16 , 32 , 64 )
                 {
-                    $Object = $OB | ? { $_.Count -like  "*/$I*" } ; $OC = $Object.Count - 1 ; $LJ = 0..$OC
+                    $Object = $OB | ? { $_.Count -like  "*/$I*" }
+                    
+                    $OC = $Object.Count - 1
+
+                    $LJ = 0..$OC
+
                     ForEach ( $I in $LJ )
                     {
                         $Object[$I] | % { $NWQ = $_.Count | % { "[_ $_ $( "_" * ( 9 - $_.Length ) )]" }
+
                             $LJ[$I] = [ PSCustomObject ]@{ 0 = $Top[14] ; 1 = $NWQ ; 2 = $Subnet[$_.Subnet] ; 3 = $Start[$_.Start] ; 4 = $End[$_.End] ; 5 = $Echo[$_.Echo] ; 6 = $Bot[14] } 
                         }
                     }
@@ -536,8 +693,27 @@
                     If ( $I -eq $OC )
                     {   
                         $OP += 0..6 | % { $LJ[0..7].$_ -join '' }
-                        If ( $I -gt 8 ) { $Loop = ( $Object.Count / 8 ) - 1 ; $L = 0 ; $H = 7 ; 
-                        Do { $L += 8 ; $H += 8 ; $OP += 0..6 | % { $LJ[$L..$H].$_ -join '' } ; $Loop -= 1 } Until ( $Loop -eq 0 ) }
+
+                        If ( $I -gt 8 ) 
+                        { 
+                            $Loop = ( $Object.Count / 8 ) - 1
+
+                            $L    = 0
+
+                            $H    = 7
+
+                        Do
+                        { 
+                            $L   += 8
+
+                            $H   += 8
+
+                            $OP  += 0..6 | % { $LJ[$L..$H].$_ -join '' } 
+                            
+                            $Loop -= 1 }
+                            
+                            Until ( $Loop -eq 0 ) 
+                        }
                     }
                 }
                 Return $OP
@@ -575,7 +751,7 @@
 
         IRM -URI "https://www.zipcodeapi.com/rest/$Key/info.json/$( $X.Postal )/degrees" -Method Get | % {
             $Info.Location = $_.City
-            $Info.SiteLink = "$( ( $_.City.Split(' ') | % { $_[0] } ) -join '' )-$( $X.Postal )" }
+            $Info.SiteLink = "$( ( $_.City.Split( ' ' ) | % { $_[0] } ) -join '' )-$( $X.Postal )" }
 
         If ( $Certificate ) 
         {   
@@ -610,15 +786,20 @@
             [ ValidateNotNullOrEmpty()][ Parameter ( Position = 0 , ParameterSetName = "3" , HelpMessage = "Pulls all data" ) ][ Switch ]       $All )
 
         $ARP  = arp -a | ? { $_ -like "*$( ( Get-HostRange ).Prefix )*" -and $_ -notlike "*Interface*" }
+
         $RARP = $( If ( $ARP.Count -gt 1 ) { 0..( $ARP.Count - 1 ) } Else { 0 } )
 
         ForEach ( $I in $RARP )
         { 
             $Values = $ARP[$I] | % { $_[0..23] , $_[24..40] , $_[41..56] } | % { $_ -join '' } | % { $_.Replace( ' ' , '' ) }
+            
             $RARP[$I] = [ PSCustomObject ]@{ HostIP = $Values[0] ; HostMAC = $Values[1] ; LeaseType = $Values[2] }
         }
 
-        If ( $HostIP ) { Return $RARP.HostIP } ; If ( $HostMAC ) { Return $RARP.HostMAC } If ( $LeaseType ) { Return $RARP.LeaseType } 
+        If ( $HostIP    ) { Return $RARP.HostIP }
+        If ( $HostMAC   ) { Return $RARP.HostMAC } 
+        If ( $LeaseType ) { Return $RARP.LeaseType }
+
         Else { Return $RARP }
 
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
@@ -629,15 +810,14 @@
 
         [ CmdletBinding ( ) ] Param ( [ Parameter ( Position = 0 ) ] [ Switch ] $Report )
 
-        Get-HostRange | % { $PFX = $_.Prefix }
+        Get-HostRange        | % { $PFX = $_.Prefix }
         Get-HostMask -Locate | % { $HostList = $_.Start..$_.End | % { "$PFX.$_" } }
 
         $CPU = GCIM Win32_Processor | % { $_.ThreadCount , $_.LoadPercentage }
 
         # Utilizing Multithreading/Runspace approach based on 'Drew Furgiuele's video here https://www.youtube.com/watch?v=kvSbb6g0tMA
-        # Made some significant changes to automatically select the throttle
 
-        $RSP = [ RunspaceFactory ]::CreateRunspacePool( 1 , $CPU[0] )
+        $RSP = [ RunspaceFactory ]::CreateRunspacePool( 1 , $CPU[0] ) # < - Opens max threads available to the script host
 
         $RSP.ApartmentState = $( If ( $CPU[0] -gt 1 ) { "MTA" } Else { "STA" } )
 
@@ -646,9 +826,13 @@
         $AddScript = { Param ( [ String ] $ComputerName )
         
             IEX "Using Namespace System.Net.NetworkInformation"
+
             $B = @( 1..9 + "abcdef".ToCharArray() | % { "0x6$_" } ; 0..7 | % { "0X7$_" } ; 1..9 | % { "0x6$_" } ) # < - Condensed version of Test-ConnectionAsync by Boe Prox
+
             New-Object PingOptions | % { $O = $_ ; $_.TTL = 128 ; $_.DontFragment = $False }
+
             $Object = ( New-Object Ping ).SendPingAsync( $ComputerName , 100 , $B , $O )
+
             Return $Object
         }
 
@@ -735,7 +919,7 @@
 
         Write-Echo -Table $Table 10 0
 
-        $NetBIOS      = $NBIOS | ? { $_ -like "*1C*" } ; If ( $NBIOS -eq $Null ) { $NetBIOS = ( gcim Win32_ComputerSystem ).Domain }
+        If ( $NetBIOS -eq $Null ) { $NetBIOS = ( gcim Win32_ComputerSystem ).Domain }
         $Hosts        = @( )
         $Hosts       += $HostRange | % { $_.SubNet , $_.Start , $_.End , $_.Echo }
         $HostIPList   = $NetworkHosts  | ? { $_.HostIP -notin $Hosts } | % { $_.HostIP }
