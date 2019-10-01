@@ -435,6 +435,7 @@
             ForEach ( $i in "DNS Suffix" , "IPv4 Address" , "Subnet Mask" )
             {
                 ipconfig /all | ? { $_ -like "*$i*" } | % { $_.Split( ':' )[1].Replace( " " , "" ) } | ? { $_.Length -ne 0 } | % { If ( $_ -notin $OP ) { $OP += $_ } }
+
                 "(Preferred)" | ? { $OP -like "*$_*" } | % { $OP = $OP.Replace( "$_" , "" ) } ; If ( $OP -eq $Null ) { $OP += "<NOT DETECTED>" }
             }
             Return [ PSCustomObject ]@{ DNS = $OP[0] ; IPv4 = $OP[1] ; NetMask = $OP[2] }
@@ -457,7 +458,6 @@
 
                 $DNS  = Resolve-DnsName -Name $IPV4 -EA 0
                 $DNS  = $( If ( $DNS.Length -eq 0 ) { "*No Hostname*" } Else { $DNS.NameHost } )
-
 
                 $X    = NBTSTAT -A $IPV4 | ? { $_ -like "*Registered*" }
                 
@@ -744,14 +744,16 @@
             Location     = $X.City
             Country      = $X.Country
             ZipCode      = $X.Postal
-            TimeZone     = $X.TimeZone 
+            TimeZone     = "" 
             SiteLink     = "" } 
         
         $Key = "tZqSUOHxpjLy9kyOLKspvyZmjciB0nWpxz6PMl3KQNQBNEnW5sCbTKkKBPalSOBk"
 
-        IRM -URI "https://www.zipcodeapi.com/rest/$Key/info.json/$( $X.Postal )/degrees" -Method Get | % {
-            $Info.Location = $_.City
-            $Info.SiteLink = "$( ( $_.City.Split( ' ' ) | % { $_[0] } ) -join '' )-$( $X.Postal )" }
+        $Y = IRM -URI "https://www.zipcodeapi.com/rest/$Key/info.json/$( $X.Postal )/degrees" -Method Get 
+
+        $Info.Location = $Y.City 
+        $Info.TimeZone = $Y.TimeZone.TimeZone_Identifier
+        $Info.SiteLink = "$( ( $Y.City.Split( ' ' ) | % { $_[0] } ) -join '' )-$( $X.Postal )"
 
         If ( $Certificate ) 
         {   
@@ -883,7 +885,8 @@
     Function Start-NetworkInfo  # Collects all needed interface data              ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
-        $Subtable     = 0..4 ; $Section = @( )
+        $Subtable     = 0..4
+        $Section      = @( )
 
         $NetworkInfo  = @( Get-NetworkInfo )
         $Section     += "Network Information"
