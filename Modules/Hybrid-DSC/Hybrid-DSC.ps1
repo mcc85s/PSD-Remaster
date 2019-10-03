@@ -365,7 +365,297 @@
                 }
             }
         }
-    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
+    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____ 
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+    Function Write-Theme # Even your grandmother might say "That's pretty cool."  ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+
+        [ CmdLetBinding ( ) ] Param (
+
+            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = "0" ) ][ String ] $Function ,
+            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = "1" ) ][ Switch ]   $Action ,
+            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = "2" ) ][ Switch ]     $Free ,
+            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = "3" ) ][ Switch ]     $Foot ,
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "1" ) ][ String ] $Type ,
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = "1" ) ][ String ] $Info ,
+
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "0" ) ]
+            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = "1" ) ]
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "3" ) ][    Int ]       $Edge = 10 ,
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = "0" ) ]
+            [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = "1" ) ]
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = "3" ) ][    Int ]     $Center = 12,
+            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = "0" ) ]
+            [ Parameter ( Position = 5 , ValueFromPipeline = $True , ParameterSetName = "1" ) ]
+            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = "3" ) ][    Int ]       $Font = 14 ,
+            [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = "0" ) ]
+            [ Parameter ( Position = 6 , ValueFromPipeline = $True , ParameterSetName = "1" ) ]
+            [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = "3" ) ][    Int ]       $Back = 0 )
+
+        Begin
+        {
+            $R = 0..120 | % { " " * $_ } ; $S = 0..120 | % { "_" * $_ } ; $T = 0..120 | % { "¯" * $_ }
+            $CV = $Edge ; $CW = $Center ; $CX = $Font ; $CY = $Back
+        }
+
+        Process
+        {
+            If ( $Function )
+            {
+                $FA = $Function
+                If ( $FA.Length -le 58 ) { $Y = " ]$($S[62-$FA.Length])__/" } 
+                If ( $FA.Length -gt 58 ) { $FA = "$($FA[0..58] -join '' )... " ; $Y = "]__/"}
+                $ST = @{ 0 = "  ____  $( $R[68] )$( "  ____  " * 5 )" 
+                1 = " /" , "/¯¯\" , "\$($S[70])/" , "/¯¯\" , "\__/" , "/¯¯\" , "\__/" , "/¯¯\" , "\__/" , "/¯¯\" , "\__/" , "/¯¯\" , "\ "
+                2 = " \" , "\__/" , "/$($T[70])\" , "\__/" , "/¯¯\" , "\__/" , "/¯¯\" , "\__/" , "/¯¯\" , "\__/" , "/¯¯\" , "\__/" , "/ "
+                3 = "  ¯¯¯\" , "\__[ " , "$FA" , "$Y" , "/¯¯\" , "\__/" , "/¯¯\" , "\__/" , "/¯¯\" , "\__/" , "/¯¯\" , "\__/" , "/¯¯¯  "
+                4 = "      $( $T[72] )$( "    ¯¯¯¯" * 4 )      " }
+                $FG = @{ 0 = $CV
+                1 = $CV,$CW,$CV,$CW,$CV,$CW,$CV,$CW,$CV,$CW,$CV,$CW,$CV,$CW,$CV 
+                2 = $CV,$CW,$CW,$CW,$CW,$CW,$CW,$CW,$CW,$CW,$CW,$CW,$CV
+                3 = $CV,$CW,$CX,$CW,$CV,$CW,$CV,$CW,$CV,$CW,$CV,$CW,$CV,$CW,$CV
+                4 = $CV }
+
+                $BG  = @{ 0 = $CY ; 1 = 0..13 | % { $CY } ; 2 = 0..13 | % { $CY } ; 3 = 0..13 | % { $CY } ; 4 = $CY }
+            }
+
+            If ( $Action )
+            {
+                $T , $I = $Type , $Info
+                $X   = $( If ( $T.Length -gt 18 ) { "$( $T[0..17] -join '' )..." } Else { "$( " " * ( 21 - $T.Length ) )$T" } )
+                $Y   = $( If ( $I.Length -gt 66 ) { "$( $I[0..65] -join '' )..." } Else { "$I$( " " * ( 69 - $I.Length ) )" } )
+                $ST  = @{ 0 = "  ____    $( $S[100])      "
+                   1 = " /" , "/¯¯\" , "\__/", "/$( "¯" * 98 )\","\___  "
+                   2 = " \" , "\__/" , "/¯¯¯ " , " $X : $Y " , "___/" , "/¯¯\", "\ "
+                   3 = "  ¯¯¯\" , "\$( $S[98] )/", "/¯¯\","\__/","/ "
+                   4 = "      $( "¯" * 100 )    ¯¯¯¯  " }
+                $FG  = @{ 0 = $CV ; 1 = $CV,$CW,$CV,$CW,$CV ; 2 = $CV,$CW,$CW,$CX,$CW,$CW,$CV ; 3 = $CV,$CW,$CV,$CW,$CV ; 4 = $CV }
+                $BG  = @{ 0 = $CY ; 1 = 0..4 | % { $CY } ; 2 = 0..6 | % { $CY } ; 3 = 0..4 | % { $CY } ; 4 = $CY }
+            }
+
+            If ( $Free )
+            {
+                $S  = " // " , " \\ " ; $F  = "/¯¯\" , "\__/" ; $L , $R = $S , $S[1..0] ; $PI  = "($( [ Char ] 960 ))"
+                $DA  = ( "m" , "d" , "Y" | % { Get-Date -UFormat "%$_" } | % { "$( $_.ToCharArray() )" } ) -join ' / ' ; 
+                $A   = " //¯" , " \\" , " //" , " \\_" ; $E   = "[=]" , "\_/" , "| |" ; $BL  = -Join $E[0,1,0]
+                $M1  = 0..120 | % { "¯" * $_ } ; $M2  = 0..120 | % { "_" * $_ } ; $M3  = 0..120 | % { " " * $_ }
+
+                $STR = "Beginning the fight against Technological Tyranny and Cyber Criminal Activities" , "Dynamically Engineered Digital Security" , 
+                "Application Development - Virtualization" , "Network & Hardware Magistration" ,   "What America Once Stood For" , 
+                "$PI A Heightened Sense Of Security $PI" , "HYBRID" , "BY" , "SECURE-DIGITS-PLUS-LLC" , "MICHAEL C COOK SR"
+
+                #$STR = @( 0..5 | % { $STR[$_] } | % { "[ $_ ]" } ; 6..9 | % { $STR[$_] } | % { "$( $_.ToCharArray() )" } )
+                $STR  = @( $STR[0..5] | % { "[ $_ ]" } ; $STR[6..9] | % { $_.ToCharArray() -join ' ' } ) ; $Sig = $DA + '  |  ' + $STR[9].Replace( "  " , " " )
+               
+                $ST = @{ 
+                         0 = "     $( $STR[0] )    "
+                         1 = "  $( $M2[88] )  "
+                         2 = " /","/¯$( $M1[35] )]","[$( $M1[47] )¯\","\ "
+                         3 = " \","\$( "  *   " * 6 )]","[$( $M2[47] )_/","/ "
+                         4 = " /","/ $( "    * " * 5 )     ]","[$( $M1[47] )¯\","\ "
+                         5 = " \","\$( "  *   " * 6 )]","[__",$STR[1],"___/","/ "
+                         6 = " /","/ $( "    * " * 5 )     ]","[$( $M1[47] )¯\","\ "
+                         7 = " \","\$( "  *   " * 6 )]","[$( $M2[47] )_/","/ "
+                         8 = " /","/ $( "    * " * 5 )     ]","[$( $M1[47] )¯\","\ "
+                         9 = " \","\$( "  *   " * 6 )]","[_",$STR[2],"___/","/ "
+                        10 = " /","/ $( "    * " * 5 )     ]","[$( $M1[47] )¯\","\ "
+                        11 = " \","\$( "  *   " * 6 )]","[$( $M2[47] )_/","/ "
+                        12 = " /","/ $( "    * " * 5 )     ]","[$( $M1[47] )¯\","\ "
+                        13 = " \","\$( "  *   " * 6 )]","[______",$STR[3],"_______/","/ "
+                        14 = " /","/  $( $STR[4] )   ]","[$( $M1[47] )¯\","\ "
+                        15 = " \","\$( $M2[36] )]","[$( $M2[47] )_/","/ "
+                        16 = " /","/$( $M1[86] )\","\ "
+                        17 = " \","\$( $M2[32] )","$( $BL )\__/$( $BL )","$( $M2[32]  )/","/ "
+                        18 = " /","/$( $M1[32] )","$( $E[2] )  $( $M2[11] )   $( $E[2] )","$( $M1[32] )\","\ "
+                        19 = " \","\$( $M2[32] )","$( $E[0] )_ $( $STR[6] ) __$( $E[0] )","$( $M2[32] )/","/ "
+                        20 = " /","/$( $M1[32] )","$( $E[2] + $M1[16] + $E[2] )","$( $M1[32] )\","\ "
+                        21 = " \","\_$($M2[16])","$( $BL*2 )      $( $STR[7] )       $( $BL * 2 )","$( $M2[16] )_/","/ "
+                        22 = " /","/$( $M1[17] )","$( $E[2] + $M1[15] )      $( $M1[3] )       $( $M1[15] + $E[2] )","$( $M1[17] )\","\ "
+                        23 = " \","\$( $M2[17] )","$( $E[0] )  $( $STR[8] ) $( $E[0] )","$( $M2[17] )/","/ "
+                        24 = " /","/$( $M1[17] )","$( $E[1] )  $( $M1[43] ) $( $E[1] )","$( $M1[17] )\","\ "
+                        25 = " \","\$( $M2[11] )","$( $BL * 3 + $E[0] )\__/$( $E[0] + $BL*3 )","$( $M2[11] )/","/ "
+                        26 = " /","/$( $M1[11] )","$( $E[0] + $M1[58] + $E[0] )","$( $M1[11] )\","\ "
+                        27 = " \","\$( $M2[11] )","$( $E[0] )  $SIG  $( $E[0] )","$( $M2[11] )/","/ "
+                        28 = "  $( $M1[12] )","¯¯   $( $M1[19] )     $( $M1[30] )   ¯¯","$( $M1[12] )  "
+                        29 = "$( $M3[25] + $STR[5] + $M3[25] )"
+                }
+
+                $FG = @{ 
+                         0 = 12
+                         1 = 15
+                         2 = 15,15,15,15
+                         3 = 15,15,15,15
+                         4 = 15,15,12,15
+                         5 = 15,15,12,0,12,15
+                         6 = 15,15,15,15
+                         7 = 15,15,15,15
+                         8 = 15,15,12,15
+                         9 = 15,15,12,0,12,15
+                        10 = 15,15,15,15
+                        11 = 15,15,15,15
+                        12 = 15,15,12,15
+                        13 = 15,15,12,0,12,15
+                        14 = 15,15,15,15
+                        15 = 15,15,15,15
+                        16 = 15,12,15
+                        17 = 15,12,10,12,15
+                        18 = 15,15,10,15,15
+                        19 = 15,15,10,15,15
+                        20 = 15,12,10,12,15
+                        21 = 15,12,10,12,15
+                        22 = 15,15,10,15,15
+                        23 = 15,15,10,15,15
+                        24 = 15,12,10,12,15
+                        25 = 15,12,10,12,15
+                        26 = 15,15,10,15,15
+                        27 = 15,15,10,15,15
+                        28 = 15,10,15
+                        29 = 12
+                }
+
+                $BG = @{ 
+                         0 = 0
+                         1 = 0
+                         2 = 0,9,12,0
+                         3 = 0,9,12,0
+                         4 = 0,9,15,0
+                         5 = 0,9,15,15,15,0
+                         6 = 0,9,12,0
+                         7 = 0,9,12,0
+                         8 = 0,9,15,0
+                         9 = 0,9,15,15,15,0
+                        10 = 0,9,12,0
+                        11 = 0,9,12,0
+                        12 = 0,9,15,0
+                        13 = 0,9,15,15,15,0
+                        14 = 0,9,12,0
+                        15 = 0,9,12,0
+                        16 = 0,15,0
+                        17 = 0,15,0,15,0
+                        18 = 0,12,0,12,0
+                        19 = 0,12,0,12,0
+                        20 = 0,15,0,15,0
+                        21 = 0,15,0,15,0
+                        22 = 0,12,0,12,0
+                        23 = 0,12,0,12,0
+                        24 = 0,15,0,15,0
+                        25 = 0,15,0,15,0
+                        26 = 0,12,0,12,0
+                        27 = 0,12,0,12,0
+                        28 = 0,0,0
+                        29 = 0
+                }
+            }
+
+            If ( $Foot )
+            {
+                $F = "/¯¯\" , "\__/" ;  $BL = 0..100 | % { "_" * $_ } ; $TL = 0..100 | % { "¯" * $_ }
+                $FZ = 0..13 | % { ( $F[0..1] -join '' ) * $_ } ; $FY = 0..13 | % { ( $F[1..0] -join '' ) * $_ } ; $OP = @( )
+                
+                $SR = "Secure Digits Plus LLC" , "Hybrid | Desired State Controller" , "Dynamically Engineered Digital Security" , "| Application Development" , 
+                "Virtualization" , "Network and Hardware Magistration |" , "https://www.securedigitsplus.com" , "Server-Client" , "Seedling-Spawning Script" , 
+                "[ Provisional Author : Michael C Cook Sr. | 'The Buck Stops Here' ]"
+                
+                $Title , $Strength , $Domain , $Author = ( 0..1 ) , ( 3..5 ) , ( 6..8 ) , 9 | % { $SR[$_] -join ' | ' }
+
+                $Z5 = 15
+
+                $ST = @{ 
+                  0 = @( "      " ; @( 0..11 | % { "____"," -- " } ) + "____" , "      " )
+                  1 = @( "  ___/" ; @( 0..10 | % { "/¯¯\","\__/" } ) + "/¯¯\","\__/" , "/¯¯\" , "\___  " )
+                  2 = @(     " /" ; @( 0..12 | % { "/¯¯\","\__/" } ) + "/¯¯\" , "\ " )
+                  3 = @(     " \" ; @( 0..12 | % { "\__/","/¯¯\" } ) + "\__/" , "/ " )
+                  4 = @(     " /" ; @( 0..1  | % { "/¯¯\","\__/" } ) + "/¯¯\" , "\ " ; @( 0..7 | % { "  ¯¯¯¯  " } ) + " /" ; @( 0..1 | % { "/¯¯\","\__/" } ) + "/¯¯\" , "\ " )
+                  5 = @(     " \" ; @( 0..1  | % { "\__/","/¯¯\" } ) + "\__/" , "/ "," [ $Title ] "," \" , "\__/" ; @( 0..1  | % { "/¯¯\","\__/" } ) ; "/ " )
+                  6 = @(     " /" ; @( 0..1  | % { "/¯¯\","\__/" } ) + "/¯¯¯" , "   ¯¯¯¯\__/$( "¯" * 47 )\__/¯¯¯   ","¯¯¯\" ; @( 0..1  | % { "\__/","/¯¯\" } ) ; "\ " )
+                  7 = " \","\__/","/¯¯\","\__/","/¯¯¯","         __/¯¯\ ([ $( $SR[2] ) ]) /¯¯\__        ","¯¯¯\","\__/","/¯¯\","\__/","/ "
+                  8 = " /","/¯¯\","\__/","/¯¯\","\","  $( $BL[9] )/¯¯\__/$( $BL[9] ) $( $BL[16] ) $( $BL[20] )\__/¯¯\$( $BL[8] )  ","/","/¯¯\","\__/","/¯¯\","\ "
+                  9 = " \","\__/","/¯¯\","\__/","/"," $Strength ","\","\__/","/¯¯\","\__/","/ "
+                 10 = " /","/¯¯\","\__/","/¯¯\","\","  $( $TL[25] ) $( $TL[16] ) $( $TL[35] )  ","/","/¯¯\","\__/","/¯¯\","\ "
+                 11 = " \","\__/","/¯¯\","\__/","/","   $Domain    ","\","\__/","/¯¯\","\__/","/ "
+                 12 = " /","/¯¯\","\__/","/¯¯\","\___","$( $TL[32] )   $( $TL[13] )   $( $TL[24] ) ","___/","/¯¯\","\__/","/¯¯\","\ "
+                 13 = @(     " \" ; @( 0..1  | % { "\__/","/¯¯\" } ) + "\ ","  $Author   "," /" ; @( 0..1  | % { "/¯¯\","\__/" } ) + "/ " )
+                 14 = @(     " /" ; @( 0..1  | % { "/¯¯\","\__/" } ) + "/ " ; @( 0..8 | % { "  ____  " } ) + " \" ; @( 0..1 | % { "\__/","/¯¯\" } ) + "\ " )
+                 15 = @(     " \" ; @( 0..12 | % { "\__/","/¯¯\" } ) + "\__/" , "/ " )
+                 16 = @( "  ¯¯¯\" ; @( 0..11 | % { "\__/","/¯¯\" } ) + "\__/","/¯¯¯  " )
+                 17 = @( "      " ,"¯¯¯\","\__/" ; @( 0..10 | % { "/¯¯\","\__/" } ) + "/¯¯¯" , "      " )
+                 18 = @( "      " ; @( 0..11 | % { " -- ","¯¯¯¯" } ) + "          " )
+                }
+
+                $FG = @{ 
+                 0 = @( 0..13 | % { $CW , $CV } )
+                 1 = @( 0..13 | % { $CV , $CW } )
+                 2 = @( $CV ; @( 0..26 | % { $CW } ) + $CV )
+                 3 = $CV , $CW , $CX , $CW , $CX , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW ,  + $CX , $CW , $CX , $CW , $CV
+                 4 = $CV , $CW , $CX , $CX , $CX , $CW , $CV , $CV , $CV , $CV , $CV , $CV , $CV , $CV , $CV , $CV , $CW , $CX , $CX , $CX , $CW , $CV
+                 5 = $CV , $CW , $CX , $CX , $CX , $CW , $CV , $Z5 , $CV , $CW , $CX , $CX , $CX , $CW , $CV
+                 6 = $CV , $CW , $CX , $CX , $CX , $CV , $Z5 , $CV , $CX , $CX , $CX , $CW , $CV
+                 7 = $CV , $CW , $CX , $CX , $CV , $Z5 , $CV , $CX , $CX , $CW , $CV
+                 8 = $CV , $CW , $CX , $CX , $CV , $Z5 , $CV , $CX , $CX , $CW , $CV
+                 9 = $CV , $CW , $CX , $CX , $CV , $Z5 , $CV , $CX , $CX , $CW , $CV
+                10 = $CV , $CW , $CX , $CX , $CV , $Z5 , $CV , $CX , $CX , $CW , $CV
+                11 = $CV , $CW , $CX , $CX , $CV , $Z5 , $CV , $CX , $CX , $CW , $CV
+                12 = $CV , $CW , $CX , $CX , $CV , $Z5 , $CV , $CX , $CX , $CW , $CV
+                13 = $CV , $CW , $CX , $CX , $CX , $CV , $CV , $CV , $CX , $CX , $CX , $CW , $CV
+                14 = $CV , $CW , $CX , $CW , $CX , $CV , $CV , $CV , $CV , $CV , $CV , $CV , $CV , $CV , $CV , $CV , $CX , $CW , $CX , $CW , $CV
+                15 = $CV , $CW , $CX , $CW , $CX , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CX , $CW , $CX , $CW , $CV
+                16 = $CV , $CX , $CW , $CX , $CW , $CW , $CW , $CW , $CW , $CW , $CW , $CW , $CW , $CW , $CW , $CW , $CW , $CW , $CW , $CW , $CW , $CW , $CW , $CX , $CW , $CX , $CV
+                17 = $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV
+                18 = $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW , $CV , $CW 
+                }
+
+                $BG = @{ 
+                 0 = 0..100 | % { $CY } 
+                 1 = 0..100 | % { $CY } 
+                 2 = 0..100 | % { $CY } 
+                 3 = 0..100 | % { $CY } 
+                 4 = 0..100 | % { $CY } 
+                 5 = 0..100 | % { $CY } 
+                 6 = 0..100 | % { $CY } 
+                 7 = 0..100 | % { $CY } 
+                 8 = 0..100 | % { $CY } 
+                 9 = 0..100 | % { $CY } 
+                10 = 0..100 | % { $CY } 
+                11 = 0..100 | % { $CY } 
+                12 = 0..100 | % { $CY } 
+                13 = 0..100 | % { $CY } 
+                14 = 0..100 | % { $CY } 
+                15 = 0..100 | % { $CY }
+                16 = 0..100 | % { $CY }
+                17 = 0..100 | % { $CY }
+                18 = 0..100 | % { $CY }
+                }
+            }
+        }
+        
+
+        End
+        {
+            ForEach ( $i in ( 0..( $ST.Count - 1 ) ) ) 
+            { 
+                If ( $ST[$I].Count -eq 1 ) { Write-Host $ST[$i] -F $FG[$i] -B $BG[$i] }
+                    
+                Else 
+                { 
+                    $XX = @( $ST[$I] ) ; $XY = @( $FG[$I] ) ; $XZ = @( $BG[$I] )
+
+                    ForEach ( $X in ( 0..( $XX.Count - 1 ) ) ) 
+                    { 
+                        If ( $X -eq $XX.Count - 1 ) 
+                        {
+                            Write-Host $XX[$X] -F $XY[$X] -B $XZ[$X] 
+                        }
+                    
+                        Else 
+                        { 
+                            Write-Host $XX[$X] -F $XY[$X] -B $XZ[$X] -N 
+                        }
+                    }
+                }
+            }
+        }
+    }#
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
     Function Convert-XAMLToWindow # Modified, originally by Dr. Tobias Weltner    ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
@@ -454,7 +744,7 @@
             {
                 $IPV4 = $IP[$I]
 
-                Write-Echo -Function "Host # $IPV4" 14 0
+                Write-Theme -Function "Host # $IPV4" 12 14 10
 
                 $DNS  = Resolve-DnsName -Name $IPV4 -EA 0
                 $DNS  = $( If ( $DNS.Length -eq 0 ) { "*No Hostname*" } Else { $DNS.NameHost } )
@@ -840,7 +1130,7 @@
 
         $Threads = @( )
 
-        Write-Echo -Function "Beginning Subnet Ping-Sweep, please wait" 10 0
+        Write-Theme -Action "Scanning Network" "Please Wait" 10 12 11 0
 
         $Stopwatch = [ System.Diagnostics.Stopwatch ]::StartNew()
 
@@ -856,7 +1146,7 @@
 
         $Stopwatch.Stop()
 
-        Write-Echo -Function "Ping-Sweep Complete @: $( $Stopwatch.Elapsed )" 10 0
+        Write-Theme -Function "Scan Complete $( $Stopwatch.Elapsed )" 10 12 11 0
 
         $ThreadResults = @( )
         ForEach ( $T in $Threads )
@@ -960,6 +1250,6 @@
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-        Write-Echo -Free 10 0 ; Sleep 1 # What Free Actually Means               #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+        Write-Theme -Free ; Sleep 1 # What Free Actually Means               #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
      #\______________________________________________________________________________//¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
      # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ 
