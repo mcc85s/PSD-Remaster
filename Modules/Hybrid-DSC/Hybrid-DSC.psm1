@@ -23,12 +23,12 @@
 
     $ENV:PSModulePath.Split( ';' ) | % { GCI $_ -Recurse "*Hybrid-DSC.ps1*" } | % { IPMO $_.FullName -Force }
 
-    Export-ModuleMember -Function New-SubTable , New-Table , Write-Echo , Convert-XAMLToWindow , Show-WPFWindow , Get-NetworkInfo , Get-HostRange , 
-    Get-NetworkHosts , Get-HostMask , Get-TelemetryData , Get-NBSVC , Start-PingSweep , Start-NetworkInfo , Get-NetworkStatistics
+    Export-ModuleMember -Function New-SubTable , New-Table , Write-Echo , Write-Theme , Convert-XAMLToWindow , Show-WPFWindow , Get-NetworkInfo , 
+    Get-HostRange , Get-NetworkHosts , Get-HostMask , Get-TelemetryData , Get-NBSVC , Start-PingSweep , Start-NetworkInfo , Get-NetworkStatistics
 
 # ____                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-        Write-Echo -Function "Hybrid-DSC Module Loaded" 14 0                     #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+        Write-Theme -Function "Hybrid-DSC Module Loaded"                         #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
      #\______________________________________________________________________________//¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
      # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯                                                                   
