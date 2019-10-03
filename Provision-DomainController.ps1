@@ -136,9 +136,7 @@
         $GUI = Convert-XAMLtoWindow -Xaml $Xaml -NE $NamedElements -PassThru
 
         $GUI.Port_Toggle.Add_Click({ $GUI.Port_Entry.IsEnabled = $True })
-
         $GUI.Cancel.Add_Click({ $GUI.DialogResult = $False })
-
         $GUI.Ok.Add_Click({
 
             $Port = $( If ( $GUI.Port_Entry.IsEnabled -eq $True ) { $GUI.Port_Entry.Text } Else { 389 } )
@@ -171,14 +169,21 @@
 
         [ CmdLetBinding () ] Param (
 
-            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ] [ String       ]      $DC ,
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ] [ String       ]  $Domain ,
-            [ Parameter ( Position = 2 , ValueFromPipeline = $True ) ] [ String       ] $NetBIOS ,
-            [ Parameter ( Position = 3 , ValueFromPipeline = $True ) ] [ PSCredential ]  $DCCred )
+            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ] [ String       ]       $DC ,
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ] [ String       ]   $Domain ,
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True ) ] [ String       ]  $NetBIOS ,
+            [ Parameter ( Position = 3 , ValueFromPipeline = $True ) ] [ PSCredential ]   $DCCred ,
+            [ Parameter ( Position = 4 , ValueFromPipeline = $True ) ] [ String       ] $SiteLink )
 
         $CS = ( GCIM Win32_OperatingSystem ).Caption
         
-        $ADSI = [ ADSI ]$DCCred | % { $DX = [ DirectoryEntry ]::New( "LDAP://$( $DC ):389/RootDSE" , $_.Username , $_.GetNetworkCredential().Password ) }
+        If ( $DC -and $Domain -and $DCCred )
+        {
+            Write-Echo -Function "Domain Controller detected" 14 0
+            Write-Echo -Action "Attempting Access" "[ $( $DCCred.Username ) ]" 10 0
+            $DCCred | % { $DX = [ DirectoryEntry ]::New( "LDAP://$( $DC ):389/RootDSE" , $_.Username , $_.GetNetworkCredential().Password ) }
+            If ( $DX.IsGlobalCatalogReady -eq "TRUE" ) { $GC = 0 ; $Forest = 0 }
+        }
 
         $Schema = "http://schemas.microsoft.com/winfx/2006/xaml"
         $Author = "Secure Digits Plus LLC"
@@ -376,7 +381,7 @@
                             <Label   Content =      "Log" Grid.Row = "2" Grid.Column = "0" HorizontalAlignment = "Center" VerticalAlignment = "Center" />
                             <TextBox    Name =      "Log" Grid.Row = "2" Grid.Column = "1" Height = "20" Margin = "10" ></TextBox>
                             <Label   Content = "SiteName" Grid.Row = "3" Grid.Column = "0" HorizontalAlignment = "Center" VerticalAlignment = "Center" />
-                            <TextBox    Name = "SiteName" Grid.Row = "3" Grid.Column = "1" Height = "20" Margin = "10" >$( $Report.Sitelink )</TextBox>
+                            <TextBox    Name = "SiteName" Grid.Row = "3" Grid.Column = "1" Height = "20" Margin = "10" >$Sitelink</TextBox>
                         </Grid>
                     </Grid>
                 </GroupBox>
@@ -429,36 +434,54 @@
         $NamedElements = "New_Forest" , "New_Domain" , "New_DCHost" , "Install_DNS" , "Install_GC" , "Install_CR" , "ForestMode" , "DomainMode" , 
         "Database" , "Sysvol" , "Log" , "SiteName" , "FQDN" , "NetBIOS" , "DSRM_PW" , "DSRM_CF" , "DCAdmin" , "DCEntry" , "Ok" , "Cancel"
 
-        $0 = "Controller Installation Type was not selected." ; $1 = "A controller type must be selected"
-
-        $MSG = "[ System.Windows.MessageBox ]::Show( '$( $0 )' , '$( $1 )' )"
-
         $GUI = Convert-XAMLtoWindow -Xaml $Xaml -NE $NamedElements -PassThru
 
+        $Out = [ PSCustomObject ]@{ Forest = "" ; GC = "" ; Domain = "" ; DCHost = "" ; }
 
+        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
+        #___[_Install-ADDSForest_]___Auto Enable/Disable Flags____________________________________________________________________#
 
-        $GUI.New_Forest.Add_Click({  $Install_Forest = 1 }) ; $GUI.New_Forest.Add_SelectionChanged({ $Install_Forest = 0 })
-        $GUI.New_Domain.Add_Click({  $Install_Domain = 1 }) ; $GUI.New_Domain.Add_SelectionChanged({ $Install_Domain = 0 })
-        $GUI.New_DCHost.Add_Click({  $Install_DCHost = 1 }) ; $GUI.New_DCHost.Add_SelectionChanged({ $Install_DCHost = 0 })
+            If ( $Forest -eq 0 )       { $GUI.New_Forest.IsEnabled({ $False          }) }
+            Else                       { $GUI.New_Forest.Add_Click({ $Out.Forest = 1 }) }
 
-        $GUI.Install_DNS.IsChecked({ $Install_DNS    = 1 }) ;
-        $GUI.Install_GC.IsChecked({  $Install_GC     = 1 }) ;
-        $GUI.Install_CR.IsChecked({  $Install_CR     = 1 }) ;
+        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
+        #___[_Global_Catalog_=_0_]___Auto Enable/Disable Flags____________________________________________________________________#
 
-        $GUI.DCEntry.Add_Click({ $DCCred = Enter-ServiceAccount })
+            If ( $GC     -eq 0 )       { $GUI.Install_GC.IsEnabled({ $False          }) }
+            Else { $GUI.Install_GC | % { $_.IsUnchecked({   $Out.GC = 0 }) ; $_.IsEnabled({     $False      }) }
+        
+        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
+        #___[_GUI_Flags/Options_]_________________________________________________________________________________________________#
 
-        $GUI.Cancel.Add_Click({ $GUI.DialogResult = $False })
+            $GUI.New_Domain.Add_Click({  $Out.Domain = 1 })
+            $GUI.New_DCHost.Add_Click({  $Out.DCHost = 1 })
 
-        $GUI.Ok.Add_Click({
-            
-            $GUI.ForestMode | ? { $ForestMode = $_.SelectedIndex }
-            $GUI.DomainMode | ? { $DomainMode = $_.SelectedIndex }
+            $GUI.Install_DNS | % { $_.Add_Checked({ $Out.DNS  = 1 }) ; $_.Add_UnChecked({ $Out.DNS = 0 }) }
+            $GUI.Install_CR  | % { $_.Add_Checked({ $Out.CR   = 1 }) ; $_.Add_UnChecked({ $Out.CR  = 0 }) }
 
-            If ( $Install_Forest -or $Install_Domain -or $Install_DCHost -eq 0 ) { IEX $MSG }
+            $GUI.DCEntry.Add_Click({ $DCCred = @( Enter-ServiceAccount @ServiceAccount ) })
+            $GUI.Cancel.Add_Click({  $GUI.DialogResult = $False })
 
-            If ( $GUI.DSRM_PW.Password -eq $Null )                       { [ System.Windows.MessageBox ]::Show(      "Password Error" ,  "Invalid/Null" ) }
-            If ( $GUI.DSRM_CF.Password -eq $Null )                       { [ System.Windows.MessageBox ]::Show(  "Confirmation Error" ,  "Invalid/Null" ) }
-            If ( $GUI.DSRM_PW.Password -notmatch $GUI.DSRM_CF.Password ) { [ System.Windows.MessageBox ]::Show(   "P/W Confirm Error" , "Invalid/Match" ) }
+            $GUI.Ok.Add_Click({
+        
+        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
+        #___[_Domain_Functional_Levels_]__________________________________________________________________________________________#
+
+            $GUI.ForestMode | ? { $Out.ForestMode = ( $_.SelectedIndex + 1 ) }
+            $GUI.DomainMode | ? { $Out.DomainMode = ( $_.SelectedIndex + 1 ) }
+
+        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
+        #___[_Domain_Functional_Levels_]__________________________________________________________________________________________#
+
+            $0 = @( "Password" , "Confirmation" , "P/W Confirm" | % { "$_ Error" } ; "Controller Installation Type was not selected." )
+            $1 = @( "Null" , "Null" , "Match" | % { "Invalid/$_" } ; "A controller type must be selected" )
+
+            $MSG = 0..3 | % { "[ System.Windows.MessageBox ]::Show( '$( $0[$_] )' , '$( $1[$_] )' )" }
+
+            If ( $GUI.DSRM_PW.Password -eq $Null )                       { IEX $MSG[0] }
+            If ( $GUI.DSRM_CF.Password -eq $Null )                       { IEX $MSG[1] }
+            If ( $GUI.DSRM_PW.Password -notmatch $GUI.DSRM_CF.Password ) { IEX $MSG[2] }
+            If ( $Out.Forest -and $Out.Domain -and $Out.DCHost -eq 0 )   { IEX $MSG[3] }
 
             Else { $GUI.DialogResult = $True }
 
@@ -467,18 +490,22 @@
             $GUI.Database.Text = "C:\Windows\NTDS"
             $GUI.Sysvol.Text   = "C:\Windows\SYSVOL"
             $GUI.Log.Text      = "C:\Windows\SYSVOL"
-            $Report.Sitelink | ? { $_ -ne $Null } | % { $GUI.SiteName.Text = $_ }
+            $GUI.Sitelink      = If ( $SiteLink -ne $Null ) { $SiteLink } Else { "Default-First-Site-Name" }
 
         $Null = $GUI.Username.Focus()
 
         $OP = Show-WPFWindow -GUI $GUI
         
-        If ( $OP -eq $True ) { Write-Echo -Function "You're fuckin' awesome Michael." 10 0 }
+        If ( $OP -eq $True ) 
+        { 
+            Echo $Out
+            Read-Host "Correct?"
+            #Write-Theme -Function "You're awesome Michael." 10 12 15 0
+        }
 
-        Else { Write-Echo -Action "Exception" "Either the user cancelled, or the dialogue failed" -F 12 }
+        Else { Write-Theme -Action "[!] Exception" "Either the user cancelled, or the dialogue failed" 12 14 12 }
         
     }
-
 
         Function DeadForNow
         {
@@ -550,11 +577,12 @@
     {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯   
         
         $CS , $OS = "Computer" , "Operating" | % { GCIM Win32_$( $_ )System }
-        Echo "Must enable DNS Suffix/DHCP Static"
-        Echo "Don't Forget 'regsvr32 schmmgmt.dll'"
+
+        "Must enable DNS Suffix/DHCP Static" , "Don't Forget 'regsvr32 schmmgmt.dll'" | % { Write-Warning $_ } 
+        
         If ( $CS.PartOfDomain -eq $True ) 
         {
-            Write-Echo -Action "Domain" "[+] Detected" -F 14 0
+            Write-Theme -Action "[+] Domain" "Detected" 14 12 10 0
             IPMO ActiveDirectory -VB
             $DCCred = @( Enter-ServiceAccount )
         }
@@ -562,36 +590,39 @@
         Else
         {
             Write-Echo -Function "Workgroup [~] Detected" 14 0
-            "Windows" | % { IEX "( [ $_`Principal ][ $_`Identity ]::GetCurrent() ).IsInRole( 'Administrator' )" } | ? {
-            $False    | ? { [ Int ] $OS.BuildNumber -ge 6000 }
-            $True     | % { $MyInvocation | % { SAPS PowerShell -Verb Runas -Args "-File `"$( $_.MyCommand.Path ) $( $_.UnboundArguments )" } } }
+
+            "Windows"   | % { IEX "( [ $_`Principal ][ $_`Identity ]::GetCurrent() ).IsInRole( 'Administrator' )" } | ? {
+            $False      | ? { [ Int ] $OS.BuildNumber -ge 6000 }
+            $True       | % { $MyInvocation | % { SAPS PowerShell -Verb Runas -Args "-File `"$( $_.MyCommand.Path ) $( $_.UnboundArguments )" } } }
 
             If ( $? -eq $True )
             {
                 Write-Echo -Function "Collecting Network/Host Information [30-45 seconds]" 10 0
                 
-                $Time = [ System.Diagnostics.Stopwatch ]::StartNew()
+                $Time   = [ System.Diagnostics.Stopwatch ]::StartNew()
 
                 $Report = @( Start-NetworkInfo )
-                $Report | % { $DC = $_.NetBIOS.Host ; $Domain = $_.DNS ; $NetBIOS = $_.NetBIOS.Name }
 
-                $Time.Stop()
-                Write-Echo -Function "Network Info Collected @: Time elapsed $( $Time.Elapsed )" 10 0
+                $Report | % { $ServiceAccount = @{ DC = $_.NetBIOS.Host ; Domain = $_.DNS ; NetBIOS = $_.NetBIOS.Name } 
+                              $DomainController = $ServiceAccount , @{ Sitelink = $Report.SiteLink } }
+
+                $Time.Stop() ; Write-Echo -Function "Network Info Collected @: Time elapsed $( $Time.Elapsed )" 10 0
 
                 If ( $DC -ne $Null -and $Domain -ne $Null -and $NetBIOS -ne $Null ) 
                 {
-                    $DCCred = @( Enter-ServiceAccount -DC $DC -Domain $Domain -NetBIOS $NetBIOS )
+                    $DCCred = @( Enter-ServiceAccount @ServiceAccount )
                     If ( $? -eq $True ) 
                     { 
                         Write-Echo -Action "Provisioning" "Domain Controller Setup" 11 0
-                        Provision-DomainController
+                        $DomainController | % { $_.DCCred = $DCCred }
+                        Provision-DomainController @DomainController
                     }
+                }
             }
         }
-
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-        Write-Echo -Foot -F 10 -B 0 ; Sleep 1 ; Determine-Process                #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+        Write-Theme -Foot ; Sleep 1 ; Determine-Process                          #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
      #\______________________________________________________________________________//¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
      #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯                                                                   
