@@ -23,7 +23,7 @@
 
     $ENV:PSModulePath.Split( ';' ) | % { GCI $_ -Recurse "*Hybrid-DSC.ps1*" } | % { IPMO $_.FullName -Force }
 
-    Export-ModuleMember -Function New-SubTable , New-Table , Write-Echo , Write-Theme , Convert-XAMLToWindow , Show-WPFWindow , Get-NetworkInfo , 
+    Export-ModuleMember -Function New-SubTable , New-Table , Write-Theme , Convert-XAMLToWindow , Show-WPFWindow , Get-NetworkInfo , 
     Get-HostRange , Get-NetworkHosts , Get-HostMask , Get-TelemetryData , Get-NBSVC , Start-PingSweep , Start-NetworkInfo , Get-NetworkStatistics
 
 # ____                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
