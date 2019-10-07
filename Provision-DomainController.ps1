@@ -1,13 +1,13 @@
-# ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____  
+# ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ 
 #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
 #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\   ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯   //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//  [ Secure Digits Plus LLC | Hybrid | Desired State Controller ]  \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-#//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯     ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-#\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯                 Dynamically Engineered Digital Security                    ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-#//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\                    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯                       //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-#\\__//¯¯\\__//¯¯\\__//¯¯\\__//   Application Development | Virtualization | Network and Hardware Magistration   \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-#//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+#//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯       _____________________________________________________        ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+#\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯        __/¯¯\__[ Dynamically Engineered Digital Security ]__/¯¯\__         ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+#//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\  _________________________ ________________ ___________________________________  //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+#\\__//¯¯\\__//¯¯\\__//¯¯\\__// | Application Development | Virtualization | Network and Hardware Magistration | \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+#//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\  ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯  //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//   https://www.securedigitsplus.com | Server-Client | Seedling-Spawning Script    \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
 #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\   [ Provisional Author : Michael C Cook Sr. | "The Buck Stops Here" ]    //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
@@ -175,30 +175,26 @@
 
         [ CmdLetBinding () ] Param (
 
-            [ Parameter ( ValueFromPipeline = $True ) ][       String ] $DC       ,
-            [ Parameter ( ValueFromPipeline = $True ) ][       String ] $NetBIOS  ,
-            [ Parameter ( ValueFromPipeline = $True ) ][       String ] $Domain   ,
-            [ Parameter ( ValueFromPipeline = $True ) ][       String ] $Sitelink ,
-            [ Parameter ( ValueFromPipeline = $True ) ][       String ] $Username , 
-            [ Parameter ( ValueFromPipeline = $True ) ][ SecureString ] $Password )
+            [ Parameter ( ValueFromPipeline = $True ) ][ String ] $DC       ,
+            [ Parameter ( ValueFromPipeline = $True ) ][ String ] $NetBIOS  ,
+            [ Parameter ( ValueFromPipeline = $True ) ][ String ] $Domain   ,
+            [ Parameter ( ValueFromPipeline = $True ) ][ String ] $Sitelink ,
+            [ Parameter ( ValueFromPipeline = $True ) ][ String ] $Username , 
+            [ Parameter ( ValueFromPipeline = $True ) ][ String ] $Password )
 
         $CS = ( GCIM Win32_OperatingSystem ).Caption
         
-        If ( !$Username -and !$Password )
+        $Forest   = '<RadioButton Name = "New_Forest" GroupName = "Process" Grid.Row = "0" Grid.Column = "1" Margin = "5" />'
+        $Global   = '<CheckBox    Name = "Install_GC"                       Grid.Row = "1" Grid.Column = "1" Margin = "5" />'
+        If ( $Username -and $Password )
         {
-            $Credential | % { 
-            
-                $DX = [ DirectoryEntry ]::New( "LDAP://$( $DC ):389/RootDSE" , $_.Username , $_.GetNetworkCredential().Password ) 
-            }
-
-            If ( $DX.Name -ne $Null )                  { $Forest = 0 }
-            If ( $DX.IsGlobalCatalogReady -eq "TRUE" ) { $GC     = 0 }
+            $DX   = [ DirectoryEntry ]::New( "LDAP://$( $DC ):389/RootDSE" , $Username , $Password )
+            If ( $DX.Name -ne $Null )                  { $Forest = $Forest.Replace( "/>" , "IsEnabled='False' />" ) }
+            If ( $DX.IsGlobalCatalogReady -eq "TRUE" ) { $Global = $Global.Replace( "/>" , "IsEnabled='False' />" ) }
+            $DX   = $Null
         }
 
-        $Schema = "http://schemas.microsoft.com/winfx/2006/xaml"
-        $Author = "Secure Digits Plus LLC"
-        $Select = "IsSelected = 'True"
-        $Enable = "IsEnabled = 'False"
+        $Schema = "http://schemas.microsoft.com/winfx/2006/xaml" ; $Author = "Secure Digits Plus LLC" ; $Select = "IsSelected = 'True" ; $Enable = "IsEnabled = 'False"
 
         $ED     = @( ) 
         $On     = 1
@@ -243,7 +239,7 @@
         $List = @( Collect-FeaturesState -All ) | % { "$_<LineBreak/>" } 
         
         $ID = ( "ForestMode" , 0 , 0 ) , ( "DomainMode" , 1 , 0 ) 
-        $YZ = $ID | % { "    <ComboBox Name = '$( $_[0] )' Grid.Row = '$( $_[1] )' Grid.Column = '$( $_[2] )' Height = '24' >" }
+        $YZ = $ID | % { "    <ComboBox Name = '$( $_[0] )' Grid.Row = '$( $_[1] )' Grid.Column = '$( $_[2] )' Height = '24' Margin = '10' >" }
 
         ForEach ( $x in 0..1 ) 
         {   
@@ -317,7 +313,7 @@
                         <TextBlock Grid.Row = "0" TextAlignment = "Right" Margin = "5" >Create a New AD Forest:</TextBlock>
                         <TextBlock Grid.Row = "1" TextAlignment = "Right" Margin = "5" >Add a Branch Domain:</TextBlock>
                         <TextBlock Grid.Row = "2" TextAlignment = "Right" Margin = "5" >Add Domain Controller:</TextBlock>
-                        <RadioButton Name = "New_Forest" GroupName = "Process" Grid.Row = "0" Grid.Column = "1" Margin = "5" />
+                        $Forest
                         <RadioButton Name = "New_Domain" GroupName = "Process" Grid.Row = "1" Grid.Column = "1" Margin = "5" />
                         <RadioButton Name = "New_DCHost" GroupName = "Process" Grid.Row = "2" Grid.Column = "1" Margin = "5" />
                     </Grid>
@@ -337,7 +333,7 @@
                         <TextBlock Grid.Row = "1" TextAlignment = "Right" Margin = "5" >Global Catalog:</TextBlock>
                         <TextBlock Grid.Row = "2" TextAlignment = "Right" Margin = "5" >Critical Replication:</TextBlock>
                         <CheckBox Name = "Install_DNS" Grid.Row = "0" Grid.Column = "1" Margin = "5" />
-                        <CheckBox Name =  "Install_GC" Grid.Row = "1" Grid.Column = "1" Margin = "5" />
+                        $Global
                         <CheckBox Name =  "Install_CR" Grid.Row = "2" Grid.Column = "1" Margin = "5" />
                     </Grid>
                 </GroupBox>
@@ -446,16 +442,14 @@
 
         $GUI = Convert-XAMLtoWindow -Xaml $Xaml -NE $NamedElements -PassThru
 
-        $Out = [ PSCustomObject ]@{ 
-            Forest     =   0 ; 
+        $Out = [ PSCustomObject ]@{
+            DSRM_PW    =  "" ;
+            Process    =   0 ; 
             GC         =   0 ;
-            Domain     =   0 ; 
-            DCHost     =   0 ;
             DNS        =   0 ; 
             CR         =   0 ;
             ForestMode =   0 ;
             DomainMode =   0 ; 
-            DSRM_PW    =  "" ;
             DCAdmin    =  "" ;
             Database   =  "" ;
             Sysvol     =  "" ;
@@ -464,24 +458,13 @@
             FQDN       =  "" ;
             NetBIOS    =  "" ;
         }
-            #_____________________________________________________________________________________________________________________#
-            #¯[¯Install-ADDSForest¯]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
-            $GUI.New_Forest.IsEnabled = $( If ( $Forest -eq 0 ) { "True" } Else { "False" } )                        #
-            #_____________________________________________________________________________________________________________________#
-            #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
-            #_____________________________________________________________________________________________________________________#
-            #¯[¯Global¯Catalog¯]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
-            $GUI.Install_GC.IsEnabled = $( If ( $GC     -eq 0 ) { "True" } Else { "False" } )                              #
-            #_____________________________________________________________________________________________________________________#
-            #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
 
-            $GUI.New_Forest  | % { $_.Add_Checked({ $Out.Forest   = 1 }) ; $_.Add_UnChecked({ $Out.Forest  = 0 }) }
-
-            $GUI.New_Domain.Add_Click({  $Out.Domain = 1 })
-            $GUI.New_DCHost.Add_Click({  $Out.DCHost = 1 })
+            $GUI.New_Forest.Add_Click({ $Out.Process = 1 })
+            $GUI.New_Domain.Add_Click({ $Out.Process = 2 })
+            $GUI.New_DCHost.Add_Click({ $Out.Process = 4 })
 
             $GUI.Install_DNS | % { $_.Add_Checked({ $Out.DNS  = 1 }) ; $_.Add_UnChecked({ $Out.DNS = 0 }) }
-            $GUI.Install_GC  | % { $_.Add_Checked({ $Out.GC   = 1 }) ; $_.Add_UnChecked({ $Out.GC  = 0 }) } 
+            $GUI.Install_GC  | % { $_.Add_Checked({ $Out.GC   = 1 }) ; $_.Add_UnChecked({ $Out.GC  = 0 }) }
             $GUI.Install_CR  | % { $_.Add_Checked({ $Out.CR   = 1 }) ; $_.Add_UnChecked({ $Out.CR  = 0 }) }
 
             $GUI.DCEntry.Add_Click({ 
@@ -493,25 +476,16 @@
             $GUI.Cancel.Add_Click({  $GUI.DialogResult = $False })
 
             $GUI.Ok.Add_Click({
-        
-        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
-        #___[_Domain_Functional_Levels_]__________________________________________________________________________________________#
-
-            $GUI.ForestMode | ? { $Out.ForestMode = ( $_.SelectedIndex + 1 ) }
-            $GUI.DomainMode | ? { $Out.DomainMode = ( $_.SelectedIndex + 1 ) }
-
-        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
-        #___[_Domain_Functional_Levels_]__________________________________________________________________________________________#
 
             $0 = @( "Password" , "Confirmation" , "P/W Confirm" | % { "$_ Error" } ; "Controller Installation Type was not selected." )
             $1 = @( "Null" , "Null" , "Match" | % { "Invalid/$_" } ; "A controller type must be selected" )
 
             $MSG = 0..3 | % { "[ System.Windows.MessageBox ]::Show( '$( $0[$_] )' , '$( $1[$_] )' )" }
 
-            If ( $GUI.DSRM_PW.Password -eq $Null )                       { IEX $MSG[0] }
-            If ( $GUI.DSRM_CF.Password -eq $Null )                       { IEX $MSG[1] }
-            If ( $GUI.DSRM_PW.Password -notmatch $GUI.DSRM_CF.Password ) { IEX $MSG[2] }
-            If ( $Out.Forest -and $Out.Domain -and $Out.DCHost -eq 0 )   { IEX $MSG[3] }
+            If     ( $GUI.DSRM_PW.Password -eq "" )                          { IEX $MSG[0] }
+            ElseIf ( $GUI.DSRM_CF.Password -eq "" )                          { IEX $MSG[1] }
+            ElseIf ( $GUI.DSRM_PW.Password -notmatch $GUI.DSRM_CF.Password ) { IEX $MSG[2] }
+            ElseIf ( $Out.Process -eq 0 )                                    { IEX $MSG[3] }
 
             Else { $GUI.DialogResult = $True }
 
@@ -525,33 +499,32 @@
             $GUI.FQDN     | % { $_.Text = $( If ( $Domain   ) { $Domain   } Else { "Enter new Domain Name"   } ) }
             $GUI.NetBIOS  | % { $_.Text = $( If ( $NetBIOS  ) { $NetBIOS  } Else { "Enter new NetBIOS Name"  } ) }
 
+        $GUI.DSRM_PW.Password = ""
+        $GUI.DSRM_CF.Password = ""
+
         $Null = $GUI.DSRM_PW.Focus()
 
         $OP = Show-WPFWindow -GUI $GUI
         
         If ( $OP -eq $True )
         { 
-            If ( $GUI.FQDN.Text -eq $Domain ) { $Out.Domain = 0 }
+            $Out.ForestMode = $GUI.ForestMode.SelectedIndex + 1
+            $Out.DomainMode = $GUI.DomainMode.SelectedIndex + 1
+            $Out.DSRM_PW    = $GUI.DSRM_PW.SecurePassword
+            $Out.DCAdmin    = $DCCred
+            $Out.Database   = $GUI.Database.Text
+            $Out.Sysvol     = $GUI.Sysvol.Text 
+            $Out.Log        = $GUI.Log.Text
+            $Out.Sitelink   = $GUI.Sitelink.Text
+            $Out.FQDN       = $GUI.FQDN.Text
+            $Out.NetBIOS    = $GUI.NetBIOS.Text
 
-            $Out | % 
-            {
-                $_.DSRM_PW    = $GUI.DSRM_PW.SecurePassword
-                $_.DCAdmin    = $DCCred
-                $_.Database   = $GUI.Database  | % { $_.Text }
-                $_.Sysvol     = $GUI.Sysvol    | % { $_.Text }
-                $_.Log        = $GUI.Log       | % { $_.Text }
-                $_.Sitelink   = $GUI.Sitelink  | % { $_.Text }
-                $_.FQDN       = $GUI.FQDN      | % { $_.Text }
-                $_.NetBIOS    = $GUI.NetBIOS   | % { $_.Text }
-            }
-
-            Echo $Out
+            
 
             Read-Host "Correct?"
 
             Write-Theme -Function "You're awesome Michael."
 
-            If ( 
         }
 
         Else { Write-Theme -Action "[!] Exception" "Either the user cancelled, or the dialogue failed" }
@@ -568,6 +541,8 @@
 
 
             Wrap-Action "Complete" "[+] Roles have been installed"
+
+
 
             $ADDS = [ Ordered ]@{  SafeModeAdministratorPassword = $GUI.Password.SecurePassword
                                              CreateDnsDelegation = $False
@@ -621,9 +596,13 @@
         
         $CS , $OS = "Computer" , "Operating" | % { GCIM Win32_$( $_ )System }
 
-        "Must enable DNS Suffix/DHCP Static" , "Don't Forget 'regsvr32 schmmgmt.dll'" | % { Write-Warning $_ } 
-        
-        If ( $CS.PartOfDomain -eq $True ) 
+        If ( $OS.Caption -notlike "*Server*" )
+        {
+            Write-Theme -Action "Exception [!]" "Detected operating system is not a Windows Server" 15
+            Write-Theme -Function "Press Enter to Exit" 15
+        }
+
+        If ( $CS.PartOfDomain -eq $True )
         {
             Write-Theme -Action "Domain [+]" "Detected"
             IPMO ActiveDirectory -VB
@@ -642,9 +621,7 @@
             Write-Theme -Function "Collecting Network / Host Information [ 30-45 seconds ]"
                 
             $Time       = [ System.Diagnostics.Stopwatch ]::StartNew()
-
             $Report     = @( Start-NetworkInfo )
-
             $Time.Stop()
 
             Write-Theme -Function "Network Info Collected @: Time elapsed $( $Time.Elapsed )"
@@ -661,12 +638,12 @@
                 {
                     Write-Theme -Action "Issuing [~]" "Domain Controller Setup"
 
-                    $DCControl = @{ DC       = $Report.NetBIOS.Host
-                                    NetBIOS  = $Report.NetBIOS.Name
-                                    Domain   = $Report.DNS
-                                    SiteLink = $Report.SiteLink
-                                    Username = $DCCred.Username
-                                    Password = $DCCred.Password  }
+                    $DCControl = @{ DC         = $Report.NetBIOS.Host
+                                    NetBIOS    = $Report.NetBIOS.Name
+                                    Domain     = $Report.DNS
+                                    SiteLink   = $Report.SiteLink
+                                    Username   = $DCCred.Username
+                                    Password   = $DCCred.GetNetworkCredential().Password  }
 
                     Provision-DomainController @DCControl
 
@@ -679,6 +656,10 @@
                     Exit
                 }
             }
+
+            Else
+            {
+                
 
 
         }
