@@ -158,33 +158,24 @@
     Function Install-HybridDSC #                                                  ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
         
-        $Path     = "$( $ENV:PSModulePath.Split( ';' ) | ? { $_ -like "*$ENV:Username*" } )\Hybrid-DSC".Split( '\' )
-        
-        $Tree     = $Path[0]
+        $Mod    = $ENV:PSModulePath.Split( ';' )
+        $Mod    | % { If ( ( Test-Path $_ ) -ne $True ) { NI $_ -ItemType Directory } }
+        $Hybrid = $Mod | % { GCI $_ -Recurse "*Hybrid-DSC.ps1*" } 
+        $Hybrid | ? { $_ -ne $Null } | % { IPMO $_.FullName ; Echo "Module $( $_.FullName ) Loaded" }
 
-        $X        = 1
-
-        $Path     | % {
-
-            $Tree = "$Tree\$( $Path[$X] )"
-
-            If ( ( Test-Path $Tree ) -eq $False )
-            {
-                NI $Tree -ItemType Directory
-               
+        If ( $Hybrid -eq $Null )
+        {
+            $Drive  = @( Get-NetworkDrive | % { $_.Root } )
+            $DSC    = "$( $Mod | ? { $_ -like "*$env:USERNAME*" } )\Hybrid-DSC" | % { 
+                If ( ( Test-Path $_ ) -ne $True ) { NI $_ -ItemType Directory } Else { GI $_ }
             }
 
-            $X    = $X + 1
+            $Module = @( gci "$( $Drive.Root )\Modules" -Recurse "*Hybrid-DSC.ps*" | % { $_.FullName } )
+            $Module | % { CP $_ $DSC.FullName }
+            $Mod    | % { GCI $_ -Recurse "*Hybrid-DSC.PS1*" } | % { IPMO $_.FullName ; Echo "Module $( $_.FullName ) Loaded" }
+
+
         }
-
-        $Drive    = Get-NetworkDrive | % { $_.Root }
-
-        $Module   = GCI "$Drive\Modules" -Recurse "*-DSC.ps*" | % { $_.FullName }
-
-        $Module   | % { CP $_ $Tree }
-
-        $Tree     | % { GCI $_ -Recurse "*Hybrid-DSC.PS1*" } | % { IPMO $_.FullName ; If ( $? -eq $True ) { Write-Theme -Foot } }
-
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
