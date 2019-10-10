@@ -969,70 +969,72 @@
         #  [ Network Information ]                                                                                         #
         #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
 
-             $NetworkInfo = @( Get-NetworkInfo )
+        $NetworkInfo      = @( Get-NetworkInfo )
+
         If ( $NetworkInfo -ne $Null )
         {   
             $Names        = $NetworkInfo | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name }
-            $Panel        = @{  Items  = $Names
-                                Values = $Names | % { $NetworkInfo.$( $_ ) } }
+            $Values       = $Names | % { $NetworkInfo.$( $_ ) }
         }
 
         Else
         {   
-            $Panel        = @{  Items  = 0..3 | % { "An error occurred" }
-                                Values = 0..3 | % { "No information available" } } 
+            $Names        = 0..3 | % { "An error occurred" }
+            $Values       = 0..3 | % { "No information available" }
         }
             $Section[0]   = "Network Information"
-            $Subtable[0]  = New-Subtable @Panel
+            $Subtable[0]  = New-Subtable -Items $Names -Values $Values
         
         #__________________________________________________________________________________________________________________#
         #  [ DHCP Host Range Information ]                                                                                 #
         #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
 
-            $HostRange    = @( Get-HostRange )
+        $HostRange        = @( Get-HostRange )
 
         If ( $HostRange -ne $Null )
         {
             $Names        = @( $HostRange | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[0,5,3,4,7,6,2,1]
-            $Panel        = @{ Items  = $Names
-                               Values = $Names | % { $HostRange.$( $_ ) } }
+            $Values       = $Names | % { $HostRange.$( $_ ) }
         }
 
         Else
         {   
-            $Panel        = @{ Items  = 0..3 | % { "An error occurred" }
-                               Values = 0..3 | % { "No information available" } }
+            $Names        = 0..3 | % { "An error occurred" }
+            $Values       = 0..3 | % { "No information available" }
         }
+
             $Section[1]   = "Host Range Information"
-            $Subtable[1]  = New-Subtable @Panel
+            $Subtable[1]  = New-Subtable -Items $Names -Values $Values
 
         #__________________________________________________________________________________________________________________#
         #  [ Collect Network Host Information ]                                                                            #
         #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
 
-            $NetworkHosts = @( Get-NetworkHosts -All )
+        $NetworkHosts     = @( Get-NetworkHosts -All )
 
         If ( $NetworkHosts -ne $Null )
         {
-            $Panel        = @{ Items  = $NetworkHosts | % { $_.HostIP  } ; Values = $NetworkHosts | % { $_.HostMAC } }
+            $Names        = $NetworkHosts | % { $_.HostIP  }
+            $Values       = $NetworkHosts | % { $_.HostMAC }
         }
 
         Else
         {   
-            $Panel        = @{  Items  = 0..3 | % { "An error occurred" }
-                                Values = 0..3 | % { "No information available" } } 
+            $Names        = 0..3 | % { "An error occurred" }
+            $Values       = 0..3 | % { "No information available" }
         }
             $Section[2]   = "Network Host IP/MAC"
-            $Subtable[2]  = New-Subtable @Panel
+            $Subtable[2]  = New-Subtable -Items $Names -Values $Values
 
         #__________________________________________________________________________________________________________________#
         #  [ Collect NetBIOS Information / NBTSCAN ]                                                                       #
         #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
 
-            $NetBIOS      = @( Get-NetworkInfo -NetBIOS )
-            $NB           = $NetBIOS | ? { $_.ID -like "*1C*" }
+        $NetBIOS          = @( Get-NetworkInfo -NetBIOS )
         
-            If ( $NB -eq $Null ) { $NB = Get-NetworkInfo -Local | ? { $_.Type -eq "GROUP" } }
+        $NB               = $NetBIOS | ? { $_.ID -like "*1C*" }
+        
+        If ( $NB -eq $Null ) { $NB = Get-NetworkInfo -Local | ? { $_.Type -eq "GROUP" } }
 
             $Names        = @( $NB | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,0,3,1,5,4]
             $Panel        = @{ Items  = $Names ; Values = $Names | % { $NB.$( $_ ) } }
@@ -1044,8 +1046,10 @@
         #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
 
             $Certificate  = @( Get-TelemetryData )
+
             $Names        = @( $Certificate | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,6,4,0,3,1,7,8,5]
-            $Panel        = @{ Items  = $Names ; Values = $Names | % { $Certificate.$( $_ ) } }
+            $Values       = $Names | % { $Certificate.$( $_ ) } 
+
             $Section[4]   = "Certificate / Location Information"
             $SubTable[4]  = New-Subtable @Panel
 
@@ -1100,6 +1104,35 @@
         Return  [ PSCustomObject ]@{ Protocol = $X[0] ; Local = $X[1] ; Foreign = "*:*" ; LinkState = "*:*" ; Stream = "*:*" } }
 
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+    Function Initialize-Server                                                   #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+
+            $Report          = @{ Success = @( ) ; Failure = @( ) }
+            Start-PingSweep  | % { $Report.Success += @( $_.Success ) ; $Report.Failure += @( $_.Failure ) }
+            $New_IPAddress   = $Report.Failure | Select -First 1
+            $Adapter         = Get-NetAdapter               | ? { $_.Status       -eq   "Up" } | Select IFIndex
+            $Gateway         = $Adapter | Get-NetRoute      | ? { $_.RouteMetric  -eq     0  } | Select NextHop
+            $SubnetMask      = $Adapter | Get-NetIPAddress  | ? { $_.PrefixOrigin -eq "DHCP" } | Select PrefixLength
+
+            $IPAddress       = @{    InterfaceIndex = $Adapter.ifIndex
+                                          IPAddress = $New_IPAddress
+                                       PrefixLength = $SubnetMask.PrefixLength
+                                     DefaultGateway = $Gateway.NextHop
+                                      ValidLifeTime = [ TimeSpan ]::MaxValue
+                                  PreferredLifeTime = [ TimeSpan ]::MaxValue }
+
+            New-NetIpAddress @IPAddress
+    
+            $DNS             = @{    InterfaceIndex = $Adapter.ifIndex
+                                   ServerAddresses = "1.1.1.1" , "1.0.0.1" }
+
+            Set-DNSClientServerAddress @DNS
+    
+            0..10 | ? { ( Test-Connection -ComputerName "DSC$_" -Count 1 -EA 0 ) -eq $Null } | % { Rename-Computer "DSC$_" ; Restart-Computer }
+
+    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____ 
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
         Write-Theme -Free ; Sleep 1 # What Free Actually Means                   #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
