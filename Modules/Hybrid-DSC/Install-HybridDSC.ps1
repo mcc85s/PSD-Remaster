@@ -152,7 +152,7 @@
 
         Else { Write-Warning "Either the user cancelled, or the dialogue failed"  }
         
-    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____ 
+    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
     Function Install-HybridDSC #                                                  ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
@@ -174,7 +174,29 @@
             $Module | % { CP $_ $DSC.FullName }
             $Mod    | % { GCI $_ -Recurse "*Hybrid-DSC.PS1*" } | % { IPMO $_.FullName ; Echo "Module $( $_.FullName ) Loaded" }
 
+            $Report          = @{ Success = @( ) ; Failure = @( ) }
+            Start-PingSweep  | % { $Report.Success += @( $_.Success ) ; $Report.Failure += @( $_.Failure ) }
+            $New_IPAddress   = $Report.Failure | Select -First 1
+            $Adapter         = Get-NetAdapter               | ? { $_.Status       -eq   "Up" } | Select IFIndex
+            $Gateway         = $Adapter | Get-NetRoute      | ? { $_.RouteMetric  -eq     0  } | Select NextHop
+            $SubnetMask      = $Adapter | Get-NetIPAddress  | ? { $_.PrefixOrigin -eq "DHCP" } | Select PrefixLength
 
+            $IPAddress       = @{    InterfaceIndex = $Adapter.ifIndex
+                                          IPAddress = $New_IPAddress
+                                       PrefixLength = $SubnetMask.PrefixLength
+                                     DefaultGateway = $Gateway.NextHop
+                                      ValidLifeTime = [ TimeSpan ]::MaxValue
+                                  PreferredLifeTime = [ TimeSpan ]::MaxValue }
+
+            New-NetIpAddress @IPAddress
+    
+            $DNS             = @{    InterfaceIndex = $Adapter.ifIndex
+                                   ServerAddresses = "1.1.1.1" , "1.0.0.1" }
+
+            Set-DNSClientServerAddress @DNS
+    
+            0..10 | ? { ( Test-Connection -ComputerName "DSC$_" -Count 1 -EA 0 ) -eq $Null } | % { Rename-Computer "DSC$_" ; Restart-Computer }
+        
         }
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
