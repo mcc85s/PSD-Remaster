@@ -969,72 +969,70 @@
         #  [ Network Information ]                                                                                         #
         #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
 
-        $NetworkInfo      = @( Get-NetworkInfo )
-
+             $NetworkInfo = @( Get-NetworkInfo )
         If ( $NetworkInfo -ne $Null )
         {   
             $Names        = $NetworkInfo | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name }
-            $Values       = $Names | % { $NetworkInfo.$( $_ ) }
+            $Panel        = @{  Items  = $Names
+                                Values = $Names | % { $NetworkInfo.$( $_ ) } }
         }
 
         Else
         {   
-            $Names        = 0..3 | % { "An error occurred" }
-            $Values       = 0..3 | % { "No information available" }
+            $Panel        = @{  Items  = 0..3 | % { "An error occurred" }
+                                Values = 0..3 | % { "No information available" } } 
         }
             $Section[0]   = "Network Information"
-            $Subtable[0]  = New-Subtable -Items $Names -Values $Values
+            $Subtable[0]  = New-Subtable @Panel
         
         #__________________________________________________________________________________________________________________#
         #  [ DHCP Host Range Information ]                                                                                 #
         #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
 
-        $HostRange        = @( Get-HostRange )
+            $HostRange    = @( Get-HostRange )
 
         If ( $HostRange -ne $Null )
         {
             $Names        = @( $HostRange | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[0,5,3,4,7,6,2,1]
-            $Values       = $Names | % { $HostRange.$( $_ ) }
+            $Panel        = @{ Items  = $Names
+                               Values = $Names | % { $HostRange.$( $_ ) } }
         }
 
         Else
         {   
-            $Names        = 0..3 | % { "An error occurred" }
-            $Values       = 0..3 | % { "No information available" }
+            $Panel        = @{ Items  = 0..3 | % { "An error occurred" }
+                               Values = 0..3 | % { "No information available" } }
         }
-
             $Section[1]   = "Host Range Information"
-            $Subtable[1]  = New-Subtable -Items $Names -Values $Values
+            $Subtable[1]  = New-Subtable @Panel
 
         #__________________________________________________________________________________________________________________#
         #  [ Collect Network Host Information ]                                                                            #
         #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
 
-        $NetworkHosts     = @( Get-NetworkHosts -All )
+            $NetworkHosts = @( Get-NetworkHosts -All )
 
         If ( $NetworkHosts -ne $Null )
         {
-            $Names        = $NetworkHosts | % { $_.HostIP  }
-            $Values       = $NetworkHosts | % { $_.HostMAC }
+            $Panel        = @{ Items  = $NetworkHosts | % { $_.HostIP  } ; Values = $NetworkHosts | % { $_.HostMAC } }
         }
 
         Else
         {   
-            $Names        = 0..3 | % { "An error occurred" }
-            $Values       = 0..3 | % { "No information available" }
+            $Panel        = @{  Items  = 0..3 | % { "An error occurred" }
+                                Values = 0..3 | % { "No information available" } } 
         }
             $Section[2]   = "Network Host IP/MAC"
-            $Subtable[2]  = New-Subtable -Items $Names -Values $Values
+            $Subtable[2]  = New-Subtable @Panel
 
         #__________________________________________________________________________________________________________________#
         #  [ Collect NetBIOS Information / NBTSCAN ]                                                                       #
         #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
 
-        $NetBIOS          = @( Get-NetworkInfo -NetBIOS )
+            $NetBIOS      = @( Get-NetworkInfo -NetBIOS )
+            $NB           = $NetBIOS | ? { $_.ID -like "*1C*" }
         
-        $NB               = $NetBIOS | ? { $_.ID -like "*1C*" }
-        
-        If ( $NB -eq $Null ) { $NB = Get-NetworkInfo -Local | ? { $_.Type -eq "GROUP" } }
+            If ( $NB -eq $Null ) { $NB = Get-NetworkInfo -Local | ? { $_.Type -eq "GROUP" } }
 
             $Names        = @( $NB | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,0,3,1,5,4]
             $Panel        = @{ Items  = $Names ; Values = $Names | % { $NB.$( $_ ) } }
@@ -1046,10 +1044,8 @@
         #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
 
             $Certificate  = @( Get-TelemetryData )
-
             $Names        = @( $Certificate | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,6,4,0,3,1,7,8,5]
-            $Values       = $Names | % { $Certificate.$( $_ ) } 
-
+            $Panel        = @{ Items  = $Names ; Values = $Names | % { $Certificate.$( $_ ) } }
             $Section[4]   = "Certificate / Location Information"
             $SubTable[4]  = New-Subtable @Panel
 
@@ -1132,6 +1128,31 @@
     
             0..10 | ? { ( Test-Connection -ComputerName "DSC$_" -Count 1 -EA 0 ) -eq $Null } | % { Rename-Computer "DSC$_" ; Restart-Computer }
 
+    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____ 
+#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+    Function Port-Scan                                                           #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#\______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+
+        [ CmdLetBinding () ] Param (
+
+            [ ValidateNotNullOrEmpty()][ Parameter ( Position = 0 , ParameterSetName = "0" , HelpMessage = "Return HostIPs" ) ][ Int ] $Port = 80 )
+
+            $Collection = Start-PingSweep
+            $S = $Collection.Success
+            $C = $S.Count
+
+            $Report = 0..( $C - 1 ) | % {
+
+                Write-Progress -Activity "Scanning Network $( $S[$_] )" -PercentComplete ( ( $_ / $C ) * 100 )
+
+                If ( Test-Connection –BufferSize 32 –Count 1 –Quiet –ComputerName $S[$_] )
+                {
+                    Return New-Object System.Net.Sockets.TcpClient -Args ( $S[$_] , $Port )
+                }
+            }
+    
+            $Report.Client | FT -AutoSize 
     }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____ 
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
