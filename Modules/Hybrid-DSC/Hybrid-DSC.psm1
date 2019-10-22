@@ -25,7 +25,7 @@
 
     Export-ModuleMember -Function New-SubTable , New-Table , Write-Theme , Convert-XAMLToWindow , Show-WPFWindow , Get-NetworkInfo , 
     Get-HostRange , Get-NetworkHosts , Get-HostMask , Get-TelemetryData , Get-NBSVC , Start-PingSweep , Start-NetworkInfo , Get-NetworkStatistics ,
-    Initialize-Server , Provision-DomainController , Port-Scan
+    Initialize-Server , Provision-DomainController , Initialize-PortScan
 
 # ____                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
