@@ -246,13 +246,16 @@
 
         $GC , $GCS ,  $GR , $GRS = "Column" , "Row" | % { "$G.$_" | % { $_ , "$_`Span" } }
 
-        $GRD , $GCD = "$G.$RD`s" , "$G.$CD`s"
+        $GRD , $GCD = $RD , $CD | % { "$G.$_`s" }
 
         $FT        = Collect-FeaturesState -All ; 
 
         Function Show-DCPromoGUI
         {
-            Param ( [ ValidateSet ( 0 , 1 , 2 , 3 ) ] [ Parameter ( Position = 0 , Mandatory = $True ) ] [ Int ] $Profile = 0 )
+            [ CmdLetBinding () ] Param ( 
+            
+                [ ValidateSet ( 0 , 1 , 2 , 3 ) ] [ Parameter ( Position = 0 , Mandatory = $True ) ] [ Int ] $Profile = 0 
+                [ Switch ] $Debug , [ Switch ] $)
 
             # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____    ____  
             #//¯¯\\__[  Declare Common Vars  ]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
