@@ -39,9 +39,9 @@
     Function Get-FeatureList # Collects all server features that pertain to DSC   ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#)______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
         
-        Return @( @( "AD-Domain-Services" , "DHCP" , "DNS" , "GPMC" ) ; @( "" ; @( "-AdminCenter" , "-PowerShell" , "-Tools" | % { "-AD$_" } ) + 
-        @( "" , "-Tools" | % { "-ADDS$_" } ) + "-DHCP" , "-DNS-Server" , "-Role-Tools" ) | % { "RSAT$_" } ;
-        @( "" , "-AdminPack" , "-Deployment" , "-Transport"  | % { "WDS$_" } ) )
+        Return @( "AD-Domain-Services" , "DHCP" , "DNS" , "GPMC" ; @( "" ; "-AdminCenter" , "-PowerShell" , "-Tools" | % { "-AD$_" } ; 
+        "" , "-Tools" | % { "-ADDS$_" } ; "-DHCP" , "-DNS-Server" , "-Role-Tools" ) | % { "RSAT$_" } ;
+        "" , "-AdminPack" , "-Deployment" , "-Transport"  | % { "WDS$_" } )
 
     }
 # ____                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
@@ -265,11 +265,10 @@
 
         $FT        = Collect-FeaturesState -All
 
-        Function Initialize-DCPromoGUI
-        {
-            [ CmdLetBinding () ] Param ( [ OutputType ( 
-
-                
+    #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+    #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+        Function Initialize-DCPromoControl                                           #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+        {#)______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯              
 
             # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____    ____  
             #//¯¯\\__[  Declare Common Vars  ]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
@@ -327,14 +326,14 @@
                     $Out.$( $X[0].Replace('-','_') ) = $B[ ( 0..1 | ? { $YZ[$_] -eq $X[1] } ) ]                            #//¯¯\\ 
                 }                                                                                                          #\\__// 
                                                                                                                            #//¯¯\\ 
-
+                Return $Out
+        }
 
         Function Show-DCPromoGUI
         {
             [ CmdLetBinding () ] Param ( 
             
-                [ ValidateSet( 0 , 1 , 2 , 3 ) ] [ Parameter ( Position = 0 , Mandatory = $True ) ] [ Int ] $Profile = 0 , 
-                [ Parameter ( Position = 1 ) ][ Switch ] $Validate )
+                [ ValidateSet( 0,1,2,3 ) ] [ Parameter ( Position = 0 , Mandatory = $True ) ] [ Int ] $Profile = 0 )
 
             # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
             #//¯¯\\__[_ Declare Common Vars _]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
@@ -457,7 +456,7 @@
             # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
             #//¯¯\\__[__ Services Selection _]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-                                                                                                                           #//¯¯\\
+                                                                                                                           #//¯¯\\ 
                 $SVC = 0..( $FT.Count - 1 ) | % {                                                                          #\\__// 
                     $X0 = $FT[$_].Split( ' ' )[0] ; $X1 = $X0.Replace( '-' , '_' ) ; $X2 = $Out.$X1                        #//¯¯\\ 
                     "<$TBL $GC = '0' $GR = '$_' $MA = '5' TextAlignment = 'Right' >$X0`:</$TBL>" ,                         #\\__// 
@@ -592,19 +591,11 @@
             #//¯¯\\__[_____ Return XAML _______]____//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
 
-            If ( !$Validate ) 
-            { 
-                $Target = @( )
-                ForEach ( $i in 0..( $XML.Count - 1 ) ) { $Target += @( $XML[$I] ) }
-                Return [ String ]$Target
-            } 
-            
-            Else 
-            { 
-                Return $XML
-            }
-    }
+                Return @( $XML[00..14] )
+        }
 
+
+    $Out  = Initialize-DCPromoControl
     $XAML = Show-DCPromoGUI -Profile 0
 
     $NamedElements = $Out | GM | ? Membertype -eq NoteProperty | % { $_.Name }
@@ -617,7 +608,7 @@
     #"SiteName" , "InstallDNS" , "CreateDNSDelegation" , "NoGlobalCatalog" , "CriticalReplicationOnly" ) /// OR ///
     
     
-    $GUI = Convert-XAMLtoWindow -Xaml $XAML -NE $NamedElements -PassThru
+    $GUI = Convert-XAMLtoWindow -Xaml $XA_ML -NE $NamedElements -PassThru
 
         If ( $GUI.Process.SelectedIndex -eq 0 )
         { 
