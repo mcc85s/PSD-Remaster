@@ -1,4 +1,4 @@
-# ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ 
+# ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____  
 #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
 #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\   ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯   //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
@@ -21,19 +21,21 @@
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
 # ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯  
     
-    Using Namespace System.Security.Principal
-    Using Namespace System.Management.Automation
-    Using Namespace System.DirectoryServices
+    "Security.Principal" , "Management.Automation" , "DirectoryServices" | % { IEX "Using Namespace System.$_" } 
+
+    #Using Namespace System.Security.Principal
+    #Using Namespace System.Management.Automation
+    #Using Namespace System.DirectoryServices
     
     $ENV:PSModulePath.Split( ';' ) | % { GCI $_ -Recurse "Hybrid-DSC.psm1" } | % {
         
         IPMO $_.FullName
         
-        If ( $? -ne $True ) { Write-Error "Module Not Loaded/Found" }
+        If ( $? -ne $True ) { Write-Error "Module Not Loaded/Found" ; Read-Host "Press Enter to Exit" ; Exit }
         
         Sleep 1
-
-    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
+                                                                                     #____    ____    ____    ____    ____    ____    ____              
+}#____                                                                            ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___          
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
     Function Get-FeatureList # Collects all server features that pertain to DSC   ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
@@ -42,9 +44,8 @@
         Return @( "AD-Domain-Services" , "DHCP" , "DNS" , "GPMC" ; @( "" ; "-AdminCenter" , "-PowerShell" , "-Tools" | % { "-AD$_" } ; 
         "" , "-Tools" | % { "-ADDS$_" } ; "-DHCP" , "-DNS-Server" , "-Role-Tools" ) | % { "RSAT$_" } ;
         "" , "-AdminPack" , "-Deployment" , "-Transport"  | % { "WDS$_" } )
-
-    }
-# ____                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
+                                                                                     #____    ____    ____    ____    ____    ____    ____              
+}#____                                                                            ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___          
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
     Function Collect-FeaturesState # Determines Installation Loadout              ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
@@ -60,7 +61,8 @@
 
         Return $( If ( !$All ) { $Table } If ( $All ) { $Array } )
 
-    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
+                                                                                     #____    ____    ____    ____    ____    ____    ____              
+}#____                                                                            ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___          
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
     Function Enter-ServiceAccount # Allows entry / use of an AD service account   ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
@@ -168,13 +170,29 @@
         { 
             Write-Theme -Action "Login [!]" "Failed"
         }
-    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
+                                                                                     #____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____    ____      
+}#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Convert-ArrayToHereString   #_______________________________________________//¯¯\\__//¯¯\\==//¯¯\----/¯¯\\==//¯¯\----/¯¯\\==//¯¯\\__//¯¯¯  
+    {#]__________________________________//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ -- ¯¯¯¯ -- ¯¯¯¯ -- ¯¯¯¯ -- ¯¯¯¯ -- ¯¯¯¯ -- ¯¯¯¯ -- ¯¯¯¯      
+        [ CmdLetBinding () ] [ OutputType ( "String" ) ] Param (
+            
+            [ Parameter ( Position = 0 , Mandatory = $True ) ] [ Array ] $Input )
+
+        $Return = ""
+        0..( $Launch.Count - 1 ) | % { $Return += "$( $Launch[$_] )`n" }
+        Return $Return
+                                                                                     #____    ____    ____    ____    ____    ____    ____              
+}#____                                                                            ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___          
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
     Function Convert-XAMLToWindow # Modified, originally by Dr. Tobias Weltner    ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#)______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+    {#]______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
         Param ( [ Parameter ( Mandatory ) ] [ String ] $XAML , [ String [] ] $NE = $Null , [ Switch ] $PassThru )
+
+        If ( $XAML.Count -gt 1 ) { $XAML = Convert-ArrayToHereString -Input $XAML }
 
         @( "Framework" , "Core" | % { "Presentation$_" } ) + "WindowsBase" | % { Add-Type -AssemblyName $_ }
  
@@ -184,7 +202,8 @@
  
         If ( $PassThru ) { $OP } Else { $Null = $GUI.Dispatcher.InvokeAsync( { $OP = $GUI.ShowDialog() ; SV -Name OP -Value $OP -Scope 1 } ).Wait() ; $OP }
 
-    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
+                                                                                     #____    ____    ____    ____    ____    ____    ____              
+}#____                                                                            ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___          
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
     Function Show-WPFWindow # Modified, originally by Dr. Tobias Weltner          ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
@@ -193,8 +212,8 @@
         Param ( [ Parameter ( Mandatory ) ] [ Windows.Window ] $GUI )
 
         $OP = $Null ; $Null = $GUI.Dispatcher.InvokeAsync( { $OP = $GUI.ShowDialog() ; SV -Name OP -Value $OP -Scope 1 } ).Wait() ; $OP 
-
-    }#                                                                            ____    ____    ____    ____    ____    ____    ____    ____    ____  
+                                                                                     #____    ____    ____    ____    ____    ____    ____              
+}#____                                                                            ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___          
 #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
     #Function Provision-DomainController                                          #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
@@ -213,61 +232,80 @@
     #  ¯¯¯\\__[ WPF Glossary / Index ]____________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     #      ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
-        $Glossary  = "   `$W = 'Width'             " , "   `$H = 'Height'            " , "  `$MA = 'Margin'          " , 
-                     "  `$MN = 'Menu'              " , " `$MNI = 'MenuItem'          " , "  `$HD = 'Header'          " , 
-                     "  `$GB = 'GroupBox'          " , " `$GBI = 'GroupBoxItem'      " , "  `$CB = 'ComboBox'        " , 
-                     " `$CBI = 'ComboBoxItem'      " , " `$CHK = 'CheckBox'          " , "  `$TB = 'TextBox'         " , 
-                     " `$TBL = 'TextBlock'         " , "   `$G = 'Grid'              " , "  `$RD = 'RowDefinition'   " , 
-                     "  `$CD = 'ColumnDefinition'  " , "  `$GC = 'GridColumn'        " , " `$GCS = 'GridColumnSpan'  " , 
-                     "  `$GR = 'GridRow'           " , " `$GRS = 'GridRowSpan'       " , "  `$SI = 'SelectedIndex'   " , 
-                     "  `$LA = 'Label'             " , "  `$BU = 'Button'            " , "  `$CO = 'Content'         " , 
-                     "   `$Q = 'Name'              "
-        
-        $Glossary | % { IEX $_ }
+            $Glossary  = 
+            "   `$W = 'Width'             " , "   `$H = 'Height'            " , "  `$MA = 'Margin'          " , 
+            "  `$MN = 'Menu'              " , " `$MNI = 'MenuItem'          " , "  `$HD = 'Header'          " , 
+            "  `$GB = 'GroupBox'          " , " `$GBI = 'GroupBoxItem'      " , "  `$CB = 'ComboBox'        " , 
+            " `$CBI = 'ComboBoxItem'      " , " `$CHK = 'CheckBox'          " , "  `$TB = 'TextBox'         " , 
+            " `$TBL = 'TextBlock'         " , "   `$G = 'Grid'              " , "  `$RD = 'RowDefinition'   " , 
+            "  `$CD = 'ColumnDefinition'  " , "  `$GC = 'Grid.Column'       " , " `$GCS = 'Grid.ColumnSpan' " , 
+            "  `$GR = 'Grid.Row'          " , " `$GRS = 'Grid.RowSpan'      " , "  `$SI = 'SelectedIndex'   " , 
+            "  `$LA = 'Label'             " , "  `$BU = 'Button'            " , "  `$CO = 'Content'         " , 
+            "   `$Q = 'Name'              "
+            
+            $Glossary | % { IEX $_ } ; $GRD , $GCD = $RD , $CD | % { "$G.$_`s" }
+            $Glossary += " `$GRD = '$GRD'" , " `$GCD = '$GCD'" 
 
-        $GRD , $GCD = $RD , $CD | % { "$G.$_`s" }
+            # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-        $Glossary += " `$GRD = '$GRD'" , " `$GCD = '$GCD'" 
+            #$Section  =  0..1
+            #$Subtable =  0..1
 
-        $HAL , $HCAL , $VAL , $VCAL , $SP = 0..4 | % { [ Ordered ]@{ } }
-        
-        0..13 | % {   $SP.Add( $_ , ( "    " * $_ ) ) }
-        
-        $I = "Left" , "Center" ,  "Right" ; $J =  "Top" , "Center" , "Bottom" 
-        $K = "Horizontal" , "Vertical" | % { $_ , "$_`Content" } | % { "$_`Alignment" }
-        $L = " `$HAL" , "`$HCAL" , " `$VAL" , "`$VCAL"
 
-        0..2  | % {  $HAL.Add( $_ , "$( $K[0] ) = '$( $I[$_] )'" )
-                    $HCAL.Add( $_ , "$( $K[1] ) = '$( $I[$_] )'" )
-                     $VAL.Add( $_ , "$( $K[2] ) = '$( $J[$_] )'" )  
-                    $VCAL.Add( $_ , "$( $K[3] ) = '$( $J[$_] )'" ) }
-        
-        $Count = 0..1
-        $Section , $Subtable = 0..1 | % { $Count }
+            #$Names  , $Values = @( ) , @( )
+            #$Glossary | % { $Names += $_.Split('=')[0] ; $Values += $_.Split('=')[1] }
 
-        $Names  , $Values = @( ) , @( )
 
-        $Glossary | % { $Names += $_.Split('=')[0] ; $Values += $_.Split('=')[1] }
+            #$Section[0]  = "WPF/XAML Shortcut Glossary"
+            #$Subtable[0] = New-SubTable -Items $Names -Values $Values
 
-        $Subtable = New-SubTable -Items $Names -Values $Values
+            #$Names  , $Values = @( ) , @( )
 
-        $Glossary += " - [ H/V Positional ] - " | % { ( "_" * $_.Length ) , $_ , ( "¯" * $_.Length ) }
+            $HAL , $HCAL , $VAL , $VCAL , $SP = 0..4 | % { [ Ordered ]@{ } }
 
-        $C = 0
+            0..13 | % { $SP.Add( $_ , ( "    " * $_ ) ) }
+                    
+            $I =       "Left" ,   "Center" ,  "Right"
+            $J =        "Top" ,   "Center" , "Bottom"
+            $K = "Horizontal" , "Vertical" | % { $_ , "$_`Content" } | % { "$_`Alignment" }
+            $L =     " `$HAL" ,   "`$HCAL" , " `$VAL" , "`$VCAL"
 
-        $HAL , $HCAL , $VAL , $VCAL | % { $N = $L[$C] ; ForEach ( $I in 0..2 ) { $Glossary += "$N[$I] = ( $( $_[$I] ) )" } ; $C ++ }
+            0..2  | % {  $HAL.Add( $_ , "$( $K[0] ) = '$( $I[$_] )'" )
+                        $HCAL.Add( $_ , "$( $K[1] ) = '$( $I[$_] )'" )
+                         $VAL.Add( $_ , "$( $K[2] ) = '$( $J[$_] )'" )
+                        $VCAL.Add( $_ , "$( $K[3] ) = '$( $J[$_] )'" ) }
 
-        Write-Theme -Action   "Glossary [+]" "Loaded"
+            #    $C = 0
+            #    $HAL , $HCAL , $VAL , $VCAL | % { 
+            #   
+            #    $N = $L[$C]
+            #    ForEach ( $I in 0..2 ) 
+            #    { 
+            #        $Names    += "$N[$I]"
+            #        $Values   += ( $( $_[$I] ) )
+            #        $Glossary += "$N[$I] = ( $( $_[$I] ) )" 
+            #    } 
+            #    $C ++ 
+            #}
 
-        # To clear, these: 
-        # $W , $H , $MA , $MN , $MNI , $HD , $CHK , $CO , $BU , $Q , $GB , $GBI , $CB , $CBI , 
-        # $TB , $TBL , $LA , $G , $RD , $CD , $SI , $GC , $GCS , $GR , $GRS = $Null
+            #$Section[1]  = "Alignment/Positional Attributes"
+            #$Subtable[1] = New-SubTable -Items $Names -Values $Values
 
-        $FT        = Collect-FeaturesState -All
+            #$Table = New-Table -Title "XAML / Glossary" -Depth 2 -ID $Section -Table $Subtable
+
+            #Write-Theme -Table $Table
+            Write-Theme -Action "Loaded [+]" "WPF/XAML Glossary Definitions" 11 12 15
+
+
+            # To clear, these: 
+            # $W , $H , $MA , $MN , $MNI , $HD , $CHK , $CO , $BU , $Q , $GB , $GBI , $CB , $CBI , 
+            # $TB , $TBL , $LA , $G , $RD , $CD , $SI , $GC , $GCS , $GR , $GRS = $Null
+
+            $FT        = Collect-FeaturesState -All
 
     #//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
     #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-        Function Initialize-DCPromoControl                                           #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+        Function Initialize-DCPromoControl # Makes developing GUI lil less miserable #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
         {#)______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯              
 
             # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____    ____  
@@ -296,9 +334,9 @@
                 DomainMode              = "" ; ParentDomainName        = "" ; DatabasePath            = "" ;               #//¯¯\\ 
                 SysvolPath              = "" ; LogPath                 = "" ; Credential              = "" ;               #\\__// 
                 DomainName              = "" ; DomainNetBIOSName       = "" ; NewDomainName           = "" ;               #//¯¯\\ 
-                NewDomainNetBIOSName    = "" ; SiteName                = "" ; InstallDns              =  0 ;               #\\__// 
-                CreateDnsDelegation     =  0 ; NoGlobalCatalog         =  0 ; CriticalReplicationOnly =  0 ;               #//¯¯\\ 
-                NoRebootUponCompletion  = "" ; Force                   = "" ;                                              #\\__// 
+                NewDomainNetBIOSName    = "" ; SiteName                = "" ; ReplicationSourceDC     = "" ;               #\\__//
+                InstallDns              =  0 ; CreateDnsDelegation     =  0 ; NoGlobalCatalog         =  0 ;               #//¯¯\\ 
+                CriticalReplicationOnly =  0 ; NoRebootUponCompletion  = "" ; Force                   = "" ;               #\\__// 
                                                                                                                            #//¯¯\\ 
                 SafeModeAdministratorPassword = "" }                                                                       #\\__// 
                 #^¯¯¯[   DSRM   ]¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯^#                                                                       #//¯¯\\ 
@@ -322,19 +360,28 @@
                                                                                                                            #//¯¯\\ 
                 ForEach ( $i in ( 0..( $FT.Count - 1 ) ) )                                                                 #\\__// 
                 {                                                                                                          #//¯¯\\ 
-                    $X = $FT[$I].Split(' ')                                                                                #\\__// 
-                    $Out.$( $X[0].Replace('-','_') ) = $B[ ( 0..1 | ? { $YZ[$_] -eq $X[1] } ) ]                            #//¯¯\\ 
+                    $X = $FT[$I].Split( ' ' )                                                                              #\\__// 
+                    $Out.$( $X[0].Replace( '-' , '_' ) ) = $B[(0..1| ? { $YZ[$_] -eq $X[1] })]                             #//¯¯\\ 
                 }                                                                                                          #\\__// 
                                                                                                                            #//¯¯\\ 
-                Return $Out
-        }
+                Return $Out                                                                                                #\\__//
+        }                                                                                                                  #//¯¯\\ 
+            # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
+            #//¯¯\\__[___ Parts Done Bro ____]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+            #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__//
 
-        Function Show-DCPromoGUI
-        {
-            [ CmdLetBinding () ] Param ( 
-            
-                [ ValidateSet( 0,1,2,3 ) ] [ Parameter ( Position = 0 , Mandatory = $True ) ] [ Int ] $Profile = 0 )
-
+    # ____    ____                                   ____    ____    ____    ____    ____    ____    ____    ____    ____    ____  
+    #//¯¯\\__//¯¯\\_________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//
+        Function Show-DCPromoGUI # It tells the window to stop being such a sissy   #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+        {#)_______________________________________[ It might not listen though ]________/¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+                                                                                                                           #//¯¯\\ 
+            [ CmdLetBinding () ] Param (                                                                                   #\\__// 
+                                                                                                                           #//¯¯\\ 
+                [ ValidateSet( 0,1,2,3 ) ][ Parameter ( Position = 0 , Mandatory = $True ) ][    Int ] $Profile = 0 ,      #\\__// 
+                [ Parameter  ( Position = 1 , HelpMessage = "Return As Hashtable" ) ]       [ Switch ] $HashTable   )      #//¯¯\\ 
+                                                                                                                           #\\__// 
+                                                                                                                           #//¯¯\\ 
             # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
             #//¯¯\\__[_ Declare Common Vars _]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
@@ -431,15 +478,15 @@
                            "<$TB $Q = '$_`DomainName' Text = '&lt;Domain Name&gt;' $H = '20' $MA = '5' />" , "</$GB>"      #//¯¯\\ 
                     Return 0..2 | % { $X[$_] + $Y[$_] } }                                                                  #\\__// 
                                                                                                                            #//¯¯\\ 
-                $Neither = $SP[6] + "<$GB $HD = 'Clone Domain Controller' $MA = '5' $G.$CS = '2' />"                       #\\__// 
+                $Neither = $SP[6] + "<$GB $HD = 'Clone Domain Controller' $MA = '5' $GCS = '2' />"                         #\\__// 
                                                                                                                            #//¯¯\\ 
                 $Top = @{ 0 = @( $ForID ; $DomID ) ; 1 = @( $ParID ; $DomID ) ; 2 = @( $ParID ; $DomID ) ; 3 = $Neither }  #\\__// 
                                                                                                                            #//¯¯\\ 
-                If ( $P -eq 0 ) { $Out.ParentDomainName = "N/A" } ; If ( $P -in 1,2 ) { $Out.ForestMode = "N/A" }          #\\__// 
-                If ( $P -eq 3 ) { $Out | % { $_.ForestMode , $_.DomainMode , $_.ParentDomainName = 0..2 | % { "N/A" } } }  #//¯¯\\ 
-                                                                                                                           #\\__//  
-                $XML.Add( "05" , @( $Top[$P] ) )                                                                           #//¯¯\\ 
-                                                                                                                           #\\__// 
+                If ( $P -eq   0 ) { $Out | % { $_.ParentDomainName , $_.Credential = 0..1 | % { "N/A" } } }                #\\__// 
+                If ( $P -in 1,2 ) { $Out.ForestMode = "N/A" }                                                              #//¯¯\\ 
+                If ( $P -eq   3 ) { $Out | % { $_.ForestMode , $_.DomainMode , $_.ParentDomainName = 0..2 | % { "N/A" } } }#\\__// 
+                                                                                                                           #//¯¯\\ 
+                $XML.Add( "05" , @( $Top[$P] ) )                                                                           #\\__// 
                                                                                                                            #//¯¯\\ 
             # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
             #//¯¯\\__[_______ Framing _______]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
@@ -543,10 +590,10 @@
                                                                                                                            #//¯¯\\ 
                 $RoleCN = "Install DNS" , "Create DNS Delegation" , "No Global Catalog" , "Critical Replication Only"      #\\__// 
                 $RoleID = $RoleCN | % { $_.Replace( " " , "" ) }                                                           #//¯¯\\ 
-                $RoleSw = @{ 0 = 1 , 1 , 0 , 0 ; 1 = 1 , 0 , 1 , 1 ; 2 = 1 , 0 , 1 , 1 ; 3 = 1 , 1 , 1 , 1 }               #\\__// 
+                $RoleSw = @{ 0 = 1 , 1 , 0 , 0 ; 1 = 1 , 1 , 1 , 0 ; 2 = 1 , 1 , 1 , 0 ; 3 = 1 , 1 , 1 , 1 }               #\\__// 
                 $RoleFL = @{ 0 = 1 , 0 , 0 , 0 ; 1 = 1 , 0 , 0 , 0 ; 2 = 1 , 0 , 0 , 1 ; 3 = 1 , 0 , 0 , 0 }               #//¯¯\\ 
                                                                                                                            #\\__// 
-                $RX = $RoleSW[$P] | % { $B[$_] } ; $RY = $RoleFL[$P] | % { $B[$_] }                                        #//¯¯\\ 
+                $RX = $RoleSW[1] | % { $B[$_] } ; $RY = $RoleFL[1] | % { $B[$_] }                                          #//¯¯\\ 
                 If ( $FT[2] -like "*[X]*" ) { $RX[0] , $RY[0] = $B[0..1] }                                                 #\\__// 
                                                                                                                            #//¯¯\\ 
                 $Roles = 0..3 | % { $X0 , $X1 , $X2 , $X3 = $RX[$_] , $RY[$_] , $RoleCN[$_] , $RoleID[$_]                  #\\__// 
@@ -590,85 +637,68 @@
             # ____   ___________________________     ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
             #//¯¯\\__[_____ Return XAML _______]____//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-
-                Return @( $XML[00..14] )
-        }
-
-
-    $Out  = Initialize-DCPromoControl
-    $XAML = Show-DCPromoGUI -Profile 0
-
-    $NamedElements = $Out | GM | ? Membertype -eq NoteProperty | % { $_.Name }
-
-    #@( "Forest" , "Tree" , "Child" , "Clone" , "DomainType" , "ForestMode" , "DomainMode" , 
-    #"ParentDomainName" , "AD_Domain_Services" , "DHCP" , "DNS" , "GPMC" , "RSAT" ; @( "_AdminCenter" , "_PowerShell" , 
-    #"_Tools" , "DS" , "DS_Tools" | % { "AD$_" } ) + "DHCP" , "DNS" , "Role_Tools" | % { "RSAT_$_" } ; "" , "_AdminPack" , 
-    #"_Deployment" , "_Transport" | % { "WDS$_" } ; "DCCred" ,     "Admin" , "Enter" ; "Database" , "Sysvol" , 
-    #"Log" | % { "$_`Path" } ; "Credential" ; "" , "New" | % { "$_`Domain" } | % { $_ , "$_`NetBIOS" } | % { "$_`Name" } ; 
-    #"SiteName" , "InstallDNS" , "CreateDNSDelegation" , "NoGlobalCatalog" , "CriticalReplicationOnly" ) /// OR ///
+                                                                                                                           #//¯¯\\ 
+                If ( $Debug ) { $Return = $XML }                                                                           #\\__// 
+                Else { $Return = @( )                                                                                      #//¯¯\\ 
+                ForEach ( $i in 0..14 ) { 0..( $XML[$I].Count - 1 ) | % { $Return += $XML[$I][$_] } } }                    #\\__// 
+                Return $Return                                                                                             #//¯¯\\ 
+            }                                                                                                              #\\__// 
+                                                                                                                           #//¯¯\\ 
+            # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
+            #//¯¯\\__[___ Parts Done Bro ____]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+            #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+                                                                                                                            #¯¯¯¯  
     
+            $Out           = Initialize-DCPromoControl                                         # Control Template
+            $NamedElements = $Out | GM | ? Membertype -eq NoteProperty | % { $_.Name }         # Named Elements
+            $Launch        = Show-DCPromoGUI -Profile 0                                        # XAML Collection
     
-    $GUI = Convert-XAMLtoWindow -Xaml $XA_ML -NE $NamedElements -PassThru
+            If ( $Launch.Count -gt 1 ) { $Launch = Convert-ArrayToHereString -Input $Launch }
 
-        If ( $GUI.Process.SelectedIndex -eq 0 )
-        { 
+            $GUI           = Convert-XAMLtoWindow -Xaml $Launch -NE $NamedElements -PassThru
+            $Status        = "[_]" , 1 ; $Toggle = $Out , $GUI
 
+            # Services Filter
+
+            $Items = $( $NamedElements[  ( $Out | % { If (            $_.Forest -eq 1 ) { 4,5,12,19,20,21,23,24 } 
+                                                      If ( $_.Tree -or $_.Child -eq 1 ) { 5,10,11,15,24         }
+                                                      If (             $_.Clone -eq 1 ) { 9,11,12,15,19,20,23   } } ) ] )
+
+            ForEach ( $i in 0..1 ) { $Items | % { $Toggle[$I].$( $_ ) = $Status[$I] } }
+
+            $Active = @( )
+            $GFL    = Get-FeatureList | % { $_.Replace( '-' , '_' ) }
+
+            If ( ( $Out.Forest -ne 1 ) -and ( $GUI.Forest.IsPressed ) )
+            {            
+                ForEach ( $F in 0..( $GFL.Count - 1 ) )
+                {
+                    $GUI.$( $GFL[$F] ) | ? { $_.IsEnabled } | % { $Active += $_.Name }
+                }
+            }
+        
+        $Active | % { $GUI.$_.Add_Checked( { $Out.$_ = $B[0] } ) ; $GUI.$_.Add_UnChecked( { $Out.$_ = $B[1] } ) }
+
+        $Roles = $NamedElements[3,5,17,21]
+        $RoleZ = @( )
+
+
+        ForEach ( $I in                         @( "InstallDNS" , "CreateDNSDelegation" , "NoGlobalCatalog" , "CriticalReplicationOnly" ) | Sort )
+            {
+                0..( $NamedElements.Count - 1 ) | ? { $I -eq $NamedElements[$_] } | % { Echo "[$_] $( $NamedElements[$_] )" }
+            }
+
+        ForEach ( $F in 0..( $Roles.Count - 1 ) )
+        {
+            $GUI.$( $Roles[$F] ) | ? { $_.IsEnabled } | % { $RoleZ += $_.Name }
         }
 
-        If ( $GUI.Process.SelectedIndex -eq 1 )
-            { 
-                $Process              = 1
-                $GUI.Branch.IsEnabled = $True
-                $Out.DomainType       = "TreeDomain"
-            }
-
-            If ( $GUI.Process.SelectedIndex -eq 2 )
-            { 
-                $Process              = 2
-                $GUI.Branch.IsEnabled = $True
-                $Out.DomainType       = "ChildDomain"
-            }
-
-            If ( $GUI.Process.SelectedIndex -eq 3 )
-            { 
-                $Process              = 3
-                $GUI.Branch.IsEnabled = $False
-                $Out.DomainType       = ""
-            }
-            
-            If ( $GUI.Process.SelectedIndex -eq 4 )
-            { 
-                $Process              = 4
-                $GUI.Branch.IsEnabled = $False
-                $Out.DomainType       = ""
-            }
-        }
-
-
-
-        $GUI.CB_0         | % { $_.Add_Checked( { $Out.CB_0  = 1 } ) ; $_.Add_UnChecked( { $Out.CB_0  = 0 } ) }
-        $GUI.CB_1         | % { $_.Add_Checked( { $Out.CB_1  = 1 } ) ; $_.Add_UnChecked( { $Out.CB_1  = 0 } ) }
-        $GUI.CB_2         | % { $_.Add_Checked( { $Out.CB_2  = 1 } ) ; $_.Add_UnChecked( { $Out.CB_2  = 0 } ) }
-        $GUI.CB_3         | % { $_.Add_Checked( { $Out.CB_3  = 1 } ) ; $_.Add_UnChecked( { $Out.CB_3  = 0 } ) }
-        $GUI.CB_4         | % { $_.Add_Checked( { $Out.CB_4  = 1 } ) ; $_.Add_UnChecked( { $Out.CB_4  = 0 } ) }
-        $GUI.CB_5         | % { $_.Add_Checked( { $Out.CB_5  = 1 } ) ; $_.Add_UnChecked( { $Out.CB_5  = 0 } ) }
-        $GUI.CB_6         | % { $_.Add_Checked( { $Out.CB_6  = 1 } ) ; $_.Add_UnChecked( { $Out.CB_6  = 0 } ) }
-        $GUI.CB_7         | % { $_.Add_Checked( { $Out.CB_7  = 1 } ) ; $_.Add_UnChecked( { $Out.CB_7  = 0 } ) }
-        $GUI.CB_8         | % { $_.Add_Checked( { $Out.CB_8  = 1 } ) ; $_.Add_UnChecked( { $Out.CB_8  = 0 } ) }
-        $GUI.CB_9         | % { $_.Add_Checked( { $Out.CB_9  = 1 } ) ; $_.Add_UnChecked( { $Out.CB_9  = 0 } ) }
-        $GUI.CB_10        | % { $_.Add_Checked( { $Out.CB_10 = 1 } ) ; $_.Add_UnChecked( { $Out.CB_10 = 0 } ) }
-        $GUI.CB_11        | % { $_.Add_Checked( { $Out.CB_11 = 1 } ) ; $_.Add_UnChecked( { $Out.CB_11 = 0 } ) }
-        $GUI.CB_12        | % { $_.Add_Checked( { $Out.CB_12 = 1 } ) ; $_.Add_UnChecked( { $Out.CB_12 = 0 } ) }
-        $GUI.CB_13        | % { $_.Add_Checked( { $Out.CB_13 = 1 } ) ; $_.Add_UnChecked( { $Out.CB_13 = 0 } ) }
-        $GUI.CB_14        | % { $_.Add_Checked( { $Out.CB_14 = 1 } ) ; $_.Add_UnChecked( { $Out.CB_14 = 0 } ) }
-        $GUI.CB_15        | % { $_.Add_Checked( { $Out.CB_15 = 1 } ) ; $_.Add_UnChecked( { $Out.CB_15 = 0 } ) }
-        $GUI.CB_16        | % { $_.Add_Checked( { $Out.CB_16 = 1 } ) ; $_.Add_UnChecked( { $Out.CB_16 = 0 } ) }
+        If ( $Out.DNS -eq $False ) { $GUI.InstallDns.IsEnabled = $False }
 
         $GUI.Install_DNS  | % { $_.Add_Checked( { $Out.InstallDns              = $True  } ) ; $_.Add_UnChecked( { $Out.InstallDns              = $False } ) }
         $GUI.Delegate_DNS | % { $_.Add_Checked( { $Out.CreateDnsDelegation     = $True  } ) ; $_.Add_UnChecked( { $Out.CreateDnsDelegation     = $False } ) }
         $GUI.Install_GC   | % { $_.Add_Checked( { $Out.NoGlobalCatalog         = $False } ) ; $_.Add_UnChecked( { $Out.NoGlobalCatalog         = $True  } ) }
         $GUI.Install_CR   | % { $_.Add_Checked( { $Out.CriticalReplicationOnly = $True  } ) ; $_.Add_UnChecked( { $Out.CriticalReplicationOnly = $False } ) }
-        $GUI.Install_RODC | % { $_.Add_Checked( { $Out.CriticalReplicationOnly = $True  } ) ; $_.Add_UnChecked( { $Out.CriticalReplicationOnly = $False } ) }
 
     #  ____                                                                        ____    ____    ____    ____    ____  
     # //¯¯\\______________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
@@ -697,6 +727,8 @@
             $GUI.DCAdmin.Text   = $DCCred.Username
         
         })
+
+        $GUI.Forest.Add_Click( { If ( $Out.Forest -ne 1 ) { $GUI.DialogResult = $False | Out-Null ; 
 
         $GUI.Cancel.Add_Click( { $GUI.DialogResult = $False } )
 
