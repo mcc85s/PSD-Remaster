@@ -12,15 +12,16 @@
 #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 #\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\   [ Provisional Author : Michael C Cook Sr. | "The Buck Stops Here" ]    //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
 #//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//   ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-#\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-#//¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯  
-#\\  [ Provision-DomainController ] @: Orchestrates the process of provisioning server prerequisites in order to install Hybrid-DSC 
+#\\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__// 
+#//¯¯¯    
+#\\  [ Provision-DomainController ] @: Orchestrates the process of provisioning server prerequisites in order to install Hybrid-DSC                     
 #//   ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____      
-#\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___  
-#//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-#\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-# ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯  
-    
+#\\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\___  
+#//¯¯\\¯¯ ¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯\\ 
+#\\__//                                                                                   ____ __ ____ -- ____ __ ____ -- ____ __ ____ -- ____ __ ___// 
+# ¯¯¯¯   [ Declare Namespaces & Load Modules ]                                        ___//¯¯\----/¯¯\\==//¯¯\----/¯¯\\==//¯¯\----/¯¯\\==//¯¯\----/¯¯¯  
+     #]______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+       
     "Security.Principal" , "Management.Automation" , "DirectoryServices" | % { IEX "Using Namespace System.$_" } 
 
     #Using Namespace System.Security.Principal
@@ -34,12 +35,12 @@
         If ( $? -ne $True ) { Write-Error "Module Not Loaded/Found" ; Read-Host "Press Enter to Exit" ; Exit }
         
         Sleep 1
-                                                                                     #____    ____    ____    ____    ____    ____    ____              
-}#____                                                                            ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___          
-#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-    Function Get-FeatureList # Collects all server features that pertain to DSC   ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#)______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Get-FeatureList # Collects all server features that pertain to DSC       ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#]______________________________________________________________________________/¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         
         [ CmdLetBinding () ] Param ( [ Parameter ( Position = 0 ) ] [ Switch ] $Underscore )
                         
@@ -50,12 +51,12 @@
         If ( $Underscore ) { $Return = $Return.Replace( '-' , '_' ) }
 
         Return $Return
-                                                                                     #____    ____    ____    ____    ____    ____    ____              
-}#____                                                                            ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___          
-#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-    Function Collect-FeaturesState # Determines Installation Loadout              ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#)______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Collect-FeaturesState # Determines Installation Loadout                  ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#]______________________________________________________________________________/¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
 
         [ CmdLetBinding () ] Param ( [ Parameter () ][ Switch ] $All )
 
@@ -66,120 +67,155 @@
             If ( $_.InstallState -eq "Installed" ) { $Array += "$I [X]" ; $Table.Installed += "$I [X]" } } }
 
         Return $( If ( !$All ) { $Table } If ( $All ) { $Array } )
-                                                                                     #____    ____    ____    ____    ____    ____    ____              
-}#____                                                                            ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___          
-#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-    Function Enter-ServiceAccount # Allows entry / use of an AD service account   ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#)______________________________________________________________________________//¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
-
-        [ CmdLetBinding () ] Param (
-
-            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ] [ String ] $DC      ,
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ] [ String ] $Domain  ,
-            [ Parameter ( Position = 2 , ValueFromPipeline = $True ) ] [ String ] $NetBIOS )
-
-        $Schema = "http://schemas.microsoft.com/winfx/2006/xaml"
-        $Author = "Secure Digits Plus LLC"
-
-        $XAML = @"
-<Window                               
-                                      xmlns =                 "$Schema/presentation" 
-                                    xmlns:x =                              "$Schema" 
-                                      Title =                         "$Author | Hybrid-DSC Service Login" 
-                                      Width =                                                                       "350" 
-                                     Height =                                                                       "250" 
-                                 ResizeMode =                                                                  "NoResize" 
-                      WindowStartupLocation =                                                              "CenterScreen"
-                                    Topmost =                                                                      "True" >
-    <GroupBox 
-                                     Header =                           "Enter Directory Services Administration Account" 
-                                      Width =                                                                       "330" 
-                                     Height =                                                                       "220" 
-                          VerticalAlignment =                                                                       "Top">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height = "2*" />
-                <RowDefinition Height =  "1.25*" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row = "0" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width =    "*" />
-                    <ColumnDefinition Width = "2.5*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition   Height = "*" />
-                    <RowDefinition   Height = "*" />
-                    <RowDefinition   Height = "*" />
-                </Grid.RowDefinitions>
-                <TextBlock                     Grid.Column = "0" Grid.Row = "0" Margin = "10" TextAlignment = "Right" >Username:</TextBlock>
-                <TextBox     Name = "Username" Grid.Column = "1" Grid.Row = "0" Height = "24" Margin = "5" ></TextBox>
-                <TextBlock                     Grid.Column = "0" Grid.Row = "1" Margin = "10" TextAlignment = "Right" >Password:</TextBlock>
-                <PasswordBox Name = "Password" Grid.Column = "1" Grid.Row = "1" Height = "24" Margin = "5" PasswordChar = "*" ></PasswordBox>
-                <TextBlock                     Grid.Column = "0" Grid.Row = "2" Margin = "10" TextAlignment = "Right" >Confirm:</TextBlock>
-                <PasswordBox Name =  "Confirm" Grid.Column = "1" Grid.Row = "2" Height = "24" Margin = "5" PasswordChar = "*" ></PasswordBox>
-            </Grid>
-            <Grid Grid.Row = "1" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width = "*" />
-                    <ColumnDefinition Width = "*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <RadioButton Name = "Port_Toggle" Grid.Row = "0" Grid.Column = "0" Content = "Alternate Port / SSL" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                <TextBox     Name =  "Port_Entry" Grid.Row = "0" Grid.Column = "1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" IsEnabled="False">389</TextBox>
-                <Button      Name =          "Ok" Content =     "Ok" Grid.Column = "0" Grid.Row = "1" Margin = "5" ></Button>
-                <Button      Name =      "Cancel" Content = "Cancel" Grid.Column = "1" Grid.Row = "1" Margin = "5" ></Button>
-            </Grid>
-        </Grid>
-    </GroupBox>
-</Window>
-"@
-        $NamedElements = "Username" , "Password" , "Confirm" , "Port_Toggle" , "Port_Entry" , "Ok" , "Cancel"
-
-        $0 = "Username" , "Password" , "Confirmation" ; $1 = $0 | % { "You must enter a $_" } ; $2 = $0 | % { "$_ Error" }
-        $1[2] = $1[2].Replace( "You must enter a" , "Password Must Match the" ) 
-        $1   += "Invalid information. All fields must be correct and valid." ; $2 += "Authentication Failure"
-
-        $MSG  = 0..3 | % { "[ System.Windows.MessageBox ]::Show( '$( $1[$_] )' , '$( $2[$_] )' )" }
-
-        $GUIX = Convert-XAMLtoWindow -Xaml $Xaml -NE $NamedElements -PassThru
-
-        $GUIX.Port_Toggle.Add_Click({ $GUIX.Port_Entry.IsEnabled = $True })
-        $GUIX.Cancel.Add_Click({ $GUIX.DialogResult = $False })
-        $GUIX.Ok.Add_Click({
-
-            $Port = $( If ( $GUIX.Port_Entry.IsEnabled -eq $True ) { $GUIX.Port_Entry.Text } Else { 389 } )
-            $Cred = [ PSCredential ]::New( $GUIX.Username.Text , $GUIX.Password.SecurePassword )
-            $AD   = "LDAP://$( $DC ):$Port/DC=$( $Domain.Split('.') -join ',DC=' )"
-            $DX   = [ DirectoryEntry ]::New( "$AD" , $Cred.Username , $Cred.GetNetworkCredential().Password )
-
-            If     ( $GUIX.Username.Text     -eq       $Null )                  { IEX $MSG[0] }
-            ElseIf ( $GUIX.Password.Password -eq       $Null )                  { IEX $MSG[1] }
-            ElseIf (  $GUIX.Confirm.Password -eq       $Null )                  { IEX $MSG[2] } 
-            ElseIf ( $GUIX.Password.Password -notmatch $GUIX.Confirm.Password ) { IEX $MSG[2] }
-            ElseIf ( $DX.Name -eq $Null )                                       { IEX $MSG[3] }
-
-            Else { $GUIX.DialogResult = $True }
-        })
-
-        $Null = $GUIX.Username.Focus()
-
-        $OP = Show-WPFWindow -GUI $GUIX
-
-        If ( $OP -eq $True )
-        { 
-            Write-Theme -Action "Login [+]" "Successful" -Font 11
-            Return [ PSCredential ]::New( $GUIX.Username.Text , $GUIX.Password.SecurePassword )
-        }
-
-        Else 
-        { 
-            Write-Theme -Action "Login [!]" "Failed"
-        }
-                                                                                     #____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____    ____      
+                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____    ____    ____    ___// 
+    Function Enter-ServiceAccount # Allows entry / use of an AD service account       ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#]______________________________________________________________________________//¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯  #//¯¯\\__//¯¯\\__//¯¯\\ 
+        [ CmdLetBinding () ] Param (                                                                                        #\\__//¯¯\\__//¯¯\\__//  
+                                                                                                                            #//¯¯\\__//¯¯\\__//¯¯\\ 
+            [ Parameter ( Position = 0 , ValueFromPipeline = $True ) ] [ String ] $DC      ,                                #\\__//¯¯\\__//¯¯\\__//  
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ] [ String ] $Domain  )                                #//¯¯\\__//¯¯\\__//¯¯¯
+            #[ Parameter ( Position = 2 , ValueFromPipeline = $True ) ] [ String ] $NetBIOS )                               #\\__//¯¯\\__//¯¯\\
+                                                                                                                            #//¯¯\\__//¯¯\\__// 
+        $Schema = "http://schemas.microsoft.com/winfx/2006/xaml"                                                            #\\__//¯¯\\__//¯¯¯
+        $Author = "Secure Digits Plus LLC"                                                                                  #//¯¯\\__//¯¯\\
+                                                                                                                            #\\__//¯¯\\__// 
+        $CF ,  $OK ,  $CA = "Confirm" , "Start" , "Cancel"                                                                  #//¯¯\\__//¯¯¯
+        $PW , $PWB , $PWC = "Password" | % { "$_" , "$_`Box" , "$_`Char" }                                                  #\\__//¯¯¯ 
+                                                                                                                            #//¯¯\\ 
+        $XML    = [ Ordered ]@{ }                                                                                           #\\__// 
+                                                                                                                            #//¯¯\\ 
+             # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
+             #//¯¯\\__[_______ Header ________]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+                                                                                                                            #//¯¯\\ 
+                $X      = @( 2 ; 0..4 | % { 13 } ; 10 , 13 , 9 ) | % { $SP[$_] }                                            #\\__// 
+                                                                                                                            #//¯¯\\ 
+                $Y      = "<Window" , "  xmlns = '$Schema/presentation'" , "xmlns:x = '$Schema'" ,                          #\\__// 
+                          "  Title = '$Author | Hybrid - AD Login'" , "  $W = '350'" , " $H = '250'" ,                      #//¯¯\\ 
+                           "$( $HAL[1] )" , "Topmost = 'True' " , "  WindowStartupLocation = 'CenterScreen' >"              #\\__// 
+                                                                                                                            #//¯¯\\ 
+                                                                                                                            #\\__// 
+                $XML.Add( "00" , @( 0..8 | % { $X[$_] + $Y[$_] } ) )                                                        #//¯¯\\ 
+                                                                                                                            #\\__// 
+                                                                                                                            #//¯¯\\ 
+             # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
+             #//¯¯\\__[_______ Framing _______]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+                                                                                                                            #//¯¯\\ 
+                                                                                                                            #\\__// 
+                $X     = @( 3,9,9,9,6,4,5,6,6,5,5,6,7,7,6,6,7,7,7,6 ) | % { $SP[$_] }                                       #//¯¯\\ 
+                                                                                                                            #\\__// 
+                $Y     = @( "<$GB" , " $HD = 'Enter Directory Services Administration Account'" , "  $W = '330'" ,          #//¯¯\\ 
+                         " $H = '220'" , "  $( $VAL[0] )>" , "<$G>" , "<$GRD>" ; "2" , "1.25" | % { "<$RD $H = '$_*' />" } ;#\\__// 
+                         "</$GRD>" , "<$G $GR = '0' >" , "<$GCD>" ; "" , "2.5" | % { "<$CD $W = '$_*' />" } ; "</$GCD>" ;   #//¯¯\\ 
+                         "<$GRD>" ; 0..2 | % { "<$RD $H = '*' />" } ; "</$GRD>" )                                           #\\__// 
+                                                                                                                            #//¯¯\\ 
+                $XML.Add( "01" , @( 0..( $X.Count - 1 ) | % { $X[$_] + $Y[$_] } ) )                                         #\\__// 
+                                                                                                                            #//¯¯\\ 
+             # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
+             #//¯¯\\__[_____ User Input ______]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+                                                                                                                            #//¯¯\\ 
+                                                                                                                            #\\__// 
+                $X     = @( 0..5 | % { 6 , 7 } ) | % { $SP[$_] }                                                            #//¯¯\\ 
+                                                                                                                            #\\__// 
+                $Y     = @( "<$TBL $GC = '0' $GR = '0' $MA = '10' TextAlignment = 'Right' >" , "Username:</$TBL>" ,         #//¯¯\\ 
+                        "<$TB $Q = 'Username' $GC = '1' $GR = '0' $H = '24' $MA = '5' >" , "</$TB>" ,                       #\\__// 
+                        "<$TBL $GC = '0' $GR = '1' $MA = '10' TextAlignment = 'Right' >" , "Password:</$TBL>" ,             #//¯¯\\ 
+                        "<$PWB $Q = 'Password' $GC = '1' $GR = '1' $H = '24' $MA = '5' $PWC = '*' >" , "</$PWB>" ,          #\\__// 
+                        "<$TBL $GC = '0' $GR = '2' $MA = '10' TextAlignment = 'Right' >" , "Confirm:</$TBL>" ,              #//¯¯\\ 
+                        "<$PWB $Q =  'Confirm' $GC = '1' $GR = '2' $H = '24' $MA = '5' $PWC = '*' >" , "</$PWB>" )          #\\__// 
+                                                                                                                            #//¯¯\\ 
+                $XML.Add( "02" , @( 0..( $X.Count - 1 ) | % { $X[$_] + $Y[$_] } ) )                                         #\\__// 
+                                                                                                                            #//¯¯\\ 
+             # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
+             #//¯¯\\__[_______ Framing _______]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+                                                                                                                            #//¯¯\\ 
+                                                                                                                            #\\__// 
+                $X    = @( 5,5,6,7,7,6,6,7,7,6 ) | % { $SP[$_] }                                                            #//¯¯\\ 
+                                                                                                                            #\\__// 
+                $Y    = @( "</$G>" , "<$G $GR = '1' >" , "<$GCD>" ; 0..1 | % { "<$CD $W = '*' />" } ; "</$GCD>" , "<$GRD>" ;#//¯¯\\ 
+                           0..1 | % { "<$RD $H = '*'/>" } ; "</$GRD>" )                                                     #\\__// 
+                                                                                                                            #//¯¯\\ 
+                $XML.Add( "03" , @( 0..( $X.Count - 1 ) | % { $X[$_] + $Y[$_] } ) )                                         #\\__// 
+                                                                                                                            #//¯¯\\ 
+             # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
+             #//¯¯\\__[_______ Controls ______]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+                                                                                                                            #//¯¯\\ 
+                $X    = @( 6,6,7,6,7,6,7,6,5,4,3,2 ) | % { $SP[$_] }                                                        #\\__// 
+                                                                                                                            #//¯¯\\ 
+                $Y    = @( "<RadioButton $Q = 'Switch' $GR = '0' $GC = '0' $CO = 'Change' $( $VAL[1] ) $( $HAL[1] )/>" ,    #\\__// 
+                        "<$TB $Q = 'Port' $GR = '0' $GC = '1' $( $VAL[1] ) $( $HAL[1] ) $W = '120' IsEnabled = 'False'>" ,  #//¯¯\\ 
+                        "389</TextBox>" , "<$BU $Q = 'Ok' $CO = 'Ok' $GC = '0' $GR = '1' $MA = '5' >" , "</$BU>" ,          #\\__// 
+                        "<$BU $Q = 'Cancel' $CO = 'Cancel' $GC = '1' $GR = '1' $MA = '5' >" , "</$BU>" , "</$G>" ,          #//¯¯\\ 
+                        "</$G>" , "</$GB>" ,"</Window>" )                                                                   #\\__// 
+                                                                                                                            #//¯¯\\ 
+                 $XML.Add( "04" , @( 0..( $X.Count - 1 ) | % { $X[$_] + $Y[$_] } ) )                                        #\\__// 
+                                                                                                                            #//¯¯\\ 
+             # ____   ___________________________     ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
+             #//¯¯\\__[_____ Return XAML _______]____//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+                                                                                                                            #//¯¯\\ 
+                    $Item = ForEach ( $i in 0..( $XML.Count - 1 ) )                                                         #\\__// 
+                    {                                                                                                       #//¯¯\\ 
+                        0..( $XML[$I].Count - 1 ) | % { $XML[$I][$_] }                                                      #\\__// 
+                    }                                                                                                       #//¯¯\\ 
+                    $Return = ""                                                                                            #\\__// 
+                                                                                                                            #//¯¯\\ 
+                    0..( $Item.Count - 1 ) | % { $Return += "$( $Item[$_] )`n" }                                            #\\__// 
+                                                                                                                            #//¯¯\\ 
+             # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
+             #//¯¯\\__[___ Parts Done Bro ____]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+                                                                                                                            #//¯¯\\ 
+        $NamedElements = "Username" , "Password" , "Confirm" , "Switch" , "Port" , "Ok" , "Cancel"                          #\\__// 
+                                                                                                                            #//¯¯\\ 
+        $0 = "Username" , "Password" , "Confirmation" ; $1 = $0 | % { "You must enter a $_" } ; $2 = $0 | % { "$_ Error" }  #\\__// 
+        $1[2] = $1[2].Replace( "You must enter a" , "Password Must Match the" )                                             #//¯¯\\ 
+        $1   += "Invalid information. All fields must be correct and valid." ; $2 += "Authentication Failure"               #\\__// 
+                                                                                                                            #//¯¯\\ 
+        $MSG  = 0..3 | % { "[ System.Windows.MessageBox ]::Show( '$( $1[$_] )' , '$( $2[$_] )' )" }                         #\\__// 
+                                                                                                                            #//¯¯\\ 
+        $GUIX = Convert-XAMLtoWindow -Xaml $Return -NE $NamedElements -PassThru                                             #\\__// 
+                                                                                                                            #//¯¯\\ 
+        $GUIX.Switch.Add_Click({ $GUIX.Port.IsEnabled = $True })                                                            #\\__// 
+        $GUIX.Cancel.Add_Click({ $GUIX.DialogResult = $False })                                                             #//¯¯\\ 
+        $GUIX.Ok.Add_Click({                                                                                                #\\__// 
+                                                                                                                            #//¯¯\\ 
+            $Port = $( If ( $GUIX.Port.IsEnabled -eq $True ) { $GUIX.Port.Text } Else { 389 } )                             #\\__// 
+            $Cred = [ PSCredential ]::New( $GUIX.Username.Text , $GUIX.Password.SecurePassword )                            #//¯¯\\ 
+            $AD   = "LDAP://$( $DC ):$Port/DC=$( $Domain.Split('.') -join ',DC=' )"                                         #\\__// 
+            $DX   = [ DirectoryEntry ]::New( "$AD" , $Cred.Username , $Cred.GetNetworkCredential().Password )               #//¯¯\\ 
+                                                                                                                            #\\__// 
+            If     ( $GUIX.Username.Text     -eq       $Null )                  { IEX $MSG[0] }                             #//¯¯\\ 
+            ElseIf ( $GUIX.Password.Password -eq       $Null )                  { IEX $MSG[1] }                             #\\__// 
+            ElseIf (  $GUIX.Confirm.Password -eq       $Null )                  { IEX $MSG[2] }                             #//¯¯\\ 
+            ElseIf ( $GUIX.Password.Password -notmatch $GUIX.Confirm.Password ) { IEX $MSG[2] }                             #\\__// 
+            ElseIf ( $DX.Name -eq $Null )                                       { IEX $MSG[3] }                             #//¯¯\\ 
+                                                                                                                            #\\__// 
+            Else { $GUIX.DialogResult = $True }                                                                             #//¯¯\\ 
+        })                                                                                                                  #\\__// 
+                                                                                                                            #//¯¯\\ 
+        $Null = $GUIX.Username.Focus()                                                                                      #\\__// 
+                                                                                                                            #//¯¯\\ 
+        $OP = Show-WPFWindow -GUI $GUIX                                                                                     #\\__// 
+                                                                                                                            #//¯¯\\ 
+        If ( $OP -eq $True )                                                                                                #\\__// 
+        {                                                                                                                   #//¯¯\\ 
+            Write-Theme -Action "Login [+]" "Successful" 11 12 15                                                           #\\__// 
+            Return [ PSCredential ]::New( $GUIX.Username.Text , $GUIX.Password.SecurePassword )                             #//¯¯\\ 
+        }                                                                                                                   #\\__// 
+                                                                                                                            #//¯¯\\ 
+        Else                                                                                                                #\\__// 
+        {                                                                                                                   #//¯¯\\ 
+            Write-Theme -Action "Login [!]" "Failed"                                                                        #\\__// 
+        }                                                                                                                   #//¯¯\\ 
+                                                                                     #____ -- ____ -- ____ -- ____ -- ____ --\\__//-- ____    ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
@@ -190,13 +226,13 @@
 
         $Return = "" ; 0..( $Launch.Count - 1 ) | % { $Return += "$( $Launch[$_] )`n" } ; Return $Return
 
-                                                                                     #____    ____    ____    ____    ____    ____    ____              
-}#____                                                                            ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___          
-#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-    Function Convert-XAMLToWindow # Modified, originally by Dr. Tobias Weltner    ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#]______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
-
+                                                                                     #____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____    ____      
+}#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Convert-XAMLToWindow # Modified, originally by Dr. Tobias Weltner___________//¯¯\\__//¯¯\\==//¯¯\----/¯¯\\==//¯¯\----/¯¯\\==//¯¯\\__//¯¯¯  
+    {#]______________________________________________________________________________//¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯ -- ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+    
         Param ( [ Parameter ( Mandatory ) ] [ String ] $XAML , [ String [] ] $NE = $Null , [ Switch ] $PassThru )
 
         If ( $XAML.Count -gt 1 ) { $XAML = Convert-ArrayToHereString -Input $XAML }
@@ -209,22 +245,23 @@
  
         If ( $PassThru ) { $OP } Else { $Null = $GUI.Dispatcher.InvokeAsync( { $OP = $GUI.ShowDialog() ; SV -Name OP -Value $OP -Scope 1 } ).Wait() ; $OP }
 
-                                                                                     #____    ____    ____    ____    ____    ____    ____              
-}#____                                                                            ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___          
-#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-    Function Show-WPFWindow # Modified, originally by Dr. Tobias Weltner          ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#)______________________________________________________________________________//¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+                                                                                     #____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____    ____      
+}#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Show-WPFWindow # Modified, originally by Dr. Tobias Weltner ________________//¯¯\\__//¯¯\\==//¯¯\----/¯¯\\==//¯¯\----/¯¯\\==//¯¯\\__//¯¯¯  
+    {#]______________________________________________________________________________//¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯ -- ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         
         Param ( [ Parameter ( Mandatory ) ] [ Windows.Window ] $GUI )
 
         $OP = $Null ; $Null = $GUI.Dispatcher.InvokeAsync( { $OP = $GUI.ShowDialog() ; SV -Name OP -Value $OP -Scope 1 } ).Wait() ; $OP 
-                                                                                     #____    ____    ____    ____    ____    ____    ____              
-}#____                                                                            ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___          
-#//¯¯\\__________________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-    #Function Provision-DomainController                                          #¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    #{#)______________________________________________________________________________/¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯             
+
+                                                                                     #____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____    ____      
+}#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    #Function Provision-DomainController                                              ___//¯¯\\__//¯¯\\==//¯¯\----/¯¯\\==//¯¯\----/¯¯\\==//¯¯\\__//¯¯¯  
+    {#]______________________________________________________________________________//¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯       
         
         $Schema    = "http://schemas.microsoft.com/winfx/2006/xaml"
         $Author    = "Secure Digits Plus LLC"
@@ -264,40 +301,36 @@
         $VC , $VV = "Collapsed" , "Visible" | % { "Visibility = '$_'" }
 
         Write-Theme -Action "Loaded [+]" "WPF/XAML Glossary Definitions" 11 12 15
-        
-        $ST = Collect-FeaturesState -All
-
-        Write-Theme -Action "Collected [+]" "Windows Server Features" 11 12 15
 
             # To clear, these: 
             # $W , $H , $MA , $MN , $MNI , $HD , $CHK , $CO , $BU , $Q , $GB , $GBI , $CB , $CBI , 
             # $TB , $TBL , $LA , $G , $RD , $CD , $SI , $GC , $GCS , $GR , $GRS = $Null
 
-
-        Function Get-DomainType
-        {
-            Return "N/A" , "TreeDomain" , "ChildDomain" , "ChildDomain" , "N/A"
-        }
-
-        Function Get-DCPromoBoxControls
-        {
-            Return @( "Database" , "Sysvol" , "Log" | % { "$_`Path" } ; "Credential" ; 
-            @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ; 
-            "ReplicationSourceDC" , "Forest" , "Domain" , "Child" , "Clone" ) | % { "$_`Box" }
-        }
-
+    # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____   \\__// 
+    #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+    #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+        Function Get-DomainType # Collects the DomainType ___________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+        {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+            Return @( "N/A" , "TreeDomain" , "ChildDomain" , "ChildDomain" , "N/A" ) }                                      #//¯¯\\  
+    # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____   \\__// 
+    #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+    #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+        Function Get-DCPromoBoxControls # Collects the names for Box Controls________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+        {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+            Return @( "Database" , "Sysvol" , "Log" | % { "$_`Path" } ; "Credential" ;                                      #\\__// 
+            @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ;                       #//¯¯\\ 
+            "ReplicationSourceDC" , "Forest" , "Domain" , "Child" , "Clone" ) | % { "$_`Box" }                              #\\__// 
+        }                                                                                                                   #//¯¯\\ 
     # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____   \\__// 
     #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
     #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
         Function Get-DCPromoControl # Provides backend for reliable XAML Control  ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-        {#/¯¯¯\\___                                   ____    ____    ____    ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-              #¯¯¯\\_________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-                  #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+        {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
                  [ CmdLetBinding () ] Param (                                                                               #//¯¯\\ 
                                                                                                                             #\\__// 
                     [ ValidateSet ( 0 , 1 , 2 , 3 ) ][ Parameter ( Mandatory = $True ) ][ Int ] $DType = 0 )                #//¯¯\\ 
                                                                                                                             #\\__// 
-                 $T = ( "N/A" , "TreeDomain" , "ChildDomain" , "ChildDomain" , "N/A" )[ $DType ]                            #//¯¯\\ 
+                 $T = ( Get-DomainType )[ $DType ]                                                                          #//¯¯\\ 
                  Return [ PSCustomObject ]@{                                                                                #\\__// 
                                                                                                                             #//¯¯\\ 
                  # ______________________________________________________________________________ #                         #\\__// 
@@ -328,30 +361,19 @@
                  SiteName                = "" ; ReplicationSourceDC     = "" ; InstallDNS              = "" ;               #//¯¯\\ 
                  CreateDNSDelegation     = "" ; NoGlobalCatalog         = "" ; CriticalReplicationOnly = "" ;               #\\__// 
                  Force      = $True ; NoRebootUponCompletion  = $False ; SafeModeAdministratorPassword = "" } }             #//¯¯\\ 
-                                                                                                                            #\\__// 
-                                                                                                                            #//¯¯\\ 
-             # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
-             #//¯¯\\__[___ Parts Done Bro ____]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-                                                                                                                            #//¯¯\\ 
     # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____   \\__// 
     #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
     #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-        Function Get-DCPromoXAML # Produces XAML dynamically                      ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-        {#/¯¯¯\\___                                   ____    ____    ____    ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-              #¯¯¯\\_________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-                  #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-                                                                                                                            #//¯¯\\ 
+        Function Get-DCPromoXAML # Produces XAML dynamically ________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+        {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//  
             [ CmdLetBinding () ] Param (                                                                                    #\\__// 
                 [ Parameter ( Mandatory = $True , ParameterSetName = "0" ) ][ Switch ] $Split ,                             #//¯¯\\ 
                 [ Parameter ( Mandatory = $True , ParameterSetName = "1" ) ][ Switch ] $HereString  )                       #\\__// 
                                                                                                                             #//¯¯\\ 
-                $XML    = [ Ordered ]@{ }                                                                                   #\\__// 
-                                                                                                                            #//¯¯\\ 
+                $XML    = [ Ordered ]@{ }                                                                                   #\\__//  
              # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[_______ Header ________]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-                                                                                                                            #//¯¯\\ 
                 $X      = @( 2 ; 0..4 | % { 13 } ; 10 , 13 , 9 ) | % { $SP[$_] }                                            #\\__// 
                                                                                                                             #//¯¯\\ 
                 $Y      = "<Window" , "  xmlns = '$Schema/presentation'" , "xmlns:x = '$Schema'" ,                          #\\__// 
@@ -360,22 +382,17 @@
                           "  WindowStartupLocation = 'CenterScreen' >"                                                      #//¯¯\\ 
                                                                                                                             #\\__// 
                 $XML.Add( "00" , @( 0..8 | % { $X[$_] + $Y[$_] } ) )                                                        #//¯¯\\ 
-                                                                                                                            #\\__// 
-                                                                                                                            #//¯¯\\ 
              # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[_______ Framing _______]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-                                                                                                                            #//¯¯\\ 
                 $X      = @( 2..4 ; 4 , 3 ) | % { $SP[$_] }                                                                 #\\__// 
                                                                                                                             #//¯¯\\ 
                 $Y      = @( "<$G>" , "<$GRD>" ; '20' , '*' | % { "<$RD $H = '$_' />" } ; "</$GRD>" )                       #\\__// 
                                                                                                                             #//¯¯\\ 
                 $XML.Add( "01" , @( 0..4 | % { $X[$_] + $Y[$_] } ) )                                                        #\\__// 
-                                                                                                                            #//¯¯\\ 
              # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[________ Menu _________]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-                                                                                                                            #//¯¯\\ 
                 $Menu   = 'Forest' , 'Tree' , 'Child' , 'Clone'                                                             #\\__// 
                                                                                                                             #//¯¯\\ 
                 $Action = "Domain" | % { "Forest" , "$_ Tree" , "$_ Child" , "$_`Controller" } | % { "Install-ADDS$_" }     #\\__// 
@@ -386,42 +403,30 @@
                           0..3 | % { "<$MNI $Q = '$( $Menu[$_] )' $HD = '$( $Action[$_] )' />"} ; "</$MNI>" , "</$MN>" )    #//¯¯\\ 
                                                                                                                             #\\__// 
                 $XML.Add( "02" , @( 0..7 | % { $X[$_] + $Y[$_] } ) )                                                        #//¯¯\\ 
-                                                                                                                            #\\__// 
-                                                                                                                            #//¯¯\\ 
              # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[______ Open Body ______]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-                                                                                                                            #//¯¯\\ 
                 $X      = 3 , 12 , 13 , 10 , 10 , 13 , 13 | % { $SP[$_] }                                                   #\\__// 
                                                                                                                             #//¯¯\\ 
                 $Y      = "<$GB" , "   $GR = '1'" , " $HD = '[ Hybrid-DSC Domain Service Configuration ]'" ,                #\\__// 
                           "$( $HAL[1] )" , "  $( $VAL[1] )" , "  $W = '760'" , " $H = '740' >"                              #//¯¯\\ 
                                                                                                                             #\\__// 
                 $XML.Add( "03" , @( 0..6 | % { $X[$_] + $Y[$_] } ) )                                                        #//¯¯\\ 
-                                                                                                                            #\\__// 
-                                                                                                                            #//¯¯\\ 
              # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[_______ Framing _______]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-                                                                                                                            #//¯¯\\ 
                 $X      = @( 4..7 ; 7 , 6 ; 6..8 ; 8 , 7 ) | % { $SP[$_] }                                                  #\\__// 
                                                                                                                             #//¯¯\\ 
                 $Y      = @( "<$G>" , "<$G $GR = '1' $MA = '10' >" , "<$GRD>" ; '' , '10' | % { "<$RD $H = '$_*' />" } ;    #\\__// 
                            "</$GRD>" , "<$G $GR = '0' >" , "<$GCD>" ; 0..1 | % { "<$CD $W = '*' />" } ; "</$GCD>" )         #//¯¯\\ 
                                                                                                                             #\\__// 
                 $XML.Add( "04" , @( 0..10 | % { $X[$_] + $Y[$_] } ) )                                                       #//¯¯\\ 
-                                                                                                                            #\\__// 
-                                                                                                                            #//¯¯\\ 
              # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[_____ Domain Mode _____]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-                                                                                                                            #//¯¯\\ 
                 $LI     = @( )                                                                                              #\\__// 
-                                                                                                                            #//¯¯\\ 
                 $ED     = @( "00" , "03" ; "08" , 12 | % { $_ , "$_ R2" } ; 16 , 19 )                                       #\\__// 
-                                                                                                                            #//¯¯\\ 
                 $R2     = $( If ( $CS -like "*R2*" ) { 1 } Else { 0 } )                                                     #\\__// 
-                                                                                                                            #//¯¯\\ 
                 0..7    | % {                                                                                               #\\__// 
                                                                                                                             #//¯¯\\ 
                     $I  = $ED[$_]                                                                                           #\\__// 
@@ -466,20 +471,15 @@
                   $None = $SP[6] + "<$GB $Q = 'CloneBox' $HD = 'Clone Domain Controller' $MA = '5' $GCS = '2' $VC />"       #//¯¯\\ 
                                                                                                                             #\\__// 
                 $XML.Add( "05" , @( $ForID ; $DomID ; $ParID ; $None ) )                                                    #//¯¯\\ 
-                                                                                                                            #\\__// 
-                                                                                                                            #//¯¯\\ 
              # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[_______ Framing _______]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-                                                                                                                            #//¯¯\\ 
                     $X  = @( 6 , 6 , 7 , 8 , 8 , 7 , 7 , 8 , 8 , 7 ) | % { $SP[$_] }                                        #\\__// 
                                                                                                                             #//¯¯\\ 
                     $Y  = @( "</$G>" , "<$G $GR = '1' >" , "<$GCD>" ; '' , '2.5' | % { "<$CD $W = '$_*' />" } ;"</$GCD>" ,  #\\__// 
                              "<$GRD>" ; '3.5' , '' | % { "<$RD $H = '$_*' />" } ; "</$GRD>" )                               #//¯¯\\ 
                                                                                                                             #\\__// 
                 $XML.Add( "06" , @( 0..9 | % { $X[$_] + $Y[$_] } ) )                                                        #//¯¯\\ 
-                                                                                                                            #\\__// 
-                                                                                                                            #//¯¯\\ 
              # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[__ Services Selection _]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
@@ -498,8 +498,6 @@
                              0..16 | % { "<$RD $H =  '*' />" } ; "</$GRD>" ; @( $SVC ) ; "</$G>" , "</$GB>" )               #//¯¯\\ 
                                                                                                                             #\\__// 
                 $XML.Add( "07" , @( 0..60 | % { $X[$_] + $Y[$_] } ) )                                                       #//¯¯\\ 
-                                                                                                                            #\\__// 
-                                                                                                                            #//¯¯\\ 
              # ____   _________________________________       ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[_ Paths / Credentials / Names _]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
@@ -559,7 +557,6 @@
              # ____   ___________________________     ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[__ DSRM/Initialization __]____//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-                                                                                                                            #//¯¯\\ 
                 $CF ,  $OK ,  $CA = "Confirm" , "Start" , "Cancel"                                                          #\\__// 
                 $PW , $PWB , $PWC = "Password" | % { "SafeModeAdministrator$_" , "$_`Box" , "$_`Char" }                     #//¯¯\\ 
                                                                                                                             #\\__// 
@@ -579,9 +576,7 @@
                                                                                                                             #\\__// 
                     $Y += "</$G>" , "</$GB>"                                                                                #//¯¯\\ 
                                                                                                                             #\\__// 
-                $XML.Add( "10" , @( 0..19 | % { $X[$_] + $Y[$_] } ) )                                                       #//¯¯\\ 
-                                                                                                                            #\\__// 
-                                                                                                                            #//¯¯\\ 
+                $XML.Add( "10" , @( 0..19 | % { $X[$_] + $Y[$_] } ) )                                                       #//¯¯\\  
              # ____   ___________________________     ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[_______ Framing _________]____//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
@@ -615,189 +610,190 @@
              # ____   _________________________       ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[___ Parts Done Bro ____]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-                                                                                                                             #¯¯¯¯  
-        Write-Theme -Action "Loading [~]" "Active Directory Configuration Utility" 11 12 15
-
-        $Code          = Get-DCPromoControl -DType 1
-        $Named         = $Code | GM | ? Membertype -eq NoteProperty | % { $_.Name }
-        $Face          = Get-DCPromoXAML -HereString
-        $Boxes         = Get-DCPromoBoxControls
-
-        $XamlWindow    = @{ XAML = $Face
-                            NE   = @( $Named ; $Boxes ; "Start" , "Cancel" , "Confirm" , "CredentialButton" ) 
-                            EA   = 0 }
-
-        $CTRL          = Convert-XAMLtoWindow @XamlWindow
-        $P             = $Code.Process
-
+                                                                                                                            #\\__// 
+        Write-Theme -Action "Loading [~]" "Active Directory Configuration Utility" 11 12 15                                 #\\__// 
+                                                                                                                            #\\__// 
+        $Code          = Get-DCPromoControl -DType 1                                                                        #\\__// 
+        $Named         = $Code | GM | ? Membertype -eq NoteProperty | % { $_.Name }                                         #\\__// 
+        $Face          = Get-DCPromoXAML -HereString                                                                        #\\__// 
+        $Boxes         = Get-DCPromoBoxControls                                                                             #\\__// 
+                                                                                                                            #\\__// 
+        $XamlWindow    = @{ XAML = $Face                                                                                    #\\__// 
+                            NE   = @( $Named ; $Boxes ; "Start" , "Cancel" , "Confirm" , "CredentialButton" )               #\\__// 
+                            EA   = 0 }                                                                                      #\\__// 
+                                                                                                                            #\\__// 
+        $CTRL          = Convert-XAMLtoWindow @XamlWindow                                                                   #\\__// 
+        $P             = $Code.Process                                                                                      #\\__// 
+                                                                                                                            #\\__// 
+        $ST            = Collect-FeaturesState -All                                                                         #\\__// 
+                                                                                                                            #\\__//  
+        Write-Theme -Action "Windows Server [+]" "Configuration Selected" 11 12 15                                          #\\__// 
+                                                                                                                            #\\__// 
     # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____   \\__// 
     #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
     #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-        Function Filter-DCPromoGUI # Clears and sets items in the GUI             ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-        {#/¯¯¯\\___                                   ____    ____    ____    ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-              #¯¯¯\\_________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-                  #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__//
-                [ CmdLetBinding ( ) ] Param (                                                                               #\\__//
-                                                                                                                            #\\__//
-                    [ ValidateSet ( 0 , 1 , 2 , 3 ) ][ Parameter ( Mandatory = $True ) ][ Int ] $Type = 0 )                 #\\__//
+        Function Filter-DCPromoGUI # Clears and sets items in the GUI _______________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+        {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+                [ CmdLetBinding ( ) ] Param (                                                                               #//¯¯\\ 
                                                                                                                             #\\__// 
-                $P         = $Type                                                                                          #\\__//
-                $Code      = Get-DCPromoControl -DType $P
-
-                $DType     = "Forest" , "Tree" , "Child" , "Clone"
-
-                $DType     | % { $Code.$_ = "N/A" }
-                $DType[$P] | % { $Code.$_ = "Selected" }
-
+                    [ ValidateSet ( 0 , 1 , 2 , 3 ) ][ Parameter ( Mandatory = $True ) ][ Int ] $Type = 0 )                 #//¯¯\\ 
+                                                                                                                            #\\__// 
+                $P         = $Type                                                                                          #//¯¯\\ 
+                $Code      = Get-DCPromoControl -DType $P                                                                   #\\__// 
+                                                                                                                            #//¯¯\\ 
+                $DType     = "Forest" , "Tree" , "Child" , "Clone"                                                          #\\__// 
+                                                                                                                            #//¯¯\\ 
+                $DType     | % { $Code.$_ = "N/A" }                                                                         #\\__// 
+                $DType[$P] | % { $Code.$_ = "Selected" }                                                                    #//¯¯\\ 
              # ____   ___________________________     ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[_ Hides all boxed items _]____//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-
-                $Boxes     = Get-DCPromoBoxControls 
-                $Boxes     | % { $CTRL.$_.Visibility = "Hidden" }
-
+                $Boxes     = Get-DCPromoBoxControls                                                                         #\\__// 
+                $Boxes     | % { $CTRL.$_.Visibility = "Hidden" }                                                           #\\__// 
              # ____   ___________________________     ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[__ Domain Mode Toggler __]____//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__//
-
-                $Modes     = "Forest" , "Domain" , "Child" , "Clone" | % { "$_`Box" }
-                $Top       = @{ 0 = 0 , 1 ; 1 = 2 , 1 ; 2 = 2 , 1 ; 3 = 3 }
-                $Top[$P]   | % { $Modes[$_] } | % { $CTRL.$_.Visibility = "Visible" }
-                
-                $DMCode    = "ForestMode" , "DomainMode" , "ParentDomainName"
-                $DMID      = @{ 0 = 1,1,0 ; 1 = 0,1,1 ; 2 = 0,1,1 ; 3 = 0,0,0 }
-
-                ForEach ( $I in 0..2 )
-                {
-                    If ( $DMID[$P][$I] -eq 0 ) { $Code.$( $DMCode[$I] ) = "N/A" }
-                }
-
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+                $Modes     = "Forest" , "Domain" , "Child" , "Clone" | % { "$_`Box" }                                       #\\__// 
+                $Top       = @{ 0 = 0 , 1 ; 1 = 2 , 1 ; 2 = 2 , 1 ; 3 = 3 }                                                 #\\__// 
+                $Top[$P]   | % { $Modes[$_] } | % { $CTRL.$_.Visibility = "Visible" }                                       #\\__// 
+                                                                                                                            #\\__// 
+                $DMCode    = "ForestMode" , "DomainMode" , "ParentDomainName"                                               #\\__// 
+                $DMID      = @{ 0 = 1,1,0 ; 1 = 0,1,1 ; 2 = 0,1,1 ; 3 = 0,0,0 }                                             #\\__// 
+                                                                                                                            #\\__// 
+                ForEach ( $I in 0..2 )                                                                                      #\\__// 
+                {                                                                                                           #\\__// 
+                    If ( $DMID[$P][$I] -eq 0 ) { $Code.$( $DMCode[$I] ) = "N/A" }                                           #\\__// 
+                }                                                                                                           #\\__// 
              # ____   ___________________________     ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
              #//¯¯\\__[______ Role Toggler _____]____//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__//
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+                $Roles     = "InstallDNS" , "CreateDNSDelegation" , "NoGlobalCatalog" , "CriticalReplicationOnly"           #\\__// 
+                $Roles     | % { $CTRL.$_ | % { $_.IsEnabled = $True ; $_.IsChecked = $False } }                            #\\__// 
+                                                                                                                            #\\__// 
+                $Enabled   = @{ 0 = 1 , 1 , 0 , 0 ; 1 = 1 , 1 , 1 , 0 ; 2 = 1 , 1 , 1 , 0 ; 3 = 1 , 1 , 1 , 1 }             #\\__// 
+                $Checked   = @{ 0 = 1 , 0 , 0 , 0 ; 1 = 1 , 0 , 0 , 0 ; 2 = 1 , 1 , 0 , 0 ; 3 = 1 , 0 , 0 , 0 }             #\\__// 
+                                                                                                                            #\\__// 
+                ForEach ( $i in 0..( $Roles.Count - 1 ) )                                                                   #\\__// 
+                {                                                                                                           #\\__// 
+                    $X = $Enabled[$P][$I]                                                                                   #\\__// 
+                    $Y = $Checked[$P][$I]                                                                                   #\\__// 
+                    $Z = $Roles[$I]                                                                                         #\\__// 
+                    $CTRL.$Z | % { $_.IsEnabled = $X ; $_.IsChecked = $Y }                                                  #\\__// 
+                    $Code.$Z = $( If ( $X -eq 0 ) { "N/A" } Else { $Y } )                                                   #\\__// 
+                }                                                                                                           #\\__// 
+                                                                                                                            #\\__// 
+                $DomaInfo  = @( @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ;   #\\__// 
+                                "ReplicationSourceDC" , "Credential" ) | Sort                                               #\\__// 
+                $Enabled   = @{ 0 = 0,1,1,0,0,0,1 ; 1 = 1,0,0,1,1,0,1 ; 2 = 1,0,0,1,1,0,1 ; 3 = 1,1,0,0,0,1,1 }             #\\__// 
+                                                                                                                            #\\__// 
+                ForEach ( $i in 0..( $DomaInfo.Count - 1 ) )                                                                #\\__// 
+                {                                                                                                           #\\__// 
+                    $X = $Enabled[$P][$I]                                                                                   #\\__// 
+                    $Y = $DomaInfo[$I]                                                                                      #\\__// 
+                    $CTRL."$Y`Box" | % { $_.Visibility = $X }                                                               #\\__// 
+                    If ( $X -eq 0 ) { $Code.$Y = "N/A" }                                                                    #\\__// 
+                }                                                                                                           #\\__// 
+                                                                                                                            #\\__// 
+                $SVC  = Get-FeatureList -Underscore                                                                         #\\__// 
+                                                                                                                            #\\__// 
+                ForEach ( $i in 0..16 )                                                                                     #\\__// 
+                {                                                                                                           #\\__// 
+                    $X = $ST[$I].Split( ' ' )[1]                                                                            #\\__// 
+                    $Y = $SVC[$I]                                                                                           #\\__// 
+                    If ( $X -like "*[X]*" )                                                                                 #\\__// 
+                    {                                                                                                       #\\__// 
+                        $CTRL.$Y | % { $_.IsEnabled = $False ; $_.IsChecked =  $True }                                      #\\__// 
+                        $Code.$Y = "Installed"                                                                              #\\__// 
+                    }                                                                                                       #\\__// 
+                    If ( $X -like "*[_]*" )                                                                                 #\\__// 
+                    {                                                                                                       #\\__// 
+                        $CTRL.$Y | % { $_.IsEnabled =  $True ; $_.IsChecked =  $True }                                      #\\__// 
+                        $Code.$Y = "Available"                                                                              #\\__// 
+                    }                                                                                                       #\\__// 
+                }                                                                                                           #\\__// 
+                                                                                                                            #\\__// 
+            Return $Code                                                                                                    #\\__// 
+        }                                                                                                                   #\\__// 
+    # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____   \\__// 
+    #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+    #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+        Function Validate-DomainName # Verfies that text entries are valid __________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+        {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+                [ CmdLetBinding () ] [ OutputType ( "String" ) ] Param (                                                    #\\__// 
+                                                                                                                            #\\__// 
+                    [ Parameter ( Mandatory = $True , ParameterSetName = "0" ) ][ Switch ] $Domain ,                        #\\__// 
+                    [ Parameter ( Mandatory = $True , ParameterSetName = "1" ) ][ Switch ] $NetBIOS ,                       #\\__// 
+                    [ Parameter ( Mandatory = $True , ParameterSetName = "2" ) ][ Switch ] $SiteName ,                      #\\__// 
+                    [ Parameter ( Mandatory = $True , ParameterSetName = "0" ) ]                                            #\\__// 
+                    [ Parameter ( Mandatory = $True , ParameterSetName = "1" ) ]                                            #\\__// 
+                    [ Parameter ( Mandatory = $True , ParameterSetName = "2" ) ][ String ] $Name )                          #\\__// 
+                                                                                                                            #\\__// 
+                $Char = "abcdefghijklmnopqrstuvwxyz0123456789.-\/:*?$( '"' )<>|,~:!@#$%^&'(){}_ "                           #\\__// 
+                $Char | % { $AL = $_[0..25] ; $NU = $_[26..35] ; $SP = $_[38..64] ;                                         #\\__// 
+                $AN = $Char[0..35] ; $NN = $Char[0..25] }                                                                   #\\__// 
+                $DNS  = @{ Min = 2 ; Max = 255 ; Allow = $Char[ 0..37] ; Invalid = $SP }                                    #\\__// 
+                $NBT  = @{ Min = 1 ; Max =  15 ; Allow = $Char[ 0..37] ; Invalid = $SP }                                    #\\__// 
+                $SN   = @{ Min = 1 ; Max =  63 ; Allow = $Char[ 0..37] ; Invalid = $SP }                                    #\\__// 
+                                                                                                                            #\\__// 
+                $Reserved = @( "ANONYMOUS" , "AUTHENTICATED USER" , "BATCH" , "BUILTIN" ;                                   #\\__// 
+                "GROUP" , "OWNER" | % { $_ , "$_ SERVER" } | % { "CREATOR $_" } ;                                           #\\__// 
+                "DIALUP" , "DIGEST AUTH" , "INTERACTIVE" , "INTERNET" ;                                                     #\\__// 
+                "LOCAL" | % { $_ , "$_ SYSTEM" } ; "NETWORK" | % { $_ , "$_ SERVICE" } ;                                    #\\__// 
+                "NT AUTHORITY" , "NT DOMAIN" , "NTLM AUTH" , "NULL" , "PROXY" , "REMOTE INTERACTIVE"                        #\\__// 
+                "RESTRICTED" , "SCHANNEL AUTH" , "SELF" , "SERVER" , "SERVICE" , "SYSTEM"                                   #\\__// 
+                "TERMINAL SERVER" , "THIS ORGANIZATION" , "USERS" , "WORLD" )                                               #\\__// 
+                                                                                                                            #\\__// 
+                If ( $Domain   ) { $X = $DNS }                                                                              #\\__// 
+                If ( $NetBIOS  ) { $X = $NBT }                                                                              #\\__// 
+                If ( $SiteName ) { $X = $SN }                                                                               #\\__// 
+                                                                                                                            #\\__// 
+                    If ( $Name.Length -lt $X.Min ) { Return "Short of minimum length" }                                     #\\__// 
+                ElseIf ( $Name.Length -gt $X.Max ) { Return "Exceeds maximum length" }                                      #\\__// 
+                ElseIf ( ( $Name.ToCharArray() | ? { $_ -notin $X.Allow } ).Count -gt 0 ) { Return "Invalid Characters" }   #\\__// 
+                ElseIf ( ( $Name.ToCharArray() | ? { $_  -in $X.Invalid } ).Count -gt 0 ) { Return "Invalid Characters" }   #\\__// 
+                                                                                                                            #\\__// 
+                If ( ( $Domain ) -or ( $SiteName ) )                                                                        #\\__// 
+                {                                                                                                           #\\__// 
+                    If ( ( $Name[0] | ? { $_ -notin $AN } ).Count -gt 0 )                                                   #\\__// 
+                        { Return "First character must be Alpha-Numeric" }                                                  #\\__// 
+                    ElseIf (   $Name | % { $_.EndsWith( "." ) -or $_.EndsWith( "-" ) } )                                    #\\__// 
+                        { Return "Last Character cannot be a period/hyphen" }                                               #\\__// 
+                }                                                                                                           #\\__// 
+                                                                                                                            #\\__// 
+                If ( $Domain )                                                                                              #\\__// 
+                {                                                                                                           #\\__// 
+                    If ( $Name.Split('.').Count -le 1 )                                                                     #\\__// 
+                        { Return "Not a valid domain name" }                                                                #\\__// 
+                    ElseIf ( ( $Name.Split('.')[-1].ToCharArray() | ? { $_ -in @( $AL ; '-' , '.' ) } ).Count -eq 0 )       #\\__// 
+                        { Return "Top Level Domain must contain a non-numeric character" }                                  #\\__// 
+                    Else                                                                                                    #\\__// 
+                        { Return $Name }                                                                                    #\\__// 
+                }                                                                                                           #\\__// 
+                                                                                                                            #\\__// 
+                If ( $SiteName )                                                                                            #\\__// 
+                {                                                                                                           #\\__// 
+                    If ( $X -in $Reserved ) { Return "The selected name conflicts with a reservation" }                     #\\__// 
+                    Else { Return $Name }                                                                                   #\\__// 
+                }                                                                                                           #\\__// 
+                                                                                                                            #\\__// 
+                If ( $NetBIOS )                                                                                             #\\__// 
+                {                                                                                                           #\\__// 
+                        If ( $Name[0] -eq "." )                                                                             #\\__// 
+                        {                                                                                                   #\\__// 
+                          Return "First Character must be Alpha-Numeric, or '.' "                                           #\\__// 
+                        }                                                                                                   #\\__// 
+                        Else { Return $Name.ToUpper() }                                                                     #\\__// 
+                }                                                                                                           #\\__// 
+            }                                                                                                               #\\__// 
+             # ____   ___________________________     ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
+             #//¯¯\\__[__ Domain Mode Toggler __]____//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
 
-                # Determines the default / active states for DC roles
-
-                $Roles     = "InstallDNS" , "CreateDNSDelegation" , "NoGlobalCatalog" , "CriticalReplicationOnly"
-                $Roles     | % { $CTRL.$_ | % { $_.IsEnabled = $True ; $_.IsChecked = $False } }
-
-                $Enabled   = @{ 0 = 1 , 1 , 0 , 0 ; 1 = 1 , 1 , 1 , 0 ; 2 = 1 , 1 , 1 , 0 ; 3 = 1 , 1 , 1 , 1 }
-                $Checked   = @{ 0 = 1 , 0 , 0 , 0 ; 1 = 1 , 0 , 0 , 0 ; 2 = 1 , 1 , 0 , 0 ; 3 = 1 , 0 , 0 , 0 }
-
-                ForEach ( $i in 0..( $Roles.Count - 1 ) )
-                {
-                    $X = $Enabled[$P][$I]
-                    $Y = $Checked[$P][$I]
-                    $CTRL.$( $Roles[$I] ) | % { $_.IsEnabled = $X ; $_.IsChecked = $Y }
-                    $Code.$( $Roles[$I] ) = $( If ( $X -eq 0 ) { "N/A" } Else { $X } )
-                }  
-                    
-                # Determines the default / active states for DC Name Information
-
-                $DomaInfo  = @( @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ; "ReplicationSourceDC" , "Credential" ) | Sort 
-                $Enabled   = @{ 0 = 0,1,1,0,0,0,1 ; 1 = 1,0,0,1,1,0,1 ; 2 = 1,0,0,1,1,0,1 ; 3 = 1,1,0,0,0,1,1 }
-
-                ForEach ( $i in 0..( $DomaInfo.Count - 1 ) )
-                {
-                    $X = $Enabled[$P][$I]
-                    $CTRL."$( $DomaInfo[$I] )Box" | % { $_.Visibility = $X }
-                    If ( $X -eq 0 ) { $Code.$( $DomaInfo[$I] ) = "N/A" }
-                }
-
-                $SVC  = Get-FeatureList -Underscore    
-
-                ForEach ( $i in 0..16 )
-                {  
-                    If ( $ST[$I].Split( ' ' )[1] -eq "[X]" )
-                    {
-                        $CTRL.$( $SVC[$I] ) | % { $_.IsEnabled = $False ; $_.IsChecked =  $True }
-                        $Code.$( $SVC[$I] ) = "Installed"
-                    }
-                    Else
-                    {
-                        $CTRL.$( $SVC[$I] ) | % { $_.IsEnabled =  $True ; $_.IsChecked =  $True }
-                        $Code.$( $SVC[$I] ) = "Available"
-                    }
-                }
-
-                Return $Code
-            }
-
-            Function Validate-DomainName
-            {
-                [ CmdLetBinding () ] [ OutputType ( "String" ) ] Param (
-                    
-                    [ Parameter ( Mandatory = $True , ParameterSetName = "0" ) ][ Switch ] $Domain ,
-                    [ Parameter ( Mandatory = $True , ParameterSetName = "1" ) ][ Switch ] $NetBIOS ,
-                    [ Parameter ( Mandatory = $True , ParameterSetName = "2" ) ][ Switch ] $SiteName ,
-                    [ Parameter ( Mandatory = $True , ParameterSetName = "0" ) ]
-                    [ Parameter ( Mandatory = $True , ParameterSetName = "1" ) ]
-                    [ Parameter ( Mandatory = $True , ParameterSetName = "2" ) ][ String ] $Name )
-
-   
-                $Char = "abcdefghijklmnopqrstuvwxyz0123456789.-\/:*?$( '"' )<>|,~:!@#$%^&'(){}_ "
-                $Char | % { $AL = $_[0..25] ; $NU = $_[26..35] ; $SP = $_[38..64] ; $AN = $Char[0..35] ; $NN = $Char[0..25] }
-                $DNS  = @{ Min = 2 ; Max = 255 ; Allow = $Char[ 0..37] ; Invalid = $SP }
-                $NBT  = @{ Min = 1 ; Max =  15 ; Allow = $Char[ 0..37] ; Invalid = $SP }
-                $SN   = @{ Min = 1 ; Max =  63 ; Allow = $Char[ 0..37] ; Invalid = $SP }
-
-                $Reserved = @( "ANONYMOUS" , "AUTHENTICATED USER" , "BATCH" , "BUILTIN" ; 
-                "GROUP" , "OWNER" | % { $_ , "$_ SERVER" } | % { "CREATOR $_" } ; 
-                "DIALUP" , "DIGEST AUTH" , "INTERACTIVE" , "INTERNET" ;
-                "LOCAL" | % { $_ , "$_ SYSTEM" } ; "NETWORK" | % { $_ , "$_ SERVICE" } ;
-                "NT AUTHORITY" , "NT DOMAIN" , "NTLM AUTH" , "NULL" , "PROXY" , "REMOTE INTERACTIVE"
-                "RESTRICTED" , "SCHANNEL AUTH" , "SELF" , "SERVER" , "SERVICE" , "SYSTEM"
-                "TERMINAL SERVER" , "THIS ORGANIZATION" , "USERS" , "WORLD" )
-
-                If ( $Domain   ) { $X = $DNS }
-                If ( $NetBIOS  ) { $X = $NBT }
-                If ( $SiteName ) { $X = $SN }
-                
-                    If ( $Name.Length -lt $X.Min )                                          { Return "Short of minimum length" }
-                ElseIf ( $Name.Length -gt $X.Max )                                          { Return "Exceeds maximum length" } 
-                ElseIf ( ( $Name.ToCharArray() | ? { $_ -notin $X.Allow   } ).Count -gt 0 ) { Return "Invalid Characters" }
-                ElseIf ( ( $Name.ToCharArray() | ? { $_    -in $X.Invalid } ).Count -gt 0 ) { Return "Invalid Characters" }
-
-                If ( ( $Domain ) -or ( $SiteName ) )
-                {
-                    If ( ( $Name[0] | ? { $_ -notin $AN } ).Count -gt 0 )               
-                        { Return "First character must be Alpha-Numeric" }
-                    ElseIf (   $Name | % { $_.EndsWith( "." ) -or $_.EndsWith( "-" ) } )    
-                        { Return "Last Character cannot be a period/hyphen" }
-                }
-                    
-                If ( $Domain ) 
-                {
-                    If ( $Name.Split('.').Count -le 1 ) 
-                        { Return "Not a valid domain name" }
-                    ElseIf ( ( $Name.Split('.')[-1].ToCharArray() | ? { $_ -in @( $AL ; '-' , '.' ) } ).Count -eq 0 )
-                        { Return "Top Level Domain must contain a non-numeric character" } 
-                    Else 
-                        { Return $Name }
-                }
-                
-                If ( $SiteName ) { Return $Name }
-
-                If ( $NetBIOS )
-                {
-                        If ( $Name[0] -eq "." )
-                        {  
-                          Return "First Character must be Alpha-Numeric, or '.' "
-                        }
-                        Else { Return $Name.ToUpper() }
-                }
-            }
-    #  ____                                                                        ____    ____    ____    ____    ____  
-    # //¯¯\\______________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-    # \\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-    #  ¯¯¯\\__[ Controls/Functions ]______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    #      ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯       
-
-            $Code = Filter-DCPromoGUI -Type 1 #( $Code.Process )
+            $Code = Filter-DCPromoGUI -Type ( 2 )
 
             $Roles     = "InstallDNS" , "CreateDNSDelegation" , "NoGlobalCatalog" , "CriticalReplicationOnly"
 
-            ForEach ( $i in 0..3 ) 
+            ForEach ( $I in 0..3 ) 
             { 
                 $Check = $CTRL.$( $Roles[$I] )
 
@@ -811,14 +807,56 @@
 
             $Menu = "Forest" , "Tree" , "Child" , "Clone"
 
-            ForEach ( $i in 0..3 )
+            ForEach ( $I in 0..3 )
             {
                 $CTRL.$( $Menu[$I] ).Add_Click({ If ( $Code.Process -ne $I ) { $Code = Filter-DCPromoGUI -Type $I }})
             }
 
-            If ( $Code.Process -in 1..2 ) 
+            If ( $Code.Process -eq 1 ) 
             {
-                $DCCred = @( Enter-ServiceAccount )
+                $CTRL.CredentialButton.Add_Click({ 
+
+                $X = $CTRL.ParentDomainName.Text 
+                $Y = Validate-DomainName -Domain -Name $X 
+                If ( $X -ne $Y ) { [ System.Windows.MessageBox ]::Show( "$Y in Parent Domain Name" , "Error" ) }
+                Else             
+                { 
+                    $Y  = Resolve-DnsName $X -Type A | ? { $_ -ne $Null } | % { $_.IPAddress }
+                    
+                    ARP -A | ? { $_ -like "*$( $Y )*" } | % {
+
+                        $NB = $( If ( $_ -like "*Interface: $_*" )
+                        {
+                            NBTStat -N    | ? { $_ -like "*<1C>*" } # Checks current machine, that's what came up
+                        }
+                        ElseIf ( $_ -notlike "*Interface: $_*" )
+                        {
+                            NBTStat -A $Y | ? { $_ -like "*<1C>*" }
+                        }
+                        Else
+                        {
+                            Write-Theme "Exception [!]" "Domain NetBIOS name could not be determined."
+                            Break
+                        }) }
+
+                        If ( $NB.Count -gt 1 ) { $NB = $NB | Select -First 1 }
+                        $NB = ( $NB[0..18] | ? { $_ -ne " " } ) -join ''
+
+                        $Y  = $( If ( $Y.Count -gt 1 ) { $Y[0] } ) 
+                        {
+                            $Y  = Resolve-DNSName $Y.IPAddress | % { $_.NameHost }
+                            $C  = $X , $Y | % { $_.Split('.').Count }
+                            $C[1] - $C[0] | % { If ( $_ -eq 1 ) { $LZ = 0 } Else { $LZ = 0..$_ } }
+                            
+                            $Credentials = @{ DC      = $Y.Split('.')[$LZ] 
+                                              Domain  = $X 
+                                              NetBIOS = $NB | ? { $_ -ne $Null } }
+
+                            $DCCred = Enter-ServiceAccount @Credentials
+                        }
+                    }
+                }
+            })
 
 
 
