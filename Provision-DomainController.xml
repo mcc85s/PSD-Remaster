@@ -79,10 +79,14 @@
             [ Parameter ( Position = 1 , ValueFromPipeline = $True ) ] [ String ] $Domain  ,
             [ Parameter ( Position = 2 , ValueFromPipeline = $True ) ] [ String ] $NetBIOS )
 
+        $Schema = "http://schemas.microsoft.com/winfx/2006/xaml"
+        $Author = "Secure Digits Plus LLC"
+
         $XAML = @"
-<Window                               xmlns =                 "http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-                                    xmlns:x =                              "http://schemas.microsoft.com/winfx/2006/xaml" 
-                                      Title =                         "Secure Digits Plus LLC | Hybrid-DSC Service Login" 
+<Window                               
+                                      xmlns =                 "$Schema/presentation" 
+                                    xmlns:x =                              "$Schema" 
+                                      Title =                         "$Author | Hybrid-DSC Service Login" 
                                       Width =                                                                       "350" 
                                      Height =                                                                       "250" 
                                  ResizeMode =                                                                  "NoResize" 
@@ -275,18 +279,25 @@
             Return "N/A" , "TreeDomain" , "ChildDomain" , "ChildDomain" , "N/A"
         }
 
+        Function Get-DCPromoBoxControls
+        {
+            Return @( "Database" , "Sysvol" , "Log" | % { "$_`Path" } ; "Credential" ; 
+            @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ; 
+            "ReplicationSourceDC" , "Forest" , "Domain" , "Child" , "Clone" ) | % { "$_`Box" }
+        }
+
     # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____   \\__// 
     #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-    #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+    #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
         Function Get-DCPromoControl # Provides backend for reliable XAML Control  ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
         {#/¯¯¯\\___                                   ____    ____    ____    ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-              #¯¯¯\\__[  Declare Common Vars  ]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+              #¯¯¯\\_________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
                   #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
                  [ CmdLetBinding () ] Param (                                                                               #//¯¯\\ 
                                                                                                                             #\\__// 
-                    [ ValidateSet ( 0 , 1 , 2 , 3 ) ][ Parameter ( Mandatory = $True ) ][ Int ] $DSCType = 0 )              #//¯¯\\ 
+                    [ ValidateSet ( 0 , 1 , 2 , 3 ) ][ Parameter ( Mandatory = $True ) ][ Int ] $DType = 0 )                #//¯¯\\ 
                                                                                                                             #\\__// 
-                 $T = ( "N/A" , "TreeDomain" , "ChildDomain" , "ChildDomain" , "N/A" )[ $DSCType ]                          #//¯¯\\ 
+                 $T = ( "N/A" , "TreeDomain" , "ChildDomain" , "ChildDomain" , "N/A" )[ $DType ]                            #//¯¯\\ 
                  Return [ PSCustomObject ]@{                                                                                #\\__// 
                                                                                                                             #//¯¯\\ 
                  # ______________________________________________________________________________ #                         #\\__// 
@@ -304,7 +315,7 @@
                  # [ Menu Items ] # Entries for [ Windows Server @: Desired State Configuration ] #                         #\\__// 
                  # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ #                         #//¯¯\\ 
                                                                                                                             #\\__// 
-                 Forest = "" ; Tree = "" ; Child = "" ; Clone = "" ; Process = $DSCType ;                                   #//¯¯\\ 
+                 Forest = "" ; Tree = "" ; Child = "" ; Clone = "" ; Process = $DType ;                                     #//¯¯\\ 
                                                                                                                             #\\__// 
                  # ________________________________________________________________________________ #                       #//¯¯\\ 
                  # [ ADDS-Deployment ] # - Entries for [ Active Directory @: Deployment / DCPromo ] #                       #\\__// 
@@ -325,9 +336,11 @@
                                                                                                                             #//¯¯\\ 
     # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____   \\__// 
     #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-    #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-        Function Get-DCPromoXAML # __________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-        {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__/¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+    #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+        Function Get-DCPromoXAML # Produces XAML dynamically                      ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+        {#/¯¯¯\\___                                   ____    ____    ____    ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+              #¯¯¯\\_________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+                  #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
                                                                                                                             #//¯¯\\ 
             [ CmdLetBinding () ] Param (                                                                                    #\\__// 
                 [ Parameter ( Mandatory = $True , ParameterSetName = "0" ) ][ Switch ] $Split ,                             #//¯¯\\ 
@@ -491,15 +504,15 @@
              #//¯¯\\__[_ Paths / Credentials / Names _]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
                                                                                                                             #//¯¯\\ 
-                $VA = '10 , 0 , 10 , 0'                                                                                     #\\__// 
+                    $VA = '10 , 0 , 10 , 0'                                                                                 #\\__// 
                                                                                                                             #//¯¯\\ 
-                $BB = "BorderBrush = '{x:Null}'"                                                                            #\\__// 
+                    $BB = "BorderBrush = '{x:Null}'"                                                                        #\\__// 
                                                                                                                             #//¯¯\\ 
-                $VX = @( "Database" , "Sysvol" , "Log" | % { "$_`Path" } ; "Credential" ;                                   #\\__// 
-                @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ;                   #//¯¯\\ 
-                "ReplicationSourceDC" )                                                                                     #\\__// 
+                    $VX = @( "Database" , "Sysvol" , "Log" | % { "$_`Path" } ; "Credential" ;                               #\\__// 
+                          @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ;         #//¯¯\\ 
+                          "ReplicationSourceDC" )                                                                           #\\__// 
                                                                                                                             #//¯¯\\ 
-                $DomID = ForEach ( $k in 0..9 )                                                                             #\\__// 
+                $DomID  = ForEach ( $k in 0..9 )                                                                            #\\__// 
                 {                                                                                                           #//¯¯\\ 
                     $WX = $VX[$K]                                                                                           #\\__// 
                     If ( $K -eq 3 )                                                                                         #//¯¯\\ 
@@ -516,10 +529,10 @@
                     }                                                                                                       #\\__// 
                 }                                                                                                           #//¯¯\\ 
                                                                                                                             #\\__// 
-                $X = @(6,7;0..9|%{8};7;0..2|%{7,8,7};7..10;10,9,9,9,8,7;0..5|%{7,8,7};6) | % { $SP[$_] }                    #//¯¯\\ 
+                    $X  = @(6,7;0..9|%{8};7;0..2|%{7,8,7};7..10;10,9,9,9,8,7;0..5|%{7,8,7};6) | % { $SP[$_] }               #//¯¯\\ 
                                                                                                                             #\\__// 
-                $Y = @( "<$G $GR = '0' $GC = '1' $MA = '$VA' >" , "<$GRD>" ; 0..9 | % { "<$RD $H = '*' />" } ;              #//¯¯\\ 
-                "</$GRD>" ; @( $DomID ) ; "</$G>" )                                                                         #\\__// 
+                    $Y  = @( "<$G $GR = '0' $GC = '1' $MA = '$VA' >" , "<$GRD>" ; 0..9 | % { "<$RD $H = '*' />" } ;         #//¯¯\\ 
+                             "</$GRD>" ; @( $DomID ) ; "</$G>" )                                                            #\\__// 
                                                                                                                             #//¯¯\\ 
                 $XML.Add( "08" , @( 0..50 | % { $X[$_] + $Y[$_] } ) )                                                       #\\__// 
                                                                                                                             #//¯¯\\ 
@@ -603,96 +616,184 @@
              #//¯¯\\__[___ Parts Done Bro ____]______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
                                                                                                                              #¯¯¯¯  
+        Write-Theme -Action "Loading [~]" "Active Directory Configuration Utility" 11 12 15
 
-            Function Get-DCPromoBoxControls
-            {
-                Return @( "Database" , "Sysvol" , "Log" | % { "$_`Path" } ; "Credential" ; 
-                @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ; 
-                             "ReplicationSourceDC" , "Forest" , "Domain" , "Child" , "Clone" ) | % { "$_`Box" }
-            }
+        $Code          = Get-DCPromoControl -DType 1
+        $Named         = $Code | GM | ? Membertype -eq NoteProperty | % { $_.Name }
+        $Face          = Get-DCPromoXAML -HereString
+        $Boxes         = Get-DCPromoBoxControls
 
-            Write-Theme -Action "Loading [~]" "Active Directory Configuration Utility" 11 12 15
+        $XamlWindow    = @{ XAML = $Face
+                            NE   = @( $Named ; $Boxes ; "Start" , "Cancel" , "Confirm" , "CredentialButton" ) 
+                            EA   = 0 }
 
-            $Code          = Get-DCPromoControl -DSCType 0 
-            $Named         = $Code | GM | ? Membertype -eq NoteProperty | % { $_.Name }
-            $Face          = Get-DCPromoXAML -HereString
-            $Boxes         = Get-DCPromoBoxControls
+        $CTRL          = Convert-XAMLtoWindow @XamlWindow
+        $P             = $Code.Process
 
-            $XamlWindow    = @{ XAML = $Face
-                                NE   = @( $Named ; $Boxes ; "Start" , "Cancel" , "Confirm" , "CredentialButton" ) 
-                                EA   = 0 }
+    # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____   \\__// 
+    #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+    #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+        Function Filter-DCPromoGUI # Clears and sets items in the GUI             ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+        {#/¯¯¯\\___                                   ____    ____    ____    ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+              #¯¯¯\\_________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+                  #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__//
+                [ CmdLetBinding ( ) ] Param (                                                                               #\\__//
+                                                                                                                            #\\__//
+                    [ ValidateSet ( 0 , 1 , 2 , 3 ) ][ Parameter ( Mandatory = $True ) ][ Int ] $Type = 0 )                 #\\__//
+                                                                                                                            #\\__// 
+                $P         = $Type                                                                                          #\\__//
+                $Code      = Get-DCPromoControl -DType $P
 
-            $CTRL          = Convert-XAMLtoWindow @XamlWindow
+                $DType     = "Forest" , "Tree" , "Child" , "Clone"
 
-            $P             = $Code.Process
+                $DType     | % { $Code.$_ = "N/A" }
+                $DType[$P] | % { $Code.$_ = "Selected" }
 
-                #_______________________#
-                # --------------------- #
-                #   Service  Filters    #
-                # --------------------- #
-                #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
+             # ____   ___________________________     ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
+             #//¯¯\\__[_ Hides all boxed items _]____//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
 
-            $SVC = Get-FeatureList -Underscore    
+                $Boxes     = Get-DCPromoBoxControls 
+                $Boxes     | % { $CTRL.$_.Visibility = "Hidden" }
 
-            ForEach ( $i in 0..16 )
-            {  
-                If ( $ST[$I].Split( ' ' )[1] -eq "[X]" )
+             # ____   ___________________________     ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
+             #//¯¯\\__[__ Domain Mode Toggler __]____//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__//
+
+                $Modes     = "Forest" , "Domain" , "Child" , "Clone" | % { "$_`Box" }
+                $Top       = @{ 0 = 0 , 1 ; 1 = 2 , 1 ; 2 = 2 , 1 ; 3 = 3 }
+                $Top[$P]   | % { $Modes[$_] } | % { $CTRL.$_.Visibility = "Visible" }
+                
+                $DMCode    = "ForestMode" , "DomainMode" , "ParentDomainName"
+                $DMID      = @{ 0 = 1,1,0 ; 1 = 0,1,1 ; 2 = 0,1,1 ; 3 = 0,0,0 }
+
+                ForEach ( $I in 0..2 )
                 {
-                    $CTRL.$( $SVC[$I] ) | % { $_.IsEnabled = $False ; $_.IsChecked =  $True }
-                    $Code.$( $SVC[$I] ) = "Installed"
+                    If ( $DMID[$P][$I] -eq 0 ) { $Code.$( $DMCode[$I] ) = "N/A" }
                 }
-                Else
+
+             # ____   ___________________________     ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__// 
+             #//¯¯\\__[______ Role Toggler _____]____//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__//
+
+                # Determines the default / active states for DC roles
+
+                $Roles     = "InstallDNS" , "CreateDNSDelegation" , "NoGlobalCatalog" , "CriticalReplicationOnly"
+                $Roles     | % { $CTRL.$_ | % { $_.IsEnabled = $True ; $_.IsChecked = $False } }
+
+                $Enabled   = @{ 0 = 1 , 1 , 0 , 0 ; 1 = 1 , 1 , 1 , 0 ; 2 = 1 , 1 , 1 , 0 ; 3 = 1 , 1 , 1 , 1 }
+                $Checked   = @{ 0 = 1 , 0 , 0 , 0 ; 1 = 1 , 0 , 0 , 0 ; 2 = 1 , 1 , 0 , 0 ; 3 = 1 , 0 , 0 , 0 }
+
+                ForEach ( $i in 0..( $Roles.Count - 1 ) )
                 {
-                    $CTRL.$( $SVC[$I] ) | % { $_.IsEnabled =  $True ; $_.IsChecked =  $True }
-                    $Code.$( $SVC[$I] ) = "Available"
+                    $X = $Enabled[$P][$I]
+                    $Y = $Checked[$P][$I]
+                    $CTRL.$( $Roles[$I] ) | % { $_.IsEnabled = $X ; $_.IsChecked = $Y }
+                    $Code.$( $Roles[$I] ) = $( If ( $X -eq 0 ) { "N/A" } Else { $X } )
+                }  
+                    
+                # Determines the default / active states for DC Name Information
+
+                $DomaInfo  = @( @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ; "ReplicationSourceDC" , "Credential" ) | Sort 
+                $Enabled   = @{ 0 = 0,1,1,0,0,0,1 ; 1 = 1,0,0,1,1,0,1 ; 2 = 1,0,0,1,1,0,1 ; 3 = 1,1,0,0,0,1,1 }
+
+                ForEach ( $i in 0..( $DomaInfo.Count - 1 ) )
+                {
+                    $X = $Enabled[$P][$I]
+                    $CTRL."$( $DomaInfo[$I] )Box" | % { $_.Visibility = $X }
+                    If ( $X -eq 0 ) { $Code.$( $DomaInfo[$I] ) = "N/A" }
                 }
-            }
 
-            Write-Theme -Action "Successful [+]" "Necessary services were selected" 11 12 15
-                    
-                Function Filter-DCPromoGUI
-                {
-                    [ CmdLetBinding ( ) ] Param ( [ ValidateSet ( 0 , 1 , 2 , 3 ) ][ Parameter ( Mandatory = $True ) ][ Int ] $Type = 0 )
+                $SVC  = Get-FeatureList -Underscore    
 
-                    $P         = $Type
-                    $Code      = Get-DCPromoControl -DSCType $P
-
-                    # Hides all boxed items
-
-                    $Boxes     = Get-DCPromoBoxControls 
-                    $Boxes     | % { $CTRL.$_.Visibility =  "Hidden" }
-
-                    # Displays the correct top box content
-
-                    $Top       = @{ 0 = "ForestBox" , "DomainBox" ; 1 = "ChildBox" , "DomainBox" ; 2 = "ChildBox" , "DomainBox" ; 3 = "CloneBox" }
-                    $Top[$P]   | % { $CTRL.$_.Visibility = "Visible" }
-
-                    # Determines the default / active states for DC roles
-
-                    $Roles     = "InstallDNS" , "CreateDNSDelegation" , "NoGlobalCatalog" , "CriticalReplicationOnly"
-                    $Roles     | % { $CTRL.$_ | % { $_.IsEnabled = $True ; $_.IsChecked = $False } }
-
-                    $Enabled   = @{ 0 = 1 , 1 , 0 , 0 ; 1 = 1 , 1 , 1 , 0 ; 2 = 1 , 1 , 1 , 0 ; 3 = 1 , 1 , 1 , 1 }
-                    $Checked   = @{ 0 = 1 , 0 , 0 , 0 ; 1 = 1 , 0 , 0 , 0 ; 2 = 1 , 1 , 0 , 0 ; 3 = 1 , 0 , 0 , 0 }
-
-                    ForEach ( $i in 0..( $Roles.Count - 1 ) )
+                ForEach ( $i in 0..16 )
+                {  
+                    If ( $ST[$I].Split( ' ' )[1] -eq "[X]" )
                     {
-                        $CTRL.$( $Roles[$I] ) | % { $_.IsEnabled = $Enabled[$P][$I] ; $_.IsChecked = $Checked[$P][$I] }
-                    }  
-                    
-                    # Determines the default / active states for DC Name Information
-
-                    $DomaInfo  = @( @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ; "ReplicationSourceDC" , "Credential" ) | Sort
-                    
-                    $Visibile  = @{ 0 = 0,1,1,0,0,0,1 ; 1 = 1,0,0,1,1,0,1 ; 2 = 1,0,0,1,1,0,1 ; 3 = 1,1,0,0,0,1,1 }
-
-                    ForEach ( $i in 0..( $DomaInfo.Count - 1 ) )
+                        $CTRL.$( $SVC[$I] ) | % { $_.IsEnabled = $False ; $_.IsChecked =  $True }
+                        $Code.$( $SVC[$I] ) = "Installed"
+                    }
+                    Else
                     {
-                        $CTRL."$( $DomaInfo[$I] )Box" | % { $_.Visibility = $Visibile[$P][$I] } 
+                        $CTRL.$( $SVC[$I] ) | % { $_.IsEnabled =  $True ; $_.IsChecked =  $True }
+                        $Code.$( $SVC[$I] ) = "Available"
                     }
                 }
 
-                Filter-DCPromoGUI -Type ( $Out.Process )
+                Return $Code
+            }
+
+            Function Validate-DomainName
+            {
+                [ CmdLetBinding () ] [ OutputType ( "String" ) ] Param (
+                    
+                    [ Parameter ( Mandatory = $True , ParameterSetName = "0" ) ][ Switch ] $Domain ,
+                    [ Parameter ( Mandatory = $True , ParameterSetName = "1" ) ][ Switch ] $NetBIOS ,
+                    [ Parameter ( Mandatory = $True , ParameterSetName = "2" ) ][ Switch ] $SiteName ,
+                    [ Parameter ( Mandatory = $True , ParameterSetName = "0" ) ]
+                    [ Parameter ( Mandatory = $True , ParameterSetName = "1" ) ]
+                    [ Parameter ( Mandatory = $True , ParameterSetName = "2" ) ][ String ] $Name )
+
+   
+                $Char = "abcdefghijklmnopqrstuvwxyz0123456789.-\/:*?$( '"' )<>|,~:!@#$%^&'(){}_ "
+                $Char | % { $AL = $_[0..25] ; $NU = $_[26..35] ; $SP = $_[38..64] ; $AN = $Char[0..35] ; $NN = $Char[0..25] }
+                $DNS  = @{ Min = 2 ; Max = 255 ; Allow = $Char[ 0..37] ; Invalid = $SP }
+                $NBT  = @{ Min = 1 ; Max =  15 ; Allow = $Char[ 0..37] ; Invalid = $SP }
+                $SN   = @{ Min = 1 ; Max =  63 ; Allow = $Char[ 0..37] ; Invalid = $SP }
+
+                $Reserved = @( "ANONYMOUS" , "AUTHENTICATED USER" , "BATCH" , "BUILTIN" ; 
+                "GROUP" , "OWNER" | % { $_ , "$_ SERVER" } | % { "CREATOR $_" } ; 
+                "DIALUP" , "DIGEST AUTH" , "INTERACTIVE" , "INTERNET" ;
+                "LOCAL" | % { $_ , "$_ SYSTEM" } ; "NETWORK" | % { $_ , "$_ SERVICE" } ;
+                "NT AUTHORITY" , "NT DOMAIN" , "NTLM AUTH" , "NULL" , "PROXY" , "REMOTE INTERACTIVE"
+                "RESTRICTED" , "SCHANNEL AUTH" , "SELF" , "SERVER" , "SERVICE" , "SYSTEM"
+                "TERMINAL SERVER" , "THIS ORGANIZATION" , "USERS" , "WORLD" )
+
+                If ( $Domain   ) { $X = $DNS }
+                If ( $NetBIOS  ) { $X = $NBT }
+                If ( $SiteName ) { $X = $SN }
+                
+                    If ( $Name.Length -lt $X.Min )                                          { Return "Short of minimum length" }
+                ElseIf ( $Name.Length -gt $X.Max )                                          { Return "Exceeds maximum length" } 
+                ElseIf ( ( $Name.ToCharArray() | ? { $_ -notin $X.Allow   } ).Count -gt 0 ) { Return "Invalid Characters" }
+                ElseIf ( ( $Name.ToCharArray() | ? { $_    -in $X.Invalid } ).Count -gt 0 ) { Return "Invalid Characters" }
+
+                If ( ( $Domain ) -or ( $SiteName ) )
+                {
+                    If ( ( $Name[0] | ? { $_ -notin $AN } ).Count -gt 0 )               
+                        { Return "First character must be Alpha-Numeric" }
+                    ElseIf (   $Name | % { $_.EndsWith( "." ) -or $_.EndsWith( "-" ) } )    
+                        { Return "Last Character cannot be a period/hyphen" }
+                }
+                    
+                If ( $Domain ) 
+                {
+                    If ( $Name.Split('.').Count -le 1 ) 
+                        { Return "Not a valid domain name" }
+                    ElseIf ( ( $Name.Split('.')[-1].ToCharArray() | ? { $_ -in @( $AL ; '-' , '.' ) } ).Count -eq 0 )
+                        { Return "Top Level Domain must contain a non-numeric character" } 
+                    Else 
+                        { Return $Name }
+                }
+                
+                If ( $SiteName ) { Return $Name }
+
+                If ( $NetBIOS )
+                {
+                        If ( $Name[0] -eq "." )
+                        {  
+                          Return "First Character must be Alpha-Numeric, or '.' "
+                        }
+                        Else { Return $Name.ToUpper() }
+                }
+            }
+    #  ____                                                                        ____    ____    ____    ____    ____  
+    # //¯¯\\______________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+    # \\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+    #  ¯¯¯\\__[ Controls/Functions ]______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    #      ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯       
+
+            $Code = Filter-DCPromoGUI -Type 1 #( $Code.Process )
 
             $Roles     = "InstallDNS" , "CreateDNSDelegation" , "NoGlobalCatalog" , "CriticalReplicationOnly"
 
@@ -702,46 +803,77 @@
 
                 If ( $Check.IsEnabled -eq $True ) 
                 {
-                    $Check | % { $_.Add_Checked({   $Out.$( $Roles[$I] ) =  $True })
-                                 $_.Add_UnChecked({ $Out.$( $Roles[$I] ) = $False })
+                    $Check | % { $_.Add_Checked({   $Code.$( $Roles[$I] ) =  $True })
+                                 $_.Add_UnChecked({ $Code.$( $Roles[$I] ) = $False })
                     }
                 }
-            } # < - - - - - That's where I'm at. For right now.
-
-    #  ____                                                                        ____    ____    ____    ____    ____  
-    # //¯¯\\______________________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-    # \\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-    #  ¯¯¯\\__[ Controls/Functions ]______________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    #      ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯       
-
-        $GUI.Process.Add_SelectionChanged({ ProcessSelection })
-
-        $GUI.DCEntry.Add_Click({
-            
-            If ( $Report -ne $Null ) 
-            { 
-                $Report | % { 
-                    
-                    $ServiceAccount = @{ DC = $_.NetBIOS.Host ; Domain = $_.DNS ; NetBIOS = $_.NetBIOS.Name } 
-                } 
             }
 
-            Else
-            { 
-                $ServiceAccount = @{ DC = $DC ; Domain = $Domain ; NetBIOS = $NetBIOS } 
+            $Menu = "Forest" , "Tree" , "Child" , "Clone"
+
+            ForEach ( $i in 0..3 )
+            {
+                $CTRL.$( $Menu[$I] ).Add_Click({ If ( $Code.Process -ne $I ) { $Code = Filter-DCPromoGUI -Type $I }})
             }
 
-            $DCCred             = @( Enter-ServiceAccount @ServiceAccount )
-            $GUI.DCAdmin.Text   = $DCCred.Username
-        
-        })
+            If ( $Code.Process -in 1..2 ) 
+            {
+                $DCCred = @( Enter-ServiceAccount )
 
-        $GUI.Forest.Add_Click( { If ( $Out.Forest -ne 1 ) { $GUI.DialogResult = $False | Out-Null ; 
 
-        $GUI.Cancel.Add_Click( { $GUI.DialogResult = $False } )
 
-        $GUI.Ok.Add_Click({
+            $CTRL.Cancel.Add_Click( { $CTRL.DialogResult = $False } )
+
+            $CTRL.Ok.Add_Click({
                 
+                $Top   = @( "Forest" , "Domain" | % { "$_`Mode" } ; "ParentDomainName" )
+                $Roles = "InstallDNS" , "CreateDNSDelegation" , "NoGlobalCatalog" , "CriticalReplicationOnly"
+                $DMID  = @( @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ; "ReplicationSourceDC" , "Credential" ) | Sort 
+
+                If ( $Code.Process -eq 0 ) # Install-ADDSForest
+                {
+                    # Top
+                    $Top[0,1] | % { $Code.$_ = $CTRL.$_.SelectedIndex }
+
+                    # Roles
+                    $Roles[0,1] | ? { $CTRL.$_.IsEnabled } | % { $Code.$_ = $CTRL.$_.IsChecked }
+                        
+                    # Domain Info
+                    $Items  = $DMID[1,2,6]
+                    $Con    = $Items | % { $CTRL.$_.Text }
+
+                    $Con[1] = $Con[1].ToUpper()
+                    
+                    $ID     = "Domain" , "NetBIOS" , "Site" | % { "$_ Name Cannot Be Empty" }
+                    $ID    += "Invalid Domain Name"
+                    $MSG    = $ID | % { "[ System.Windows.Messagebox ]::Show( '$_' )" }
+                    $Val    = 0..2
+                    $Val[0] = Validate-DomainName   -Domain -Name $Con[0]
+                    $Val[1] = Validate-DomainName  -NetBIOS -Name $Con[1]
+                    $Val[2] = Validate-DomainName -SiteName -Name $Con[2]
+
+                        If ( $Con[0] -eq        "" ) { IEX $MSG[0] }
+                    ElseIf ( $Con[0] -ne   $Val[0] ) { [ System.Windows.MessageBox ]::Show( $Con[0] ) }
+                    ElseIf ( $Con[1] -eq        "" ) { IEX $MSG[1] }
+                    ElseIf ( $Con[1] -ne   $Val[1] ) { [ System.Windows.MessageBox ]::Show( $Con[1] ) }
+                    ElseIf ( $Con[2] -eq        "" ) { IEX $MSG[2] }
+                    ElseIf ( $Con[2] -ne   $Val[2] ) { [ System.Windows.MessageBox ]::Show( $Con[2] ) }
+
+                    Else { 0..2 | % { $Code.$( $Items[$_] ) = $Con[$_] } }
+                }
+
+                If ( $Code.Process -eq 1 ) # Install-ADDSDomain Tree
+                {       
+                    # Top
+                    $Top[1] | % { $Code.$_ = $CTRL.$_.SelectedIndex }
+                    $Top[2] | % { $Code.$_ = $CTRL.$_.Text }
+
+
+                        
+
+
+
+
                 If ( $Process -eq 0 )
                 {
                     "DomainName" ,
@@ -783,6 +915,7 @@
                         
                     }
                 }
+
 
             ElseIf ( $GUI.DSRM_PW.Password -eq       $Null )                 { IEX $MSG[1] }
             ElseIf ( $GUI.DSRM_CF.Password -eq       $Null )                 { IEX $MSG[2] }
