@@ -25,129 +25,127 @@
     
         $ENV:PSModulePath.Split( ';' ) | % { GCI $_ -Recurse "Hybrid-DSC.psm1" } | % {
         
-        IPMO $_.FullName -Force
-        
-        If ( $? -ne $True ) { Write-Error "Module Not Loaded/Found" ; Read-Host "Press Enter to Exit" ; Exit }
-        
-        Sleep 1 }                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+        IPMO $_.FullName -Force ; If ( $? -ne $True ) { Write-Error "Module Not Loaded/Found" ; Read-Host "Press Enter to Exit" ; Exit }     
+                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____    ____    ____    ____                    ___// 
-    Function Enter-ServiceAccount # Allows entry / use of an AD service account _________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\                  //¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯  #//                  \\     
-        [ CmdLetBinding () ] Param (                                                                                        #\\                  //     
-                                                                                                                            #//                  \\     
-            [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True ) ] [ String ] $DC      ,            #\\               ___//     
-            [ Parameter ( Position = 1 , Mandatory = $True , ValueFromPipeline = $True ) ] [ String ] $Domain  ,            #//              //¯¯¯      
-            [ Parameter ( Position = 2 , ValueFromPipeline = $True ) ] [ String ] $NetBIOS )  # Currently Unused            #\\              \\         
-                                                                                                                            #//           ___//
-        $Stuff = Generate-XAML -Login
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Enter-ServiceAccount # Allows entry / use of an AD service account _________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        [ CmdLetBinding () ] Param (
 
-        $NamedElements = "Username" , "Password" , "Confirm" , "Switch" , "Port" , "Ok" , "Cancel"                          #\\__// 
-                                                                                                                            #//¯¯\\ 
-        $0 = "Username" , "Password" , "Confirmation" ;                                                                     #//¯¯\\ 
-        $1 = $0 | % { "You must enter a $_" } ; $2 = $0 | % { "$_ Error" }                                                  #\\__// 
-        $1[2] = $1[2].Replace( "You must enter a" , "Password Must Match the" )                                             #//¯¯\\ 
-        $1   += "Invalid information. All fields must be correct and valid." ; $2 += "Authentication Failure"               #\\__// 
-                                                                                                                            #//¯¯\\ 
-        $MSG  = 0..3 | % { "[ System.Windows.MessageBox ]::Show( '$( $1[$_] )' , '$( $2[$_] )' )" }                         #\\__// 
-                                                                                                                            #//¯¯\\ 
-        $GUIX = Convert-XAMLtoWindow -Xaml $Stuff -NE $NamedElements -PassThru                                              #\\__// 
-                                                                                                                            #//¯¯\\ 
-        $GUIX.Switch.Add_Click({ $GUIX.Port.IsEnabled = $True  })                                                           #\\__// 
-        $GUIX.Cancel.Add_Click({ $GUIX.DialogResult   = $False })                                                           #//¯¯\\ 
-        $GUIX.Ok.Add_Click({                                                                                                #\\__// 
-                                                                                                                            #//¯¯\\ 
-            $Port = $( If ( $GUIX.Port.IsEnabled -eq $True ) { $GUIX.Port.Text } Else { 389 } )                             #\\__// 
-            $Cred = [ PSCredential ]::New( $GUIX.Username.Text , $GUIX.Password.SecurePassword )                            #//¯¯\\ 
-            $AD   = "LDAP://$( $DC ):$Port/DC=$( $Domain.Split('.') -join ',DC=' )"                                         #\\__// 
-            $DX   = [ DirectoryEntry ]::New( "$AD" , $Cred.Username , $Cred.GetNetworkCredential().Password )               #//¯¯\\ 
-                                                                                                                            #\\__// 
-                If ( $GUIX.Username | ? { $_.Text     -eq $Null } )                     { IEX $MSG[0] }                     #//¯¯\\ 
-            ElseIf ( $GUIX.Password | ? { $_.Password -eq $Null } )                     { IEX $MSG[1] }                     #\\__// 
-            ElseIf ( $GUIX.Confirm  | ? { $_.Password -eq $Null } )                     { IEX $MSG[2] }                     #//¯¯\\ 
-            ElseIf ( $GUIX | ? { $_.Password.Password -notmatch $_.Confirm.Password } ) { IEX $MSG[2] }                     #\\__// 
-            ElseIf ( $DX.Name -eq $Null )                                               { IEX $MSG[3] }                     #//¯¯\\ 
-                                                                                                                            #\\__// 
-            Else { $GUIX.DialogResult = $True }                                                                             #//¯¯\\ 
-        })                                                                                                                  #\\__// 
-                                                                                                                            #//¯¯\\ 
-        $Null = $GUIX.Username.Focus()                                                                                      #\\__// 
-                                                                                                                            #//¯¯\\ 
-        $OP = Show-WPFWindow -GUI $GUIX                                                                                     #\\__// 
-                                                                                                                            #//¯¯\\ 
-        If ( $OP -eq $True )                                                                                                #\\__// 
-        {                                                                                                                   #//¯¯\\ 
-            Write-Theme -Action "Login [+]" "Successful" 11 12 15                                                           #\\__// 
-            Return [ PSCredential ]::New( $GUIX.Username.Text , $GUIX.Password.SecurePassword )                             #//¯¯\\ 
-        }                                                                                                                   #\\__// 
-                                                                                                                            #//¯¯\\ 
-        Else                                                                                                                #\\__// 
-        {                                                                                                                   #//¯¯\\ 
-            Write-Theme -Action "Login [!]" "Failed"                                                                        #\\__// 
-        }                                                                                                                   #//¯¯\\ 
-                                                                                     #____ -- ____ -- ____ -- ____ -- ____ --\\__//-- ____    ____           
-}
+            [ Parameter ( Position = 0 , Mandatory = $True , ValueFromPipeline = $True ) ] [ String ] $DC      ,
+            [ Parameter ( Position = 1 , Mandatory = $True , ValueFromPipeline = $True ) ] [ String ] $Domain  ,
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True ) ]                     [ String ] $NetBIOS )
+                                                                                                                
+        $Login = Get-XAML -Login
 
-    # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____   \\__// 
+        $NamedElements = "Username" , "Password" , "Confirm" , "Switch" , "Port" , "Ok" , "Cancel"
+
+        $0    = "Username" , "Password" , "Confirmation"
+        $1    = $0 | % { "You must enter a $_" } ; $2 = $0 | % { "$_ Error" }
+        $1[2] = $1[2].Replace( "You must enter a" , "Password Must Match the" )
+        $1   += "Invalid information. All fields must be correct and valid." ; 
+        $2   += "Authentication Failure"
+
+        $MSG  = 0..3 | % { "[ System.Windows.MessageBox ]::Show( '$( $1[$_] )' , '$( $2[$_] )' )" }
+
+        $GUI = Convert-XAMLtoWindow -Xaml $Login -NE $NamedElements -PassThru
+
+        $GUI.Switch.Add_Click({ $GUI.Port.IsEnabled = $True  })
+        $GUI.Cancel.Add_Click({ $GUI.DialogResult   = $False })
+        $GUI.Ok.Add_Click({
+
+            $Port = $( If ( $GUI.Port.IsEnabled -eq $True ) { $GUI.Port.Text } Else { 389 } )
+            $Cred = [ PSCredential ]::New( $GUI.Username.Text , $GUI.Password.SecurePassword )
+            $AD   = "LDAP://$( $DC ):$Port/DC=$( $Domain.Split('.') -join ',DC=' )"
+            $DX   = [ DirectoryEntry ]::New( "$AD" , $Cred.Username , $Cred.GetNetworkCredential().Password )
+
+                If ( $GUI.Username | ? { $_.Text     -eq $Null } )                     { IEX $MSG[0] }
+            ElseIf ( $GUI.Password | ? { $_.Password -eq $Null } )                     { IEX $MSG[1] }
+            ElseIf ( $GUI.Confirm  | ? { $_.Password -eq $Null } )                     { IEX $MSG[2] }
+            ElseIf ( $GUI | ? { $_.Password.Password -notmatch $_.Confirm.Password } ) { IEX $MSG[2] }
+            ElseIf ( $DX.Name -eq $Null )                                              { IEX $MSG[3] }
+
+            Else { $GUI.DialogResult = $True }
+        })
+
+        $Null = $GUI.Username.Focus()
+
+        $OP = Show-WPFWindow -GUI $GUI
+
+        If ( $OP -eq $True )
+        {
+            Write-Theme -Action "Login [+]" "Successful" 11 12 15
+            Return [ PSCredential ]::New( $GUI.Username.Text , $GUI.Password.SecurePassword )
+        }
+
+        Else
+        {
+            Write-Theme -Action "Login [!]" "Failed"
+        }
+    }
+
+    # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____    ____  
     #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
     #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-        Function Get-DomainType # Collects the DomainType ___________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-        {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-            Return @( "N/A" , "TreeDomain" , "ChildDomain" , "N/A" ) }                                                      #//¯¯\\ 
-    # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____   \\__// 
+        Function Get-DomainType # Collects the DomainType ___________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+        {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯
+            Return @( "N/A" , "TreeDomain" , "ChildDomain" , "N/A" )
+        }
+    # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____    ____  
     #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
     #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-        Function Get-DCPromoBoxControls # Collects the names for Box Controls________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-        {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-            Return @( "Database" , "Sysvol" , "Log" | % { "$_`Path" } ; "Credential" ;                                      #\\__// 
-            @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ;                       #//¯¯\\ 
-            "ReplicationSourceDC" , "Forest" , "Domain" , "Child" , "Clone" ) | % { "$_`Box" }                              #\\__// 
-        }                                                                                                                   #//¯¯\\ 
-    # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____   \\__// 
+        Function Get-DCPromoBoxControls # Collects the names for Box Controls________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+        {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+            Return @( "Database" , "Sysvol" , "Log" | % { "$_`Path" } ; "Credential" ;
+            @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ;
+            "ReplicationSourceDC" , "Forest" , "Domain" , "Child" , "Clone" ) | % { "$_`Box" }
+        }
+    # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____    ____  
     #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-    #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-        Function Get-DCPromoControl # Provides backend for reliable XAML Control  ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-        {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
-                 [ CmdLetBinding () ] Param (                                                                               #//¯¯\\ 
-                                                                                                                            #\\__// 
-                    [ ValidateSet ( 0 , 1 , 2 , 3 ) ][ Parameter ( Mandatory = $True ) ][ Int ] $DType = 0 )                #//¯¯\\ 
-                                                                                                                            #\\__// 
-                 $T = ( Get-DomainType )[ $DType ]                                                                          #//¯¯\\ 
-                 Return [ PSCustomObject ]@{                                                                                #\\__// 
-                                                                                                                            #//¯¯\\ 
-                 # ______________________________________________________________________________ #                         #\\__// 
-                 # [ Services ] # - Entries for [ Windows Server @: Desired State Configuration ] #                         #//¯¯\\ 
-                 # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ #                         #\\__// 
-                                                                                                                            #//¯¯\\ 
-                 AD_Domain_Services      = "" ; DHCP                     = "" ; DNS                     = "" ;              #\\__// 
-                 GPMC                    = "" ; RSAT                     = "" ; RSAT_AD_AdminCenter     = "" ;              #//¯¯\\ 
-                 RSAT_AD_PowerShell      = "" ; RSAT_AD_Tools            = "" ; RSAT_ADDS               = "" ;              #\\__// 
-                 RSAT_ADDS_Tools         = "" ; RSAT_DHCP                = "" ; RSAT_DNS_Server         = "" ;              #//¯¯\\ 
-                 RSAT_Role_Tools         = "" ; WDS                      = "" ; WDS_AdminPack           = "" ;              #\\__// 
-                 WDS_Deployment          = "" ; WDS_Transport            = "" ;                                             #//¯¯\\ 
-                                                                                                                            #\\__// 
-                 # ______________________________________________________________________________ #                         #//¯¯\\ 
-                 # [ Menu Items ] # Entries for [ Windows Server @: Desired State Configuration ] #                         #\\__// 
-                 # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ #                         #//¯¯\\ 
-                                                                                                                            #\\__// 
-                 Forest = "" ; Tree = "" ; Child = "" ; Clone = "" ; Process = $DType ;                                     #//¯¯\\ 
-                                                                                                                            #\\__// 
-                 # ________________________________________________________________________________ #                       #//¯¯\\ 
-                 # [ ADDS-Deployment ] # - Entries for [ Active Directory @: Deployment / DCPromo ] #                       #\\__// 
-                 # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ #                       #//¯¯\\ 
-                                                                                                                            #\\__// 
-                 DomainType              = $T ; ForestMode              = "" ; DomainMode              = "" ;               #//¯¯\\ 
-                 ParentDomainName        = "" ; DatabasePath            = "" ; SysvolPath              = "" ;               #\\__// 
-                 LogPath                 = "" ; Credential              = "" ; DomainName              = "" ;               #//¯¯\\ 
-                 DomainNetBIOSName       = "" ; NewDomainName           = "" ; NewDomainNetBIOSName    = "" ;               #\\__// 
-                 SiteName                = "" ; ReplicationSourceDC     = "" ; InstallDNS              = "" ;               #//¯¯\\ 
-                 CreateDNSDelegation     = "" ; NoGlobalCatalog         = "" ; CriticalReplicationOnly = "" ;               #\\__// 
-                 Force      = $True ; NoRebootUponCompletion  = $False ; SafeModeAdministratorPassword = "" } }             #//¯¯\\ 
-    # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____   \\__// 
-    #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-    #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-        Function Filter-DCPromoGUI # Clears and refreshes items in the GUI __________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+    #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___¯¯¯¯____¯¯¯¯   // 
+        Function Get-DCPromoControl # Provides backend for reliable XAML Control  ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___   \\ 
+        {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\  // 
+            [ CmdLetBinding () ] Param (                                                                                    #//  \\ 
+                                                                                                                            #\\  // 
+                    [ ValidateSet ( 0 , 1 , 2 , 3 ) ][ Parameter ( Mandatory = $True ) ][ Int ] $DType = 0 )                #//  \\ 
+                                                                                                                            #\\  // 
+                 $T = ( Get-DomainType )[ $DType ]                                                                          #//  \\ 
+                 Return [ PSCustomObject ]@{                                                                                #\\  // 
+                                                                                                                            #//  \\ 
+                 # ______________________________________________________________________________ #                         #\\  // 
+                 # [ Services ] # - Entries for [ Windows Server @: Desired State Configuration ] #                         #//  \\ 
+                 # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ #                         #\\  // 
+                                                                                                                            #//  \\ 
+                 AD_Domain_Services      = "" ; DHCP                     = "" ; DNS                     = "" ;              #\\  // 
+                 GPMC                    = "" ; RSAT                     = "" ; RSAT_AD_AdminCenter     = "" ;              #//  \\ 
+                 RSAT_AD_PowerShell      = "" ; RSAT_AD_Tools            = "" ; RSAT_ADDS               = "" ;              #\\  // 
+                 RSAT_ADDS_Tools         = "" ; RSAT_DHCP                = "" ; RSAT_DNS_Server         = "" ;              #//  \\ 
+                 RSAT_Role_Tools         = "" ; WDS                      = "" ; WDS_AdminPack           = "" ;              #\\  // 
+                 WDS_Deployment          = "" ; WDS_Transport            = "" ;                                             #//  \\ 
+                                                                                                                            #\\  // 
+                 # ______________________________________________________________________________ #                         #//  \\ 
+                 # [ Menu Items ] # Entries for [ Windows Server @: Desired State Configuration ] #                         #\\  // 
+                 # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ #                         #//  \\ 
+                                                                                                                            #\\  // 
+                 Forest = "" ; Tree = "" ; Child = "" ; Clone = "" ; Process = $DType ;                                     #//  \\ 
+                                                                                                                            #\\  // 
+                 # ________________________________________________________________________________ #                       #//  \\ 
+                 # [ ADDS-Deployment ] # - Entries for [ Active Directory @: Deployment / DCPromo ] #                       #\\  // 
+                 # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ #                       #//  \\ 
+                                                                                                                            #\\  // 
+                 DomainType              = $T ; ForestMode              = "" ; DomainMode              = "" ;               #//  \\ 
+                 ParentDomainName        = "" ; DatabasePath            = "" ; SysvolPath              = "" ;               #\\  // 
+                 LogPath                 = "" ; Credential              = "" ; DomainName              = "" ;               #//  \\ 
+                 DomainNetBIOSName       = "" ; NewDomainName           = "" ; NewDomainNetBIOSName    = "" ;               #\\  // 
+                 SiteName                = "" ; ReplicationSourceDC     = "" ; InstallDNS              = "" ;               #//  \\ 
+                 CreateDNSDelegation     = "" ; NoGlobalCatalog         = "" ; CriticalReplicationOnly = "" ;               #\\  // 
+                 Force      = $True ; NoRebootUponCompletion  = $False ; SafeModeAdministratorPassword = "" } }             #//  \\ 
+    # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____   \\  // 
+    #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//  \\ 
+    #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯   // 
+        Function Filter-DCPromoGUI # Clears and refreshes items in the GUI __________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___   \\ 
         {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
                 [ CmdLetBinding ( ) ] Param (                                                                               #//¯¯\\ 
                                                                                                                             #\\__// 
