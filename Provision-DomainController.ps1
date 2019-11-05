@@ -104,9 +104,7 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Get-DCPromoControl # Provides backend for reliable XAML Control ____________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        [ CmdLetBinding () ] Param (
-
-            [ ValidateSet ( 0 , 1 , 2 , 3 ) ][ Parameter () ][ Int ] $Type = 0 )
+        [ CmdLetBinding () ] Param ( [ ValidateSet ( 0 , 1 , 2 , 3 ) ][ Parameter () ][ Int ] $Type = 0 )
 
                  $T = ( Get-DomainType )[ $Type ]
                  Return [ PSCustomObject ]@{
@@ -186,7 +184,7 @@
 
         $DomaInfo  = @( @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ; 
                     "ReplicationSourceDC" , "Credential" ) | Sort
-        $Enabled   = @{ 0 = 0,1,1,0,0,0,1 ; 1 = 1,0,0,1,1,0,1 ; 2 = 1,0,0,1,1,0,1 ; 3 = 1,1,0,0,0,1,1 }
+        $Enabled   = @{ 0 = 1,0,0,1,1,1,0 ; 1 = 0,1,1,0,0,1,0 ; 2 = 0,1,1,0,0,1,0 ; 3 = 0,0,1,1,1,0,0 }
 
         ForEach ( $i in 0..( $DomaInfo.Count - 1 ) )
         {
@@ -214,7 +212,7 @@
             }
         }
 
-        Return $Code                                                                 #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+        Return $Code                                                                  #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
@@ -311,6 +309,11 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Provision-DomainController # Launches Hybrid-DSCPromo ______________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        
+        Write-Theme -Action "Searching [~]" "For Valid Domain Controllers" 11 12 15
+        
+        $Report     = Get-NBTScan | ? { $_.ID -eq "<1C>" } 
+
         Write-Theme -Action "Loading [~]" "Active Directory Configuration Utility" 11 12 15
 
         $Code       = Get-DCPromoControl
@@ -329,63 +332,142 @@
         Write-Theme -Action "Windows Server [+]" "Configuration Selected" 11 12 15
 
         # Menu Controls
+
         $Code       = Filter-DCPromoGUI -Type $Code.Process
+
         $Menu       = "Forest" , "Tree" , "Child" , "Clone"
+
         $GUI.$( $Menu[0] ).Add_Click( { $Code = Filter-DCPromoGUI -Type 0 } )
         $GUI.$( $Menu[1] ).Add_Click( { $Code = Filter-DCPromoGUI -Type 1 } )
         $GUI.$( $Menu[2] ).Add_Click( { $Code = Filter-DCPromoGUI -Type 2 } )
         $GUI.$( $Menu[3] ).Add_Click( { $Code = Filter-DCPromoGUI -Type 3 } )
 
         # Role Controls
-        $Roles     = "InstallDNS" , "CreateDNSDelegation" , "NoGlobalCatalog" , "CriticalReplicationOnly"
-        ForEach ( $i in 0..( $Roles.Count - 1 ) )
-        {
-            $GUI.$( $Roles[$I] ) | ? { $_.IsEnabled } | % {
-                
-                $Check | % { 
-                
-                    $_.Add_Checked({   $Code.$( $Roles[$I] ) = $True })
-                    $_.Add_UnChecked({ $Code.$( $Roles[$I] ) = $True })
 
-                }
-            }
-        }
+        $Roles      = "InstallDNS" , "CreateDNSDelegation" , "NoGlobalCatalog" , "CriticalReplicationOnly"
+
+        $GUI.$( $Roles[0] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Roles[0] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Roles[0] ) = $True }) }
+
+        $GUI.$( $Roles[1] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Roles[1] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Roles[1] ) = $True }) }
+
+        $GUI.$( $Roles[2] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Roles[2] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Roles[2] ) = $True }) }
+
+        $GUI.$( $Roles[3] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Roles[3] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Roles[3] ) = $True }) }
 
         # Service Controls
-        $Service = Get-DSCFeatureList -Underscore
-        ForEach ( $i in 0..( $Service.Count - 1 ) )
-        {
-            $Check = $GUI.$( $Service[$I] )
-                
-            If ( $Check.IsEnabled -eq $True )
-            {
-                $Check | % { $_.Add_Checked({   $Code.$( $Service[$I] ) = $True })
-                             $_.Add_UnChecked({ $Code.$( $Service[$I] ) = $True })  
-                }
-            }
-        }
-        
+
+        $Service    = Get-DSCFeatureList -Underscore
+
+        $GUI.$( $Service[ 0] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[ 0] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[ 0] ) = $True }) }
+
+        $GUI.$( $Service[ 1] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[ 1] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[ 1] ) = $True }) } 
+
+        $GUI.$( $Service[ 2] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[ 2] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[ 2] ) = $True }) } 
+
+        $GUI.$( $Service[ 3] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[ 3] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[ 3] ) = $True }) } 
+
+        $GUI.$( $Service[ 4] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[ 4] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[ 4] ) = $True }) }
+
+        $GUI.$( $Service[ 5] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[ 5] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[ 5] ) = $True }) } 
+
+        $GUI.$( $Service[ 6] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[ 6] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[ 6] ) = $True }) } 
+
+        $GUI.$( $Service[ 7] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[ 7] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[ 7] ) = $True }) } 
+
+        $GUI.$( $Service[ 8] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[ 8] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[ 8] ) = $True }) }
+
+        $GUI.$( $Service[ 9] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[ 9] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[ 9] ) = $True }) } 
+
+        $GUI.$( $Service[10] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[10] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[10] ) = $True }) } 
+
+        $GUI.$( $Service[11] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[11] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[11] ) = $True }) } 
+
+        $GUI.$( $Service[12] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[12] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[12] ) = $True }) }
+
+        $GUI.$( $Service[13] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[13] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[13] ) = $True }) } 
+
+        $GUI.$( $Service[14] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[14] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[14] ) = $True }) } 
+
+        $GUI.$( $Service[15] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[15] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[15] ) = $True }) } 
+
+        $GUI.$( $Service[16] ) | ? { $_.IsEnabled } | % { 
+        $_.Add_Checked({   $Code.$( $Service[16] ) = $True }) ; $_.Add_UnChecked({ $Code.$( $Service[16] ) = $True }) } 
+
         # Credential / Domain Logon
         $GUI.CredentialButton.Add_Click({ 
 
-            $X = $( If ( $Code.Process -eq 1,2 ) { $GUI.ParentDomainName.Text } )
-                    If ( $Code.Process -eq 3   ) { $GUI.DomainName.Text       }
+            $Alternate = 0
+            If ( $Report -ne $Null ) 
+            {
+                $Report | % { $DC = $_.Host.Split('.')[0] ; $Domain = $_.Host.Replace( "$DC." , '' ) ; $NetBIOS = $_.Name }
 
-                    $X | % {
+                $PopupXaml = Get-XAML -DCFound
+                $PopupGUI  = @{ Xaml = $PopupXaml ; Passthru = $True ; EA = 0 ; NE = @( "DC" , "Domain" , "NetBIOS" , "Start" , "Cancel" ) }
+                $Popup    = Convert-XAMLToWindow @PopupGUI
 
-                        If ( ( Validate-DomainName -Domain -Name $X ) -ne $X )
-                        { 
-                            [ System.Windows.MessageBox ]::Show( "$X in Parent Domain Name" , "Error" ) ; Break
-                        }
-                    
-                        Else
-                        {
-                            Resolve-DNSName $_ -Type A | % { Resolve-DNSName $_.IPAddress } | % { $Y = $_.NameHost.Replace( ".$X" , '' ) }
-                            If ( $Y -eq $Null ) { [ System.Windows.MessageBox ]::Show( "Failed to detect the domain controller" , "Error" ) ; Break }
-                        }
+                $Popup.Start.Add_Click({  $Popup.DialogResult = $True  })
+                $Popup.Cancel.Add_Click({ $Popup.DialogResult = $False })
+
+
+                $Popup.DC = $DC
+                $Popup.Domain = $Domain
+                $Popup.NetBIOS = $NetBIOS 
+                $Null = $Popup.Start.Focus()
+
+                $PopupResult = Show-WPFWindow -GUI $Popup
+
+                If ( $PopupResult -eq $True )
+                {
+                    $DCCred = Enter-ServiceAccount -DC $DC -Domain $Domain
+                }
+
+                Else 
+                {
+                    $Alternate = 1
+                }
+            }
+
+            If ( ( $Report -eq $Null ) -or ( $Alternate -eq 1 ) )
+            {
+                If ( $Code.Process -in 1,2 ) { $X = $GUI.ParentDomainName.Text }
+                If ( $Code.Process -eq 3   ) { $X = $GUI.DomainName.Text       }
+
+                $X | % {
+
+                    If ( ( Validate-DomainName -Domain -Name $X ) -ne $X )
+                    { 
+                        [ System.Windows.MessageBox ]::Show( "$X in Parent Domain Name" , "Error" ) ; Return
                     }
+                    
+                    Else
+                    {
+                        Resolve-DNSName $_ -Type A | % { Resolve-DNSName $_.IPAddress } | % { $Y = $_.NameHost.Replace( ".$X" , '' ) }
+                        If ( $Y -eq $Null ) { [ System.Windows.MessageBox ]::Show( "Failed to detect the domain controller" , "Error" ) ; Return }
+                    }
+                }
 
-            $DCCred = Enter-ServiceAccount -DC $Y -Domain $X
+                $DCCred = Enter-ServiceAccount -DC $Y -Domain $X 
+            } 
 
             If ( $DCCred -ne $Null ) 
             { 
@@ -408,7 +490,7 @@
                     0..( $EXE.Count - 1 ) | % { $EXE[$_].Properties } | ? { $_.netbiosname } | % { $NBIOS = $_.netbiosname }
                 }
 
-                Else {    $GUI.DomainName.Text = $X }
+                Else { $GUI.DomainName.Text = $X }
             }
         })
 
@@ -418,16 +500,16 @@
                 
             "Database" , "Sysvol" , "Log" | % { "$_`Path" } | % { 
                 
-                If ( $GUI.$_.Text -eq "" ) { IEX "[ System.Windows.MessageBox ]::Show( '$( $_.Replace( 'P' , ' P' ) ) Missing' )" ; Break }
+                If ( $GUI.$_.Text -eq "" ) { IEX "[ System.Windows.MessageBox ]::Show( '$( $_.Replace( 'P' , ' P' ) ) Missing' )" ; Return }
              }
 
              $SM = "No Password" , "Match" , "Confirmation" | % { "[ System.Windows.MessageBox ]::Show( '$_ Error' )" }
 
              $GUI.SafeModeAdministratorPassword.Password | % {
             
-                If ( $_ -eq "" )                          { IEX $SM[0] ; Break }
-                If ( $GUI.Confirm.Password -notmatch $_ ) { IEX $SM[1] ; Break }
-                If ( $GUI.Confirm.Password -eq "" )       { IEX $SM[2] ; Break }
+                If ( $_ -eq "" )                          { IEX $SM[0] ; Return }
+                If ( $GUI.Confirm.Password -notmatch $_ ) { IEX $SM[1] ; Return }
+                If ( $GUI.Confirm.Password -eq "" )       { IEX $SM[2] ; Return }
 
              }
                     
@@ -531,8 +613,8 @@
                 $Val[1]      = Validate-DomainName  -NetBIOS -Name $Con[1]
                 $Val[2]      = Validate-DomainName -SiteName -Name $Con[2]
                     
-                0..2         | ? { $Con[$_] -eq       "" } | % { IEX $MSG[$_] ; Break }
-                0..2         | ? { $Con[$_] -ne $Val[$_] } | % { [ System.Windows.MessageBox ]::Show( $Con[$_] ) ; Break }   
+                0..2         | ? { $Con[$_] -eq       "" } | % { IEX $MSG[$_] ; Return }
+                0..2         | ? { $Con[$_] -ne $Val[$_] } | % { [ System.Windows.MessageBox ]::Show( $Con[$_] ) ; Return }   
                 0..2         | % { $Code.$( $Items[$_] ) = $Con[$_] }
             }
 
