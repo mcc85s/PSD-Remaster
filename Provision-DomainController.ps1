@@ -82,7 +82,7 @@
 
         Else
         {
-            Write-Theme -Action "Login [!]" "Failed"
+            Write-Theme -Action "Login [!]" "Failed" 12 4 15
         }                                                                            #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
@@ -617,6 +617,6 @@
             Read-Host "Correct?"
         }
 
-        Else { Write-Theme -Action "[!] Exception" "Either the user cancelled, or the dialogue failed" }
+        Else { Write-Theme -Action "[!] Exception" "Either the user cancelled, or the dialogue failed" 12 4 15 }
         
     }
