@@ -419,20 +419,21 @@
             $Alternate = 0
             If ( $Report -ne $Null ) 
             {
-                $Report | % { $DC = $_.Host.Split('.')[0] ; $Domain = $_.Host.Replace( "$DC." , '' ) ; $NetBIOS = $_.Name }
+                $Report | % { $DC = $_.Host.Split( '.' )[0] ; $Domain = $_.Host.Replace( "$DC." , '' ) ; $NetBIOS = $_.Name }
 
-                $PopupXaml = Get-XAML -DCFound
-                $PopupGUI  = @{ Xaml = $PopupXaml ; Passthru = $True ; EA = 0 ; NE = @( "DC" , "Domain" , "NetBIOS" , "Start" , "Cancel" ) }
-                $Popup    = Convert-XAMLToWindow @PopupGUI
+                $PopupXAML     = Get-XAML -DCFound
+                $PopupNamed    = "DC" , "Domain" , "NetBIOS" , "Ok" , "Cancel"
+                $PopupGUI      = @{ Xaml = $PopupXaml ; Passthru = $True ; EA = 0 ; NE = $PopupNamed }
+                $Popup         = Convert-XAMLToWindow @PopupGUI
 
-                $Popup.Start.Add_Click({  $Popup.DialogResult = $True  })
+                $Popup.Ok.Add_Click({     $Popup.DialogResult = $True  })
                 $Popup.Cancel.Add_Click({ $Popup.DialogResult = $False })
 
+                $Popup.DC      | % { $_.Content = $DC      }
+                $Popup.Domain  | % { $_.Content = $Domain  }
+                $Popup.NetBIOS | % { $_.Content = $NetBIOS }
 
-                $Popup.DC = $DC
-                $Popup.Domain = $Domain
-                $Popup.NetBIOS = $NetBIOS 
-                $Null = $Popup.Start.Focus()
+                $Null = $Popup.Ok.Focus()
 
                 $PopupResult = Show-WPFWindow -GUI $Popup
 
@@ -449,24 +450,32 @@
 
             If ( ( $Report -eq $Null ) -or ( $Alternate -eq 1 ) )
             {
-                If ( $Code.Process -in 1,2 ) { $X = $GUI.ParentDomainName.Text }
-                If ( $Code.Process -eq 3   ) { $X = $GUI.DomainName.Text       }
+                $X = $( If ( $Code.Process -in 1,2 ) { $GUI.ParentDomainName.Text }
+                        If ( $Code.Process -eq 3   ) { $GUI.DomainName.Text       } )
 
-                $X | % {
-
-                    If ( ( Validate-DomainName -Domain -Name $X ) -ne $X )
-                    { 
-                        [ System.Windows.MessageBox ]::Show( "$X in Parent Domain Name" , "Error" ) ; Return
-                    }
-                    
-                    Else
-                    {
-                        Resolve-DNSName $_ -Type A | % { Resolve-DNSName $_.IPAddress } | % { $Y = $_.NameHost.Replace( ".$X" , '' ) }
-                        If ( $Y -eq $Null ) { [ System.Windows.MessageBox ]::Show( "Failed to detect the domain controller" , "Error" ) ; Return }
-                    }
+                If ( ( $X -eq "" ) -or ( $X -eq $Null ) )
+                {
+                    [ System.Windows.MessageBox ]::Show( "Domain Name is Null/Empty" , "Error" ) ; Return
                 }
 
-                $DCCred = Enter-ServiceAccount -DC $Y -Domain $X 
+                Else
+                {
+                    $X | % {
+
+                        If ( ( Validate-DomainName -Domain -Name $X ) -ne $X )
+                        { 
+                            [ System.Windows.MessageBox ]::Show( "$X in Parent Domain Name" , "Error" ) ; Return
+                        }
+                    
+                        Else
+                        {
+                            Resolve-DNSName $_ -Type A | % { Resolve-DNSName $_.IPAddress } | % { $Y = $_.NameHost.Replace( ".$X" , '' ) }
+                            If ( $Y -eq $Null ) { [ System.Windows.MessageBox ]::Show( "Failed to detect the domain controller" , "Error" ) ; Return }
+                        }
+                    }
+
+                    $DCCred = Enter-ServiceAccount -DC $Y -Domain $X 
+                }
             } 
 
             If ( $DCCred -ne $Null ) 
@@ -492,32 +501,37 @@
 
                 Else { $GUI.DomainName.Text = $X }
             }
+
+            If ( $DCCred -eq $Null )
+            {
+                Write-Theme -Action "Exception [!]" "Login Failed" 12 4 15 
+            }
         })
 
         $GUI.Cancel.Add_Click({ $GUI.DialogResult = $False })
 
         $GUI.Start.Add_Click({
+
+        $MSG = @( "Database" , "Sysvol" , "Log" | % { "$_ Missing" } ; "Password Empty" , "Password/Confirmation Match Error" , "Confirmation Empty" | % { "DSRM $_" } ) | % { 
+        
+        "[ System.Windows.MessageBox ]::Show( '$_' )" }
+
+        $Top   = @( "Forest" , "Domain" | % { "$_`Mode" } ; "ParentDomainName" )
+        $Roles = "InstallDNS" , "CreateDNSDelegation" , "NoGlobalCatalog" , "CriticalReplicationOnly"
+        $DMID  = @( @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ; "ReplicationSourceDC" , "Credential" ) | Sort 
+        
                 
-            "Database" , "Sysvol" , "Log" | % { "$_`Path" } | % { 
-                
-                If ( $GUI.$_.Text -eq "" ) { IEX "[ System.Windows.MessageBox ]::Show( '$( $_.Replace( 'P' , ' P' ) ) Missing' )" ; Return }
-             }
+                If ( $GUI.DatabasePath | ? { $_.Text -eq "" } ) { IEX $MSG[0] }
+            ElseIf ( $GUI.SysvolPath   | ? { $_.Text -eq "" } ) { IEX $MSG[1] }
+            ElseIf ( $GUI.LogPath      | ? { $_.Text -eq "" } ) { IEX $MSG[2] }
+            ElseIf ( $GUI.SafeModeAdministratorPassword.Password | % { 
+             
+                    If ( $_ -eq "" )                            { $I = 3 }
+                ElseIf ( $GUI.Confirm.Password -notmatch $_ )   { $I = 4 }
+                ElseIf ( $GUI.Confirm.Password -eq "" )         { $I = 5 }
+            }) { IEX $MSG[$I] }
 
-             $SM = "No Password" , "Match" , "Confirmation" | % { "[ System.Windows.MessageBox ]::Show( '$_ Error' )" }
-
-             $GUI.SafeModeAdministratorPassword.Password | % {
-            
-                If ( $_ -eq "" )                          { IEX $SM[0] ; Return }
-                If ( $GUI.Confirm.Password -notmatch $_ ) { IEX $SM[1] ; Return }
-                If ( $GUI.Confirm.Password -eq "" )       { IEX $SM[2] ; Return }
-
-             }
-                    
-            $Top   = @( "Forest" , "Domain" | % { "$_`Mode" } ; "ParentDomainName" )
-            $Roles = "InstallDNS" , "CreateDNSDelegation" , "NoGlobalCatalog" , "CriticalReplicationOnly"
-            $DMID  = @( @( "Domain" | % { $_ , "New$_" } | % { $_ , "$_`NetBIOS" } ; "Site" ) | % { "$_`Name" } ; "ReplicationSourceDC" , "Credential" ) | Sort 
-
-            If ( $Code.Process -eq 0 ) # Install-ADDSForest
+            ElseIf ( $Code.Process -eq 0 ) # Install-ADDSForest
             {
                 # Top
                 $Top[0,1]   | % { $Code.$_ = $GUI.$_.SelectedIndex }
@@ -547,7 +561,7 @@
                 0..2        | % { $Code.$( $Items[$_] ) = $Con[$_] }
             }
 
-            If ( $Code.Process -in 1..2 )
+            ElseIf ( $Code.Process -in 1..2 )
             {
                 $GUI.ParentDomainName     | % { $_.Text -eq $Null  } | % { [ System.Windows.MessageBox ]::Show(    "Parent Domain Name Missing" ) ; Break }
                 $GUI.CredentialBox        | % { $_.Text -eq $Null  } | % { [ System.Windows.MessageBox ]::Show(     "Domain Credential Missing" ) ; Break }
@@ -559,7 +573,7 @@
                 }
             }
 
-            If ( $Code.Process -eq 1 ) # Install-ADDSDomain Tree
+            ElseIf ( $Code.Process -eq 1 ) # Install-ADDSDomain Tree
             {       
                 # Top
                 $Top[1]      | % { $Code.$_ = $GUI.$_.SelectedIndex }
@@ -588,7 +602,7 @@
                 0..2         | % { $Code.$( $Items[$_] ) = $Con[$_] }
             }
 
-            If ( $Code.Process -eq 2 ) # Install-ADDSDomain Child
+            ElseIf ( $Code.Process -eq 2 ) # Install-ADDSDomain Child
             {       
                 # Top
                 $Top[1]      | % { $Code.$_ = $GUI.$_.SelectedIndex }
@@ -618,7 +632,7 @@
                 0..2         | % { $Code.$( $Items[$_] ) = $Con[$_] }
             }
 
-            If ( $Code.Process -eq 3 ) # Install-ADDSDomainController
+            ElseIf ( $Code.Process -eq 3 ) # Install-ADDSDomainController
             {
                 # Roles
                 $Roles[0..3] | ? { $GUI.$_.IsEnabled } | % { $Code.$_ = $GUI.$_.IsChecked }
