@@ -725,14 +725,9 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Get-NetworkHosts # Gets actual used network host addresses _________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        $Mac = Resolve-MacAddress 
 
-        #Write-Theme -Action "Preparing [~]" "MAC Address Ranking" 11 12 15
-
-        $Mac    = @{ Count  = Resolve-MacAddress -Count
-                     Index  = Resolve-MacAddress -Index
-                     Vendor = Resolve-MacAddress -Vendor }
-
-        Function Return-Vendor # Nested Funciton
+        Function Return-Vendor
         {
             [ CmdLetBinding () ] Param ( [ Parameter ( Position = 0 , Mandatory = $True ) ] [ String ] $MacAddress )
 
@@ -751,7 +746,7 @@
             }
         }
 
-        Function Return-Class # Nested Function
+        Function Return-Class
         {
             [ CmdLetBinding () ] Param (
 
@@ -896,22 +891,20 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Resolve-MacAddress # Obtains the MAC Address Resolution Lists ______________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        [ CmdLetBinding () ] Param (
 
-            [ Parameter ( ParameterSetName =  "Count" ) ] [ Switch ] $Count  ,
-            [ Parameter ( ParameterSetName =  "Index" ) ] [ Switch ] $Index  ,
-            [ Parameter ( ParameterSetName = "Vendor" ) ] [ Switch ] $Vendor )
-
-        $X = $( If ( $Count ) { "Count" } If ( $Index ) { "Index" } If ( $Vendor ) { "Vendor" } )
+        $x = Resolve-HybridDSC
+        $y = "Count" , "Index" , "Vendor"
+        $Return = [ Ordered ]@{ Count = "" ; Index = "" ; Vendor = "" }
         
-        Declare-HybridDSC | % { 
-        
-            $Archive = @{ Path =    "$_\Map\$X.zip" ; DestinationPath = "$_" ; Force = $True }
+        ForEach ( $i in 0..2 ) 
+        {     
+            $Archive = @{ Path =    "$x\Map\$( $y[$I] ).zip" ; DestinationPath = "$x" ; Force = $True }
 
             Expand-Archive @Archive
 
-            "$_\$X.txt" | % { $Return = GC $_ ; RI $_ ; Return $Return }
-        }                                                                            #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+            "$x\$( $y[$I] ).txt" | % { $Return.$( $Y[$I] ) = GC $_ ; RI $_ }
+        }
+        Return $Return                                                               #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
@@ -1047,22 +1040,25 @@
         $Report          = @{ Success = @( ) ; Failure = @( ) }
         Start-PingSweep  | % { $Report.Success += @( $_.Success ) ; $Report.Failure += @( $_.Failure ) }
         $New_IPAddress   = $Report.Failure | Select -First 1
-        
-        $IPAddress       = @{    InterfaceIndex = $Adapter.ifIndex
-                                          IPAddress = $New_IPAddress
-                                       PrefixLength = $SubnetMask.PrefixLength
-                                     DefaultGateway = $Gateway.NextHop
-                                      ValidLifeTime = [ TimeSpan ]::MaxValue
-                                  PreferredLifeTime = [ TimeSpan ]::MaxValue }
 
-            New-NetIpAddress @IPAddress
+        $Adapter         = Get-NetRoute -AddressFamily IPV4 | ? { $_.DestinationPrefix -like "*$( $Info.IPV4 )/*" } | % { $_.InterfaceIndex }
+        $Adapter         | % { Get-NetRoute -AddressFamily IPv4 | ? { $_.DestinationPrefix -eq "0.0.0.0/0" } | % { $Gateway = $_.NextHop } }
+        
+        $IPAddress       = @{    InterfaceIndex = $Adapter
+                                      IPAddress = $New_IPAddress
+                                   PrefixLength = $Info.CIDR
+                                 DefaultGateway = $Gateway
+                                  ValidLifeTime = [ TimeSpan ]::MaxValue
+                              PreferredLifeTime = [ TimeSpan ]::MaxValue }
+
+        New-NetIpAddress @IPAddress
     
-            $DNS             = @{    InterfaceIndex = $Adapter.ifIndex
+            $DNS             = @{    InterfaceIndex = $Adapter
                                     ServerAddresses = "1.1.1.1" , "1.0.0.1" }
 
-            Set-DNSClientServerAddress @DNS
+        Set-DNSClientServerAddress @DNS
     
-            0..10 | ? { ( Test-Connection -ComputerName "DSC$_" -Count 1 -EA 0 ) -eq $Null } | % { Rename-Computer "DSC$_" ; Restart-Computer }
+        0..10 | ? { ( Test-Connection -ComputerName "DSC$_" -Count 1 -EA 0 ) -eq $Null } | % { Rename-Computer "DSC$_" ; Restart-Computer }
 
                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
