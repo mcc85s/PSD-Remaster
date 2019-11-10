@@ -89,7 +89,22 @@ Guess what. Hybrid-DSC? Well, when it's ready, it'll accelerate the act of accel
 
 Now, I know what you're thinking... "Sounds like the G-forces involved in that much acceleration could be dangerous, maybe even lethal, Michael." Well, when it comes to locking yourself in a room and studying the sacred art of not sucking at the work you choose to do, you have to have something that makes up for all that time you spent sitting there staring at the computer and swearing at it until it finally worked the way you wanted it to. Will you be very far behind? Yep. However, "everything that used to take you 45 minutes with the MCT and then an additional 2-4 hours to download updates and install them and then run disk cleanup to get the most up to date version of Windows possible... Well, that process will then take a wonderful amount of 10 minutes when you master the art of 'PXE Environment acceleration'.
 
-No really, the plus side to building a system that stays up to date is that "you can then travel to a website that stays up to date and deploys the latest version of the operating system with the most up to date tools you would ever need, and does so from PXE so that you can start deploying this thing called 'a live operating system.' It's sort of like "Hey, there was a great reason to do all of this carefully and slowly." It's sort of like WaaS or SaaS, but on steroids, and not slow. That's what adding these components together eventually leads to.
+You're probably thinking... "I don't know if I can handle this much acceleration bro. Really. You keep using this word, and it sounds like an open invitation to have uncontrollable motion sickness... and *I'm not down with that at all*." 
+
+Well, think of it like this. Quantum Entanglement. Einstein called it spooky action at a distance, except, that's a misnomer. What Quantum Entanglement really means is, "the universe responds in a way that results in any entangled particle being affected at the same time in an exact ratio to it's counterpart."
+
+"Sounds like spooky action at a distance is just a shorter way to say what you did."
+
+Look. He was referring to this thing called 'mathematics.'
+
+"That actually sounds pretty cool."
+I know. It's just what you could call "insanely difficult to pull off correctly all the time." Go ahead and ask Pi what the last digit of it is, you will be waiting forever. Literally.
+
+No really, the plus side to building a system that stays up to date is that "you can then travel to a website that stays up to date and deploys the latest version of the operating system with the most up to date tools you would ever need, and does so from PXE so that you can start deploying this thing called 'a live operating system that is always up to date all the time.' 
+
+It's sort of like "Hey, there was a great reason to build all of this carefully and slowly." It's sort of like WaaS or SaaS, but the end result is that you could probably eliminate the idea of needing a hard drive altogether. That's what adding these components together could eventually lead to. I don't know if I mentioned this, but it'll also stay up to date. Which means it will self update itself while already being up to date, and staying up to date, because the moment that it starts to even think about going out of date, then bam, "i'm up to date again.", and it does this *all the time*.
+
+"You really are an obnoxious repetitive bastard..."
 
 # Now, you're an administrator...
 ...and when you see that a user hasn't rebooted their machine for 3 months, you know it's because they have some files open and they don't know how to hit the 'save' button... I mean, we all know that he does. He also knows that he does. But, for whatever reason, he just chooses not to do that... nor to reboot his god damn computer to install the security update. You know, the one that protects people from the damn thing that somehow 'removes money from their damn account...' or 'tells them that they can click on this thing and some hot girl will suddenly be your wife or whatever'... and, because he is an idiot that would fail to do all of these things that HE SHOULD'VE FRICKEN DONE ALREADY... well... then you have to talk to this individual as if you 'don't want to smack him across the face for being so dumb'... but you 'definitely WANT TO DO THAT BECAUSE... he's the damn reason everyone at your company has to 'wipe their god damn machine again.' I know. It SHOULD be time to 'kick this guy in the nuts.' However... you can't really do that. Even if you WANT to... you just can't. Which ... *sigh*.
