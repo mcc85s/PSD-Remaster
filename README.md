@@ -62,7 +62,11 @@ When a company like Intel makes a very retarded decision, and causes this thing 
 
 The video in question has not been real popular, mainly because, there are people out there that 'suck at the work they get paid exceptionally well to suck at...' and what happens is, "they are the people that would rather continue getting paid to suck at the work they do than to be honest or carefully study the sacred art of *not sucking at their job*. 
 
-Now, they may say things such as 'I don't agree with that statement'. But, guess what... they also confuse words such as "don't agree" with "definitely agree".
+Now, unfortunately, even at moments where the truth is dispensed, or shared openly with other people, these sad miserable people will do what's called 'including the word *not* when the statement is true', otherwise referred to as 'a god damn lie'. They're actually very skilled at this phenomenon, case in point, when Intel claimed to have the first 5Ghz CPU, that had 28 cores and ran on air? Oh well, they were telling the truth... except, only a dumbass would confuse the words 'air' and 'industrial chiller'. No really, that happened. Here's a link to where you can find this thing called 'proof of Intel doing this act called lying to people'... https://thinkcomputers.org/intels-28-core-cpu-required-an-industrial-chiller-to-achieve-5ghz/
+
+Look. Nobody lies. Not even the people you trust the most. The world is full of people that always tell the truth until of course, you happen to have some situation where you have evidence of them doing this thing I suggested called 'lying', and instead of 'accepting the fact that they were lying' when they are then shown proof of such a thing, they will then make every effort to convince everyone that 'it's not what it looks like.'
+
+I don't know about you, but 'every liar I have ever known has said those words' and did this thing called 'failed to convince me that it wasn't what it looked like.'
 
 # The bottom line
 ***Security is a boolean value***, if even one little thing isn't secure, like the god damn CENTRAL PROCESSING UNIT... well, then it can crash the **entire topology of your network** when felonious idiots named 'Intel Executives' decide to do something 'retarded to your network'. 
