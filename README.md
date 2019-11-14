@@ -71,7 +71,7 @@ Look. Nobody lies. Not even the people you trust the most. The world is full of 
 I don't know about you, but 'every liar I have ever known has said those words' and did this thing called 'failed to convince me that it wasn't what it looked like.'
 
 # The bottom line
-***Security is a boolean value***, if even one little thing isn't secure, like the god damn CENTRAL PROCESSING UNIT... well, then it can crash the **entire topology of your network** when felonious idiots named 'Intel Executives' decide to do something 'retarded to your network'. 
+***Security is a boolean value***, if even one little thing isn't secure, like the god damn CENTRAL PROCESSING UNIT... ( It's a part that's like so CENTRAL to the whole thing that your computer, or anyone's computer, operates on? That it's like, in the god damn name of the unit that processes everything. From a CENTRAL location. ) Well, then it can crash the **entire topology of your network** when felonious idiots named 'Intel Executives' decide to do something 'retarded to your network'. 
 
 SCCM tries to safeguard this by *digitally signing everything*, but even as 'hardened as it is'... it still has it's fair of vulnerabilities, for instance....
 1) Sometimes files/hash values or digital signatures can be misreported if the firmware/CPU is not valid. It's rare, but it happens when people do things such as 'sucking at the work they do'. AKA, hacking firmware or hardware.
