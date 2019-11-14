@@ -450,7 +450,7 @@
 
                 If ( $PopupResult -eq $True )
                 {
-                    $DCCred               = Enter-ServiceAccount -DC $DC -Domain $Domain
+                    $DCCred               = Invoke-Login -DC $DC -Domain $Domain
                 }
 
                 Else 
