@@ -1560,6 +1560,7 @@
         {#___________________________________________________________________________/
 
              $Title = "DSC Root Installation"
+             $GFX   = Import-DSCGraphics
 
              # ____   _________________________
              #//¯¯\\__[_______ Header ________]
@@ -1816,25 +1817,45 @@
         
         }
         
-        Return $GFX                                                                  #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}
+        Return $GFX                                                                 #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Resolve-UninstallList # Collects installed applications from the registry__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        $Return = "" , "\WOW6432Node" | % { "HKLM:\SOFTWARE$_\Microsoft\Windows\CurrentVersion\Uninstall\*" }
+        
+        $env:PROCESSOR_ARCHITECTURE | % { 
+        
+            If ( $_ -eq "AMD64" ) 
+            {
+                Return $Return | % { GP $_ }
+            }
 
-    Function Collect-Registry # Collects installed applications from the registry
-    {
-        Return "" , "\WOW6432Node" | % { GP "HKLM:\SOFTWARE$_\Microsoft\Windows\CurrentVersion\Uninstall\*" }
-    }
-    
-
-    Function Collect-DSCRoot # Collects Hybrid DSC Installation Path 
-    {
+            Else
+            {
+                Return GP $Return[0]
+            }
+        }                                                                           #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Resolve-DSCRoot # Collects Hybrid DSC Installation Path ___________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         "HKLM:\Software\Policies\Secure Digits Plus LLC" | % { 
-            If ( ( Test-Path $_ ) -ne $True ) { Return 1 }
-            Else { Return @{ Root = $_ ; Tree = ( GP $_ ).'Hybrid-DSC' } }
-        }
-    }
-
-    Function Install-DSCRoot
-    {
+         
+            If ( ( Test-Path $_ ) -ne $True ) 
+            { 
+                Install-DSCRoot
+            }
+            
+            Return @{ Root = $_ ; Tree = ( GP $_ ).'Hybrid-DSC' }
+        }                                                                           #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Install-DSCRoot # Provisioned installation of Hybrid-DSC __________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         $GUI = Get-XAML -DSCRoot | % { Convert-XAMLToWindow -XAML $_ -NE ( Find-XAMLNamedElements -Xaml $_ ) -PassThru }
 
         $GUI.Cancel.Add_Click({ $GUI.DialogResult = $False })
@@ -1856,83 +1877,184 @@
 
         If ( $OP -eq $True )
         {
-            ( $Base , $Vendor , $Registry ) = ( $GUI.Install.Text , "Secure Digits Plus LLC" , "HKLM:\SOFTWARE\Policies" )
-            $BasePath = "$Registry\$Vendor"
-
-            $Base | ? { ( Test-Path $_ ) -ne $True } | % {
-
-                Write-Theme -Action "Creating [~]" "Installation Directory" 11 12 15
-
-                NI $_ -ItemType Directory
-
-                Start $_
-
-                If ( $_ -eq $False )
-                {
-                    Write-Theme -Action "Exception [!]" "The directory could not be created" 12 4 15
-                    Read-Host "Press Enter to Exit"
-                    Exit
-                }
+            $Root = @{ Base     = $GUI.Install.Text
+                       Registry = "HKLM:\SOFTWARE\Policies"
+                       Vendor   = "Secure Digits Plus LLC" 
+                       Date     = Get-Date }
+            
+            If ( ! ( Test-Path $Root.Base ) ) # Path not detected
+            {
+                NI $Root.Base -ItemType Directory
 
                 Write-Theme -Action "Created [+]" "Installation Directory" 11 12 15
             }
 
-            Sleep -M 100
-
-            $Base | ? { ( Test-Path $_ ) -eq $True } | % {
-
-                $BasePath | ? { ( Test-Path $_ ) -eq $False } | % {
-
-                    Write-Theme -Action "Creating [~]" "Registry Entry for Installation Path" 11 12 15
-
-                    NI -Path $Registry -Name $Vendor
-
-                    If ( $? -ne $True ) 
-                    { 
-                        Write-Theme -Action "Exception [!]" "Registry Entry Creation Failed" 12 4 15
-                        Read-Host "Press Enter to Exit"
-                        Exit 
-                    }
-                    
-                        ( "Hybrid-DSC" , $Base ) , ( "Installation Date" , ( Get-Date ) ) | % { 
-    
-                            SP -Path $BasePath -Name $_[0] -Value $_[1]
-                            
-                            Write-Theme -Action "Created [+]" "$_" 11 12 15
-                    }
-                }
+            If ( Test-Path $Root.Base )       # Path Detected
+            {
+                Write-Theme -Action "Detected [+]" "Installation Directory" 11 12 15
             }
 
-            Collect-Dependencies
+            Start $Root.Base
 
-            "HKLM:\Software\Policies\Secure Digits Plus LLC" | % { Return @{ Root = $_ ; Tree = ( gp $_ ).'Hybrid-DSC' } }
-        }
+            Sleep -M 100
+            
+            If ( Test-Path "$( $Root.Registry )\$($Root.Vendor )" ) 
+            { 
+                RI -Path $Root.Registry -Name $Root.Vendor
+            }
+
+            Write-Theme -Action "Creating [~]" "Registry Entry for Installation Path" 11 12 15
+
+            NI -Path $Root.Registry -Name $Root.Vendor 
+
+            ( "Hybrid-DSC" , $Root.Base ) , ( "Installation Date" , $Root.Date ) | % { 
+
+                $Set = @{ Path  = $Root.Registry
+                          Name  = $_[0]
+                          Value = $_[1]      }
     
+                SP @Set
+
+                Write-Theme -Action "Created [+]" "$( $Set.Name )" 11 12 15
+            }
+        }
+
         Else
         {
             Write-Theme -Action "Exception [!]" "The exited or the dialogue failed" 12 4 15
-            Read-Host "Press Enter to Exit"
-            Exit
+        }
+
+        Read-Host "Check"
+
+        $Registry     = Resolve-UninstallList
+
+        $Base         = Resolve-DSCRoot | ? { $_ -ne $Null } | % { $_.Tree }
+
+        $MDTFile      = "MicrosoftDeploymentToolkit_x$( If ( $env:PROCESSOR_ARCHITECTURE -eq "x86" ) { 86 } Else { 64 } ).msi"
+
+        $Pull         = [ Ordered ]@{ }
+
+        # [ Windows ADK ] - The Awesome Deployment Kit. That's what ADK means. Really.
+
+        $Pull.Add( 0 , @(                                                    "Deployment Kit - Windows 10" ,
+                                                                                            "10.1.17763.1" ,
+                                                                                                  "WinADK" ,
+                                                                   "Windows Assessment and Deployment Kit" ,
+                                                                                            "$Base\WinADK" ,
+                                                                                          "winadk1903.exe" ,
+                                                         "https://go.microsoft.com/fwlink/?linkid=2086042" ,
+                                                "/quiet /norestart /log $env:temp\win_adk.log /features +" ) )
+
+        # [ Windows PE ] - The Pain-in-the-ass Environment...
+
+        $Pull.Add( 1 , @(                                                                "Preinstallation" ,
+                                                                                            "10.1.17763.1" ,
+                                                                                                   "WinPE" ,
+                                                                 "Windows ADK Preinstallation Environment" ,
+                                                                                             "$Base\WinPE" ,
+                                                                                           "winpe1903.exe" ,
+                                                         "https://go.microsoft.com/fwlink/?linkid=2087112" ,
+                                                "/quiet /norestart /log $env:temp\win_adk.log /features +" ) )
+
+        # [ Microsoft Deployment Toolkit ]
+
+        $Pull.Add( 2 , @(                                                                "Deployment Tool" ,
+                                                                                           "6.3.8450.0000" ,
+                                                                                                     "MDT" ,
+                                                                            "Microsoft Deployment Toolkit" ,
+                                                                                               "$Base\MDT" ,
+                                                                                                "$MDTFile" ,
+             "https://download.microsoft.com/download/3/3/9/339BE62D-B4B8-4956-B58D-73C4685FC492/$MDTFile" ,
+                                                                                       "/quiet /norestart" ) )
+        
+        Write-Theme -Action "Querying [~]" "Registry for installed applications" 11 12 15
+
+        0..2      | % {
+
+            $X    = $Pull[$_]
+            
+            $Item = $Registry | ? { $_.DisplayName -like "*$( $X[0] )*" }
+
+            If ( ( $Item -ne $Null ) -and ( $Item.DisplayVersion -ge $X[1] ) )
+            {
+                Write-Theme -Action "Dependency [+]" "$( $X[3] ) meets minimum requirements" 11 12 15
+            }
+
+            ElseIf ( ( $Item -eq $Null ) -or ( $Item.DisplayVersion -lt $X[1] ) )
+            {
+                Write-Theme -Action "Downloading [~]" "$( $X[3] )" 11 12 15
+
+                $X[4] | % { 
+                
+                    ! ( Test-Path $_ )
+                    {   
+                        NI $_ -ItemType Directory
+
+                        Write-Theme -Action "Created [+]" "Directory @: $Path" 11 12 15
+                    }
+                }
+
+                IPMO BitsTransfer
+                
+                [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::Tls12
+
+                $BITS = @{  Source           = $X[6]
+                            Destination      = $X[5]
+                            Description      = $X[3] }
+
+                    Start-BitsTransfer @BITS
+
+                    $SAPS = @{  FilePath         = $X[5]
+                                Args             = $X[7] 
+                                WorkingDirectory = $X[4]
+                                Passthru         = $True }
+
+                Write-Theme -Action "Installing [+]" "$( $X[3] )" 11 12 15
+
+                SAPS @SAPS | % { 
+                    
+                    For ( $j = 0 ; $j -le 100 ; $j = ( $j + 1 ) % 100 ) 
+                    {
+                        $Progress = @{  Activity        = "[ Installing ] $ID"
+                                        PercentComplete = "$J"
+                                        Status          = "$J% Complete" }
+
+                        Write-Progress @Progress
+                
+                        Sleep -M 250 
+
+                        If ( $_.HasExited ) 
+                        { 
+                            Write-Progress -Activity "[ Installed ]" -Completed
+                            Return 
+                        }
+                    }
+                }
+                    Write-Theme -Action "Installed [+]" "$( $X[3] )" 11 12 15
+            }
+
+            Write-Theme -Action "Verified [+]" "PSD/MDT Dependencies" 11 12 15
+
+            Write-Theme -Action "Installing [~]" "Hybrid-DSC Root Structure" 11 12 15
+
+            "Hybrid" , "Libraries" , "Scripts" , "Templates" , "Install" | % { 
+        
+                "$( $Root.Base )\$_" | % {
+                    
+                    If ( ( Test-Path $_ ) -ne $True )
+                    { 
+                        NI $_ -ItemType Directory
+                    }
+                    Else
+                    {
+                        GI $_
+                    }
+                }
+            }
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+ #____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
         Write-Theme -Free # What Free Actually Means ____________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
