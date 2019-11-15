@@ -23,10 +23,12 @@
                                               ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    #>
         $ENV:PSModulePath.Split( ';' ) | % { GCI $_ -Recurse "*Hybrid-DSC.ps1*" } | % { IPMO $_.FullName -Force }
 
-        Export-ModuleMember -Function Declare-HybridDSC , New-SubTable , New-Table , Write-Theme , Convert-XAMLToWindow , Show-WPFWindow ,
-        Get-NetworkInfo , Start-PingSweep , Get-NBTSCAN , Get-NetworkHosts , Get-TelemetryData , Resolve-MacAddress , Start-NetworkInfo ,
-        Get-NetworkStatistics , Initialize-Server , Initialize-PortScan , Get-DSCFeatureList , Get-DSCFeatureState , Get-XAML ,
-        Find-XAMLNamedElements , Show-Message , Invoke-Login                        #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+        Export-ModuleMember -Function Resolve-HybridDSC , New-SubTable , New-Table , Write-Theme , Convert-XAMLToWindow , Show-WPFWindow ,
+        Get-XAML , Find-XAMLNamedElements , Get-NetworkInfo , Start-PingSweep , Get-NBTSCAN , Get-NetworkHosts , Get-TelemetryData ,
+        Resolve-MacAddress , Start-NetworkInfo , Get-NetworkStatistics , Initialize-PortScan , Initialize-Server , Get-DSCFeatureList ,
+        Get-DSCFeatureState , Show-Message , Invoke-Login , Export-Ini , Add-ACL , New-ACLObject, Import-DSCGraphics , Search-Registry , 
+        Resolve-DSCRoot , Install-DSCRoot
+                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 <#___                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 //¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 \\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
