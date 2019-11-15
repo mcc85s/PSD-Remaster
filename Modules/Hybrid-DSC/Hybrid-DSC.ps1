@@ -1848,8 +1848,11 @@
             { 
                 Install-DSCRoot
             }
-            
-            Return @{ Root = $_ ; Tree = ( GP $_ ).'Hybrid-DSC' }
+
+            Else 
+            {
+                Return @{ Root = $_ ; Tree = ( GP $_ ).'Hybrid-DSC' }
+            }
         }                                                                           #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
@@ -1907,100 +1910,99 @@
 
             NI -Path $Root.Registry -Name $Root.Vendor 
 
-            ( "Hybrid-DSC" , $Root.Base ) , ( "Installation Date" , $Root.Date ) | % { 
+            # Sets the damn root folder path
+            $Set = @{ Path  = $Root.Registry
+                      Name  = "Hybrid-DSC"
+                      Value = $Root.Base      }
 
-                $Set = @{ Path  = $Root.Registry
-                          Name  = $_[0]
-                          Value = $_[1]      }
-    
-                SP @Set
-
-                Write-Theme -Action "Created [+]" "$( $Set.Name )" 11 12 15
-            }
-        }
-
-        Else
-        {
-            Write-Theme -Action "Exception [!]" "The exited or the dialogue failed" 12 4 15
-        }
-
-        Read-Host "Check"
-
-        $Registry     = Resolve-UninstallList
-
-        $Base         = Resolve-DSCRoot | ? { $_ -ne $Null } | % { $_.Tree }
-
-        $MDTFile      = "MicrosoftDeploymentToolkit_x$( If ( $env:PROCESSOR_ARCHITECTURE -eq "x86" ) { 86 } Else { 64 } ).msi"
-
-        $Pull         = [ Ordered ]@{ }
-
-        # [ Windows ADK ] - The Awesome Deployment Kit. That's what ADK means. Really.
-
-        $Pull.Add( 0 , @(                                                    "Deployment Kit - Windows 10" ,
-                                                                                            "10.1.17763.1" ,
-                                                                                                  "WinADK" ,
-                                                                   "Windows Assessment and Deployment Kit" ,
-                                                                                            "$Base\WinADK" ,
-                                                                                          "winadk1903.exe" ,
-                                                         "https://go.microsoft.com/fwlink/?linkid=2086042" ,
-                                                "/quiet /norestart /log $env:temp\win_adk.log /features +" ) )
-
-        # [ Windows PE ] - The Pain-in-the-ass Environment...
-
-        $Pull.Add( 1 , @(                                                                "Preinstallation" ,
-                                                                                            "10.1.17763.1" ,
-                                                                                                   "WinPE" ,
-                                                                 "Windows ADK Preinstallation Environment" ,
-                                                                                             "$Base\WinPE" ,
-                                                                                           "winpe1903.exe" ,
-                                                         "https://go.microsoft.com/fwlink/?linkid=2087112" ,
-                                                "/quiet /norestart /log $env:temp\win_adk.log /features +" ) )
-
-        # [ Microsoft Deployment Toolkit ]
-
-        $Pull.Add( 2 , @(                                                                "Deployment Tool" ,
-                                                                                           "6.3.8450.0000" ,
-                                                                                                     "MDT" ,
-                                                                            "Microsoft Deployment Toolkit" ,
-                                                                                               "$Base\MDT" ,
-                                                                                                "$MDTFile" ,
-             "https://download.microsoft.com/download/3/3/9/339BE62D-B4B8-4956-B58D-73C4685FC492/$MDTFile" ,
-                                                                                       "/quiet /norestart" ) )
-        
-        Write-Theme -Action "Querying [~]" "Registry for installed applications" 11 12 15
-
-        0..2      | % {
-
-            $X    = $Pull[$_]
-            
-            $Item = $Registry | ? { $_.DisplayName -like "*$( $X[0] )*" }
-
-            If ( ( $Item -ne $Null ) -and ( $Item.DisplayVersion -ge $X[1] ) )
-            {
-                Write-Theme -Action "Dependency [+]" "$( $X[3] ) meets minimum requirements" 11 12 15
-            }
-
-            ElseIf ( ( $Item -eq $Null ) -or ( $Item.DisplayVersion -lt $X[1] ) )
-            {
-                Write-Theme -Action "Downloading [~]" "$( $X[3] )" 11 12 15
-
-                $X[4] | % { 
+            SP @Set
                 
-                    ! ( Test-Path $_ )
-                    {   
-                        NI $_ -ItemType Directory
+            Write-Theme -Action "Created [+]" "$( $Set.Name )" 11 12 15
 
-                        Write-Theme -Action "Created [+]" "Directory @: $Path" 11 12 15
-                    }
+            # Sets the damn installation date
+            $Set = @{ Path  = $Root.Registry
+                      Name  = "Installation Date"
+                      Value = $Root.Date      }    
+            
+            SP @Set
+
+            Write-Theme -Action "Created [+]" "$( $Set.Name )" 11 12 15
+
+            $Registry     = Resolve-UninstallList
+
+            $Base         = $Root.Base
+
+            $MDTFile      = "MicrosoftDeploymentToolkit_x$( If ( $env:PROCESSOR_ARCHITECTURE -eq "x86" ) { 86 } Else { 64 } ).msi"
+
+            $Pull         = [ Ordered ]@{ }
+
+            # [ Windows ADK ] - The Awesome Deployment Kit. That's what ADK means. Really.
+
+            $Pull.Add( 0 , @(                                                    "Deployment Kit - Windows 10" ,
+                                                                                                "10.1.17763.1" ,
+                                                                                                      "WinADK" ,
+                                                                       "Windows Assessment and Deployment Kit" ,
+                                                                                                "$Base\WinADK" ,
+                                                                                              "winadk1903.exe" ,
+                                                             "https://go.microsoft.com/fwlink/?linkid=2086042" ,
+                                                    "/quiet /norestart /log $env:temp\win_adk.log /features +" ) )
+
+            # [ Windows PE ] - The Pain-in-the-ass Environment...
+
+            $Pull.Add( 1 , @(                                                                "Preinstallation" ,
+                                                                                                "10.1.17763.1" ,
+                                                                                                       "WinPE" ,
+                                                                     "Windows ADK Preinstallation Environment" ,
+                                                                                                 "$Base\WinPE" ,
+                                                                                               "winpe1903.exe" ,
+                                                             "https://go.microsoft.com/fwlink/?linkid=2087112" ,
+                                                    "/quiet /norestart /log $env:temp\win_adk.log /features +" ) )
+
+            # [ Microsoft Deployment Toolkit ]
+
+            $Pull.Add( 2 , @(                                                                "Deployment Tool" ,
+                                                                                               "6.3.8450.0000" ,
+                                                                                                         "MDT" ,
+                                                                                "Microsoft Deployment Toolkit" ,
+                                                                                                   "$Base\MDT" ,
+                                                                                                    "$MDTFile" ,
+                 "https://download.microsoft.com/download/3/3/9/339BE62D-B4B8-4956-B58D-73C4685FC492/$MDTFile" ,
+                                                                                           "/quiet /norestart" ) )
+        
+            Write-Theme -Action "Querying [~]" "Registry for installed applications" 11 12 15
+
+            0..2      | % {
+
+                $X    = $Pull[$_]
+            
+                $Item = $Registry | ? { $_.DisplayName -like "*$( $X[0] )*" }
+
+                If ( ( $Item -ne $Null ) -and ( $Item.DisplayVersion -ge $X[1] ) )
+                {
+                    Write-Theme -Action "Confirmed [+]" "$( $X[3] ) meets minimum requirements" 11 12 15
                 }
 
-                IPMO BitsTransfer
+                ElseIf ( ( $Item -eq $Null ) -or ( $Item.DisplayVersion -lt $X[1] ) )
+                {
+                    Write-Theme -Action "Collecting [~]" "$( $X[3] )" 11 12 15
                 
-                [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::Tls12
+                    $X[4] | % { 
+                
+                        ! ( Test-Path $_ )
+                        {   
+                            NI $_ -ItemType Directory
 
-                $BITS = @{  Source           = $X[6]
-                            Destination      = $X[5]
-                            Description      = $X[3] }
+                            Write-Theme -Action "Created [+]" "Directory @: $Path" 11 12 15
+                        }
+                    }
+
+                    IPMO BitsTransfer
+                
+                    [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::Tls12
+
+                    $BITS = @{  Source           = $X[6]
+                                Destination      = $X[5]
+                                Description      = $X[3] }
 
                     Start-BitsTransfer @BITS
 
@@ -2009,28 +2011,31 @@
                                 WorkingDirectory = $X[4]
                                 Passthru         = $True }
 
-                Write-Theme -Action "Installing [+]" "$( $X[3] )" 11 12 15
+                    Write-Theme -Action "Installing [+]" "$( $X[3] )" 11 12 15
 
-                SAPS @SAPS | % { 
+                    SAPS @SAPS | % { 
                     
-                    For ( $j = 0 ; $j -le 100 ; $j = ( $j + 1 ) % 100 ) 
-                    {
-                        $Progress = @{  Activity        = "[ Installing ] $ID"
-                                        PercentComplete = "$J"
-                                        Status          = "$J% Complete" }
+                        For ( $j = 0 ; $j -le 100 ; $j = ( $j + 1 ) % 100 ) 
+                        {
+                            $Progress = @{  Activity        = "[ Installing ] $ID"
+                                            PercentComplete = "$J"
+                                            Status          = "$J% Complete" }
 
-                        Write-Progress @Progress
+                            Write-Progress @Progress
                 
-                        Sleep -M 250 
+                            Sleep -M 250 
 
-                        If ( $_.HasExited ) 
-                        { 
-                            Write-Progress -Activity "[ Installed ]" -Completed
-                            Return 
+                            If ( $_.HasExited ) 
+                            { 
+                                Write-Progress -Activity "[ Installed ]" -Completed
+                                Return 
+                            }
                         }
                     }
+
+                Write-Theme -Action "Installed [+]" "$( $X[3] )" 11 12 15
+                
                 }
-                    Write-Theme -Action "Installed [+]" "$( $X[3] )" 11 12 15
             }
 
             Write-Theme -Action "Verified [+]" "PSD/MDT Dependencies" 11 12 15
@@ -2040,17 +2045,23 @@
             "Hybrid" , "Libraries" , "Scripts" , "Templates" , "Install" | % { 
         
                 "$( $Root.Base )\$_" | % {
-                    
+
                     If ( ( Test-Path $_ ) -ne $True )
                     { 
                         NI $_ -ItemType Directory
                     }
+            
                     Else
                     {
                         GI $_
                     }
                 }
             }
+        }
+
+        Else
+        {
+            Write-Theme -Action "Exception [!]" "The exited or the dialogue failed" 12 4 15
         }
     }
 
