@@ -1157,7 +1157,8 @@
             "  `$CD = 'ColumnDefinition'  " , "  `$GC = 'Grid.Column'       " , " `$GCS = 'Grid.ColumnSpan' " , 
             "  `$GR = 'Grid.Row'          " , " `$GRS = 'Grid.RowSpan'      " , "  `$SI = 'SelectedIndex'   " , 
             "  `$LA = 'Label'             " , "  `$BU = 'Button'            " , "  `$CO = 'Content'         " , 
-            "   `$Q = 'Name'              "
+            "   `$Q = 'Name'              " , "  `$SE = 'Setter'            " , "  `$PR = 'Property'        " ,
+            "  `$BG = 'Background'        " , "  `$RB = 'RadioButton'       "
             
             $Glossary | % { IEX $_ } ; $GRD , $GCD = $RD , $CD | % { "$G.$_`s" }
             $Glossary += " `$GRD = '$GRD'" , " `$GCD = '$GCD'" 
@@ -1611,13 +1612,13 @@
              # ____   _________________________
              #//¯¯\\__[_______ Header ________]
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                $X      = @( 2 ; 0..5 | % { 13 } ; 12 , 10 , 10 ) | % { $SP[$_] }
+                $X      = @( 2 ; 0..5 | % { 13 } ; 12 , 10 , 9 ) | % { $SP[$_] }
 
                 $Y      = @( "<Window" , "  xmlns = '$Schema/presentation'" , "xmlns:x = '$Schema'" , "  Title = '$Author | Hybrid @ $Title'" , 
-                             "  $W = '640'" , " $H = '960'" , "Topmost = 'True' " , " ResizeMode = 'NoResize'" , "  $( $HAL[1] )" ,  
+                             "  $W = '640'" , " $H = '960'" , "Topmost = 'True' " , " ResizeMode = 'NoResize'" , "$( $HAL[1] )" ,  
                              "  WindowStartupLocation = 'CenterScreen' >" )
 
-                $XML.Add( "00" , @( 0..8 | % { $X[$_] + $Y[$_] } ) )
+                $XML.Add( "00" , @( 0..9 | % { $X[$_] + $Y[$_] } ) )
              # ____   _________________________
              #//¯¯\\__[__ Window Resources ___]
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -1640,7 +1641,7 @@
                              "<Image $GR = '0' Source = '$( $GFX.Banner )'/>" , 
                              "<TabControl $GR = '1' $BG = '{x:Null}' BorderBrush = '{x:Null}' Foreground = '{x:Null}' $( $HAL[1] )>" )
 
-                $XML.Add( "02" , @( 0..13 | % { $X[$_] + $Y[$_] } ) )
+                $XML.Add( "02" , @( 0..10 | % { $X[$_] + $Y[$_] } ) )
              # ____   _________________________
              #//¯¯\\__[_______ Staging _______]
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -1681,7 +1682,7 @@
                            
                                 "<$TBL $GR = '$( $_[0] )' $GC = '0' $MA =  '5' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#00FF00' >" , "$( $_[1] )" , "<$TBL.Effect>" , 
                                 "<DropShadowEffect ShadowDepth = '1' Color = '#336633' />" , "</$TBL.Effect>" , "</$TBL>" , 
-                                "<$TB $GR = '0' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )'/>" } ;
+                                "<$TB $GR = '$( $_[0] )' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )' />" } ;
                             
                             "</$G>" , "<$G $GR = '5' >" , "<$GCD>" ; 0..1 | % { "<$CD $W = '*' />" } ; "</$GCD>" ;
 
@@ -1699,12 +1700,13 @@
                 $X      = @( 5,6,7,6,6,7;0..5 | % { 8 } ; 7,7,8,7,7,8,9,9,8,8;0..3 | % { 9 } ; 8 ; 0..3 | % { 8,9,9,10,9,8,8 } ; 7,7,8,7 ) | % { $SP[$_] }
                 
                 $Y      = @( "<TabItem $HD = 'Image Info' $( $HAL[1] ) $W = '220' BorderBrush = '{x:Null}' >" , "<TabItem.Effect>" , "<DropShadowEffect/>" , 
-                             "</TabItem.Effect>" , "<$G>" , "<$GRD>" ; 4 , 2 , 4 | % { 50 , "$_*" } | % { "<$RD $H = '50' />" } ; "</$GRD>" ; 
+                             "</TabItem.Effect>" , "<$G>" , "<$GRD>" ; 4 , 2 , 4 | % { 50 , "$_*" } | % { "<$RD $H = '$_' />" } ; "</$GRD>" ; 
                              "<$LA Style = '{ StaticResource RoundedBox }' $GR = '0' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#FFFFFF' FontSize = '14' >" , 
                              "Company Information" , "</$LA>" , "<$G $GR = '1' >" , "<$GCD>" ; 2 , 3 | % { "<$CD $W = '$_*' />" } ; "</$GCD>" , "<$GRD>" ; 
                              0..3 | % { "<$RD $H = '*' />" } ; "</$GRD>" ;
                             
-                            ( 0 , "Company Name" , "Company" ) , ( 1 , "Support Website" , "WWW" ) , ( 2 , "Support Phone" , "Phone" ) , ( 3 , "Support Hours" , "Hours" ) | % {
+                            ( 0 , "Company Name" , "Company" ) , ( 1 , "Support Website" , "WWW" ) , ( 2 , "Support Phone" , "Phone" ) , 
+                            ( 3 , "Support Hours" , "Hours" ) | % {
 
                                 "<$TBL $GR = '$( $_[0] )' $GC = '0' $MA = '5' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#00FF00' >" , "$( $_[1] )" , "<$TBL.Effect>" , 
                                 "<DropShadowEffect ShadowDepth = '1' Color = '#336633' />" , "</$TBL.Effect>" , "</$TBL>" ; 
