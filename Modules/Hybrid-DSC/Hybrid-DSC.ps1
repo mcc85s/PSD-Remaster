@@ -1136,7 +1136,8 @@
             [ Parameter ( ParameterSetName =     "New Account" ) ][ Switch ] $NewAccount     ,
             [ Parameter ( ParameterSetName =  "HybridDSCPromo" ) ][ Switch ] $HybridDSCPromo ,
             [ Parameter ( ParameterSetName =         "DCFound" ) ][ Switch ] $DCFound        ,
-            [ Parameter ( ParameterSetName =         "DSCRoot" ) ][ Switch ] $DSCRoot        )
+            [ Parameter ( ParameterSetName =         "DSCRoot" ) ][ Switch ] $DSCRoot        ,
+            [ Parameter ( ParameterSetName =    "ProvisionDSC" ) ][ Switch ] $ProvisionDSC   )
 
             $XML       = [ Ordered ]@{ }
 
@@ -1599,6 +1600,169 @@
                 $XML.Add( "02" , @( 0..12 | % { $X[$_] + $Y[$_] } ) )
             }
 
+
+        #/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\
+        If ( $ProvisionDSC ) # Provision Desired State Controller Server             [
+        {#___________________________________________________________________________/
+
+            $Title = "DSC Deployment Share"
+            $GFX   = Import-DSCGraphics
+
+             # ____   _________________________
+             #//¯¯\\__[_______ Header ________]
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                $X      = @( 2 ; 0..5 | % { 13 } ; 12 , 10 , 10 ) | % { $SP[$_] }
+
+                $Y      = @( "<Window" , "  xmlns = '$Schema/presentation'" , "xmlns:x = '$Schema'" , "  Title = '$Author | Hybrid @ $Title'" , 
+                             "  $W = '640'" , " $H = '960'" , "Topmost = 'True' " , " ResizeMode = 'NoResize'" , "  $( $HAL[1] )" ,  
+                             "  WindowStartupLocation = 'CenterScreen' >" )
+
+                $XML.Add( "00" , @( 0..8 | % { $X[$_] + $Y[$_] } ) )
+             # ____   _________________________
+             #//¯¯\\__[__ Window Resources ___]
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                $X      = @( 3..5 ; 5..8 ; 9..3 ) | % { $SP[$_] } 
+
+                $Y      = @( "<Window.Resources>" , "<Style TargetType = 'Label' x:Key = 'RoundedBox' >" , "<$SE $PR = 'TextBlock.TextAlignment' Value = 'Center' />" , 
+                             "<$SE $PR = 'Template' >" , "<$SE.Value>" , "<ControlTemplate TargetType = 'Label' >" , 
+                             "<Border CornerRadius = '12' $BG = 'Blue' BorderBrush = 'Black' BorderThickness = '3' >" , 
+                             "<ContentPresenter x:Name = 'contentPresenter' ContentTemplate = '{ TemplateBinding ContentTemplate }' $MA = '5' />" ,
+                             "</Border>" , "</ControlTemplate>" , "</$SE.Value>" , "</$SE>" , "</Style>" , "</Window.Resources>" )
+                
+                $XML.Add( "01" , @( 0..13 | % { $X[$_] + $Y[$_] } ) )
+             # ____   _________________________
+             #//¯¯\\__[_____ Background ______]
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                $X      = @( 3,4,5,5,5,4,4,5,4,4,5 ) | % { $SP[$_] } 
+            
+                $Y      = @( "<$G>" , "<$GRD>" ; 250 , '*' , 50 | % { "<$RD $H = '$_' />" } ; "</$GRD>" , "<$G.$BG>" , 
+                             "<ImageBrush Stretch = 'UniformToFill' ImageSource = '$( $GFX.Background )' />" , "</$G.$BG>" , 
+                             "<Image $GR = '0' Source = '$( $GFX.Banner )'/>" , 
+                             "<TabControl $GR = '1' $BG = '{x:Null}' BorderBrush = '{x:Null}' Foreground = '{x:Null}' $( $HAL[1] )>" )
+
+                $XML.Add( "02" , @( 0..13 | % { $X[$_] + $Y[$_] } ) )
+             # ____   _________________________
+             #//¯¯\\__[_______ Staging _______]
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                $X      = @( 5,6,7,6,6,7;0..5|%{8};7,7,8,7,7,8,9,9,8,8;0..4|%{9};8;0..4|%{8,9,9,10,9,8,8};7,7,8,9,9,8;0..1|%{8,9,10,9,8};7;7,8,7 ) | % { $SP[$_] }
+
+                $Y      = @( "<TabItem $HD = 'Stage Deployment Server' BorderBrush = '{x:Null}' $W = '220' >" , "<TabItem.Effect>" , "<DropShadowEffect/>" , 
+                             "</TabItem.Effect>" , "<$G>" , "<$GRD>" ; 5 , 3 | % { 50 , "$_*" , "*" } | % { "<RowDefinition Height = '$_' />" } ; "</$GRD>" , 
+                             "<$LA Style = '{ StaticResource RoundedBox }' $GR = '0' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#FFFFFF' FontSize = '14' >" , 
+                             "MDT Base Share Settings" , "</$LA>" , "<$G $GR = '1' >" , "<$GCD>" ; 2 , 3 | % { "<$CD $W = '$_*' />" } ; "</$GCD>" , "<$GRD>" ; 
+                             0..4 | % { "<$RD $H = '*' />" } ; "</$GRD>" ; 
+
+                            ( 0 , "Drive Label" , "Drive" ) , ( 1 , "Directory Path" , "Directory" ) , ( 2 , "Samba Share" , "Samba" ) , 
+                            ( 3 , "PS Drive" , "PSDrive" ) , ( 4 , "Drive Description" , "Description" ) | % {
+
+                                "<$TBL $GR = '$( $_[0] )' $GC = '0' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#00FF00' >" , "$( $_[1] )" , "<$TBL.Effect>" , 
+                                "<DropShadowEffect   ShadowDepth = '1'  Color = '#336633' />" , "</$TBL.Effect>" , "</$TBL>" , 
+                                "<$TB  $GR = '$( $_[0] )' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )' />" } ; 
+
+                            "</$G>" , "<$G $GR = '2' >" , "<$GCD>" ; 0..1 | % { "<$CD $W = '*' />" } ; "</$GCD>" ;
+
+                            ( 0 , "Legacy MDT" , "Legacy" ) , ( 1 , "PSD-Remaster" , "Remaster" ) | % { 
+                    
+                                "<$RB $GC = '$( $_[0] )' $MA =  '5' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#00FF00' $CO = '$( $_[1] )' $Q = '$( $_[2] )' >" , 
+                                "<$RB.Effect>" , "<DropShadowEffect ShadowDepth = '1' Color = '#336633' />" , "</$RB.Effect>" , "</$RB>" } ;
+                            
+                            "</$G>" , "<$LA Style = '{ StaticResource RoundedBox }' $GR = '3' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#FFFFFF' FontSize = '14' >" , 
+                            "BITS / IIS Configuration" , "</$LA>" )
+
+                $XML.Add( "03" , @( 0..82 | % { $X[$_] + $Y[$_] } ) )
+             # ____   _________________________
+             #//¯¯\\__[__ BITS / IIS Setup ___]
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                $X      = @( 7,8,9,9,8,8,9,9,9,8;0..2|%{8,9,9,10,9,8,8};7,7,8,9,9,8;0..1|%{8,9,10,9,8};7,6,5 ) | % { $SP[$_] }
+
+                $Y      = @( "<$G $GR = '4' >" , "<$GCD>" ; 2 , 3 | % { "<$CD $W = '$_*' />" } ; "</$GCD>" , "<$GRD>" ; 0..2 | % { "<$RD $H = '*' />" } ; "</$GRD>" ;
+
+                            ( 0 , "BITS / IIS Name" , "IIS_Name" ) , ( 1 , "IIS App Pool" , "IIS_AppPool" ) , ( 2 , "Virtual Host / Proxy" , "IIS_Proxy" ) | % {
+                           
+                                "<$TBL $GR = '$( $_[0] )' $GC = '0' $MA =  '5' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#00FF00' >" , "$( $_[1] )" , "<$TBL.Effect>" , 
+                                "<DropShadowEffect ShadowDepth = '1' Color = '#336633' />" , "</$TBL.Effect>" , "</$TBL>" , 
+                                "<$TB $GR = '0' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )'/>" } ;
+                            
+                            "</$G>" , "<$G $GR = '5' >" , "<$GCD>" ; 0..1 | % { "<$CD $W = '*' />" } ; "</$GCD>" ;
+
+                            ( 0 , "IIS_Install" , "Install / Configure IIS" ) , ( 1 , "IIS_Skip" , "Skip IIS Setup" ) | % { 
+
+                                "<$RB $GC = '$( $_[0] )' $MA = '5' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#00FF00' $Q = '$( $_[1] )' Content = '$( $_[2] )' >" , 
+                                "<$RB.Effect>" , "<DropShadowEffect   ShadowDepth = '1'  Color = '#336633' />" , "</$RB.Effect>" , "</$RB>" } ;
+
+                            "</$G>" , "</$G>" , "</TabItem>" )
+
+                $XML.Add( "04" , @( 0..49 | % { $X[$_] + $Y[$_] } ) )
+             # ____   _________________________
+             #//¯¯\\__[____ Company Info _____]
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                $X      = @( 5,6,7,6,6,7;0..5 | % { 8 } ; 7,7,8,7,7,8,9,9,8,8;0..3 | % { 9 } ; 8 ; 0..3 | % { 8,9,9,10,9,8,8 } ; 7,7,8,7 ) | % { $SP[$_] }
+                
+                $Y      = @( "<TabItem $HD = 'Image Info' $( $HAL[1] ) $W = '220' BorderBrush = '{x:Null}' >" , "<TabItem.Effect>" , "<DropShadowEffect/>" , 
+                             "</TabItem.Effect>" , "<$G>" , "<$GRD>" ; 4 , 2 , 4 | % { 50 , "$_*" } | % { "<$RD $H = '50' />" } ; "</$GRD>" ; 
+                             "<$LA Style = '{ StaticResource RoundedBox }' $GR = '0' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#FFFFFF' FontSize = '14' >" , 
+                             "Company Information" , "</$LA>" , "<$G $GR = '1' >" , "<$GCD>" ; 2 , 3 | % { "<$CD $W = '$_*' />" } ; "</$GCD>" , "<$GRD>" ; 
+                             0..3 | % { "<$RD $H = '*' />" } ; "</$GRD>" ;
+                            
+                            ( 0 , "Company Name" , "Company" ) , ( 1 , "Support Website" , "WWW" ) , ( 2 , "Support Phone" , "Phone" ) , ( 3 , "Support Hours" , "Hours" ) | % {
+
+                                "<$TBL $GR = '$( $_[0] )' $GC = '0' $MA = '5' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#00FF00' >" , "$( $_[1] )" , "<$TBL.Effect>" , 
+                                "<DropShadowEffect ShadowDepth = '1' Color = '#336633' />" , "</$TBL.Effect>" , "</$TBL>" ; 
+                                "<$TB $GR = '$( $_[0] )' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )' />" }
+    
+                            "</$G>" , "<$LA Style = '{ StaticResource RoundedBox }' $GR = '2' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#FFFFFF' FontSize = '14' >" , 
+                            "Custom Graphics" , "</$LA>" )
+
+                $XML.Add( "05" , @( 0..58 | % { $X[$_] + $Y[$_] } ) )
+             # ____   _________________________
+             #//¯¯\\__[___ Custom Graphics ___]
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                $X      = @( 7,8,9,9,8,8,9,9,8;0..1|%{8,9,9,10,9,8,8};7,7,8,7 ) | % { $SP[$_] }
+
+                $Y      = @( "<$G $GR = '3' >" , "<$GCD>" ; 2 , 3 | % { "<$CD $W = '$_*' />" } ; "</$GCD>" , "<$GRD>" ; 0..1 | % { "<$RD $H = '*' />" } ; "</$GRD>" ;
+
+                            ( 0 , "Logo [120x120] BMP" , "Logo" ) , ( 1 , "Background" , "Background" ) | % {
+                                
+                                "<$TBL $GR = '$( $_[0] )' $GC = '0' $MA = '5' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#00FF00' >" , "$( $_[1] )" , "<$TBL.Effect>" , 
+                                "<DropShadowEffect ShadowDepth = '1' Color = '#336633' />" , "</$TBL.Effect>" , "</$TBL>" , 
+                                "<$TB $GR = '$( $_[0] )' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )' />" } ; 
+                            
+                            "</$G>" , "<$LA Style = '{ StaticResource RoundedBox }' $GR = '4' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#FFFFFF' FontSize = '14' >" , 
+                            "Network &amp; Target Credentials" , "</$LA>" )
+
+                $XML.Add( "06" , @( 0..26 | % { $X[$_] + $Y[$_] } ) )
+             # ____   _________________________
+             #//¯¯\\__[_ Network Credentials _]
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                $X      = @( 7,8,9,9,8,8;0..3|%{9};8;0..3|%{8,9,9,10,9,8,8};7..4 ) | % { $SP[$_] }
+
+                $Y      = @( "<$G $GR = '5' >" , "<$GCD>" ; 2 , 3 | % { "<$CD $W = '$_*' />" } ; "</$GCD>" ; "<$GRD>" ; 0..3|%{ "<$RD $H = '*' />" } ; "</$GRD>" ;
+
+                            ( 0 , "Branch Name" , "Branch" ) , ( 1 , "NetBIOS Domain" , "NetBIOS" ) , ( 2 , "Administrator Account" , "LMCred_User" ) , 
+                            ( 3 , "Administrator Password" , "LMCred_Pass" ) | % { 
+
+                                "<$TBL $GR = '$( $_[0] )' $GC = '0' Margin =  '5' VerticalAlignment = 'Center' HorizontalAlignment = 'Center' Foreground = '#00FF00' >" , 
+                                "$( $_[1] )" , "<$TBL.Effect>" , "<DropShadowEffect ShadowDepth = '1' Color = '#336633' />" , "</$TBL.Effect>" , "</$TBL>" , 
+                                "<$TB $GR = '$( $_[0] )' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )' />" } ; 
+                            
+                            "</$G>" , "</$G>" , "</TabItem>" , "</TabControl>" )
+
+                $XML.Add( "07" , @( 0..42 | % { $X[$_] + $Y[$_] } ) )
+             # ____   _________________________
+             #//¯¯\\__[_______ Framing _______]
+             #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                $X      = @( 4,5;0..3|%{6};5,5;5..2 ) | % { $SP[$_] }
+
+                $Y      = @( "<$G $GR = '2' >" , "<$GCD>" ; "" , 2 , 2 , "" | % { "<$CD $W = '*' />" } ; "</$GCD>" ; 
+                
+                            ( 1 , "Start" ) , ( 2 , "Cancel" ) | % { 
+                            
+                                "<$BU $GC = '$( $_[0] )' $Q = '$( $_[1] )' $CO = '$( $_[1] )' $MA = '10' />" } ; 
+                                
+                            "</$G>" , "</$G>" , "</Window>" )
+
+                $XML.Add( "08" , @( 0..11 | % { $X[$_] + $Y[$_] } ) )
+        }
     # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____ 
     #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//  \\ 
     #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\  // 
@@ -1611,11 +1775,12 @@
             
             0..( $Item.Count - 1 ) | % { $Return += "$( $Item[$_] )`n" } ; 
 
-            $Certificate    | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                     "Certificate Panel" 11 12 15 }
-            $Login          | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                           "Login Panel" 11 12 15 }
-            $NewAccount     | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                     "New Account Panel" 11 12 15 }
-            $HybridDSCPromo | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                "Hybrid-DSC Promo Panel" 11 12 15 }
-            $DSCRoot        | ? { $_ } | % { Write-Theme -Action "Loaded [+]" "Desired State Controller Root Install" 11 12 15 }
+            $Certificate    | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                         "Certificate Panel" 11 12 15 }
+            $Login          | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                               "Login Panel" 11 12 15 }
+            $NewAccount     | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                         "New Account Panel" 11 12 15 }
+            $HybridDSCPromo | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                    "Hybrid-DSC Promo Panel" 11 12 15 }
+            $DSCRoot        | ? { $_ } | % { Write-Theme -Action "Loaded [+]"     "Desired State Controller Root Install" 11 12 15 }
+            $ProvisionDSC   | ? { $_ } | % { Write-Theme -Action "Loaded [+]" "Provision Desired State Controller Server" 11 12 15 }
             Return $Return                                                           
                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
