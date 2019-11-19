@@ -2361,38 +2361,18 @@
             "name" , "path" | % { "MDT-PersistentDrive with that $_ already exists" } ; "not found" , "is not in bitmap form" | % { "Logo $_" } ; 
             "width" , "height" | % { "Logo $_ exceeds 120px" } ; "found" , "in an acceptable format" | % { "Background not $_" } ) | % { "Show-Message -Message '$_'" }
 
-            If ( ! ( Test-Path $CHK[0] ) )                                                                         { IEX $MSG[0] }
-            ElseIf ( ( "268435456" , "FullControl" , "Modify, Synchronize" | ? { $_ -in $CHK[1] } ).Count -eq 0 )  { IEX $MSG[1] }
-            ElseIf ( Test-Path $CHK[3] )                                                                           { IEX $MSG[2] }
-            ElseIf ( GSMBS | ? { $_.Name -like "*$( $CHK[4] )*" } )                                                { IEX $MSG[3] }
-            ElseIf ( Get-MDTPersistentDrive | ? { $_.Name -eq $CHK[5] } )                                          { IEX $MSG[4] }
-            ElseIf ( Get-MDTPersistentDrive | ? { $_.Path -eq $CHK[3] } )                                          { IEX $MSG[5] }
-            ElseIf ( ! ( Test-Path $CHK[6] ) )                                                                     { IEX $MSG[6] }
-             
-            ElseIf ( $CHK[6].Split( '.' )[-1] -ne "bmp" )
-            {
-                IEX $MSG[7]
-            }
-
-            ElseIf ( [ System.Drawing.Bitmap ]::FromFile( $CHK[6] ).Width  -gt 120 )
-            {
-                IEX $MSG[8]
-            }
-
-            ElseIf ( [ System.Drawing.Bitmap ]::FromFile( $CHK[6] ).Height -gt 120 )
-            {
-                IEX $MSG[9]
-            }
-
-            ElseIf ( ! ( Test-Path $CHK[7] ) )
-            {
-                IEX $MSG[10]
-            }
-
-            ElseIf ( !$CHK[7].Split( '.' )[-1] -in "BMP,GIF,JPG,PNG,TIF,DIB,JFIF,JPE,JPEG,WDP".Split( ',' ) )
-            {
-                IEX $MSG[11]
-            }
+            If ( ! ( Test-Path $CHK[0] ) )                                                                         { IEX $MSG[ 0] }
+            ElseIf ( ( "268435456" , "FullControl" , "Modify, Synchronize" | ? { $_ -in $CHK[1] } ).Count -eq 0 )  { IEX $MSG[ 1] }
+            ElseIf ( Test-Path $CHK[3] )                                                                           { IEX $MSG[ 2] }
+            ElseIf ( GSMBS | ? { $_.Name -like "*$( $CHK[4] )*" } )                                                { IEX $MSG[ 3] }
+            ElseIf ( Get-MDTPersistentDrive | ? { $_.Name -eq $CHK[5] } )                                          { IEX $MSG[ 4] }
+            ElseIf ( Get-MDTPersistentDrive | ? { $_.Path -eq $CHK[3] } )                                          { IEX $MSG[ 5] }
+            ElseIf ( ! ( Test-Path $CHK[6] ) )                                                                     { IEX $MSG[ 6] }
+            ElseIf ( $CHK[6].Split( '.' )[-1] -ne "bmp" )                                                          { IEX $MSG[ 7] }
+            ElseIf ( [ System.Drawing.Bitmap ]::FromFile( $CHK[6] ).Width  -gt 120 )                               { IEX $MSG[ 8] }
+            ElseIf ( [ System.Drawing.Bitmap ]::FromFile( $CHK[6] ).Height -gt 120 )                               { IEX $MSG[ 9] }
+            ElseIf ( ! ( Test-Path $CHK[7] ) )                                                                     { IEX $MSG[10] }
+            ElseIf ( !$CHK[7].Split( '.' )[-1] -in "BMP,GIF,JPG,PNG,TIF,DIB,JFIF,JPE,JPEG,WDP".Split( ',' ) )      { IEX $MSG[11] }
 
             If ( $GUI.Legacy.IsChecked )
             {
@@ -2505,12 +2485,36 @@
         {   
             $Code
             Read-Host "Confirm?"
+
+            If ( Test-Path $Code.Directory )
+            {
+                Write-Theme -Action "Exception [!]" "Directory must not exist, breaking" 11 12 15
+                Read-Host "Press Enter to return"
+                Break
+            }
+
+            Else
+            {
+                NI -Path $Code.Directory -ItemType Directory
+
+                If ( $? -eq $True )
+                {
+                    Write-Theme -Action "Successful [+]" "Directory Created" 11 12 15
+                }
+
+                Else
+                {
+                    Write-Theme -Action "Exception [!]" "Directory Creation Failed" 12 4 15
+                    Read-Host "Press Enter to Exit"
+                    Break
+                }
+            }
             
             $NSMBS = @{ Name        = $Code.Samba 
                         Path        = $Code.Directory 
                         FullAccess  = "Administrators" }
     
-            NSBMS @NSMBS
+            NSMBS @NSMBS
 
             If ( $? -eq $True )
             {
@@ -2533,6 +2537,25 @@
 
             NDR @NDR | Add-MDTPersistentDrive -VB
 
+            $Code | % { 
+
+                $DSC = "$( $_.Directory )\$( $_.Company )"
+
+                NI $DSC -ItemType Directory 
+
+                ( 0 , "Resources" ) , ( 1 , "Tools" ) , ( 2 , "Images" ) , ( 3 , "Profiles" ) , ( 4 , "Certificates" ) , ( 5 , "Applications" ) | % { 
+
+                    NI -Path "$DSC\($( $_[0] ))$( $_[1] )" -ItemType Directory
+                }
+
+                $RES = ( gci $DSC *0* ).FullName
+
+                $_.Background , $_.Logo | % { CP $_ $RES }
+
+                $_.Background = "$RES\$( $_.Background.Split('\')[-1] )"
+                $_.Logo       = "$RES\$( $_.Logo.Split('\')[-1] )"
+            }
+
             If ( $? -eq $True )
             {
                 Write-Theme -Action "Successful [+]" "PSDrive/MDTPersistent Drive Created" 11 12 15
@@ -2541,6 +2564,36 @@
             Else
             {
                 Write-Theme -Action "Exception [!]" "PSDrive/MDTPersistent Drive Creation Failed" 12 4 15
+                Read-Host "Press Enter to Exit"
+                Break
+            }
+    
+            # Place Share Settings in the registry
+            $Root = Resolve-DSCRoot | % { $_.Root }
+            $Tree = "Hybrid-DSC\$( $Code.Company )\$( $Code.PSDrive.Replace( ':' , '' ) )"
+            $Rec  =  $Tree.Split( '\' )
+
+            $Path = $Root
+
+            ForEach ( $i in 0..2 ) 
+            {
+                "$Path\$( $Rec[$I] )" | % {
+
+                    If ( ! ( Test-Path $_ ) )
+                    {
+                        NI $Path -Name $Rec[$I]
+                    }
+
+                    $Path = $_
+                }
+            }
+
+            $Names  = $Code  | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name }
+            $Values = $Names | % { $Code.$_ } 
+            
+            0..( $Names.Count - 1 ) | % {
+                
+                SP -Path $Path -Name $Names[$_] -Value $Values[$_] -Force
             }
         }
 
