@@ -2256,19 +2256,20 @@
         Else
         {
             Write-Theme -Action "Exception [!]" "The exited or the dialogue failed" 12 4 15
-        }
-}
-
-    Function Import-MDTModule # Loads the module for MDT
-    {
+        }                                                                           #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Import-MDTModule # Loads the module for MDT _______________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         GP "HKLM:\Software\Microsoft\Deployment 4" | % { IPMO ( GCI $_.Install_Dir "*Toolkit.psd1" -Recurse ).FullName }
-        Write-Theme -Action "Module [+]" "Microsoft Deployment Toolkit" 11 12 15
-    }
-
-    Function Install-HybridDSC
-    {   
+        Write-Theme -Action "Module [+]" "Microsoft Deployment Toolkit" 11 12 15    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Install-HybridDSC # Provisions/Installs a Legacy or PSD Deployment Share __//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         [ CmdLetBinding () ] Param ( [ Parameter ( ) ][ Switch ] $Test )
-
 
         Import-MDTModule
         
@@ -2667,12 +2668,33 @@
                 
                 $M.Paths    | % { "$W\$_" } | ? { ! ( Test-Path $_ ) } | % { NI $_ -ItemType Directory -Verbose }
 
+            }
+
+            Write-Theme -Action "Reducing [~]" "Permissions Hardening on $( $Code.Samba )" 11 12 15
+
+            "Users" , "Administrators" , "SYSTEM" | % { ICACLS $W /Grant "$_`:(OI)(CI)(RX)" } 
+
+            $Code.Samba | % { 
+                GRSMBA -Name $_ -AccountName "EVERYONE" -AccessRight Change -Force
+                RKSMBA -Name $_ -AccountName "CREATOR OWNER" -Force 
+            }
+
+            If ( $Code.Legacy )
+            {
+                Write-Theme -Action "Complete [+]" "Legacy MDT Installed" 11 12 15
+            }
+            
+            If ( $Code.Remaster )
+            {
+                Write-Theme -Action "Complete [+]" "Hybrid-DSC/PSD Installed" 11 12 15
+            }
         }
 
         Else
         {
             Write-Theme -Action "Exception [!]" "Either the user cancelled, or the dialog failed" 12 4 15
         }
+                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
