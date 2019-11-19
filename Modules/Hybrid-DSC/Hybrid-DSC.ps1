@@ -175,7 +175,7 @@
                 $ST0  = "   \" , "\__/" , "/   "
                 $ST1  = "   /" , "/¯¯\" , "\   "
                 $STR0 = @( $ST1 ; " \" , "\$( "  *   " * 6 )]" )
-                $STR1 = @( $ST0 ; " /" , "/$( "    * " * 5 )      ]" )
+                $STR1 = @( $ST0 ; " /" , "/$( "     *" * 5 )      ]" )
                 $ST   = @{ 0 = "    ____    $( $M2[92] )    ____    "
                            1 = "   /" , "/¯¯\" , "\" , "==[$( $M1[92] )]==" , "/" , "/¯¯\" , "\   "
                            2 = @( $ST0 ; "     $( $STR[0] )    " ; $ST0 )
@@ -1141,8 +1141,7 @@
 
             $XML       = [ Ordered ]@{ }
 
-            $Schema    = "http://schemas.microsoft.com/winfx/2006/xaml"
-            $Author    = "Secure Digits Plus LLC"
+            $Schema    = "http://schemas.microsoft.com/winfx/2006/xaml" ; $Author = "Secure Digits Plus LLC"
 
             $CS        = GCIM Win32_OperatingSystem | % { $_.Caption }
             $B         = $False , $True 
@@ -1158,45 +1157,48 @@
             "  `$GR = 'Grid.Row'          " , " `$GRS = 'Grid.RowSpan'      " , "  `$SI = 'SelectedIndex'   " , 
             "  `$LA = 'Label'             " , "  `$BU = 'Button'            " , "  `$CO = 'Content'         " , 
             "   `$Q = 'Name'              " , "  `$SE = 'Setter'            " , "  `$PR = 'Property'        " ,
-            "  `$BG = 'Background'        " , "  `$RB = 'RadioButton'       "
+            "  `$BG = 'Background'        " , "  `$RB = 'RadioButton'       " , "  `$TW = 'TextWrapping'    "
             
-            $Glossary | % { IEX $_ } ; $GRD , $GCD = $RD , $CD | % { "$G.$_`s" }
-            $Glossary += " `$GRD = '$GRD'" , " `$GCD = '$GCD'" 
+            $Glossary   | % { IEX $_ }
+            $GRD , $GCD = $RD , $CD | % { "$G.$_`s" }
+            $Glossary  += " `$GRD = '$GRD'" , " `$GCD = '$GCD'" 
 
-            $HAL  =  "Left" ,   "Center" ,  "Right" | % { "HorizontalAlignment = '$_'" } ; $HCAL =  $HAL | % { $_.Replace( 'lA' , 'lContentA' ) }
-            $VAL  =   "Top" ,   "Center" , "Bottom" | % { "VerticalAlignment = '$_'"   } ; $VCAL =  $VAL | % { $_.Replace( 'lA' , 'lContentA' ) } 
-            $SP   = 0..13 | % { "    " * $_ }
+            $HAL        =  "Left" ,   "Center" ,  "Right" | % { "HorizontalAlignment = '$_'" } ; $HCAL =  $HAL | % { $_.Replace( 'lA' , 'lContentA' ) }
+            $VAL        =   "Top" ,   "Center" , "Bottom" | % { "VerticalAlignment = '$_'"   } ; $VCAL =  $VAL | % { $_.Replace( 'lA' , 'lContentA' ) } 
+            $SP         = 0..14 | % { "    " * $_ }
 
-            $VC , $VV = "Collapsed" , "Visible" | % { "Visibility = '$_'" }
+            $VC , $VV   = "Collapsed" , "Visible" | % { "Visibility = '$_'" }
             $CF ,  $OK ,  $CA = "Confirm" , "Start" , "Cancel"             
-            $PW , $PWB , $PWC = "Password" | % { "$_" , "$_`Box" , "$_`Char" }            
+            $PW , $PWB , $PWC = "Password" | % { "$_" , "$_`Box" , "$_`Char" }
+
+            $GFX        = Import-DSCGraphics
 
         #/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\
         If ( $Certificate ) # Certificate/Domain XAML                                [
         {#___________________________________________________________________________/
 
-            $Title = "Certificate Info"       
+            $Title      = "Certificate Info"       
                 
              # ____   _________________________
              #//¯¯\\__[_______ Header ________] 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                $X      = @( 2 ; 0..4 | % { 13 } ; 10 , 13 , 9 ) | % { $SP[$_] }
+                $X      = @( 2 ; 0..6 | % { 13 } ; 10 , 9 ) | % { $SP[$_] }
 
-                $Y      = "<Window" , "  xmlns = '$Schema/presentation'" , "xmlns:x = '$Schema'" , 
-                          "  Title = '$Author | Hybrid - $Title'" , "  $W = '350'" , " $H = '200'" , 
-                           "$( $HAL[1] )" , "Topmost = 'True' " , "  WindowStartupLocation = 'CenterScreen' >"
+                $Y      = @( "<Window" , "  xmlns = '$Schema/presentation'" , "xmlns:x = '$Schema'" , 
+                             "  Title = '$Author | Hybrid @ $Title'" ,  "  $W = '350'" , " $H = '200'" , "Topmost = 'True' " , 
+                             "   Icon = '$( $GFX.Icon )'" , "$( $HAL[1] )" , "  WindowStartupLocation = 'CenterScreen' >" )
 
-                $XML.Add( "00" , @( 0..8 | % { $X[$_] + $Y[$_] } ) )
+                $XML.Add( "00" , @( 0..9 | % { $X[$_] + $Y[$_] } ) )
              # ____   _________________________
              #//¯¯\\__[_______ Framing _______]
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                 $X      = @( 3,9,9,9,6,4,5,6,6,5,5,6,7,7,6,6,7,7,6 ) | % { $SP[$_] }
 
                 $Y      = @( "<$GB" , " $HD = 'Company Information / Certificate Generation'" , "  $W = '330'" ,
-                          "$H = '160'" , "  $( $VAL[0] ) >" , "<$G>" , "<$GRD>" ;
-                          "2" , "" | % { "<$RD $H = '$_*' />" } ; "</$GRD>" , "<$G $GR = '0' >" , "<$GCD>" ; 
-                          "" , "2.5" | % { "<$CD $W = '$_*' />" } ; "</$GCD>" , "<$GRD>" ;
-                          0..1 | % { "<$RD $H = '*' />" } ; "</$GRD>" )
+                             "$H = '160'" , "  $( $VAL[0] ) >" , "<$G>" , "<$GRD>" ;
+                             "2" , "" | % { "<$RD $H = '$_*' />" } ; "</$GRD>" , "<$G $GR = '0' >" , "<$GCD>" ; 
+                             "" , "2.5" | % { "<$CD $W = '$_*' />" } ; "</$GCD>" , "<$GRD>" ;
+                             0..1 | % { "<$RD $H = '*' />" } ; "</$GRD>" )
 
                 $XML.Add( "01" , @( 0..18 | % { $X[$_] + $Y[$_] } ) )
              # ____   _________________________
@@ -1240,89 +1242,87 @@
         If ( $Login -or $NewAccount ) # Login / New Account                          [
         {#___________________________________________________________________________/
 
-            If ( $Login )      
+            If ( $Login )
             { 
                 $Title  = "AD Login"
                 $Header = "Enter Directory Services Admin Account"
-                $VX     = "" 
+                $VX     = ""
             }
             
             If ( $NewAccount )
-            { 
-                $Title  = "Account Designation" 
+            {
+                $Title  = "Account Designation"
                 $Header = "Enter Username and Password"
-                $VX     = $VC 
+                $VX     = $VC
             }
 
-            $X          = @( 2 ; 0..4 | % { 13 } ; 10 , 13 , 9 ) | % { $SP[$_] }
+            $X          = @( 2 ; 0..6 | % { 13 } ; 10 , 9 ) | % { $SP[$_] }
 
             $Y          = @( "<Window" , "  xmlns = '$Schema/presentation'" , "xmlns:x = '$Schema'" , 
-                          "  Title = '$Author | Hybrid @ $Title'" , "  $W = '480'" , " $H = '280'" ,
-                           "$( $HAL[1] )" , "Topmost = 'True' " , "  WindowStartupLocation = 'CenterScreen' >" )
+                             "  Title = '$Author | Hybrid @ $Title'" , "  $W = '480'" , " $H = '280'" , "Topmost = 'True' " , 
+                             "   Icon = '$( $GFX.Icon )'" , "$( $HAL[1] )" , "  WindowStartupLocation = 'CenterScreen' >" )
 
-                $XML.Add( "00" , @( 0..8 | % { $X[$_] + $Y[$_] } ) )
+                $XML.Add( "00" , @( 0..9 | % { $X[$_] + $Y[$_] } ) )
              # ____   _________________________
              #//¯¯\\__[_______ Framing _______]
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ 
-                $X     = @( 3,9,9,9,6,4,5,6,6,5,5,6,7,7,6,6,7,7,7,6 ) | % { $SP[$_] }
+                $X      = @( 3,9,9,9,6,4,5,6,6,5,5,6,7,7,6,6,7,7,7,6 ) | % { $SP[$_] }
 
-                $Y     = @( "<$GB" , " $HD = '$Header'" , "  $W = '450'" , " $H = '240' $MA = '5'" , "  $( $VAL[1] )>" ,
-                         "<$G>" , "<$GRD>" ; "2" , "1.25" | % { "<$RD $H = '$_*' />" } ; "</$GRD>" , "<$G $GR = '0' >" ,
-                         "<$GCD>" ; "" , "3" | % { "<$CD $W = '$_*' />" } ; "</$GCD>" ; "<$GRD>" ;
-                         0..2 | % { "<$RD $H = '*' />" } ; "</$GRD>" )
+                $Y      = @( "<$GB" , " $HD = '$Header'" , "  $W = '450'" , " $H = '240' $MA = '5'" , "  $( $VAL[1] )>" ,
+                             "<$G>" , "<$GRD>" ; "2" , "1.25" | % { "<$RD $H = '$_*' />" } ; "</$GRD>" , "<$G $GR = '0' >" ,
+                             "<$GCD>" ; "" , "3" | % { "<$CD $W = '$_*' />" } ; "</$GCD>" ; "<$GRD>" ;
+                             0..2 | % { "<$RD $H = '*' />" } ; "</$GRD>" )
 
                 $XML.Add( "01" , @( 0..( $X.Count - 1 ) | % { $X[$_] + $Y[$_] } ) )
              #_    ____________________________
              #\\__//¯¯[_____ User Input ______]
              # ¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                $X     = @( 0..5 | % { 6 , 7 } ) | % { $SP[$_] }
+                $X      = @( 0..5 | % { 6 , 7 } ) | % { $SP[$_] }
 
-                $Y     = @( "<$TBL $GC = '0' $GR = '0' $MA = '10' TextAlignment = 'Right' >" , "Username:</$TBL>" ,
-                        "<$TB $Q = 'Username' $GC = '1' $GR = '0' $H = '24' $MA = '5' >" , "</$TB>" ,
-                        "<$TBL $GC = '0' $GR = '1' $MA = '10' TextAlignment = 'Right' >" , "Password:</$TBL>" ,
-                        "<$PWB $Q = 'Password' $GC = '1' $GR = '1' $H = '24' $MA = '5' $PWC = '*' >" , "</$PWB>" ,
-                        "<$TBL $GC = '0' $GR = '2' $MA = '10' TextAlignment = 'Right' >" , "Confirm:</$TBL>" ,
-                        "<$PWB $Q =  'Confirm' $GC = '1' $GR = '2' $H = '24' $MA = '5' $PWC = '*' >" , "</$PWB>" )
+                $Y      = @( "<$TBL $GC = '0' $GR = '0' $MA = '10' TextAlignment = 'Right' >" , "Username:</$TBL>" ,
+                             "<$TB $Q = 'Username' $GC = '1' $GR = '0' $H = '24' $MA = '5' >" , "</$TB>" ,
+                             "<$TBL $GC = '0' $GR = '1' $MA = '10' TextAlignment = 'Right' >" , "Password:</$TBL>" ,
+                             "<$PWB $Q = 'Password' $GC = '1' $GR = '1' $H = '24' $MA = '5' $PWC = '*' >" , "</$PWB>" ,
+                             "<$TBL $GC = '0' $GR = '2' $MA = '10' TextAlignment = 'Right' >" , "Confirm:</$TBL>" ,
+                             "<$PWB $Q =  'Confirm' $GC = '1' $GR = '2' $H = '24' $MA = '5' $PWC = '*' >" , "</$PWB>" )
 
                 $XML.Add( "02" , @( 0..( $X.Count - 1 ) | % { $X[$_] + $Y[$_] } ) )
              # ____   _________________________
              #//¯¯\\__[_______ Framing _______]
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                $X    = @( 5,5,6,7,7,6,6,7,7,6 ) | % { $SP[$_] }
+                $X      = @( 5,5,6,7,7,6,6,7,7,6 ) | % { $SP[$_] }
 
-                $Y    = @( "</$G>" , "<$G $GR = '1' >" , "<$GCD>" ; 0..1 | % { "<$CD $W = '*' />" } ; "</$GCD>" , "<$GRD>" ;
-                           0..1 | % { "<$RD $H = '*'/>" } ; "</$GRD>" )
+                $Y      = @( "</$G>" , "<$G $GR = '1' >" , "<$GCD>" ; 0..1 | % { "<$CD $W = '*' />" } ; "</$GCD>" , "<$GRD>" ;
+                             0..1 | % { "<$RD $H = '*'/>" } ; "</$GRD>" )
 
                 $XML.Add( "03" , @( 0..( $X.Count - 1 ) | % { $X[$_] + $Y[$_] } ) )
              #_    ____________________________
              #\\__//¯¯[_______ Controls ______]
              # ¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                $X    = @( 6,6,7,6,7,6,7,6,5,4,3 ) | % { $SP[$_] }
+                $X      = @( 6,6,7,6,7,6,7,6,5,4,3 ) | % { $SP[$_] }
 
-                $Y    = @( "<RadioButton $Q = 'Switch' $GR = '0' $GC = '0' $CO = 'Change' $($VAL[1]) $($HAL[1]) $VX/>" ,
-                        "<$TB $Q = 'Port' $GR = '0' $GC = '1' $($VAL[1]) $($HAL[1]) $W = '120' IsEnabled = 'False' $VX>" ,
-                        "389</TextBox>" , "<$BU $Q = 'Ok' $CO = 'Ok' $GC = '0' $GR = '1' $MA = '5' >" , "</$BU>" ,
-                        "<$BU $Q = 'Cancel' $CO = 'Cancel' $GC = '1' $GR = '1' $MA = '5' >" , "</$BU>" , "</$G>" ,
-                        "</$G>" , "</$GB>" , "</Window>" )
+                $Y      = @( "<RadioButton $Q = 'Switch' $GR = '0' $GC = '0' $CO = 'Change' $($VAL[1]) $($HAL[1]) $VX/>" ,
+                              "<$TB $Q = 'Port' $GR = '0' $GC = '1' $($VAL[1]) $($HAL[1]) $W = '120' IsEnabled = 'False' $VX>" ,
+                              "389</TextBox>" , "<$BU $Q = 'Ok' $CO = 'Ok' $GC = '0' $GR = '1' $MA = '5' >" , "</$BU>" ,
+                              "<$BU $Q = 'Cancel' $CO = 'Cancel' $GC = '1' $GR = '1' $MA = '5' >" , "</$BU>" , "</$G>" ,
+                              "</$G>" , "</$GB>" , "</Window>" )
 
-                 $XML.Add( "04" , @( 0..( $X.Count - 1 ) | % { $X[$_] + $Y[$_] } ) )
+                $XML.Add( "04" , @( 0..( $X.Count - 1 ) | % { $X[$_] + $Y[$_] } ) )
         }
 
         #/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\
         If ( $HybridDSCPromo ) # Domain Controller Promotion Configuration           [
         {#___________________________________________________________________________/
              
-             $Title = "Desired State Controller Promotion"
-
+             $Title     = "Desired State Controller Promotion"
              # ____   _________________________
              #//¯¯\\__[_______ Header ________]
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                $X      = @( 2 ; 0..4 | % { 13 } ; 10 , 13 , 9 ) | % { $SP[$_] }
+                $X      = @( 2 ; 0..6 | % { 13 } ; 10 , 9 ) | % { $SP[$_] }
 
-                $Y      = @( "<Window" , "  xmlns = '$Schema/presentation'" , "xmlns:x = '$Schema'" ,
-                          "  Title = '$Author | Hybrid @ $Title'" ,
-                          "  $W = '800'" , " $H = '800'" , "$( $HAL[1] )" , "Topmost = 'True' " ,
-                          "  WindowStartupLocation = 'CenterScreen' >" )
+                $Y      = @( "<Window" , "  xmlns = '$Schema/presentation'" , "xmlns:x = '$Schema'" , 
+                             "  Title = '$Author | Hybrid @ $Title'" , "  $W = '800'" , " $H = '800'" , "Topmost = 'True' " ,
+                             "   Icon = '$( $GFX.Icon )'" , "$( $HAL[1] )" , "  WindowStartupLocation = 'CenterScreen' >" )
 
                 $XML.Add( "00" , @( 0..8 | % { $X[$_] + $Y[$_] } ) )
              #_    ____________________________
@@ -1375,7 +1375,8 @@
                 0..7    | % { $I  = $ED[$_] ; $J  = "False"
                         If ( $CS -like "*$I*" ) { If ( $R2 -eq 1 -and $_ -in    3 , 5 ) { $J = "True" }
                                                   If ( $R2 -eq 0 -and $_ -notin 3 , 5 ) { $J = "True" } }
-                   $LI += "<$CBI $CO = 'Windows Server 20$I' IsSelected = '$J' />" }
+
+                $LI    += "<$CBI $CO = 'Windows Server 20$I' IsSelected = '$J' />" }
 
                 $LI[0]  = $LI[0].Replace( "2000" ,"2000 ( Default )" )
 
@@ -1512,13 +1513,13 @@
              # ____   _________________________
              #//¯¯\\__[________ Header _______]
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                $X      = @( 2 ; 0..3 | % { 13 } ; 10 , 13 , 9 ) | % { $SP[$_] }
+                $X      = @( 2 ; 0..3 | % { 13 } ; 10 , 13 , 13 , 9 ) | % { $SP[$_] }
 
                 $Y      = "<Window" , "  xmlns = '$Schema/presentation'" , "xmlns:x = '$Schema'" , "  $W = '350'" ,
-                          "  $H = '200'" , "$( $HAL[1] )" , "Topmost = 'True' " ,
+                          "  $H = '200'" , "$( $HAL[1] )" , "Topmost = 'True' " , "   Icon = '$( $GFX.Icon )'"
                           "  WindowStartupLocation = 'CenterScreen' >"
 
-                $XML.Add( "00" , @( 0..7 | % { $X[$_] + $Y[$_] } ) )
+                $XML.Add( "00" , @( 0..8 | % { $X[$_] + $Y[$_] } ) )
              # ____   _________________________
              #//¯¯\\__[_______ Framing _______]
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -1562,17 +1563,17 @@
         {#___________________________________________________________________________/
 
              $Title = "DSC Root Installation"
-             $GFX   = Import-DSCGraphics
 
              # ____   _________________________
              #//¯¯\\__[_______ Header ________]
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                $X      = @( 2 ; 0..5 | % { 13 } ; 10 , 9 ) | % { $SP[$_] }
+                $X      = @( 2 ; 0..6 | % { 13 } ; 10 , 9 ) | % { $SP[$_] }
 
                 $Y      = @( "<Window" , "  xmlns = '$Schema/presentation'" , "xmlns:x = '$Schema'" , "  Title = '$Author | Hybrid @ $Title'" , 
-                             "  $W = '640'" , " $H = '450'" , "Topmost = 'True' " , "$( $HAL[1] )" ,  "  WindowStartupLocation = 'CenterScreen' >" )
+                             "  $W = '640'" , " $H = '450'" , "Topmost = 'True' " , 
+                             "   Icon = '$( $GFX.Icon )'" , "$( $HAL[1] )" ,  "  WindowStartupLocation = 'CenterScreen' >" )
 
-                $XML.Add( "00" , @( 0..8 | % { $X[$_] + $Y[$_] } ) )
+                $XML.Add( "00" , @( 0..9 | % { $X[$_] + $Y[$_] } ) )
              # ____   _________________________
              #//¯¯\\__[_______ Framing _______]
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -1607,18 +1608,17 @@
         {#___________________________________________________________________________/
 
             $Title = "DSC Deployment Share"
-            $GFX   = Import-DSCGraphics
 
              # ____   _________________________
              #//¯¯\\__[_______ Header ________]
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                $X      = @( 2 ; 0..5 | % { 13 } ; 12 , 10 , 9 ) | % { $SP[$_] }
+                $X      = @( 2 ; 0..9 | % { 13 } ; 12 , 10 , 9 ) | % { $SP[$_] }
 
                 $Y      = @( "<Window" , "  xmlns = '$Schema/presentation'" , "xmlns:x = '$Schema'" , "  Title = '$Author | Hybrid @ $Title'" , 
-                             "  $W = '640'" , " $H = '960'" , "Topmost = 'True' " , " ResizeMode = 'NoResize'" , "$( $HAL[1] )" ,  
+                             "  $W = '640'" , " $H = '960'" , "Topmost = 'True' " , "   Icon = '$( $GFX.Icon )'" , " ResizeMode = 'NoResize'" , "$( $HAL[1] )" ,  
                              "  WindowStartupLocation = 'CenterScreen' >" )
 
-                $XML.Add( "00" , @( 0..9 | % { $X[$_] + $Y[$_] } ) )
+                $XML.Add( "00" , @( 0..10 | % { $X[$_] + $Y[$_] } ) )
              # ____   _________________________
              #//¯¯\\__[__ Window Resources ___]
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -1647,18 +1647,18 @@
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                 $X      = @( 5,6,7,6,6,7;0..5|%{8};7,7,8,7,7,8,9,9,8,8;0..4|%{9};8;0..4|%{8,9,9,10,9,8,8};7,7,8,9,9,8;0..1|%{8,9,10,9,8};7;7,8,7 ) | % { $SP[$_] }
 
-                $Y      = @( "<TabItem $HD = 'Stage Deployment Server' BorderBrush = '{x:Null}' $W = '220' >" , "<TabItem.Effect>" , "<DropShadowEffect/>" , 
+                $Y      = @( "<TabItem $HD = 'Stage Deployment Server' BorderBrush = '{x:Null}' $W = '280' >" , "<TabItem.Effect>" , "<DropShadowEffect/>" , 
                              "</TabItem.Effect>" , "<$G>" , "<$GRD>" ; 5 , 3 | % { 50 , "$_*" , "*" } | % { "<RowDefinition Height = '$_' />" } ; "</$GRD>" , 
                              "<$LA Style = '{ StaticResource RoundedBox }' $GR = '0' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#FFFFFF' FontSize = '14' >" , 
                              "MDT Base Share Settings" , "</$LA>" , "<$G $GR = '1' >" , "<$GCD>" ; 2 , 3 | % { "<$CD $W = '$_*' />" } ; "</$GCD>" , "<$GRD>" ; 
                              0..4 | % { "<$RD $H = '*' />" } ; "</$GRD>" ; 
 
-                            ( 0 , "Drive Label" , "Drive" ) , ( 1 , "Directory Path" , "Directory" ) , ( 2 , "Samba Share" , "Samba" ) , 
-                            ( 3 , "PS Drive" , "PSDrive" ) , ( 4 , "Drive Description" , "Description" ) | % {
-
+                            ( 0 , "Drive Label" ,   "Drive" ) , ( 1 ,    "Directory Path" ,   "Directory" ) , ( 2 , "Samba Share" , "Samba" ) , 
+                            ( 3 ,    "PS Drive" , "PSDrive" ) , ( 4 , "Drive Description" , "Description" ) | % {
+                                
                                 "<$TBL $GR = '$( $_[0] )' $GC = '0' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#00FF00' >" , "$( $_[1] )" , "<$TBL.Effect>" , 
                                 "<DropShadowEffect   ShadowDepth = '1'  Color = '#336633' />" , "</$TBL.Effect>" , "</$TBL>" , 
-                                "<$TB  $GR = '$( $_[0] )' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )' />" } ; 
+                                "<$TB $GR = '$( $_[0] )' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )' />" } ; 
 
                             "</$G>" , "<$G $GR = '2' >" , "<$GCD>" ; 0..1 | % { "<$CD $W = '*' />" } ; "</$GCD>" ;
 
@@ -1699,7 +1699,7 @@
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                 $X      = @( 5,6,7,6,6,7;0..5 | % { 8 } ; 7,7,8,7,7,8,9,9,8,8;0..3 | % { 9 } ; 8 ; 0..3 | % { 8,9,9,10,9,8,8 } ; 7,7,8,7 ) | % { $SP[$_] }
                 
-                $Y      = @( "<TabItem $HD = 'Image Info' $( $HAL[1] ) $W = '220' BorderBrush = '{x:Null}' >" , "<TabItem.Effect>" , "<DropShadowEffect/>" , 
+                $Y      = @( "<TabItem $HD = 'Image Info' $( $HAL[1] ) $W = '280' BorderBrush = '{x:Null}' >" , "<TabItem.Effect>" , "<DropShadowEffect/>" , 
                              "</TabItem.Effect>" , "<$G>" , "<$GRD>" ; 4 , 2 , 4 | % { 50 , "$_*" } | % { "<$RD $H = '$_' />" } ; "</$GRD>" ; 
                              "<$LA Style = '{ StaticResource RoundedBox }' $GR = '0' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#FFFFFF' FontSize = '14' >" , 
                              "Company Information" , "</$LA>" , "<$G $GR = '1' >" , "<$GCD>" ; 2 , 3 | % { "<$CD $W = '$_*' />" } ; "</$GCD>" , "<$GRD>" ; 
@@ -1710,7 +1710,7 @@
 
                                 "<$TBL $GR = '$( $_[0] )' $GC = '0' $MA = '5' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#00FF00' >" , "$( $_[1] )" , "<$TBL.Effect>" , 
                                 "<DropShadowEffect ShadowDepth = '1' Color = '#336633' />" , "</$TBL.Effect>" , "</$TBL>" ; 
-                                "<$TB $GR = '$( $_[0] )' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )' />" }
+                                "<$TB $GR = '$( $_[0] )' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )' $TW = 'WrapWithOverflow' />" }
     
                             "</$G>" , "<$LA Style = '{ StaticResource RoundedBox }' $GR = '2' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#FFFFFF' FontSize = '14' >" , 
                             "Custom Graphics" , "</$LA>" )
@@ -1727,7 +1727,7 @@
                                 
                                 "<$TBL $GR = '$( $_[0] )' $GC = '0' $MA = '5' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#00FF00' >" , "$( $_[1] )" , "<$TBL.Effect>" , 
                                 "<DropShadowEffect ShadowDepth = '1' Color = '#336633' />" , "</$TBL.Effect>" , "</$TBL>" , 
-                                "<$TB $GR = '$( $_[0] )' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )' />" } ; 
+                                "<$TB $GR = '$( $_[0] )' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )' $TW = 'WrapWithOverflow' />" } ; 
                             
                             "</$G>" , "<$LA Style = '{ StaticResource RoundedBox }' $GR = '4' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#FFFFFF' FontSize = '14' >" , 
                             "Network &amp; Target Credentials" , "</$LA>" )
@@ -1743,9 +1743,11 @@
                             ( 0 , "Branch Name" , "Branch" ) , ( 1 , "NetBIOS Domain" , "NetBIOS" ) , ( 2 , "Administrator Account" , "LMCred_User" ) , 
                             ( 3 , "Administrator Password" , "LMCred_Pass" ) | % { 
 
+                                If ( $_ -eq 3 ) { $TBX = $PWB ; $QX = "$PWC = '*'" } Else { $TBX = $TB ; $QX = "" }
+
                                 "<$TBL $GR = '$( $_[0] )' $GC = '0' Margin =  '5' VerticalAlignment = 'Center' HorizontalAlignment = 'Center' Foreground = '#00FF00' >" , 
                                 "$( $_[1] )" , "<$TBL.Effect>" , "<DropShadowEffect ShadowDepth = '1' Color = '#336633' />" , "</$TBL.Effect>" , "</$TBL>" , 
-                                "<$TB $GR = '$( $_[0] )' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )' />" } ; 
+                                "<$TBX $GR = '$( $_[0] )' $GC = '1' $H = '24' $MA = '20,0,20,0' $Q = '$( $_[2] )' $QX />" } ; 
                             
                             "</$G>" , "</$G>" , "</TabItem>" , "</TabControl>" )
 
@@ -1978,9 +1980,12 @@
         $GFX  = [ PSCustomObject ]@{ 
         
             Author     = "Secure Digits Plus LLC"
-            Title      = "[ Secure Digits Plus LLC | Hybrid-DSC"
+            Title      = "Secure Digits Plus LLC | Hybrid-DSC"
+            Icon       = GCI $Root -Recurse "*icon.ico"       | % { $_.FullName }
             Banner     = GCI $Root -Recurse "*banner.png"     | % { $_.FullName }
             Background = GCI $Root -Recurse "*background.jpg" | % { $_.FullName }
+            Logo       = GCI $Root -Recurse "*oemlogo.bmp"    | % { $_.FullName }
+            Brand      = GCI $Root -Recurse "*oembg.jpg"      | % { $_.FullName }
         
         }
         
@@ -2104,9 +2109,7 @@
 
             Write-Theme -Action "Installing [~]" "Hybrid-DSC Root Structure" 11 12 15
 
-            "Hybrid" , "Libraries" , "Scripts" , "Templates" , "Install" | % { 
-        
-                "$( $Root.Base )\$_" | % {
+            "Hybrid" , "Libraries" , "Scripts" , "Templates" , "Install" | % { "$( $Root.Base )\$_" | % {
 
                     If ( ( Test-Path $_ ) -ne $True )
                     { 
@@ -2245,7 +2248,306 @@
         {
             Write-Theme -Action "Exception [!]" "The exited or the dialogue failed" 12 4 15
         }
-                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}
+
+    Function Import-MDTModule # Loads the module for MDT
+    {
+        GP "HKLM:\Software\Microsoft\Deployment 4" | % { GCI $_.Install_Dir -Filter "*Toolkit.psd1" -Recurse } | % { IPMO $_.FullName }
+        Write-Theme -Action "Module [+]" "Microsoft Deployment Toolkit" 11 12 15
+    }
+
+    Function Install-HybridDSC
+    {   
+        [ CmdLetBinding () ] Param ( [ Parameter ( ) ][ Switch ] $Test )
+
+
+        Import-MDTModule
+        
+        $CS = gcim Win32_ComputerSystem
+
+        $Code = [ PSCustomObject ]@{ 
+        
+        # MDT Drive Info
+        Drive       = "" ; Directory   = "" ; Samba       = "" ; PSDrive     = "" ; 
+        Description = "" ; 
+
+        # MDT Installation Type Switch
+        Legacy      = "" ; Remaster    = "" ; 
+
+        # IIS Info
+        IIS_Name    = "" ; IIS_AppPool = "" ; IIS_Proxy   = "" ; 
+            
+        # IIS Installation Type Switch
+        IIS_Install = "" ; IIS_Skip    = "" ;
+
+        # Deployment Share Information
+        Company     = "" ; WWW         = "" ; Phone       = "" ; Hours       = "" ; 
+        Logo        = "" ; Background  = "" ; Branch      = "" ; NetBIOS     = "" ; 
+
+        # Target Machine Information
+        LMCred_User = "" ; LMCred_Pass = "" }
+
+        $MSG  = @( "File System/Drive" ,       "Root Directory" ,    "Network Share Name" ,      "PSDrive Name" , 
+                   "Share Description" ,   "BITS-DSC Site Name" , "Application Pool Name" , "Virtual Host Name" , 
+                        "Company Name" ;    "Website" , "Phone" , "Hours" | % { "Support $_" } ;         "Logo" ;
+                          "Background" ;               "Branch" ;          "NetBIOS Name" ; 
+                "Target/LM Admin User" ; "Target/LM Admin Pass" ) | % { "Show-Message -Title '$_ Missing' -Message 'You must enter a $_'" }
+
+        $GUI = Get-XAML -ProvisionDSC              | % { 
+            Convert-XAMLtoWindow -Xaml $_ -NE ( Find-XAMLNamedElements -XAML $_ ) -PassThru 
+        }
+
+        $GUI.Legacy.Add_Click({
+            "Remaster"                   | % { $GUI.$_.IsChecked = $False ; $Code.$_ =        "-" }
+            "Legacy"                     | % { $GUI.$_.IsChecked =  $True ; $Code.$_ = "Selected" }
+        })
+
+        $GUI.Remaster.Add_Click({
+            "Remaster"                   | % { $GUI.$_.IsChecked =  $True ; $Code.$_ = "Selected" }
+            "Legacy"                     | % { $GUI.$_.IsChecked = $False ; $Code.$_ =        "-" }
+        })
+
+        $GUI.IIS_Install.Add_Click({ 
+            "IIS_Install"                | % { $GUI.$_.IsChecked =  $True ; $Code.$_ = "Selected" }
+            "IIS_Skip"                   | % { $GUI.$_.IsChecked = $False ; $Code.$_ =        "-" }
+            "Name" , "AppPool" , "Proxy" | % { "IIS_$_" } | % { $GUI.$_.IsEnabled =  $True ; $GUI.$_.Text = "" ; $Code.$_ = "" }
+        })
+
+        $GUI.IIS_Skip.Add_Click({
+            "IIS_Install"                | % { $GUI.$_.IsChecked = $False ; $Code.$_ =        "-" }
+            "IIS_Skip"                   | % { $GUI.$_.IsChecked =  $True ; $Code.$_ = "Selected" }
+            "Name" , "AppPool" , "Proxy" | % { "IIS_$_" } | % { $GUI.$_.IsEnabled = $False ; $GUI.$_.Text = "" ; $Code.$_ = "" }
+        })
+
+        $GUI.Cancel.Add_Click({ $GUI.DialogResult = $False })
+
+        $GUI.Start.Add_Click({
+
+            $Stage = 0
+
+                If ( $GUI.Drive           | % { $_.Text           -eq "" } ) { IEX $MSG[ 0] }
+            ElseIf ( $GUI.Directory       | % { $_.Text           -eq "" } ) { IEX $MSG[ 1] }
+            ElseIf ( $GUI.Samba           | % { $_.Text           -eq "" } ) { IEX $MSG[ 2] }
+            ElseIf ( $GUI.PSDrive         | % { $_.Text           -eq "" } ) { IEX $MSG[ 3] }
+            ElseIf ( $GUI.Description     | % { $_.Text           -eq "" } ) { IEX $MSG[ 4] }
+            ElseIf ( $GUI.IIS_Install     | % { $_.IsChecked } )
+            {
+                    If ( $GUI.IIS_Name    | % { $_.Text           -eq "" } ) { IEX $MSG[ 5] }
+                ElseIf ( $GUI.IIS_AppPool | % { $_.Text           -eq "" } ) { IEX $MSG[ 6] }
+                ElseIf ( $GUI.IIS_Proxy   | % { $_.Text           -eq "" } ) { IEX $MSG[ 7] }
+            }
+            ElseIf ( $GUI.Company         | % { $_.Text           -eq "" } ) { IEX $MSG[ 8] }
+            ElseIf ( $GUI.WWW             | % { $_.Text           -eq "" } ) { IEX $MSG[ 9] }
+            ElseIf ( $GUI.Phone           | % { $_.Text           -eq "" } ) { IEX $MSG[10] }
+            ElseIf ( $GUI.Hours           | % { $_.Text           -eq "" } ) { IEX $MSG[11] }
+            ElseIf ( $GUI.Logo            | % { $_.Text           -eq "" } ) { IEX $MSG[12] }
+            ElseIf ( $GUI.Background      | % { $_.Text           -eq "" } ) { IEX $MSG[13] }
+            ElseIf ( $GUI.Branch          | % { $_.Text           -eq "" } ) { IEX $MSG[14] }
+            ElseIf ( $GUI.NetBIOS         | % { $_.Text           -eq "" } ) { IEX $MSG[15] }
+            ElseIf ( $GUI.LMCred_User     | % { $_.Text           -eq "" } ) { IEX $MSG[16] }
+            ElseIf ( $GUI.LMCred_Pass     | % { $_.Password       -eq "" } ) { IEX $MSG[17] }
+
+            $CHK    = 0..7
+            $CHK[0] = $GUI.Drive.Text.Replace( '\' , '' )
+            $CHK[1] = Get-ACL $CHK[0] | % { $_.Access } | ? { $_.IdentityReference -match $Env:Username } | % { $_.FileSystemRights }
+            $CHK[2] = $GUI.Directory.Text.Replace( $CHK[0] , '' ).Replace( '\' , '' ).Replace( '/' , '' )
+            $CHK[3] = $CHK[0,2] -join '\'
+            $CHK[4] = $GUI.Samba.Text.Replace( '$' , '' )
+            $CHK[5] = $GUI.PSDrive.Text.Replace( ':' , '' )
+            $CHK[6] = $GUI.Logo.Text
+            $CHK[7] = $GUI.Background.Text
+
+            $MSG = @( "Invalid Drive" , "Insufficient priviledges over specified folder" ; "Directory" , "Share" | % { "$_ already exists, cannot proceed" } ;
+            "name" , "path" | % { "MDT-PersistentDrive with that $_ already exists" } ; "not found" , "is not in bitmap form" | % { "Logo $_" } ; 
+            "width" , "height" | % { "Logo $_ exceeds 120px" } ; "found" , "in an acceptable format" | % { "Background not $_" } ) | % { "Show-Message -Message '$_'" }
+
+            If ( ! ( Test-Path $CHK[0] ) )                                                                         { IEX $MSG[0] }
+            ElseIf ( ( "268435456" , "FullControl" , "Modify, Synchronize" | ? { $_ -in $CHK[1] } ).Count -eq 0 )  { IEX $MSG[1] }
+            ElseIf ( Test-Path $CHK[3] )                                                                           { IEX $MSG[2] }
+            ElseIf ( GSMBS | ? { $_.Name -like "*$( $CHK[4] )*" } )                                                { IEX $MSG[3] }
+            ElseIf ( Get-MDTPersistentDrive | ? { $_.Name -eq $CHK[5] } )                                          { IEX $MSG[4] }
+            ElseIf ( Get-MDTPersistentDrive | ? { $_.Path -eq $CHK[3] } )                                          { IEX $MSG[5] }
+            ElseIf ( ! ( Test-Path $CHK[6] ) )                                                                     { IEX $MSG[6] }
+             
+            ElseIf ( $CHK[6].Split( '.' )[-1] -ne "bmp" )
+            {
+                IEX $MSG[7]
+            }
+
+            ElseIf ( [ System.Drawing.Bitmap ]::FromFile( $CHK[6] ).Width  -gt 120 )
+            {
+                IEX $MSG[8]
+            }
+
+            ElseIf ( [ System.Drawing.Bitmap ]::FromFile( $CHK[6] ).Height -gt 120 )
+            {
+                IEX $MSG[9]
+            }
+
+            ElseIf ( ! ( Test-Path $CHK[7] ) )
+            {
+                IEX $MSG[10]
+            }
+
+            ElseIf ( !$CHK[7].Split( '.' )[-1] -in "BMP,GIF,JPG,PNG,TIF,DIB,JFIF,JPE,JPEG,WDP".Split( ',' ) )
+            {
+                IEX $MSG[11]
+            }
+
+            If ( $GUI.Legacy.IsChecked )
+            {
+                $Code.Legacy      =    "Selected" 
+                $Code.Remaster    =           "-"
+            }
+
+            If ( $GUI.Remaster.IsChecked )
+            {
+                $Code.Legacy      =           "-" 
+                $Code.Remaster    =    "Selected"
+            }
+
+            If ( $GUI.IIS_Install.IsChecked )
+            {
+                $Code.IIS_Install =    "Selected" 
+                $Code.IIS_Skip    =           "-"
+                $Code.IIS_Name    = $GUI.IIS_Name.Text
+                $Code.IIS_AppPool = $GUI.IIS_AppPool.Text
+                $Code.IIS_Proxy   = $GUI.IIS_Proxy.Text
+            }
+
+            If ( $GUI.IIS_Skip.IsChecked )
+            {
+                $Code.IIS_Install =           "-"
+                $Code.IIS_Skip    =    "Selected" 
+                $Code.IIS_Name    =           "-"
+                $Code.IIS_AppPool =           "-" 
+                $Code.IIS_Proxy   =           "-"
+            }
+
+                $Code.Drive       = $CHK[0]
+                $Code.Directory   = $CHK[3]
+                $Code.Samba       = "$( $CHK[4] )$"
+                $Code.PSDrive     = "$( $CHK[5] ):"
+                $Code.Description = $GUI.Description.Text
+                $Code.Company     = $GUI.Company.Text
+                $Code.WWW         = $GUI.WWW.Text
+                $Code.Phone       = $GUI.Phone.Text
+                $Code.Hours       = $GUI.Hours.Text
+                $Code.Logo        = $GUI.Logo.Text
+                $Code.Background  = $GUI.Background.Text
+                $Code.Branch      = $GUI.Branch.Text
+                $Code.NetBIOS     = $GUI.NetBIOS.Text
+                $Code.LMCred_User = $GUI.LMCred_User.Text
+                $Code.LMCred_Pass = $GUI.LMCred_Pass.Password
+
+                $GUI.DialogResult = $True
+        })
+
+        If ( $CS.PartOfDomain -eq $True )
+        {
+            $GUI.NetBIOS | % { $_.Text = $ENV:UserDomain    }
+            $GUI.Branch  | % { $_.Text = $ENV:USERDNSDOMAIN }
+        }
+
+        If ( $CS.PartOfDomain -eq $False )
+        {
+            $NBT = nbtstat -n | ? { $_ -like "*REGISTERED*" } | % { 
+
+                [ PSCustomObject ]@{ 
+                    Name   = ( $_[ 0..18] | ? { $_ -ne " " } ) -join '' 
+                    ID     = ( $_[19..22] | ? { $_ -ne " " } ) -join '' 
+                    Type   = ( $_[24..34] | ? { $_ -ne " " } ) -join '' 
+                    Status = ( $_[35..50] | ? { $_ -ne " " } ) -join '' 
+                }
+            }
+            
+            $NBID  = $NBT | ? { $_ -like  "*GROUP*" -and $_ -like "*<00>*" }
+            If ( $NBID.Count -gt 1 ) {  $NBID =  $NBID[0] } Else { }
+
+            $CNAME = $NBT | ? { $_ -like "*UNIQUE*" -and $_ -like "*<00>*" }
+            If ( $NBID.Count -gt 1 ) { $CNAME = $CNAME[0] } Else { }
+                
+            $GUI.NetBIOS | % { $_.Text = $NBID  }
+            $GUI.Branch  | % { $_.Text = $CNAME }
+        }
+
+        $GUI.Legacy      | % { $_.IsChecked = $True }
+        $GUI.IIS_Install | % { $_.IsChecked = $True }
+
+        If ( $Test )
+        {
+            $GFX = Import-DSCGraphics
+            
+            $GUI | % {
+            
+                $_.Drive       | % { $_.Text     = "C:\"                              }
+                $_.Directory   | % { $_.Text     = "Test1"                            }
+                $_.Samba       | % { $_.Text     = "Samba$"                           }
+                $_.PSDrive     | % { $_.Text     = "PSDrive:"                         }
+                $_.Description | % { $_.Text     = "Info"                             }
+                $_.Company     | % { $_.Text     = "Secure Digits Plus LLC"           }
+                $_.IIS_Name    | % { $_.Text     = "SiteName"                         }
+                $_.IIS_AppPool | % { $_.Text     = "MDT_AppPool"                      }
+                $_.IIS_Proxy   | % { $_.Text     = "Hybrid"                           }
+                $_.WWW         | % { $_.Text     = "https://www.securedigitsplus.com" }
+                $_.Phone       | % { $_.Text     = "(518) 406-8569"                   }
+                $_.Hours       | % { $_.Text     = "24h/d; 7d/w; 365.25d/y;"          }
+                $_.Logo        | % { $_.Text     = $GFX.Logo                          }
+                $_.Background  | % { $_.Text     = $GFX.Brand                         }
+                $_.LMCred_User | % { $_.Text     = "Administrator"                    }
+                $_.LMCred_Pass | % { $_.Password = "password"                         }
+            }
+        }
+
+        $OP = Show-WPFWindow -GUI $GUI
+
+        If ( $OP -eq $True ) 
+        {   
+            $Code
+            Read-Host "Confirm?"
+            
+            $NSMBS = @{ Name        = $Code.Samba 
+                        Path        = $Code.Directory 
+                        FullAccess  = "Administrators" }
+    
+            NSBMS @NSMBS
+
+            If ( $? -eq $True )
+            {
+                Write-Theme -Action "Successful [+]" "Samba Share Created" 11 12 15
+            }
+
+            Else
+            {
+                Write-Theme -Action "Exception [!]" "Samba Share Creation Failed" 12 4 15
+                Read-Host "Press Enter to Exit"
+                Break
+            }
+
+            $NDR = @{   Name        = $Code.PSDrive.Replace( ':' , '' )
+                        PSProvider  = "MDTProvider"
+                        Root        = $Code.Directory
+                        Description = $Code.Description
+                        NetworkPath = "\\$ENV:ComputerName\$( $Code.Samba )"
+                        Verbose     = $True }
+
+            NDR @NDR | Add-MDTPersistentDrive -VB
+
+            If ( $? -eq $True )
+            {
+                Write-Theme -Action "Successful [+]" "PSDrive/MDTPersistent Drive Created" 11 12 15
+            }
+
+            Else
+            {
+                Write-Theme -Action "Exception [!]" "PSDrive/MDTPersistent Drive Creation Failed" 12 4 15
+            }
+        }
+
+        Else
+        {
+            Write-Theme -Action "Exception [!]" "Either the user cancelled, or the dialog failed" 12 4 15
+        }
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
