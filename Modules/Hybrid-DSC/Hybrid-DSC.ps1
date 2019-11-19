@@ -2242,6 +2242,15 @@
             }
 
             Write-Theme -Action "Verified [+]" "PSD/MDT Dependencies" 11 12 15
+
+            IPMO BitsTransfer 
+            [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::Tls12
+                    
+            $BITS = @{ Source      = "https://github.com/FriendsOfMDT/PSD/archive/master.zip"
+                       Destination = "$( $Root.Base )\Tools\PSD_Master.zip" 
+                       Description = "PowerShell Deployment" }
+            
+            Start-BitsTransfer @BITS
         }
 
         Else
@@ -2252,7 +2261,7 @@
 
     Function Import-MDTModule # Loads the module for MDT
     {
-        GP "HKLM:\Software\Microsoft\Deployment 4" | % { GCI $_.Install_Dir -Filter "*Toolkit.psd1" -Recurse } | % { IPMO $_.FullName }
+        GP "HKLM:\Software\Microsoft\Deployment 4" | % { IPMO ( GCI $_.Install_Dir "*Toolkit.psd1" -Recurse ).FullName }
         Write-Theme -Action "Module [+]" "Microsoft Deployment Toolkit" 11 12 15
     }
 
@@ -2510,6 +2519,7 @@
                 }
             }
             
+            # Create the Samba Share
             $NSMBS = @{ Name        = $Code.Samba 
                         Path        = $Code.Directory 
                         FullAccess  = "Administrators" }
@@ -2528,6 +2538,7 @@
                 Break
             }
 
+            # Create the PSDrive/MDTPersistent Drive
             $NDR = @{   Name        = $Code.PSDrive.Replace( ':' , '' )
                         PSProvider  = "MDTProvider"
                         Root        = $Code.Directory
@@ -2537,6 +2548,7 @@
 
             NDR @NDR | Add-MDTPersistentDrive -VB
 
+            # Scaffold Hybrid-DSC Deployment Share Root Settings, Copy Designated/Default Background & Logo
             $Code | % { 
 
                 $DSC = "$( $_.Directory )\$( $_.Company )"
@@ -2545,7 +2557,7 @@
 
                 ( 0 , "Resources" ) , ( 1 , "Tools" ) , ( 2 , "Images" ) , ( 3 , "Profiles" ) , ( 4 , "Certificates" ) , ( 5 , "Applications" ) | % { 
 
-                    NI -Path "$DSC\($( $_[0] ))$( $_[1] )" -ItemType Directory
+                    NI "$DSC\($( $_[0] ))$( $_[1] )" -ItemType Directory
                 }
 
                 $RES = ( gci $DSC *0* ).FullName
@@ -2568,10 +2580,10 @@
                 Break
             }
     
-            # Place Share Settings in the registry
+            # Plant Tree For Deployment Share Root Settings
             $Root = Resolve-DSCRoot | % { $_.Root }
             $Tree = "Hybrid-DSC\$( $Code.Company )\$( $Code.PSDrive.Replace( ':' , '' ) )"
-            $Rec  =  $Tree.Split( '\' )
+            $Rec  = $Tree.Split( '\' )
 
             $Path = $Root
 
@@ -2588,13 +2600,73 @@
                 }
             }
 
+            # Place Deployment Share Root Settings in the registry
             $Names  = $Code  | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name }
             $Values = $Names | % { $Code.$_ } 
             
-            0..( $Names.Count - 1 ) | % {
+            0..( $Names.Count - 1 ) | % { SP -Path $Path -Name $Names[$_] -Value $Values[$_] -Force }
+
+            If ( $Code.Remaster )
+            {
+                Write-Theme -Action "Creating" "[+] PowerShell [ Deployment / Development ] Share" 11 12 15
+                    
+                $Source   = Resolve-DSCRoot | % { $_.Tree }
+                $Remaster = GCI $Source "*PSD*" -Recurse | % { $_.FullName }
+
+                If ( $Remaster -eq $Null )
+                {
+                    Write-Theme -Action "Exception [!]" "The Remastered package was not detected" 12 4 15
+                    Break
+                }
+
+                $Manifest = [ PSCustomObject ]@{ 
+
+                        Scripts   = "Scripts"
+                        Templates = "Templates"
+                        Modules   = "Tools\Modules"
+                        Folders   = "Gather" , "DeploymentShare" , "Utility" , "Wizard" | % { "PSD$_" }
+                        XSD       = "Groups" , "Medias" , "OperatingSystems" , "Packages" , "SelectionProfiles" , "TaskSequences" , 
+                                    "Applications" , "Drivers" , "LinkedDeploymentShares" | % { "$_.xsd" }
+                        PSSnapIn  = @( "dll" , "dll.config" , "dll-help.xml" , "Format.ps1xml" , "Types.ps1xml" | % { 
+                                       "PSSnapIn.$_" } ; "Core.dll" , "Core.dll.config" , "ConfigManager.dll" )
+                        Paths     = @( "Logs" , "Logs\Dyn" ; "Sources" , "Packages" | % { "Driver$_" } )
+                }
                 
-                SP -Path $Path -Name $Names[$_] -Value $Values[$_] -Force
-            }
+                Expand-Archive $Remaster -DestinationPath "$Source\Tools"
+
+                $Items = "Scripts" , "Templates" | % { gci "$Source\Tools\PSD-Master\$_" | % { $_.FullName } }
+                
+                0..( $Items.Count - 1 ) | % { 
+                
+                    $X = $Items[$_]
+                    $Y = "$( $Code.Directory )\$( If ( $X -like "*Scripts*" ) { "Scripts" } If ( $X -like "*Templates*" ) { "Templates" } )"
+                    MI $X $Y
+                }
+                
+                RI "$Source\Tools\PSD-master" -Recurse -Force
+
+                $M = $Manifest
+                $W = $Code.Directory
+                $X = $W , $M.Modules -join '\'
+
+                $M.Folders | % { "$X\$_" } | ? { ! ( Test-Path $_ ) } | % { NI $_ -ItemType Directory -Verbose }
+
+                GCI "$W\Scripts" *.psm1* -Recurse | % { CP $_.FullName "$W\Tools\Modules\$( $_.BaseName )\$( $_.Name )" -Verbose }
+
+                $Snap = "$W\Tools\Modules\Microsoft.BDD.PSSnapin" 
+                
+                $Snap | ? { ! ( Test-Path $_ ) } | % { NI $_ -ItemType Directory -Verbose }
+
+                $MDTDir = GP "HKLM:\Software\Microsoft\Deployment 4" | % { $_.Install_Dir }
+                
+                $M.PSSnapIn | % { GCI "$MDTDir\Bin" *$_* -Recurse } | % { CP $_.FullName "$Snap\$( $_.Name )" -Verbose }
+
+                GCI $MDTDir "*Gather.xml" -Recurse | % { CP $_.FullName "$W\Tools\Modules\PSDGather" -Verbose }
+
+                $M.XSD      | % { GCI $MDTDir *$_* -Recurse } | % { CP $_.FullName "$W\Templates" -Verbose }
+                
+                $M.Paths    | % { "$W\$_" } | ? { ! ( Test-Path $_ ) } | % { NI $_ -ItemType Directory -Verbose }
+
         }
 
         Else
