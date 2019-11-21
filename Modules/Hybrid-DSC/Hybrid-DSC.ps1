@@ -1140,86 +1140,114 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Start-NetworkInfo  # Collects all needed interface data ____________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        $Section      = 0..3
-        $Stage        = 0..3
-        $Subtable     = 0..3
+        [ CmdLetBinding () ] Param (
+
+            [ Parameter ( ParameterSetName =     "Local" ) ] [ Switch ]     $Local ,
+            [ Parameter ( ParameterSetName =       "Map" ) ] [ Switch ]       $Map ,
+            [ Parameter ( ParameterSetName =   "NetBIOS" ) ] [ Switch ]   $NetBIOS , 
+            [ Parameter ( ParameterSetName = "Telemetry" ) ] [ Switch ] $Telemetry ,
+            [ Parameter ( ParameterSetName =       "All" ) ] [ Switch ]       $All )
+
+            $Index = "Network Adapter" , "Network Host IP/MAC" ,  "NetBIOS / Domain" , "Certificate / Location" | % { "$_ Information" }
+
+            If ( $All )
+            {
+                $Section  = @{ }
+                $SubTable = @{ }
+
+                0..3      | % { 
+            
+                    $Section.Add( $_ , "" )
+                    $SubTable.Add( $_ , "" ) 
+                    $Section[$_] = @{ Name = @( ) ; Value = @( ) ; Section = $Index[$_] }
+                }
+            }
+
+            If ( ( $Local ) -or ( $Map ) -or ( $NetBIOS ) -or ( $Telemetry ) )
+            {
+                $X = $( If ( $Local ) { 0 } If ( $Map ) { 1 } If ( $NetBIOS ) { 2 } If ( $Telemetry ) { 3 } )
+
+                $Section = @{ Name = @( ) ; Value = @( ) ; Section = $Index[$X] }
+            }
+        <#________________________#>
+        <#[ Network Information  ]#>
+        <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
+            $Item    = $( If ( $All ) { $Section[0] } If ( $Local ) { $Section } )
+
+            Get-NetworkInfo -LocalHost | GM | ? { $_.MemberType -like "*Note*" } | % { $Item.Name += $_.Name ; $Item.Value += $_.Definition.Split( '=' )[-1] }
+
+            $Item | % { $_.Name = $_.Name[5,1,8,7,0,6,2,10,9,4,3] ; $_.Value = $_.Value[5,1,8,7,0,6,2,10,9,4,3] }
+            
+            New-Subtable -Items $Item.Name -Values $Item.Value | % { If ( $All ) { $Subtable[0] = $_ } If ( $Local     ) { $Subtable = $_ } }
+        <#________________________#>
+        <#[   Network Host Map   ]#>
+        <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
+            $Item    = $( If ( $All ) { $Section[1] } If ( $Map ) { $Section } )
+
+            Get-NetworkHosts | ? { $_.IPV4Class -like "*Class*" } | % { $Item.Name += $_.IPV4Address ; $Item.Value += $_.MacAddress }
+
+            New-Subtable -Items $Item.Name -Values $Item.Value | % { If ( $All ) { $Subtable[1] = $_ } If ( $Map       ) { $Subtable = $_ } }
+        <#________________________#>
+        <#[   NetBIOS / NBTScan  ]#>
+        <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
+            $Item    = $( If ( $All ) { $Section[2] } If ( $NetBIOS ) { $Section } )
         
+            $NB             = Get-NBTSCAN 
+            $Control        = $NB | ? { $_.ID -like "*1C*" }
+            
+            If ( $Control -eq $Null ) 
+            { 
+                $Control    = $NB | ? { $_.IP -eq ( Get-NetworkInfo -LocalHost | % { $_.IPV4 } ) -and $_.ID -like "*00*" -and $_.Type -eq "GROUP" }
+            }
 
-        <# Network Information #>
-        $Section[0]   = "Network Information" ; $Name = @( ) ; $Value = @( )
+            $Item.Name     += $NB | GM | ? { $_.MemberType -like "*Note*" } | % { $_.Name }
+            $Item.Value    += $Item.Name | % { $Control.$_ }
 
-        Get-NetworkInfo -LocalHost | GM | ? { $_.MemberType -like "*Note*" } | % { $Name += $_.Name ; $Value += $_.Definition.Split( '=' )[-1] }
+            New-Subtable -Items $Item.Name -Values $Item.Value | % { If ( $All ) { $Subtable[2] = $_ } If ( $NetBIOS   ) { $Subtable = $_ } }
+        <#________________________#>
+        <#[___ Telemetry Data ___]#>
+        <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
+            $Item = $( If ( $All ) { $Section[3] } If ( $Telemetry ) { $Section } )
 
-        $Subtable[0]  = New-Subtable -Items $Name -Values $Value
+            $TD             = Get-TelemetryData
+            $Item.Name      = @( $TD | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,6,4,0,3,1,7,8,5]
+            $Item.Value     = $Item.Name | % { $TD.$_ }
 
+            New-Subtable -Items $Item.Name -Values $Item.Value | % { If ( $All ) { $Subtable[3] = $_ } If ( $Telemetry ) { $Subtable = $_ } }
+        <#________________________#>
+        <#[___ Generate Table ___]#>
+        <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
+            
+            $Panel = @{ Title = "Domain Controller Bootstrap" ; Depth = "" ; ID = "" ; Table = "" }
 
+            If ( $All )
+            {
+                $Panel | % { 
+                    
+                    $_.Depth = 4
+                    $_.ID    = 0..3 | % { $Section[$_].Section  | % { "( $_ )" } }
+                    $_.Table = 0..3 | % { $Subtable[$_] } 
+                }
+            }
 
+            If ( ( $Local ) -or ( $Map ) -or ( $NetBIOS ) -or ( $Telemetry ) )
+            {
+                $Panel | % {
 
-        <# Network Host Map #>
-        $Section[1]   = "Network Host IP/MAC" ; $Name = @( ) ; $Value = @( )
-
-        Get-NetworkHosts | ? { $_.IPV4Class -like "*Class*" } | % { $Name += $_.IPV4Address ; $Value += $_.MacAddress }
-
-        $Subtable[1]  = New-Subtable -Items $Name -Values $Value
-
-
-
-
-        <# NetBIOS / NBTScan #>
-        $Section[2]   = "NetBIOS / Domain Information" ; $Name = @( ) ; $Value = @( )
+                    $_.Depth = 1
+                    $_.ID    = $Section.Section
+                    $_.Table = $Subtable 
+                 }
+            }
         
-        $NB           = Get-NBTSCAN
-
-        $NB           = $Stage[2] | ? { $_.ID -like "*1C*" }
-
-        If ( $NB -eq $Null )
-        { 
-            $NB       = $Stage[2] | ? { $_.IP -eq $( Get-NetworkInfo -LocalHost ).IPV4 } | ? { $_.ID -like "*00*" } | ? { $_.Type -eq "GROUP" } 
-        }
-
-        $Names        = @( $NB | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,0,3,1,5,4]
-        $Panel        = @{ Items  = $Names ; 
-                           Values = $Names | % { $NB.$_ } }
-
-        $SubTable[2]  = New-Subtable @Panel
-
-        #__________________________________________________________________________________________________________________#
-        #  [ Obtain Telemetry Data ]                                                                                       #
-        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
-
-        $Section[3]   = "Certificate / Location Information"
-
-        $Stage[3]     = Get-TelemetryData
-        $Names        = @( $Stage[3] | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,6,4,0,3,1,7,8,5]
-
-        $Panel        = @{ Items  = $Names
-                           Values = $Names | % { $Stage[3].$_ } }
-
-        $SubTable[3]  = New-Subtable @Panel
-
-        #__________________________________________________________________________________________________________________#
-        #  [ Turn the previous subtables into a full table ]                                                               #
-        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
-
-        $Panel        = @{ Title = "Domain Controller Bootstrap"
-                           Depth = 4
-                           ID    = $Section  | % { "( $_ )" }
-                           Table = $Subtable | % { $_ } }
-        
-        $Table        =    New-Table @Panel
-
-        #__________________________________________________________________________________________________________________#
-        #  [ Display some stuff, but in a cool AND useful way ]                                                            #
-        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
+            $Table          =    New-Table @Panel
+        <#________________________#>
+        <#[___ Display Table ____]#>
+        <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
 
         Write-Theme -Table $Table 11 12 15
 
-            Return  [ PSCustomObject ]@{
-                NWInfo      = $Stage[0] | FT -AutoSize
-                HWHost      = $Stage[1]
-                NBInfo      = $Stage[2] | FT -AutoSize
-                Certificate = $Stage[3] | FT -AutoSize
-            }                                                                        #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+        Return $Table                                                                #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
@@ -3069,7 +3097,6 @@
                         Set-WebConfigurationProperty @Splat
 
                     }
-
                 # ____   _________________________
                 #//¯¯\\__[___ Hidden Segments ___] # Disabled for now, recurring error "disk changes" ( This is a security issue )
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
