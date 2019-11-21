@@ -35,9 +35,10 @@
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         [ CmdLetBinding ( ) ] Param (
 
-            [ Parameter ( ParameterSetName =   "Module" ) ] [ Switch ] $Module ,
-            [ Parameter ( ParameterSetName =     "Root" ) ] [ Switch ] $Root   ,
-            [ Parameter ( ParameterSetName =    "Share" ) ] [ Switch ] $Share  ,
+            [ Parameter ( ParameterSetName =   "Module" ) ] [ Switch ] $Module   ,
+            [ Parameter ( ParameterSetName =     "Root" ) ] [ Switch ] $Root     ,
+            [ Parameter ( ParameterSetName =    "Share" ) ] [ Switch ] $Share    ,
+            [ Parameter ( ParameterSetName =   "Domain" ) ] [ Switch ] $Domain   ,
             [ Parameter ( ParameterSetName = "Graphics" ) ] [ Switch ] $Graphics )
 
         $Author = "Secure Digits Plus LLC"
@@ -151,6 +152,46 @@
 
                 $Property | % { $Return | Add-Member -MemberType NoteProperty -Name $_ -Value $List.$_ }
 
+            }
+        }
+
+        If ( $Domain )
+        {
+            $CS = gcim Win32_ComputerSystem
+            
+            $Return = [ PSCustomObject ]@{ NetBIOS = "" ; Branch = "" }
+
+            If ( $CS.PartOfDomain -eq $True )
+            {
+                $Return | % {     
+                    $_.NetBIOS = $ENV:UserDomain
+                    $_.Branch  = $ENV:USERDNSDOMAIN 
+                }
+            }
+
+            If ( $CS.PartOfDomain -eq $False )
+            {
+                $NBT = nbtstat -n | ? { $_ -like "*REGISTERED*" } | % { 
+
+                    [ PSCustomObject ]@{ 
+                        Name   = ( $_[ 0..18] | ? { $_ -ne " " } ) -join '' 
+                        ID     = ( $_[19..22] | ? { $_ -ne " " } ) -join '' 
+                        Type   = ( $_[24..34] | ? { $_ -ne " " } ) -join '' 
+                        Status = ( $_[35..50] | ? { $_ -ne " " } ) -join '' 
+                    }
+                }
+            
+                $NBID  = $NBT | ? { $_ -like  "*GROUP*" -and $_ -like "*<00>*" }
+                If ( $NBID.Count -gt 1 ) {  $NBID =  $NBID[0] } Else { }
+
+                $CNAME = $NBT | ? { $_ -like "*UNIQUE*" -and $_ -like "*<00>*" }
+                If ( $NBID.Count -gt 1 ) { $CNAME = $CNAME[0] } Else { }
+                
+                $Return | % {
+
+                    $_.NetBIOS = $NBID
+                    $_.Branch  = $CNAME
+                }
             }
         }
 
@@ -1107,7 +1148,9 @@
 
         Get-NetworkInfo -LocalHost | GM | ? { $_.MemberType -like "*Note*" } | % { $Name += $_.Name ; $Value += $_.Definition.Split( '=' )[-1] }
 
-        $Subtable[0]  = New-Subtable @Panel
+        $Subtable[0]  = New-Subtable -Items $Name -Values $Value
+
+
 
 
         <# Network Host Map #>
@@ -1115,22 +1158,21 @@
 
         Get-NetworkHosts | ? { $_.IPV4Class -like "*Class*" } | % { $Name += $_.IPV4Address ; $Value += $_.MacAddress }
 
-        $Subtable[1]  = New-Subtable @Panel
+        $Subtable[1]  = New-Subtable -Items $Name -Values $Value
+
 
 
 
         <# NetBIOS / NBTScan #>
-        $Section[2]   = "NetBIOS / Domain Information"
-        $Name         = @( )
-        $Value        = @( )
+        $Section[2]   = "NetBIOS / Domain Information" ; $Name = @( ) ; $Value = @( )
         
-        $Stage[2]     = Get-NBTSCAN 
+        $NB           = Get-NBTSCAN
 
         $NB           = $Stage[2] | ? { $_.ID -like "*1C*" }
 
-        If ( $NB -eq $Null ) 
+        If ( $NB -eq $Null )
         { 
-            $NB       = $Stage[2] | ? { $_.IP -eq $Stage0.IPV4 } | ? { $_.ID -like "*00*" } | ? { $_.Type -eq "GROUP" } 
+            $NB       = $Stage[2] | ? { $_.IP -eq $( Get-NetworkInfo -LocalHost ).IPV4 } | ? { $_.ID -like "*00*" } | ? { $_.Type -eq "GROUP" } 
         }
 
         $Names        = @( $NB | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,0,3,1,5,4]
