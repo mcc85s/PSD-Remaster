@@ -41,10 +41,10 @@
             [ Parameter ( ParameterSetName = "Graphics" ) ] [ Switch ] $Graphics )
 
         $Author = "Secure Digits Plus LLC"
-        $Main   = $ENV:PSModulePath.Split( ';' ) | ? { GCI $_ -Recurse "*Hybrid-DSC*" } | % { "$_\Hybrid-DSC" }
-        $QX     = $LX[0] , "[ Make a selection ]" , $LX[1] | % { Echo $_ }
 
-        If ( $Module )
+        $Main   = $ENV:PSModulePath.Split( ';' ) | ? { GCI $_ -Recurse "*Hybrid-DSC*" } | % { "$_\Hybrid-DSC" }
+
+        If ( $Module ) # Returns the default module path
         {
             $Main | % { 
             
@@ -60,9 +60,17 @@
             }
         }
 
-        If ( ( $Root ) -or ( $Share ) )
+        If ( ( $Root ) -or ( $Share ) ) # Returns Registry Keys / Path, will also install tools if missing
         {
-            "HKLM:\Software\Policies" | % { If ( ! ( Test-Path "$_\$Author" ) ) { NI $_ -Name $Author } ; $Tree = "$_\$Author" }
+            "HKLM:\Software\Policies" | % { 
+            
+                If ( ! ( Test-Path "$_\$Author" ) ) 
+                { 
+                    NI $_ -Name $Author 
+                }
+                
+                $Tree = "$_\$Author" 
+            }
 
             GP $Tree | % { 
             
@@ -76,16 +84,16 @@
                              Date = $_."Installation Date" }
             }
 
-            If ( $Root )
+            If ( $Root ) # Returns the root Hybrid-DSC keys
             {   
                 Return $Return
             }
 
-            If ( $Share )
+            If ( $Share ) # Returns a Hybrid-DSC share information from registry/installs deployment share
             {
-                $Tree = $Return | % { $_.Root }
+                $Tree = $Return | % { $_.Root , "Hybrid-DSC" -join '\' }
                 
-                $Tree | % { Test-Path "$_\Hybrid-DSC" } | % { 
+                Test-Path $Tree | % { 
                 
                     If ( $_ -ne $True ) 
                     {
@@ -93,19 +101,18 @@
                     }
                 }
 
-                $Child = GCI "$Tree\Hybrid-DSC\" |  % { $_.PSChildName }
+                $Child = GCI $Tree |  % { $_.PSChildName }
             
                 If ( $Child.Count -gt 1 )
                 {
                     Write-Theme -Action "Option [~]" "Multiple Companies Found" 11 12 15
 
                     $C       = 0..( $Child.Count - 1 )
-                    $Options = 0..( $Child.Count - 1 ) | % { "`n[$_] $( $Child[$_] )" }
+                    $Options = $C | % { "`n[$_] $( $Child[$_] )" }
 
-                    $QX
                     Do
                     {
-                        $Selection = Read-Host -Prompt @( $Options ; "`n" ; "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯" )
+                        $Selection = Read-Host -Prompt @( "Select # of Company" ; $Options )
                         
                         If ( $Selection -notin $C ) { Echo "Not a valid option" }
                         If ( $Selection    -in $C ) { $Child = $Child[$Selection] }
@@ -114,19 +121,18 @@
                     Until ( $Child.Count -eq 1 )
                 }
    
-                $Provision = GCI "$Tree\Hybrid-DSC\$Child" | % { $_.PSChildName }
+                $Provision = GCI "$Tree\$Child" | % { $_.PSChildName }
             
                 If ( $Provision.Count -gt 1 )
                 {
                     Write-Theme -Action "Option [~]" "Multiple Drives Found" 11 12 15
 
                     $C       = 0..( $Provision.Count - 1 )
-                    $Options = 0..( $Provision.Count - 1 ) | % { "`n[$_] $( $Provision[$_] )" }
+                    $Options = $C | % { "`n[$_] $( $Provision[$_] )" }
 
-                    $QX
                     Do
                     {
-                        $Selection = Read-Host -Prompt @( $Options ; "`n" ; "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯" )
+                        $Selection = Read-Host -Prompt @( "Select # of Drive" ; $Options )
                         
                         If ( $Selection -notin $C ) { Echo "Not a valid option" }
                         If ( $Selection    -in $C ) { $Provision = $Provision[$Selection] }
@@ -135,12 +141,14 @@
                     Until ( $Provision.Count -eq 1 )
                 }
 
-                $Path     = "$Tree\Hybrid-DSC\$Child\$Provision"
+                $Path     = "$Tree\$Child\$Provision"
 
                 $Property = GI $Path | % { $_.Property }
-                
+
                 $Return   = [ PSCustomObject ]@{ }
-                
+
+                $List     = GP $Path 
+
                 $Property | % { $Return | Add-Member -MemberType NoteProperty -Name $_ -Value $List.$_ }
 
             }
@@ -541,7 +549,7 @@
                 $Title  = $Title | % { "[ $_ ]" }
                 $TT     = 108 - $Title.Length
                 $TX     = $TT % 4
-                $TY     = ($TT-$TX)/4
+                $TY     = ( $TT - $TX ) / 4
                 $TL,$TR = "_¯" , "¯_" | % { $_ * $TY } 
                 $T      = ( $Title | % { "$_" , "$_ " , " $_ " , " $_  " } )[ $TX ]
 
@@ -1071,7 +1079,7 @@
     Function Resolve-MacAddress # Obtains the MAC Address Resolution Lists ______________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
 
-        $x = Resolve-HybridDSC
+        $x = Resolve-HybridDSC -Module
         $y = "Count" , "Index" , "Vendor"
         $Return = [ Ordered ]@{ Count = "" ; Index = "" ; Vendor = "" }
         
@@ -1093,57 +1101,29 @@
         $Stage        = 0..3
         $Subtable     = 0..3
         
-        #__________________________________________________________________________________________________________________#
-        #  [ Network Information ]                                                                                         #
-        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
-        
-        $Section[0]   = "Network Information"
-        
-        $Stage[0]     = Get-NetworkInfo -LocalHost
-        
-        If ( $Stage[0] -ne $Null ) 
-        { 
-            $Names    = $Stage[0] | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name }
-            $Panel    = @{ Items  = $Names
-                           Values = $Names | % { $Stage[0].$_ } }
-        }
 
-        Else
-        {
-            $Panel    = @{ Items  = "An error occurred"
-                           Values = "No information available" }           
-        }  
+        <# Network Information #>
+        $Section[0]   = "Network Information" ; $Name = @( ) ; $Value = @( )
+
+        Get-NetworkInfo -LocalHost | GM | ? { $_.MemberType -like "*Note*" } | % { $Name += $_.Name ; $Value += $_.Definition.Split( '=' )[-1] }
 
         $Subtable[0]  = New-Subtable @Panel
 
-        #__________________________________________________________________________________________________________________#
-        #  [ Collect Network Host Information ]                                                                            #
-        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
-        
-        $Section[1]   = "Network Host IP/MAC"
 
-        $Stage[1]     = Get-NetworkHosts | ? { $_.IPV4Class -like "*Class*" }
+        <# Network Host Map #>
+        $Section[1]   = "Network Host IP/MAC" ; $Name = @( ) ; $Value = @( )
 
-        If ( $Stage[1] -ne $Null )
-        {
-            $Panel    = @{ Items  = $Stage[1] | % { $_.IPV4Address }
-                           Values = $Stage[1] | % { $_.MacAddress  } }
-        }
-
-        Else
-        {
-            $Panel    = @{ Items  = "An error occurred"
-                           Values = "No information available" }           
-        }
+        Get-NetworkHosts | ? { $_.IPV4Class -like "*Class*" } | % { $Name += $_.IPV4Address ; $Value += $_.MacAddress }
 
         $Subtable[1]  = New-Subtable @Panel
 
-        #__________________________________________________________________________________________________________________#
-        #  [ Collect NetBIOS Information / NBTSCAN ]                                                                       #
-        #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
-        
-        $Section[2]   = "NetBIOS / Domain Information"
 
+
+        <# NetBIOS / NBTScan #>
+        $Section[2]   = "NetBIOS / Domain Information"
+        $Name         = @( )
+        $Value        = @( )
+        
         $Stage[2]     = Get-NBTSCAN 
 
         $NB           = $Stage[2] | ? { $_.ID -like "*1C*" }
@@ -1163,13 +1143,14 @@
         #  [ Obtain Telemetry Data ]                                                                                       #
         #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#
 
+        $Section[3]   = "Certificate / Location Information"
+
         $Stage[3]     = Get-TelemetryData
         $Names        = @( $Stage[3] | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,6,4,0,3,1,7,8,5]
 
         $Panel        = @{ Items  = $Names
                            Values = $Names | % { $Stage[3].$_ } }
 
-        $Section[3]   = "Certificate / Location Information"
         $SubTable[3]  = New-Subtable @Panel
 
         #__________________________________________________________________________________________________________________#
