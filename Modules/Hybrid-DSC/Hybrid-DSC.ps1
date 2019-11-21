@@ -23,16 +23,147 @@
      ¯¯¯¯                     ( it doesn't actually say peace out, but it could... )¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
 #>       @( "AccessControl" , "Principal" | % { "Security.$_" } ; 
-            "Management.Automation" , "DirectoryServices" , "Net.NetworkInformation" ) | % { IEX "Using Namespace System.$_" }       
-                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-# ___                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+            "Management.Automation" , "DirectoryServices" , "Net.NetworkInformation" ) | % { IEX "Using Namespace System.$_" }    
+            
+        <#[¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯]#>
+        <#[   Module / Resources   ]#>
+        <#[________________________]#>                                              #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+# ____   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Resolve-HybridDSC # Module Root Path Delcaration __________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        $ENV:PSModulePath.Split( ';' ) | ? { GCI $_ -Recurse "*Hybrid-DSC*" } | % { 
-        
-        Return "$_\Hybrid-DSC" }                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+        [ CmdLetBinding ( ) ] Param (
+
+            [ Parameter ( ParameterSetName =   "Module" ) ] [ Switch ] $Module ,
+            [ Parameter ( ParameterSetName =     "Root" ) ] [ Switch ] $Root   ,
+            [ Parameter ( ParameterSetName =    "Share" ) ] [ Switch ] $Share  ,
+            [ Parameter ( ParameterSetName = "Graphics" ) ] [ Switch ] $Graphics )
+
+        $Author = "Secure Digits Plus LLC"
+        $Main   = $ENV:PSModulePath.Split( ';' ) | ? { GCI $_ -Recurse "*Hybrid-DSC*" } | % { "$_\Hybrid-DSC" }
+        $QX     = $LX[0] , "[ Make a selection ]" , $LX[1] | % { Echo $_ }
+
+        If ( $Module )
+        {
+            $Main | % { 
+            
+                If ( $_ -eq $Null ) 
+                { 
+                    Write-Theme -Action "Exception [!]" "Hybrid-DSC Module Resources Missing" 11 12 15 
+                }
+            
+                If ( $_ -ne $Null )
+                {
+                    $Return = $Main
+                }
+            }
+        }
+
+        If ( ( $Root ) -or ( $Share ) )
+        {
+            "HKLM:\Software\Policies" | % { If ( ! ( Test-Path "$_\$Author" ) ) { NI $_ -Name $Author } ; $Tree = "$_\$Author" }
+
+            GP $Tree | % { 
+            
+                If ( $_ -eq $Null )
+                {
+                    Install-DSCRoot
+                }
+
+                $Return = @{ Root = $Tree
+                             Tree = $_."Hybrid-DSC"
+                             Date = $_."Installation Date" }
+            }
+
+            If ( $Root )
+            {   
+                Return $Return
+            }
+
+            If ( $Share )
+            {
+                $Tree = $Return | % { $_.Root }
+                
+                $Tree | % { Test-Path "$_\Hybrid-DSC" } | % { 
+                
+                    If ( $_ -ne $True ) 
+                    {
+                        Install-HybridDSC -Test
+                    }
+                }
+
+                $Child = GCI "$Tree\Hybrid-DSC\" |  % { $_.PSChildName }
+            
+                If ( $Child.Count -gt 1 )
+                {
+                    Write-Theme -Action "Option [~]" "Multiple Companies Found" 11 12 15
+
+                    $C       = 0..( $Child.Count - 1 )
+                    $Options = 0..( $Child.Count - 1 ) | % { "`n[$_] $( $Child[$_] )" }
+
+                    $QX
+                    Do
+                    {
+                        $Selection = Read-Host -Prompt @( $Options ; "`n" ; "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯" )
+                        
+                        If ( $Selection -notin $C ) { Echo "Not a valid option" }
+                        If ( $Selection    -in $C ) { $Child = $Child[$Selection] }
+                    }
+
+                    Until ( $Child.Count -eq 1 )
+                }
+   
+                $Provision = GCI "$Tree\Hybrid-DSC\$Child" | % { $_.PSChildName }
+            
+                If ( $Provision.Count -gt 1 )
+                {
+                    Write-Theme -Action "Option [~]" "Multiple Drives Found" 11 12 15
+
+                    $C       = 0..( $Provision.Count - 1 )
+                    $Options = 0..( $Provision.Count - 1 ) | % { "`n[$_] $( $Provision[$_] )" }
+
+                    $QX
+                    Do
+                    {
+                        $Selection = Read-Host -Prompt @( $Options ; "`n" ; "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯" )
+                        
+                        If ( $Selection -notin $C ) { Echo "Not a valid option" }
+                        If ( $Selection    -in $C ) { $Provision = $Provision[$Selection] }
+                    }
+
+                    Until ( $Provision.Count -eq 1 )
+                }
+
+                $Path     = "$Tree\Hybrid-DSC\$Child\$Provision"
+
+                $Property = GI $Path | % { $_.Property }
+                
+                $Return   = [ PSCustomObject ]@{ }
+                
+                $Property | % { $Return | Add-Member -MemberType NoteProperty -Name $_ -Value $List.$_ }
+
+            }
+        }
+
+        If ( $Graphics )
+        {
+            $Items = "background.jpg" , "banner.png" , "oembg.jpg" , "icon.ico" , "oemlogo.bmp" | % { GCI $Main -Recurse "*$_*" | % { $_.FullName } }
+            
+            $Return = [ PSCustomObject ]@{ 
+
+                Author     = $Author
+                Title      = "$Author | Hybrid-DSC"
+                Background = $Items[0]
+                Banner     = $Items[1]
+                Brand      = $Items[2]
+                Icon       = $Items[3]
+                Logo       = $Items[4]
+            }
+        }
+
+        Return $Return
+                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }# ___                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
@@ -44,12 +175,21 @@
             [ Parameter ( Position = 1 , Mandatory = $True , ValueFromPipeline = $True ) ][ String [] ] $Values )
 
         $Table = [ PSCustomObject ]@{ }
+
         If ( $Items.Count -eq $Values.Count )
         {
-            If ( $Items.Count -gt 1 ) { $Count = 0..( $Items.Count - 1 ) }
-            $Count | % { $Table | Add-Member -MemberType NoteProperty -Name "Item:$_" -Value @{ ID = "$($Items[$_])" ; Value = "$($Values[$_])" } }
+            If ( $Items.Count -gt 1 ) 
+            { 
+                $Count = 0..( $Items.Count - 1 ) 
+            }
+            
+            $Count | % { $Table | Add-Member -MemberType NoteProperty -Name "Item:$_" -Value @{ ID = "$( $Items[$_] )" ; Value = "$( $Values[$_] )" } }
         }
-        If ( $Items.Count -ne $Values.Count ) { Throw '$Items -ne $Values' } ; 
+        
+        If ( $Items.Count -ne $Values.Count ) 
+        { 
+            Throw '$Items -ne $Values' 
+        }
         
         Return $Table                                                                #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
@@ -65,26 +205,62 @@
             [ Parameter ( Position = 3 , Mandatory = $True , ValueFromPipeline = $True ) ][ PSCustomObject [] ] $Table )
 
         $Object = [ PSCustomObject ]@{ Class = $Title }
-        If ( ( $ID.Count -ne $Depth ) -or ( $Table.Count -ne $Depth ) ) { Throw '$Depth -ne $ID.Count or $Table.Count' }
-        If ( $Depth -eq 1 ) { $Count = 1 } If ( $Depth -gt 1 ) { $Count = 0..( $Depth - 1 ) }
+        
+        If ( ( $ID.Count -ne $Depth ) -or ( $Table.Count -ne $Depth ) ) 
+        { 
+            Throw '$Depth -ne $ID.Count or $Table.Count' 
+        }
+        
+        If ( $Depth -eq 1 ) 
+        { 
+            $Count = 1 
+        } 
+        
+        If ( $Depth -gt 1 ) 
+        { 
+            $Count = 0..( $Depth - 1 ) 
+        }
+        
         $C = $Null ; $Count | % {
+
             If ( $Depth -gt 1 )
             {   
-                If ( $C -ne $Null ) { $C = $C + 1 } 
-                If ( $C -eq $Null ) { $C = 0 } 
-                $Index   = $ID[$C] ; $Section = $Table[$C] 
+                If ( $C -ne $Null ) 
+                { 
+                    $C = $C + 1 
+                } 
+                
+                If ( $C -eq $Null ) 
+                { 
+                    $C = 0 
+                } 
+                
+                $Index   = $ID[$C]
+                $Section = $Table[$C] 
             }
+
             If ( $Depth -eq 1 )
             {   
                 $C = 0 ; $Index = $ID ; $Section = $Table 
             }
+
             $Object | Add-Member -MemberType NoteProperty -Name "ID:$C" -Value $Index
+
             $Keys = @( $Section | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )
+
             ForEach ( $S in $Keys )
             {   
                 $SubTable = [ Ordered ]@{ }
-                ForEach ( $K in $Keys ) { $Section.$K | % { $SubTable.Add( "$K" , @{ ID = $_.ID ; Value = $_.Value } ) } } 
+
+                ForEach ( $K in $Keys ) 
+                { 
+                    $Section.$K | % { 
+                    
+                        $SubTable.Add( "$K" , @{ ID = $_.ID ; Value = $_.Value } ) 
+                    } 
+                } 
             } 
+
             $Object | Add-Member -MemberType NoteProperty -Name "Section:$C" -Value $SubTable
         }
         Return $Object                                                               #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
@@ -397,7 +573,7 @@
                 $ST.Add( $ZX , @( " \\¯" , $M1[108] ,"¯// " ) );
                 $FG.Add( $ZX , @( 0,0,0 )) ; $BG.Add( $ZX , @( 0..2 | % { 3 } ) );  $ZX = $ZX + 1
 
-                $ID | ? { $_.Name -like "*ID:*" } | % { $Index +=$Table.$( $_.Name ) } ; $ID | ? { $_.Name -like "*Section:*" } | % { $Section += $Table.$( $_.Name ) }
+                $ID | ? { $_.Name -like "*ID:*" } | % { $Index += $Table.$( $_.Name ) } ; $ID | ? { $_.Name -like "*Section:*" } | % { $Section += $Table.$( $_.Name ) }
 
                 If ( ( $Index.Count - 1 ) -gt 0 ) { $Count = 0..( $Index.Count - 1 ) } Else { $Count = 0 }
                 
@@ -823,6 +999,7 @@
         Write-Theme -Action "Collecting [+]" "Telemetry Data / Certificate Information" 11 12 15
 
         [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
+
         $X = IRM -URI "http://ipinfo.io/$( ( IWR -URI 'http://ifconfig.me/ip' ).Content )" # < - [ Chrissy LeMaire ]
 
         $Info  = [ PSCustomObject ]@{ 
@@ -844,13 +1021,9 @@
                     $_.TimeZone = $Y.TimeZone.TimeZone_Identifier
                     $_.SiteLink = "$( ( $Y.City.Split( ' ' ) | % { $_[0] } ) -join '' )-$( $X.Postal )" }
 
-        $XAML = Get-XAML -Certificate
-        
-        $NamedElements = "Company" , "Domain" , "Ok" , "Cancel"
-
         $MSG  = "Company" , "Domain" | % { "[ System.Windows.MessageBox ]::Show( 'You must enter a $_' , '$_ Error' )" }
 
-        $GUI = Convert-XAMLtoWindow -Xaml $Xaml -NE $NamedElements -PassThru
+        $GUI = Get-XAML -Certificate | % { Convert-XAMLtoWindow -Xaml $_ -NE ( Find-XAMLNamedElements $_ ) -PassThru }
 
         $GUI.Cancel.Add_Click({ $GUI.DialogResult = $False })
 
@@ -871,6 +1044,7 @@
         If ( $OP -eq $True )
         { 
             Write-Theme -Action "Complete [+]" "Generating Certificate Information" 11 12 15
+
             $Info | % { $_.Organization = $GUI.Company.Text 
                         $_.CommonName   = $GUI.Domain.Text  }
             Return $Info
@@ -878,7 +1052,7 @@
 
         Else 
         { 
-            Write-Theme -Action "Cancelled [!]" "Abandoned Certificate Generation, using defaults [!]" 11 12 15
+            Write-Theme -Action "Cancelled [!]" "Abandoned Certificate Generation, using defaults" 11 12 15
 
             Return [ PSCustomObject ]@{ 
             ExternalIP   = $X.IP
@@ -1171,7 +1345,7 @@
             $CF ,  $OK ,  $CA = "Confirm" , "Start" , "Cancel"             
             $PW , $PWB , $PWC = "Password" | % { "$_" , "$_`Box" , "$_`Char" }
 
-            $GFX        = Import-DSCGraphics
+            $GFX        = Resolve-HybridDSC -Graphics
 
         #/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\
         If ( $Certificate ) # Certificate/Domain XAML                                [
@@ -1487,12 +1661,21 @@
                           "</$GCD>" )
 
                     $C  = 0
-                    $Y += $PW , $CF | % { "<$GB $GR = '0' $GC = '$C' $HD = '$_' >" ,
-                                          "<$PWB $Q = '$_' $H = '20' $MA = '5' $PWC = '*' />" , "</$GB>" ; [ Void ]$C ++ }
+                    $Y += $PW , $CF | % { 
+                    
+                        "<$GB $GR = '0' $GC = '$C' $HD = '$_' >" ,
+                        "<$PWB $Q = '$_' $H = '20' $MA = '5' $PWC = '*' />" , 
+                        "</$GB>"
+                        
+                        [ Void ]$C ++ 
+                    }
 
                     $C  = 0
-                    $Y += $OK , $CA | % { "<$BU $Q = '$_' $GR = '1' $GC = '$C' $CO = '$_' $MA = '5'" ,
-                                          " $W = '100' $H = '20' />" -join '' ; [ Void ]$C ++ } ;
+                    $Y += $OK , $CA | % { 
+                    
+                        "<$BU $Q = '$_' $GR = '1' $GC = '$C' $CO = '$_' $MA = '5' $W = '100' $H = '20' />"
+                        [ Void ]$C ++ 
+                    }
 
                     $Y += "</$G>" , "</$GB>"
 
@@ -1654,7 +1837,7 @@
                              0..4 | % { "<$RD $H = '*' />" } ; "</$GRD>" ; 
 
                             ( 0 , "Drive Label" ,   "Drive" ) , ( 1 ,    "Directory Path" ,   "Directory" ) , ( 2 , "Samba Share" , "Samba" ) , 
-                            ( 3 ,    "PS Drive" , "PSDrive" ) , ( 4 , "Drive Description" , "Description" ) | % {
+                            ( 3 ,    "PS Drive" , "DSDrive" ) , ( 4 , "Drive Description" , "Description" ) | % {
                                 
                                 "<$TBL $GR = '$( $_[0] )' $GC = '0' $( $VAL[1] ) $( $HAL[1] ) Foreground = '#00FF00' >" , "$( $_[1] )" , "<$TBL.Effect>" , 
                                 "<DropShadowEffect   ShadowDepth = '1'  Color = '#336633' />" , "</$TBL.Effect>" , "</$TBL>" , 
@@ -1767,25 +1950,20 @@
 
                 $XML.Add( "08" , @( 0..11 | % { $X[$_] + $Y[$_] } ) )
         }
-    # ____            ____            ____            ____            ____            ____    ____    ____    ____    ____ 
-    #//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//  \\ 
-    #\\__//¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯¯¯¯¯¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\  // 
-         #  [ Return the XAML ]______________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//  \\ 
-         #/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯\\__// 
+        
+        $Item   = ForEach ( $i in 0..( $XML.Count - 1 ) ) { 0..( $XML[$I].Count - 1 ) | % { $XML[$I][$_] } } 
+        $Return = ""
 
-            $Item   = ForEach ( $i in 0..( $XML.Count - 1 ) ) { 0..( $XML[$I].Count - 1 ) | % { $XML[$I][$_] } } 
-            $Return = ""
+        0..( $Item.Count - 1 ) | % { $Return += "$( $Item[$_] )`n" } ; 
 
-            
-            0..( $Item.Count - 1 ) | % { $Return += "$( $Item[$_] )`n" } ; 
-
-            $Certificate    | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                         "Certificate Panel" 11 12 15 }
-            $Login          | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                               "Login Panel" 11 12 15 }
-            $NewAccount     | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                         "New Account Panel" 11 12 15 }
-            $HybridDSCPromo | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                    "Hybrid-DSC Promo Panel" 11 12 15 }
-            $DSCRoot        | ? { $_ } | % { Write-Theme -Action "Loaded [+]"     "Desired State Controller Root Install" 11 12 15 }
-            $ProvisionDSC   | ? { $_ } | % { Write-Theme -Action "Loaded [+]" "Provision Desired State Controller Server" 11 12 15 }
-            Return $Return                                                           
+        $Certificate    | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                         "Certificate Panel" 11 12 15 }
+        $Login          | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                               "Login Panel" 11 12 15 }
+        $NewAccount     | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                         "New Account Panel" 11 12 15 }
+        $HybridDSCPromo | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                    "Hybrid-DSC Promo Panel" 11 12 15 }
+        $DSCRoot        | ? { $_ } | % { Write-Theme -Action "Loaded [+]"     "Desired State Controller Root Install" 11 12 15 }
+        $ProvisionDSC   | ? { $_ } | % { Write-Theme -Action "Loaded [+]" "Provision Desired State Controller Server" 11 12 15 }
+        
+        Return $Return                                                           
                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
@@ -1802,7 +1980,7 @@
 
         $Collect = @( )
 
-        0..( $Array.Count - 1 ) | ? { $Array[$_] -like "* Name = *" } | % { 
+        0..( $Array.Count - 1 ) | ? { $Array[$_] -like "* Name = *" } | % {
     
             $Line = $Array[$_].Split(' ') | ? { $_.Length -ne 0 } 
 
@@ -1825,8 +2003,7 @@
             [ Parameter ( Position  = 0 )                    ] [ String ] $Title   ,
             [ Parameter ( Mandatory = $True , Position = 1 ) ] [ String ] $Message )
 
-        [ System.Windows.MessageBox ]::Show( $Message , $Title )
-                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+        [ System.Windows.MessageBox ]::Show( $Message , $Title )                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
@@ -1973,26 +2150,6 @@
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Import-DSCGraphics # Collects the background and banner for XAML __________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        $Root = Resolve-HybridDSC 
-
-        $GFX  = [ PSCustomObject ]@{ 
-        
-            Author     = "Secure Digits Plus LLC"
-            Title      = "Secure Digits Plus LLC | Hybrid-DSC"
-            Icon       = GCI $Root -Recurse "*icon.ico"       | % { $_.FullName }
-            Banner     = GCI $Root -Recurse "*banner.png"     | % { $_.FullName }
-            Background = GCI $Root -Recurse "*background.jpg" | % { $_.FullName }
-            Logo       = GCI $Root -Recurse "*oemlogo.bmp"    | % { $_.FullName }
-            Brand      = GCI $Root -Recurse "*oembg.jpg"      | % { $_.FullName }
-        
-        }
-        
-        Return $GFX                                                                 #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Resolve-UninstallList # Collects installed applications from the registry__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         $Return = "" , "\WOW6432Node" | % { "HKLM:\SOFTWARE$_\Microsoft\Windows\CurrentVersion\Uninstall\*" }
@@ -2012,25 +2169,9 @@
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Resolve-DSCRoot # Collects Hybrid DSC Installation Path ___________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        "HKLM:\Software\Policies\Secure Digits Plus LLC" | % { 
-         
-            If ( ( Test-Path $_ ) -ne $True ) 
-            { 
-                Install-DSCRoot
-            }
-
-            Else 
-            {
-                Return @{ Root = $_ ; Tree = ( GP $_ ).'Hybrid-DSC' }
-            }
-        }                                                                           #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Install-DSCRoot # Provisioned installation of Hybrid-DSC __________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        
         $GUI = Get-XAML -DSCRoot | % { Convert-XAMLToWindow -XAML $_ -NE ( Find-XAMLNamedElements -Xaml $_ ) -PassThru }
 
         $GUI.Cancel.Add_Click({ $GUI.DialogResult = $False })
@@ -2042,10 +2183,7 @@
                 "Installation Location" | % { Show-Message -Title "$_ Missing" -Message "You must enter a $_" } 
             }   
             
-            Else                            
-            { 
-                $GUI.DialogResult = $True 
-            }
+            Else                            { $GUI.DialogResult = $True }
         })
 
         $OP = Show-WPFWindow -GUI $GUI
@@ -2059,14 +2197,14 @@
                        Vendor   = "Secure Digits Plus LLC" 
                        Date     = Get-Date }
             
-            If ( ! ( Test-Path $Root.Base ) ) # Path not detected
+            If ( ! ( Test-Path $Root.Base ) )
             {
                 NI $Root.Base -ItemType Directory
 
                 Write-Theme -Action "Created [+]" "Installation Directory" 11 12 15
             }
 
-            If ( Test-Path $Root.Base )       # Path Detected
+            If ( Test-Path $Root.Base )
             {
                 Write-Theme -Action "Detected [+]" "Installation Directory" 11 12 15
             }
@@ -2075,21 +2213,15 @@
 
             Sleep -M 100
             
-            "$( $Root.Registry )\$($Root.Vendor )" | % { 
+            $Base = "$( $Root.Registry )\$($Root.Vendor )" 
             
-                If ( Test-Path $_ ) 
-                { 
-                    RI $_
-                }
-            }
+            $Base | % { If ( Test-Path $_ ) { RI $_ } }
 
             Write-Theme -Action "Creating [~]" "Registry Entry for Installation Path" 11 12 15
 
             NI -Path $Root.Registry -Name $Root.Vendor 
 
-            # Sets the damn root folder path
-
-            $Set = @{ Path  = "$( $Root.Registry )\$( $Root.Vendor )"
+            $Set = @{ Path  = $Base
                       Name  = "Hybrid-DSC"
                       Value = $Root.Base      }
 
@@ -2097,9 +2229,7 @@
                 
             Write-Theme -Action "Created [+]" "$( $Set.Name )" 11 12 15
 
-            # Sets the damn installation date
-
-            $Set = @{ Path  = "$( $Root.Registry )\$( $Root.Vendor )"
+            $Set = @{ Path  = $Base
                       Name  = "Installation Date"
                       Value = $Root.Date      }    
             
@@ -2109,18 +2239,9 @@
 
             Write-Theme -Action "Installing [~]" "Hybrid-DSC Root Structure" 11 12 15
 
-            "Hybrid" , "Libraries" , "Scripts" , "Templates" , "Install" | % { "$( $Root.Base )\$_" | % {
-
-                    If ( ( Test-Path $_ ) -ne $True )
-                    { 
-                        NI $_ -ItemType Directory
-                    }
+            "Hybrid" , "Libraries" , "Scripts" , "Templates" , "Install" | % { 
             
-                    Else
-                    {
-                        GI $_
-                    }
-                }
+                "$( $Root.Base )\$_" | % { If ( ( Test-Path $_ ) -ne $True ) { NI $_ -ItemType Directory } Else { GI $_ } }
             }
 
             $Registry     = Resolve-UninstallList
@@ -2243,7 +2364,8 @@
 
             Write-Theme -Action "Verified [+]" "PSD/MDT Dependencies" 11 12 15
 
-            IPMO BitsTransfer 
+            IPMO BitsTransfer
+             
             [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::Tls12
                     
             $BITS = @{ Source      = "https://github.com/FriendsOfMDT/PSD/archive/master.zip"
@@ -2256,14 +2378,17 @@
         Else
         {
             Write-Theme -Action "Exception [!]" "The exited or the dialogue failed" 12 4 15
-        }                                                                           #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+        }
+                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Import-MDTModule # Loads the module for MDT _______________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        GP "HKLM:\Software\Microsoft\Deployment 4" | % { IPMO ( GCI $_.Install_Dir "*Toolkit.psd1" -Recurse ).FullName }
-        Write-Theme -Action "Module [+]" "Microsoft Deployment Toolkit" 11 12 15    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+       
+        GP "HKLM:\Software\Microsoft\Deployment 4" | % { GCI $_.Install_Dir "*Toolkit.psd1" -Recurse } | % { IPMO $_.FullName }
+        Write-Theme -Action "Module [+]" "Microsoft Deployment Toolkit" 11 12 15 
+                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
@@ -2278,7 +2403,7 @@
         $Code = [ PSCustomObject ]@{ 
         
         # MDT Drive Info
-        Drive       = "" ; Directory   = "" ; Samba       = "" ; PSDrive     = "" ; 
+        Drive       = "" ; Directory   = "" ; Samba       = "" ; DSDrive     = "" ; 
         Description = "" ; 
 
         # MDT Installation Type Switch
@@ -2338,7 +2463,7 @@
                 If ( $GUI.Drive           | % { $_.Text           -eq "" } ) { IEX $MSG[ 0] }
             ElseIf ( $GUI.Directory       | % { $_.Text           -eq "" } ) { IEX $MSG[ 1] }
             ElseIf ( $GUI.Samba           | % { $_.Text           -eq "" } ) { IEX $MSG[ 2] }
-            ElseIf ( $GUI.PSDrive         | % { $_.Text           -eq "" } ) { IEX $MSG[ 3] }
+            ElseIf ( $GUI.DSDrive         | % { $_.Text           -eq "" } ) { IEX $MSG[ 3] }
             ElseIf ( $GUI.Description     | % { $_.Text           -eq "" } ) { IEX $MSG[ 4] }
             ElseIf ( $GUI.IIS_Install     | % { $_.IsChecked } )
             {
@@ -2363,7 +2488,7 @@
             $CHK[2] = $GUI.Directory.Text.Replace( $CHK[0] , '' ).Replace( '\' , '' ).Replace( '/' , '' )
             $CHK[3] = $CHK[0,2] -join '\'
             $CHK[4] = $GUI.Samba.Text.Replace( '$' , '' )
-            $CHK[5] = $GUI.PSDrive.Text.Replace( ':' , '' )
+            $CHK[5] = $GUI.DSDrive.Text.Replace( ':' , '' )
             $CHK[6] = $GUI.Logo.Text
             $CHK[7] = $GUI.Background.Text
 
@@ -2417,7 +2542,7 @@
                 $Code.Drive       = $CHK[0]
                 $Code.Directory   = $CHK[3]
                 $Code.Samba       = "$( $CHK[4] )$"
-                $Code.PSDrive     = "$( $CHK[5] ):"
+                $Code.DSDrive     = "$( $CHK[5] ):"
                 $Code.Description = $GUI.Description.Text
                 $Code.Company     = $GUI.Company.Text
                 $Code.WWW         = $GUI.WWW.Text
@@ -2466,14 +2591,14 @@
 
         If ( $Test )
         {
-            $GFX = Import-DSCGraphics
+            $GFX = Resolve-HybridDSC -Graphics
             
             $GUI | % {
             
                 $_.Drive       | % { $_.Text     = "C:\"                              }
                 $_.Directory   | % { $_.Text     = "Test1"                            }
                 $_.Samba       | % { $_.Text     = "Samba$"                           }
-                $_.PSDrive     | % { $_.Text     = "PSDrive:"                         }
+                $_.DSDrive     | % { $_.Text     = "PSDrive:"                         }
                 $_.Description | % { $_.Text     = "Info"                             }
                 $_.Company     | % { $_.Text     = "Secure Digits Plus LLC"           }
                 $_.IIS_Name    | % { $_.Text     = "SiteName"                         }
@@ -2540,7 +2665,7 @@
             }
 
             # Create the PSDrive/MDTPersistent Drive
-            $NDR = @{   Name        = $Code.PSDrive.Replace( ':' , '' )
+            $NDR = @{   Name        = $Code.DSDrive.Replace( ':' , '' )
                         PSProvider  = "MDTProvider"
                         Root        = $Code.Directory
                         Description = $Code.Description
@@ -2582,8 +2707,8 @@
             }
     
             # Plant Tree For Deployment Share Root Settings
-            $Root = Resolve-DSCRoot | % { $_.Root }
-            $Tree = "Hybrid-DSC\$( $Code.Company )\$( $Code.PSDrive.Replace( ':' , '' ) )"
+            $Root = Resolve-HybridDSC -Root | % { $_.Root }
+            $Tree = "Hybrid-DSC\$( $Code.Company )\$( $Code.DSDrive.Replace( ':' , '' ) )"
             $Rec  = $Tree.Split( '\' )
 
             $Path = $Root
@@ -2607,11 +2732,11 @@
             
             0..( $Names.Count - 1 ) | % { SP -Path $Path -Name $Names[$_] -Value $Values[$_] -Force }
 
-            If ( $Code.Remaster )
+            If ( $Code.Remaster -eq "Selected" )
             {
                 Write-Theme -Action "Creating" "[+] PowerShell [ Deployment / Development ] Share" 11 12 15
                     
-                $Source   = Resolve-DSCRoot | % { $_.Tree }
+                $Source   = Resolve-HybridDSC -Root | % { $_.Tree }
                 $Remaster = GCI $Source "*PSD*" -Recurse | % { $_.FullName }
 
                 If ( $Remaster -eq $Null )
@@ -2675,11 +2800,12 @@
             "Users" , "Administrators" , "SYSTEM" | % { ICACLS $W /Grant "$_`:(OI)(CI)(RX)" } 
 
             $Code.Samba | % { 
+                
                 GRSMBA -Name $_ -AccountName "EVERYONE" -AccessRight Change -Force
                 RKSMBA -Name $_ -AccountName "CREATOR OWNER" -Force 
             }
 
-            If ( $Code.Legacy )
+            If ( $Code.Legacy -eq "Selected" )
             {
                 Write-Theme -Action "Complete [+]" "Legacy MDT Installed" 11 12 15
             }
