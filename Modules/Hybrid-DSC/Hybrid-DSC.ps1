@@ -3224,7 +3224,124 @@
         {
             Write-Theme -Action "Exception [!]" "Either the user cancelled, or the dialog failed" 12 4 15
         }
-                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Initialize-HybridDSC # Populates Tools and Items for subfolders ___________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯       
+        [ CmdLetBinding () ] Param (
+
+            [ Parameter ( ParameterSetName = "Images" ) ] [ Switch ] $Images )
+
+        If ( $Images )
+        {
+                            # ____   _________________________
+                #//¯¯\\__[___ Images Scaffold ___]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    Write-Theme -Action "Collecting [~]" "Windows Client/Server Images" 11 12 15
+            
+                    $DS      = Resolve-HybridDSC -Share | % { GCI ( $_.Directory , $_.Company -join '\' ) } | % { $_.FullName }
+                    $Images  = $DS | ? { $_ -like "*Images*" }
+                    $Tag     = @( "DC2016" ; "E" , "H" , "P" | % { "$_`64" , "$_`86" } | % { "10$_" } )
+            
+                    0..6 | % {  
+                
+                        $X = $Tag[$_]
+
+                        "$Images\($_)$X" | ? { ! ( Test-Path $_ ) } | % { NI $_ -ItemType Directory ; NI "$_\_" -ItemType Directory }
+                    } 
+            
+                    Write-Theme -Action "Forward Image [+]" "Scaffold Generated" 11 12 15
+                # ____   _________________________
+                #//¯¯\\__[___ Updates Scaffold __]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    ForEach ( $i in "Server" , 64 , 86 )
+                    {
+                        "$Images\Updates\x$i" | ? { ! ( Test-Path $_ ) } | % { NI $_ -ItemType Directory }
+                    }
+
+                    Write-Theme -Action "Windows Update [+]" "Scaffold Generated" 11 12 15
+                # ____   _________________________
+                #//¯¯\\__[____ ISO Scaffold _____]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    ForEach ( $i in @( "1607" ; 64 , 32 | % { "1909_x$_" } ) ) 
+                    { 
+                        "$Images\ISO\$I" | ? { If ( ( Test-Path $_ ) -ne $True ) { NI $_ -ItemType Directory } Else { GI $_ } } 
+                    } 
+                    
+                    Write-Theme -Action "Windows Media [+]" "Scaffold Generated" 11 12 15
+                # ____   _________________________
+                #//¯¯\\__[___ Clean Source ISO __] [ Server 2016 Eval / 1909 x86 / x64 ]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    Write-Theme -Action "Initializing [+]" "Retrieving Images Directly from Microsoft" 11 12 15
+
+                    [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
+
+                    IPMO BitsTransfer 
+
+                    $ISO = GCI "$Images\ISO" | % { $_.FullName }
+                # ____   _________________________
+                #//¯¯\\__[_____ Server 2016 _____]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $Splat = @{        Source = "https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO"
+                                  Destination = "$( $ISO[0] )\1607.ISO"    
+                                  Description = "Windows Server ( 1607.ISO ) [ Evaluation Copy ]" }
+
+                    Write-Theme -Action "Downloading [+]" $Splat.Description 11 12 15
+
+                    Start-BitsTransfer @Splat
+
+                    $Client = 64 , 32 | % { "https://software-download.microsoft.com/sg/Win10_1909_English_x$_.iso?t=c8e65018-41f9-4167-b612-0ae1e4e2dad4&e=1574466442" }
+                # ____   _________________________
+                #//¯¯\\__[___ Client x64 1909 ___]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $Splat = @{        Source = "$( $Client[0] )&h=ea86de32f1bc1cadcba040baf804935e"
+                                  Destination = "$( $ISO[1] )\1909x64.iso" 
+                                  Description = "Windows Client ( 1909_x64.ISO )" }
+                    
+                    Write-Theme -Action "Downloading [+]" $Splat.Description 11 12 15
+
+                    Start-BitsTransfer @Splat
+                # ____   _________________________
+                #//¯¯\\__[___ Client x32 1909 ___]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $Splat = @{        Source = "$( $Client[1] )&h=1108750045f3ade5b8cfae9ccd88aa87"
+                                  Destination = "$( $ISO[2] )\1909x32.iso"
+                                  Description = "Windows Client ( 1909_x32.ISO )" }
+
+                    Write-Theme -Action "Downloading [+]" $Splat.Description 11 12 15
+
+                    Start-BitsTransfer @Splat
+                # ____   _________________________
+                #//¯¯\\__[___ Clean Source ISO __]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    Write-Theme -Action "Processing [+]" "ISO -> WIM File Conversion" 11 12 15
+                    
+                    $Dest   = ( GCI $Images | % { $_.FullName } )[0..6]
+                    
+                    $DN     = ( @( "Server 2016 Datacenter x64" ; "Education" , "Home" , "Pro" | % { "10 $_" } | % { "$_ x64" , "$_ x86" } ) | % { "Windows $_" } )
+                    $IP     = ( GCI $ISO *.iso* | % { $_.FullName } )[0,2,1,2,1,2,1]
+                    $SI     = 4,4,1,6,4,1,6
+                    $SIP    = "$( 67..90 | % { [ Char ]$_ } | ? { $_ -notin ( Get-Volume | % { $_.DriveLetter } | Sort ) } | Select -First 1 ):\Sources\Install.WIM"
+                    $DIP    = 0..6 | % { "$( $Dest[$_] )\$( $Edition[$_] ).wim" }
+
+                    1..6 | % {
+
+                        Write-Theme -Action "Extracting [~]" $DN[$_] 11 12 15
+
+                        Mount-DiskImage -ImagePath $IP[$_]
+
+                        $Splat = @{ SourceIndex          = $SI[$_]
+                                    SourceImagePath      = $SIP
+                                    DestinationImagePath = $DIP[$_]
+                                    DestinationName      = $DN[$_] }
+                        
+                        Export-WindowsImage @Splat
+
+                        Dismount-DiskImage -ImagePath $IP[$_]
+                    }
+        }                                                                            #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____   
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
