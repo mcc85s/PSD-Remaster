@@ -23,11 +23,10 @@
                                               ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    #>
         $ENV:PSModulePath.Split( ';' ) | % { GCI $_ -Recurse "*Hybrid-DSC.ps1*" } | % { IPMO $_.FullName -Force }
 
-        Export-ModuleMember -Function Resolve-HybridDSC , New-SubTable , New-Table , Write-Theme , Convert-XAMLToWindow , Show-WPFWindow ,
-        Get-XAML , Find-XAMLNamedElements , Get-NetworkInfo , Start-PingSweep , Get-NBTSCAN , Get-NetworkHosts , Get-TelemetryData ,
-        Resolve-MacAddress , Start-NetworkInfo , Get-NetworkStatistics , Initialize-PortScan , Initialize-Server , Get-DSCFeatureList ,
-        Get-DSCFeatureState , Show-Message , Invoke-Login , Export-Ini , Add-ACL , New-ACLObject, Import-DSCGraphics , Search-Registry , 
-        Resolve-UninstallList , Resolve-DSCRoot , Install-DSCRoot , Install-HybridDSC , Import-MDTModule
+        Export-ModuleMember -Function Resolve-HybridDSC , New-Subtable , New-Table , Write-Theme , Show-Message , Convert-XAMLToWindow , 
+        Show-WPFWindow , Get-XAML , Find-XAMLNamedElements , Get-NetworkInfo , Start-PingSweep , Get-NBTSCAN , Get-NetworkHosts ,
+        Get-TelemetryData , Resolve-MacAddress , Start-NetworkInfo , Get-NetworkStatistics , Initialize-PortScan , Invoke-Login , Add-ACL , 
+        New-ACLObject , Import-MDTModule , Export-Ini , Resolve-UninstallList , Install-DSCRoot , Install-HybridDSC , Initialize-HybridDSC
 
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 <#___                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
