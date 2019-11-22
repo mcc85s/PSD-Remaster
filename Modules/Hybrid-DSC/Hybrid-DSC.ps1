@@ -3267,7 +3267,7 @@
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                     ForEach ( $i in @( "1607" ; 64 , 32 | % { "1909_x$_" } ) ) 
                     { 
-                        "$Images\ISO\$I" | ? { If ( ( Test-Path $_ ) -ne $True ) { NI $_ -ItemType Directory } Else { GI $_ } } 
+                        "$Images\ISO\$I" | ? { ! ( Test-Path $_ ) } | % { NI $_ -ItemType Directory }
                     } 
                     
                     Write-Theme -Action "Windows Media [+]" "Scaffold Generated" 11 12 15
@@ -3306,7 +3306,7 @@
                 # ____   _________________________
                 #//¯¯\\__[___ Clean Source ISO __]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    0..2 | % { $X = $Splat[$_] ; ! ( Test-Path $X.Destination ) | % { Write-Theme -Action "Downloading [+]" $X.Description 11 12 15 ; Start-BitsTransfer @X } }
+                    0..2 | % { $X = $Splat[$_] ; If ( ! ( Test-Path $X.Destination ) ) { Write-Theme -Action "Downloading [+]" $X.Description 11 12 15 ; Start-BitsTransfer @X } }
                 # ____   _________________________
                 #//¯¯\\__[___ Clean Source ISO __]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -3316,13 +3316,13 @@
                     
                     $DN     = ( @( "Server 2016 Datacenter x64" ; "Education" , "Home" , "Pro" | % { "10 $_" } | % { "$_ x64" , "$_ x86" } ) | % { "Windows $_" } )
                     
-                    $IP     = ( GCI $ISO *.iso* | % { $_.FullName } )[ 0 , 2 , 1 , 2 , 1 , 2 , 1 ]
+                    $IP     = ( GCI $ISO *.iso* | % { $_.FullName } )[ 0 , 1 , 2 , 1 , 2 , 1 , 2 ]
                     
-                    $SI     = 4 , 4 , 1 , 6 , 4 , 1 , 6
+                    $SI     = 4 , 4 , 4 , 1 , 1 , 6 , 6
                     
                     $SIP    = "$( 67..90 | % { [ Char ]$_ } | ? { $_ -notin ( Get-Volume | % { $_.DriveLetter } | Sort ) } | Select -First 1 ):\Sources\Install.WIM"
 
-                    $DIP    = 0..6 | % { "$( $Dest[$_] )\$( $Edition[$_] ).wim" }
+                    $DIP    = 0..6 | % { "$( $Dest[$_] )\$( $Tag[$_] ).wim" }
 
                     0..6 | % {
 
@@ -3339,28 +3339,40 @@
 
                         Dismount-DiskImage -ImagePath $IP[$_]
                     }
+                    
+                    $FX   = @( "ImageName" , "Architecture" , "Version" , "InstallationType" ; "Created" , "Modified" | % { "$_`Time" } )
 
-                    $Filters = @( "ImageName" , "Architecture" , "Version" , "InstallationType" ; "Time" | % { "Created$_" , "Modified$_" } )
-                    $List    = 0..6 | % { Get-WindowsImage -ImagePath $DIP[$_] -Index 1 } | Select $Filters
-                    $Arch    = $List | % { If ( $_.Architecture -eq "0" ) { "x86" } Else { "x64" } }
+                    $List = 0..6 | % { Get-WindowsImage -ImagePath $DIP[$_] -Index 1 } | % { 
+                        
+                        [ PSCustomObject ]@{ 
+                            
+                            ImageName        = $_.ImageName
+                            Architecture     = $_.Architecture | % { If ( $_ -eq 0 ) { "x86" } If ( $_ -eq 9 ) { "x64" } }
+                            Version          = $_.Version
+                            InstallationType = $_.InstallationType
+                            CreatedTime      = $_.CreatedTime
+                            ModifiedTime     = $_.ModifiedTime 
+                        }
+                    }
 
-                    $Subtable = 0..6
+                    $Subtable = @( )
 
-                    0..6 | % { 
-
-                        $Names        = "Platform/Version" , "Original Release" , "Provisioned Date"
-                        $Values       = "$( $List.InstallationType[$_] ) @: v$( $List.Version[$_] )" , "$( $List.CreatedTime[$_] )" , "$( $List.ModifiedTime[$_] )"
-                        $Subtable[$_] = New-SubTable -Items $Names -Values $Values
+                    ForEach ( $i in 0..6 )
+                    { 
+                        $Splat = @{ Items  = $FX
+                                    Values = $FX | % { "$( $List[$I].$_ )" } }
+                        
+                        $Subtable    += New-SubTable @Splat
                     } 
 
                     $Panel = @{ Title = "Clean Windows Image ( WIM ) Storage List"
                                 Depth = 7
-                                ID    = $List.ImageName
-                                Table = $Subtable }
+                                ID    = 0..6 | % { "( Image #$_ )" }
+                                Table = 0..6 | % { $Subtable[$_]   } }
 
                     $Table = New-Table @Panel
 
-                    Write-Theme -Table $Table
+                    Write-Theme -Table $Table 11 12 15
         }                                                                            #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____   
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
