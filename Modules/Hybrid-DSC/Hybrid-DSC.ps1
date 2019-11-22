@@ -3236,7 +3236,7 @@
 
         If ( $Images )
         {
-                            # ____   _________________________
+                # ____   _________________________
                 #//¯¯\\__[___ Images Scaffold ___]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                     Write-Theme -Action "Collecting [~]" "Windows Client/Server Images" 11 12 15
@@ -3280,39 +3280,33 @@
 
                     IPMO BitsTransfer 
 
-                    $ISO = GCI "$Images\ISO" | % { $_.FullName }
+                    $ISO    = ( GCI "$Images\ISO" | % { $_.FullName } )[0,2,1]
+
+                    $Client = 64 , 32 | % { "https://software-download.microsoft.com/sg/Win10_1909_English_x$_.iso?t=c8e65018-41f9-4167-b612-0ae1e4e2dad4&e=1574466442" }
+
+                    $Splat  = 0..2
                 # ____   _________________________
                 #//¯¯\\__[_____ Server 2016 _____]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    $Splat = @{        Source = "https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO"
+                    $Splat[0]  = @{    Source = "https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO"
                                   Destination = "$( $ISO[0] )\1607.ISO"    
                                   Description = "Windows Server ( 1607.ISO ) [ Evaluation Copy ]" }
-
-                    Write-Theme -Action "Downloading [+]" $Splat.Description 11 12 15
-
-                    Start-BitsTransfer @Splat
-
-                    $Client = 64 , 32 | % { "https://software-download.microsoft.com/sg/Win10_1909_English_x$_.iso?t=c8e65018-41f9-4167-b612-0ae1e4e2dad4&e=1574466442" }
                 # ____   _________________________
                 #//¯¯\\__[___ Client x64 1909 ___]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    $Splat = @{        Source = "$( $Client[0] )&h=ea86de32f1bc1cadcba040baf804935e"
+                    $Splat[1]  = @{    Source = "$( $Client[0] )&h=ea86de32f1bc1cadcba040baf804935e"
                                   Destination = "$( $ISO[1] )\1909x64.iso" 
                                   Description = "Windows Client ( 1909_x64.ISO )" }
-                    
-                    Write-Theme -Action "Downloading [+]" $Splat.Description 11 12 15
-
-                    Start-BitsTransfer @Splat
                 # ____   _________________________
                 #//¯¯\\__[___ Client x32 1909 ___]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    $Splat = @{        Source = "$( $Client[1] )&h=1108750045f3ade5b8cfae9ccd88aa87"
+                    $Splat[2]  = @{    Source = "$( $Client[1] )&h=1108750045f3ade5b8cfae9ccd88aa87"
                                   Destination = "$( $ISO[2] )\1909x32.iso"
                                   Description = "Windows Client ( 1909_x32.ISO )" }
-
-                    Write-Theme -Action "Downloading [+]" $Splat.Description 11 12 15
-
-                    Start-BitsTransfer @Splat
+                # ____   _________________________
+                #//¯¯\\__[___ Clean Source ISO __]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    0..2 | % { $X = $Splat[$_] ; ! ( Test-Path $X.Destination ) | % { Write-Theme -Action "Downloading [+]" $X.Description 11 12 15 ; Start-BitsTransfer @X } }
                 # ____   _________________________
                 #//¯¯\\__[___ Clean Source ISO __]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -3321,12 +3315,16 @@
                     $Dest   = ( GCI $Images | % { $_.FullName } )[0..6]
                     
                     $DN     = ( @( "Server 2016 Datacenter x64" ; "Education" , "Home" , "Pro" | % { "10 $_" } | % { "$_ x64" , "$_ x86" } ) | % { "Windows $_" } )
-                    $IP     = ( GCI $ISO *.iso* | % { $_.FullName } )[0,2,1,2,1,2,1]
-                    $SI     = 4,4,1,6,4,1,6
+                    
+                    $IP     = ( GCI $ISO *.iso* | % { $_.FullName } )[ 0 , 2 , 1 , 2 , 1 , 2 , 1 ]
+                    
+                    $SI     = 4 , 4 , 1 , 6 , 4 , 1 , 6
+                    
                     $SIP    = "$( 67..90 | % { [ Char ]$_ } | ? { $_ -notin ( Get-Volume | % { $_.DriveLetter } | Sort ) } | Select -First 1 ):\Sources\Install.WIM"
+
                     $DIP    = 0..6 | % { "$( $Dest[$_] )\$( $Edition[$_] ).wim" }
 
-                    1..6 | % {
+                    0..6 | % {
 
                         Write-Theme -Action "Extracting [~]" $DN[$_] 11 12 15
 
@@ -3341,6 +3339,28 @@
 
                         Dismount-DiskImage -ImagePath $IP[$_]
                     }
+
+                    $Filters = @( "ImageName" , "Architecture" , "Version" , "InstallationType" ; "Time" | % { "Created$_" , "Modified$_" } )
+                    $List    = 0..6 | % { Get-WindowsImage -ImagePath $DIP[$_] -Index 1 } | Select $Filters
+                    $Arch    = $List | % { If ( $_.Architecture -eq "0" ) { "x86" } Else { "x64" } }
+
+                    $Subtable = 0..6
+
+                    0..6 | % { 
+
+                        $Names        = "Platform/Version" , "Original Release" , "Provisioned Date"
+                        $Values       = "$( $List.InstallationType[$_] ) @: v$( $List.Version[$_] )" , "$( $List.CreatedTime[$_] )" , "$( $List.ModifiedTime[$_] )"
+                        $Subtable[$_] = New-SubTable -Items $Names -Values $Values
+                    } 
+
+                    $Panel = @{ Title = "Clean Windows Image ( WIM ) Storage List"
+                                Depth = 7
+                                ID    = $List.ImageName
+                                Table = $Subtable }
+
+                    $Table = New-Table @Panel
+
+                    Write-Theme -Table $Table
         }                                                                            #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____   
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
