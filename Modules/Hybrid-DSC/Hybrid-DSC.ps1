@@ -14,7 +14,7 @@
 //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//   ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 \\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__// 
 //¯¯    
-\\  [ Hybrid-DSC ] @: Loads All Table/Message Echo Wrappers, GUI, Networking Functions 
+\\  [ Hybrid-DSC ] @: Contains All Resources/Scripts/Modules/Functions of Hybrid-DSC 
 //   ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____      
 \\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/---\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\___  
 //¯¯\\___________________________________________________________________________________¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯\\ 
@@ -22,8 +22,11 @@
  ¯¯¯\\__[ Declares Namespaces, Loads Modules, then says peace out. ]____________________//¯¯\----/¯¯\\==//¯¯\----/¯¯\\==//¯¯\----/¯¯\\==//¯¯\----/¯¯¯  
      ¯¯¯¯                     ( it doesn't actually say peace out, but it could... )¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
-#>       @( "AccessControl" , "Principal" | % { "Security.$_" } ; 
-            "Management.Automation" , "DirectoryServices" , "Net.NetworkInformation" ) | % { IEX "Using Namespace System.$_" }    
+#>      @( "AccessControl" , "Principal" | % { "Security.$_" } ; "Management.Automation" , "DirectoryServices" , "Net.NetworkInformation" ) | % { 
+        
+            IEX "Using Namespace System.$_"
+        
+        }
             
         <#[¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯]#>
         <#[   Module / Resources   ]#>
@@ -352,8 +355,13 @@
 
         Begin
         {
-            $GX = $Edge , $Center , $Font , $Back ; $S  = " // " , " \\ " ; $F = "/¯¯\" , "\__/" ; $L , $R = $S[1..0] , $S
-            $M  = "" , "¯" , "_" , " " , "-" ; 1..4 | % { IEX "`$M$_ = 0..120 | % { '$( $M[$_] )' * `$_ }" }
+            $GX  = $Edge , $Center , $Font , $Back
+            $S   = " // " , " \\ "
+            $F   = "/¯¯\" , "\__/"
+            $L   = $S[1..0]
+            $R   = $S[0..1]
+            $M   = "¯" , "_" , " " , "-"
+            0..3 | % { IEX "`$M$_ = 0..120 | % { '$( $M[$_] )' * `$_ }" }
         }
 
         Process
@@ -361,27 +369,40 @@
             If ( $Function )
             {
                 $FA = $Function
-                If ( $FA.Length -le 58 ) { $Y = " ]$( $M2[ 62 - $FA.Length ] )__/" }
+
+                If ( $FA.Length -le 58 ) { $Y = " ]$( $M1[ 62 - $FA.Length ] )__/" }
+                
                 If ( $FA.Length -gt 58 ) { $FA = "$( $FA[ 0..58 ] -join '' )... " ; $Y = "]__/" }
-                $ST = @{ 0 = "  ____  $( $M3[68] )$( "  ____  " * 5 )"
-                         1 = @( " /" , $F[0] , "\$( $M2[70] )/" ; 0..3 | % { $F[ 0,1 ] } ; $F[0] , "\ " )
-                         2 = @( " \" , $F[1] , "/$( $M1[70] )\" ; 0..3 | % { $F[1,0] } ; $F[1] , "/ " )
+                
+                $ST = @{ 0 = "  ____  $( $M2[68] )$( "  ____  " * 5 )"
+                         1 = @( " /" , $F[0] , "\$( $M1[70] )/" ; 0..3 | % { $F[ 0 , 1 ] } ; $F[0] , "\ " )
+                         2 = @( " \" , $F[1] , "/$( $M0[70] )\" ; 0..3 | % { $F[ 1 , 0 ] } ; $F[1] , "/ " )
                          3 = @( "  ¯¯¯\" , "\__[ " , $FA , $Y ; 0..3 | % { $F[0,1] } ; "/¯¯¯  " )
-                         4 = "      $( $M1[72] )$( "    ¯¯¯¯" * 4 )      " }
-                $FG = @{ 0 = 0 ; 1 = @( 0..5 | % { 0 , 1 } ) + 0 ; 2 = @( 0 ; 0..10 | % { 1 } ; 0 ) ; 3 = @( 0 , 1 , 2 ; 0..5 | % { 1 , 0 } ) ; 4 = 0 }
-                $BG = @{ 0 = 3 ; 1 = 0..13 | % { 3 } ; 2 = 0..13 | % { 3 } ; 3 = 0..13 | % { 3 } ; 4 = 3 }
+                         4 = "      $( $M0[72] )$( "    ¯¯¯¯" * 4 )      " }
+                
+                $FG = @{ 0 = 0 
+                         1 = @( 0..5 | % { 0 , 1 } ; 0  ) 
+                         2 = @( 0 ; 0..10 | % { 1 } ; 0 )
+                         3 = @( 0 , 1 , 2 ; 0..5 | % { 1 , 0 } )
+                         4 = 0 }
+                
+                $BG = @{ 0 = 3
+                         1 = 0..13 | % { 3 }
+                         2 = 0..13 | % { 3 }
+                         3 = 0..13 | % { 3 }
+                         4 = 3 }
             }
 
             If ( $Action )
             {
                 $T , $I = $Type , $Info
-                $X  = $( If ( $T.Length -gt 18 ) { "$( $T[0..17] -join '' )..." } Else { "$( $M3[ ( 21 - $T.Length ) ] )$T" } )
-                $Y  = $( If ( $I.Length -gt 66 ) { "$( $I[0..65] -join '' )..." } Else { "$I$( $M3[ ( 69 - $I.Length ) ])" } )
-                $ST = @{ 0 = "  ____    $( $M2[100] )      "
-                         1 = @( " /" ; $F[0,1] ; "/$( $M1[98])\" , "\___  " )
+                $X  = $( If ( $T.Length -gt 18 ) { "$( $T[0..17] -join '' )..." } Else { "$( $M2[ ( 21 - $T.Length ) ] )$T" } )
+                $Y  = $( If ( $I.Length -gt 66 ) { "$( $I[0..65] -join '' )..." } Else { "$I$( $M2[ ( 69 - $I.Length ) ])" } )
+                $ST = @{ 0 = "  ____    $( $M1[100] )      "
+                         1 = @( " /" ; $F[0,1] ; "/$( $M0[98])\" , "\___  " )
                          2 = " \" , $F[1] , "/¯¯¯ " , " $X : $Y " , "___/" , $F[0] , "\ "
-                         3 = @( "  ¯¯¯\" , "\$( $M2[98] )/" ; $F[0,1] ; "/ " )
-                         4 = "      $( $M1[100] )    ¯¯¯¯  " }
+                         3 = @( "  ¯¯¯\" , "\$( $M1[98] )/" ; $F[0,1] ; "/ " )
+                         4 = "      $( $M0[100] )    ¯¯¯¯  " }
                 $FG = @{ 0 = 0 ; 1 = 0,1,0,1,0 ; 2 = 0,1,1,2,1,1,0 ; 3 = 0,1,0,1,0 ; 4 = 0 } ;
                 $BG = @{ 0 = 3 ; 1 = 0..4 | % { 3 } ; 2 = 0..6 | % { 3 } ; 3 = 0..4 | % { 3 } ; 4 = 3 }
             }
@@ -403,40 +424,40 @@
                 $ST1  = "   /" , "/¯¯\" , "\   "
                 $STR0 = @( $ST1 ; " \" , "\$( "  *   " * 6 )]" )
                 $STR1 = @( $ST0 ; " /" , "/$( "     *" * 5 )      ]" )
-                $ST   = @{ 0 = "    ____    $( $M2[92] )    ____    "
-                           1 = "   /" , "/¯¯\" , "\" , "==[$( $M1[92] )]==" , "/" , "/¯¯\" , "\   "
+                $ST   = @{ 0 = "    ____    $( $M1[92] )    ____    "
+                           1 = "   /" , "/¯¯\" , "\" , "==[$( $M0[92] )]==" , "/" , "/¯¯\" , "\   "
                            2 = @( $ST0 ; "     $( $STR[0] )    " ; $ST0 )
-                           3 = @( $ST1 ; "  $( $M2[88] )  " ; $ST1 )
-                           4 = @( $ST0 ; " /" , "/¯$( $M1[35] )]" , "[$( $M1[47] )¯\" , "\ " ; $ST0 )
-                           5 = @( $STR0 ; "[$( $M2[47] )_/" , "/ " ; $ST1 )
-                           6 = @( $STR1 ; "[$( $M1[47] )¯\" , "\ " ; $ST0 )
+                           3 = @( $ST1 ; "  $( $M1[88] )  " ; $ST1 )
+                           4 = @( $ST0 ; " /" , "/¯$( $M0[35] )]" , "[$( $M0[47] )¯\" , "\ " ; $ST0 )
+                           5 = @( $STR0 ; "[$( $M1[47] )_/" , "/ " ; $ST1 )
+                           6 = @( $STR1 ; "[$( $M0[47] )¯\" , "\ " ; $ST0 )
                            7 = @( $STR0 ; "[__" , $STR[1] , "___/" , "/ " ; $ST1 )
-                           8 = @( $STR1 ; "[$( $M1[47] )¯\" , "\ " ; $ST0 )
-                           9 = @( $STR0 ; "[$( $M2[47] )_/" , "/ " ; $ST1 )
-                          10 = @( $STR1 ; "[$( $M1[47] )¯\" , "\ " ; $ST0 )
+                           8 = @( $STR1 ; "[$( $M0[47] )¯\" , "\ " ; $ST0 )
+                           9 = @( $STR0 ; "[$( $M1[47] )_/" , "/ " ; $ST1 )
+                          10 = @( $STR1 ; "[$( $M0[47] )¯\" , "\ " ; $ST0 )
                           11 = @( $STR0 ; "[_" , $STR[2] , "___/" , "/ " ; $ST1 )
-                          12 = @( $STR1 ; "[$( $M1[47] )¯\" , "\ " ; $ST0 )
-                          13 = @( $STR0 ; "[$( $M2[47] )_/" , "/ " ; $ST1 )
-                          14 = @( $STR1 ; "[$( $M1[47] )¯\" , "\ " ; $ST0 )
+                          12 = @( $STR1 ; "[$( $M0[47] )¯\" , "\ " ; $ST0 )
+                          13 = @( $STR0 ; "[$( $M1[47] )_/" , "/ " ; $ST1 )
+                          14 = @( $STR1 ; "[$( $M0[47] )¯\" , "\ " ; $ST0 )
                           15 = @( $STR0 ; "[______" , $STR[3] , "_______/" , "/ " ; $ST1 )
-                          16 = @( $ST0  ; " /" , "/  $( $STR[4] )   ]" , "[$( $M1[47] )¯\" , "\ " ; $ST0 )
-                          17 = @( $ST1  ; " \" , "\$( $M2[36] )]" , "[$( $M2[47] )_/" , "/ " ; $ST1 )
-                          18 = @( $ST0  ; " /" , "/$( $M1[86] )\" , "\ " ; $ST0 )
-                          19 = @( $ST1  ; " \" , "\$( $M2[32] )" , "$BL\__/$BL" , "$( $M2[32] )/" , "/ " ; $ST1 )
-                          20 = @( $ST0  ; " /" , "/$( $M1[32] )" , "$( $E[2] )  $( $M2[11] )   $( $E[2] )" , "$( $M1[32] )\" , "\ " ; $ST0 )
-                          21 = @( $ST1  ; " \" , "\$( $M2[32] )" , "$( $E[0] )_ $( $STR[6] ) __$( $E[0] )" , "$( $M2[32] )/" , "/ " ; $ST1 )
-                          22 = @( $ST0  ; " /" , "/$( $M1[32] )" , "$( $E[2] + $M1[16] + $E[2] )" , "$( $M1[32] )\" , "\ " ; $ST0 )
-                          23 = @( $ST1  ; " \" , "\_$( $M2[16])" , "$( $BL * 2 )      $( $STR[7] )       $( $BL * 2 )" , "$( $M2[16] )_/" , "/ " ; $ST1 )
-                          24 = @( $ST0  ; " /" , "/$( $M1[17] )" , "$( $E[2] + $M1[15] )      $( $M1[3] )       $( $M1[15] + $E[2] )" , "$( $M1[17] )\" , "\ " ; $ST0 )
-                          25 = @( $ST1  ; " \" , "\$( $M2[17] )" , "$( $E[0] )  $( $STR[8] ) $( $E[0] )" , "$( $M2[17] )/" , "/ " ; $ST1 )
-                          26 = @( $ST0  ; " /" , "/$( $M1[17] )" , "$( $E[1] )  $( $M1[43] ) $( $E[1] )" , "$( $M1[17] )\" , "\ " ; $ST0 )
-                          27 = @( $ST1  ; " \" , "\$( $M2[11] )" , "$( $BL * 3 + $E[0] )\__/$( $E[0] + $BL * 3 )" , "$( $M2[11] )/" , "/ " ; $ST1 )
-                          28 = @( $ST0  ; " /" , "/$( $M1[11] )" , "$( $E[0] + $M1[58] + $E[0] )" , "$( $M1[11] )\" , "\ " ; $ST0 )
-                          29 = @( $ST1  ; " \" , "\$( $M2[11] )" , "$( $E[0] )  $SIG  $( $E[0] )" , "$( $M2[11] )/" , "/ " ; $ST1 )
-                          30 = @( $ST0  ; "  $( $M1[12] )" , "¯¯   $( $M1[19] )     $( $M1[30] )   ¯¯" , "$( $M1[12] )  " ; $ST0 )
-                          31 = @( $ST1  ; "$( $M3[25] + $STR[5] + $M3[25] )" ; $ST1 )
-                          32 = "   \" , "\__/" , "/" , "==[$( $M2[92] )]==" , "\" , "\__/" , "/   "
-                          33 = "    ¯¯¯¯    $( $M1[92] )    ¯¯¯¯    " }
+                          16 = @( $ST0  ; " /" , "/  $( $STR[4] )   ]" , "[$( $M0[47] )¯\" , "\ " ; $ST0 )
+                          17 = @( $ST1  ; " \" , "\$( $M1[36] )]" , "[$( $M1[47] )_/" , "/ " ; $ST1 )
+                          18 = @( $ST0  ; " /" , "/$( $M0[86] )\" , "\ " ; $ST0 )
+                          19 = @( $ST1  ; " \" , "\$( $M1[32] )" , "$BL\__/$BL" , "$( $M1[32] )/" , "/ " ; $ST1 )
+                          20 = @( $ST0  ; " /" , "/$( $M0[32] )" , "$( $E[2] )  $( $M1[11] )   $( $E[2] )" , "$( $M0[32] )\" , "\ " ; $ST0 )
+                          21 = @( $ST1  ; " \" , "\$( $M1[32] )" , "$( $E[0] )_ $( $STR[6] ) __$( $E[0] )" , "$( $M1[32] )/" , "/ " ; $ST1 )
+                          22 = @( $ST0  ; " /" , "/$( $M0[32] )" , "$( $E[2] + $M0[16] + $E[2] )" , "$( $M0[32] )\" , "\ " ; $ST0 )
+                          23 = @( $ST1  ; " \" , "\_$( $M1[16])" , "$( $BL * 2 )      $( $STR[7] )       $( $BL * 2 )" , "$( $M1[16] )_/" , "/ " ; $ST1 )
+                          24 = @( $ST0  ; " /" , "/$( $M0[17] )" , "$( $E[2] + $M0[15] )      $( $M0[3] )       $( $M0[15] + $E[2] )" , "$( $M0[17] )\" , "\ " ; $ST0 )
+                          25 = @( $ST1  ; " \" , "\$( $M1[17] )" , "$( $E[0] )  $( $STR[8] ) $( $E[0] )" , "$( $M1[17] )/" , "/ " ; $ST1 )
+                          26 = @( $ST0  ; " /" , "/$( $M0[17] )" , "$( $E[1] )  $( $M0[43] ) $( $E[1] )" , "$( $M0[17] )\" , "\ " ; $ST0 )
+                          27 = @( $ST1  ; " \" , "\$( $M1[11] )" , "$( $BL * 3 + $E[0] )\__/$( $E[0] + $BL * 3 )" , "$( $M1[11] )/" , "/ " ; $ST1 )
+                          28 = @( $ST0  ; " /" , "/$( $M0[11] )" , "$( $E[0] + $M0[58] + $E[0] )" , "$( $M0[11] )\" , "\ " ; $ST0 )
+                          29 = @( $ST1  ; " \" , "\$( $M1[11] )" , "$( $E[0] )  $SIG  $( $E[0] )" , "$( $M1[11] )/" , "/ " ; $ST1 )
+                          30 = @( $ST0  ; "  $( $M0[12] )" , "¯¯   $( $M0[19] )     $( $M0[30] )   ¯¯" , "$( $M0[12] )  " ; $ST0 )
+                          31 = @( $ST1  ; "$( $M2[25] + $STR[5] + $M2[25] )" ; $ST1 )
+                          32 = "   \" , "\__/" , "/" , "==[$( $M1[92] )]==" , "\" , "\__/" , "/   "
+                          33 = "    ¯¯¯¯    $( $M0[92] )    ¯¯¯¯    " }
 
                 $FG = @{   0 = 0
                            1 = 0,1,0,2,0,1,0
@@ -523,13 +544,13 @@
                          3 = @( "   \" ; 0..12 | % { $F[1,0] } ; $F[1] , "/   " )
                          4 = @( "   /" ; 0..1 | % { $F[0,1] } ; $F[0] , "\ " ; 0..7 | % { "  ¯¯¯¯  " } ; " /" ; 0..1 | % { $F[0,1] } ; $F[0] , "\   " )
                          5 = @( "   \" ; 0..1 | % { $F[1,0] } ; $F[1] , "/ " , " [ $Title ] " , " \" , $F[1] ;  0..1 | % { $F[0,1] } ; "/   " )
-                         6 = @( "   /" ; 0..1 | % { $F[0,1] } ; "/¯¯¯" , "   ¯¯¯¯\__/$( $M1[47] )\__/¯¯¯   " , "¯¯¯\" ; 0..1 | % { $F[1,0] } ; "\   " )
+                         6 = @( "   /" ; 0..1 | % { $F[0,1] } ; "/¯¯¯" , "   ¯¯¯¯\__/$( $M0[47] )\__/¯¯¯   " , "¯¯¯\" ; 0..1 | % { $F[1,0] } ; "\   " )
                          7 = @( "   \" ; $F[1,0,1] ; "/¯¯¯" , "         __/¯¯\ ([ $( $SR[2] ) ]) /¯¯\__        " , "¯¯¯\" ; $F[1,0,1] ; "/   " )
-                         8 = @( "   /" ; $F[0,1,0] ; "\" , "  $( $M2[9] )/¯¯\__/$( $M2[9] ) $( $M2[16] ) $( $M2[20] )\__/¯¯\$( $M2[8] )  " , "/" ; $F[0,1,0] ; "\   " )
+                         8 = @( "   /" ; $F[0,1,0] ; "\" , "  $( $M1[9] )/¯¯\__/$( $M1[9] ) $( $M1[16] ) $( $M1[20] )\__/¯¯\$( $M1[8] )  " , "/" ; $F[0,1,0] ; "\   " )
                          9 = @( "   \" ; $F[1,0,1] ; "/" , " $Strength " , "\" ; $F[1,0,1] ; "/   " )
-                        10 = @( "   /" ; $F[0,1,0] ; "\" , "  $( $M1[25] ) $( $M1[16] ) $( $M1[35] )  " , "/" ; $F[0,1,0] ; "\   " )
+                        10 = @( "   /" ; $F[0,1,0] ; "\" , "  $( $M0[25] ) $( $M0[16] ) $( $M0[35] )  " , "/" ; $F[0,1,0] ; "\   " )
                         11 = @( "   \" ; $F[1,0,1] ; "/" , "   $Mark    " , "\" ; $F[1,0,1] ; "/   " )
-                        12 = @( "   /" ; $F[0,1,0] ; "\___" , "$( $M1[32] )   $( $M1[13] )   $( $M1[24] ) " , "___/" ; $F[0,1,0] ; "\   " )
+                        12 = @( "   /" ; $F[0,1,0] ; "\___" , "$( $M0[32] )   $( $M0[13] )   $( $M0[24] ) " , "___/" ; $F[0,1,0] ; "\   " )
                         13 = @( "   \" ; 0..1 | % { $F[1,0] } ; "\ " , "  $( $SR[9] )   " , " /" ; 0..1 | % { $F[0,1] } ; "/   " )
                         14 = @( "   /" ; 0..1 | % { $F[0,1] } ; "/ " ; 0..8 | % { "  ____  " } ; " \" ; 0..1 | % { $F[1,0] } ; "\   " )
                         15 = @( "   \" ; 0..12 | % { $F[1,0] } ; $F[1] ,"/   " )
@@ -613,7 +634,7 @@
                 $FG.Add( $ZX , @( 0..28 | % { 0 } ) )
                 $BG.Add( $ZX , @( 0..28 | % { 3 } ) ) ; $ZX = $ZX + 1
                 
-                $ST.Add( $ZX , @( " \\_" , $M2[108] , "_// " ) );
+                $ST.Add( $ZX , @( " \\_" , $M1[108] , "_// " ) );
                 $FG.Add( $ZX , @( 0..2 | % { 0 } ) ) ; 
                 $BG.Add( $ZX , @( 0..2 | % { 3 } ) ) ; $ZX = $ZX + 1
                 
@@ -621,7 +642,7 @@
                 $FG.Add( $ZX , @( 0,1,2,1,0 ) ) ; 
                 $BG.Add( $ZX , @( 0..4 | % { 3 } ) );  $ZX = $ZX + 1
 
-                $ST.Add( $ZX , @( " \\¯" , $M1[108] ,"¯// " ) );
+                $ST.Add( $ZX , @( " \\¯" , $M0[108] ,"¯// " ) );
                 $FG.Add( $ZX , @( 0,0,0 )) ; $BG.Add( $ZX , @( 0..2 | % { 3 } ) );  $ZX = $ZX + 1
 
                 $ID | ? { $_.Name -like "*ID:*" } | % { $Index += $Table.$( $_.Name ) } ; $ID | ? { $_.Name -like "*Section:*" } | % { $Section += $Table.$( $_.Name ) }
@@ -642,17 +663,17 @@
 
                     $U = 98 - $Name.Length
             
-                        $ST.Add( $ZX , @( $L[$ZX % 2] , $M2[108] , $R[$ZX % 2]) )
+                        $ST.Add( $ZX , @( $L[$ZX % 2] , $M1[108] , $R[$ZX % 2]) )
                         $FG.Add( $ZX , @( 0..2 | % { 0 } ) )
                         $BG.Add( $ZX , @( 0..2 | % { 3 } ) )
                         $ZX = $ZX + 1
                         
-                        $ST.Add( $ZX , @( $L[$ZX % 2] , $M4[10] , $Name , $M4[$U] , $R[$ZX % 2] ) );
+                        $ST.Add( $ZX , @( $L[$ZX % 2] , $M3[10] , $Name , $M3[$U] , $R[$ZX % 2] ) );
                         $FG.Add( $ZX , @( 0,1,2,1,0 ) )
                         $BG.Add( $ZX , @( 0..4 | % { 3 } ) )
                         $ZX = $ZX + 1
                         
-                        $ST.Add( $ZX , @( $L[$ZX % 2] , $M1[108], $R[$ZX % 2] ) )
+                        $ST.Add( $ZX , @( $L[$ZX % 2] , $M0[108], $R[$ZX % 2] ) )
                         $FG.Add( $ZX , @( 0..2 | % { 0 } ) )
                         $BG.Add( $ZX , @( 0..2 | % { 3 } ) )
                         $ZX = $ZX + 1
@@ -662,8 +683,8 @@
                     ForEach( $IX in ( 0..( $Item.Keys.Count - 1 ) ) )
                     {
                         $Item."Item:$IX" | % { $Key = $_.ID ; $Val = $_.Value }
-                        $Key = $( If ( $Key.Length -gt 20 ) { "$( $Key[0..20] -join '' ) ... " } Else { "$( $M3[ ( 25 - $Key.Length ) ])$Key" } )
-                        $Val = $( If ( $Val.Length -gt 75 ) { "$( $Val[0..75] -join '' ) ... " } Else { "$Val$( $M3[ ( 80 - $Val.Length ) ])" } )
+                        $Key = $( If ( $Key.Length -gt 20 ) { "$( $Key[0..20] -join '' ) ... " } Else { "$( $M2[ ( 25 - $Key.Length ) ])$Key" } )
+                        $Val = $( If ( $Val.Length -gt 75 ) { "$( $Val[0..75] -join '' ) ... " } Else { "$Val$( $M2[ ( 80 - $Val.Length ) ])" } )
 
                         $ST.Add( $ZX , @( $L[ $ZX % 2 ] , $Key , " : " , $Val , $R[ $ZX % 2 ] ) );
                         $FG.Add( $ZX , @( 0 , 2 , 1 , 2 , 0 ) )
@@ -674,18 +695,18 @@
 
                 If ( $ZX % 2 -ne 0 ) 
                 { 
-                    $ST.Add( $ZX , @( " // " , $M3[108] , " \\ " ) )
+                    $ST.Add( $ZX , @( " // " , $M2[108] , " \\ " ) )
                     $FG.Add( $ZX , @( 0 , 0 , 0 ) )
                     $BG.Add( $ZX , @( 0..100 | % { 3 } ) )
                     $ZX = $ZX + 1 
                 }
 
-                    $ST.Add( $ZX , @( " \\_" , $M2[108] ,"_// "  ) )
+                    $ST.Add( $ZX , @( " \\_" , $M1[108] ,"_// "  ) )
                     $FG.Add( $ZX , @( 0 , 0, 0 ) )
                     $BG.Add( $ZX , @(  0..2 | % { 3 } ) )
                     $ZX = $ZX + 1
 
-                    $ST.Add( $ZX , @( " //¯" , $M1[108] , "¯\\ " ) )
+                    $ST.Add( $ZX , @( " //¯" , $M0[108] , "¯\\ " ) )
                     $FG.Add( $ZX , @( 0 , 0 , 0 ) )
                     $BG.Add( $ZX , @(  0..2 | % { 3 } ) )
                     $ZX = $ZX + 1
@@ -3232,7 +3253,12 @@
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯       
         [ CmdLetBinding () ] Param (
 
-            [ Parameter ( ParameterSetName = "Images" ) ] [ Switch ] $Images )
+            [ Parameter ( ParameterSetName =     "Images" ) ] [ Switch ] $Images     ,
+            [ Parameter ( ParameterSetName = "Slipstream" ) ] [ Switch ] $Slipstream )
+
+        $DS      = Resolve-HybridDSC -Share | % { GCI ( $_.Directory , $_.Company -join '\' ) } | % { $_.FullName }
+
+        $Tag     = @( "DC2016" ; "E" , "H" , "P" | % { "$_`64" , "$_`86" } | % { "10$_" } )
 
         If ( $Images )
         {
@@ -3240,35 +3266,16 @@
                 #//¯¯\\__[___ Images Scaffold ___]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                     Write-Theme -Action "Collecting [~]" "Windows Client/Server Images" 11 12 15
-            
-                    $DS      = Resolve-HybridDSC -Share | % { GCI ( $_.Directory , $_.Company -join '\' ) } | % { $_.FullName }
-                    $Images  = $DS | ? { $_ -like "*Images*" }
-                    $Tag     = @( "DC2016" ; "E" , "H" , "P" | % { "$_`64" , "$_`86" } | % { "10$_" } )
-            
-                    0..6 | % {  
-                
-                        $X = $Tag[$_]
 
-                        "$Images\($_)$X" | ? { ! ( Test-Path $_ ) } | % { NI $_ -ItemType Directory ; NI "$_\_" -ItemType Directory }
-                    } 
+                    $WimImages  = $DS | ? { $_ -like "*Images*" }
+
+                    0..6 | % { $X = $Tag[$_] ; "$WimImages\($_)$X" | ? { ! ( Test-Path $_ ) } | % { NI $_ -ItemType Directory ; NI "$_\_" -ItemType Directory } } 
             
                     Write-Theme -Action "Forward Image [+]" "Scaffold Generated" 11 12 15
                 # ____   _________________________
-                #//¯¯\\__[___ Updates Scaffold __]
-                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    ForEach ( $i in "Server" , 64 , 86 )
-                    {
-                        "$Images\Updates\x$i" | ? { ! ( Test-Path $_ ) } | % { NI $_ -ItemType Directory }
-                    }
-
-                    Write-Theme -Action "Windows Update [+]" "Scaffold Generated" 11 12 15
-                # ____   _________________________
                 #//¯¯\\__[____ ISO Scaffold _____]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    ForEach ( $i in @( "1607" ; 64 , 32 | % { "1909_x$_" } ) ) 
-                    { 
-                        "$Images\ISO\$I" | ? { ! ( Test-Path $_ ) } | % { NI $_ -ItemType Directory }
-                    } 
+                    ForEach ( $i in @( "1607" ; 64 , 32 | % { "1909_x$_" } ) ) { "$WimImages\ISO\$I" | ? { ! ( Test-Path $_ ) } | % { NI $_ -ItemType Directory } } 
                     
                     Write-Theme -Action "Windows Media [+]" "Scaffold Generated" 11 12 15
                 # ____   _________________________
@@ -3280,7 +3287,7 @@
 
                     IPMO BitsTransfer 
 
-                    $ISO    = ( GCI "$Images\ISO" | % { $_.FullName } )[0,2,1]
+                    $ISO    = ( GCI "$WimImages\ISO" | % { $_.FullName } )[0,2,1]
 
                     $Client = 64 , 32 | % { "https://software-download.microsoft.com/sg/Win10_1909_English_x$_.iso?t=c8e65018-41f9-4167-b612-0ae1e4e2dad4&e=1574466442" }
 
@@ -3312,7 +3319,7 @@
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                     Write-Theme -Action "Processing [+]" "ISO -> WIM File Conversion" 11 12 15
                     
-                    $Dest   = ( GCI $Images | % { $_.FullName } )[0..6]
+                    $Dest   = ( GCI $WimImages | % { $_.FullName } )[0..6]
                     
                     $DN     = ( @( "Server 2016 Datacenter x64" ; "Education" , "Home" , "Pro" | % { "10 $_" } | % { "$_ x64" , "$_ x86" } ) | % { "Windows $_" } )
                     
@@ -3340,8 +3347,6 @@
                         Dismount-DiskImage -ImagePath $IP[$_]
                     }
                     
-                    $FX   = @( "ImageName" , "Architecture" , "Version" , "InstallationType" ; "Created" , "Modified" | % { "$_`Time" } )
-
                     $List = 0..6 | % { Get-WindowsImage -ImagePath $DIP[$_] -Index 1 } | % { 
                         
                         [ PSCustomObject ]@{ 
@@ -3357,22 +3362,120 @@
 
                     $Subtable = @( )
 
+                    $FX       = @( "ImageName" , "Architecture" , "Version" , "InstallationType" ; "Created" , "Modified" | % { "$_`Time" } )
+
                     ForEach ( $i in 0..6 )
                     { 
                         $Splat = @{ Items  = $FX
                                     Values = $FX | % { "$( $List[$I].$_ )" } }
                         
                         $Subtable    += New-SubTable @Splat
-                    } 
+                    }
 
                     $Panel = @{ Title = "Clean Windows Image ( WIM ) Storage List"
                                 Depth = 7
-                                ID    = 0..6 | % { "( Image #$_ )" }
+                                ID    = 0..6 | % { "( [ Image # $_ ] )" }
                                 Table = 0..6 | % { $Subtable[$_]   } }
 
                     $Table = New-Table @Panel
 
                     Write-Theme -Table $Table 11 12 15
+
+                    Return $List
+        }
+
+        If ( $Slipstream )
+        {
+                # ____   _________________________
+                #//¯¯\\__[___ Updates Scaffold __]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $Updates = "$( $DS[2] )\Updates" | % { If ( ! ( Test-Path $_ ) ) { NI $_ -ItemType Directory } Else { GI $_ } } | % { $_.FullName }
+
+                    ForEach ( $i in "Server" , "Client" )
+                    { 
+                        "$Updates\$I" | ? { ! ( Test-Path $_ ) } | % { 
+                        
+                            NI $_ -ItemType Directory 
+
+                            Write-Theme -Action "Created [+]" "( $I ) Update Directory " 11 12 15
+                        }
+
+                        ForEach ( $j in 86 , 64 )
+                        {
+                            "$Updates\$I\x$J" | ? { ! ( Test-Path $_ ) } | % { 
+                            
+                                NI $_ -ItemType Directory 
+                            
+                                Write-Theme -Action "Created [+]" "( $I\x$J ) Update Directory " 11 12 15
+                            }
+                        }
+                    }
+
+                    Write-Theme -Action "Windows Update [+]" "Scaffold Generated" 11 12 15
+
+                    $Path = GCI $DS[2] *.wim* -Recurse | % { $_.FullName }
+
+                    $List = $Path | % { Get-WindowsImage -ImagePath $_ -Index 1 }
+                    
+                    $Type = [ PSCustomObject ]@{ Server = @{ x64 = @( ) ; x86 = @( ) } ; Client  = @{ x64 = @( ) ; x86 = @( ) } }
+
+                    0..( $List.Count - 1 ) | % {
+
+                        $X = $List[$_]
+
+                            $X.InstallationType | % { $InstallType = $( If ( $_ -eq "Server" ) { "Server" } If ( $_ -eq "Client" ) { "Client" } ) }
+                            $X.Architecture     | % { $InstallArch = $( If ( $_ -eq        9 ) {    "x64" } If ( $_ -eq        0 ) {    "x86" } ) }
+
+                        $Type.$InstallType.$InstallArch += [ PSCustomObject ]@{ 
+                        
+                            WIMFile     = $Path[$_]
+                            MountDir    = $Path[$_] | % { $_.Replace( $_.Split('\')[-1] , "_" ) }
+                            PackagePath = "$Updates\$InstallType\$InstallArch"
+                            Name        = $List[$_].ImageName
+                            Version     = $List[$_].Version
+                        }
+                    }
+
+                    $Process = $Type | % { $_.Server , $_.Client | % { $_.x64 , $_.x86 } }
+
+                    ForEach ( $I in 0..( $Process.Count - 1 ) )
+                    {
+                        $Process[$I] | % { 
+                        
+                            If ( ( $_ -ne $Null ) -and ( ( GCI $_.PackagePath *.msu* ) -ne $Null ) ) 
+                            {
+                                Write-Theme -Action "Detected [+]" "Update Image Catalog" 11 12 15
+
+                                $Splat = @{ ImagePath = $_.WimFile 
+                                            Index     = 1
+                                            Path      = $_.MountDir }
+
+                                Write-Theme -Action "Mounting [~]" "$( $_.Name )" 11 12 15
+
+                                Mount-WindowsImage @Splat
+
+                                $Splat = @{ PackagePath = $_.PackagePath
+                                            LogPath     = "AddPackage.log" 
+                                            IgnoreCheck = $True }
+                            
+                                Write-Theme -Action "Processing [~]" "Update Packages" 11 12 15
+                                    
+                                Add-WindowsPackage @Splat
+
+                                Write-Theme -Action "Cleaning [~]" "Component Store Cleanup" 11 12 15
+
+                                DISM /Image:$( $_.MountPath ) /Cleanup-Image /StartComponentCleanup /ResetBase
+                            
+                                Write-Theme -Action "Dismounting [~]" "$( $_.Name )" 11 12 15
+
+                                DISM /Unmount-WIM /MountDir:$( $_.MountDir ) /Commit
+
+                                Write-Theme -Action "Complete [+]" "$( $_.Name )" 11 12 15
+                            }
+                        }
+                    }
+                
+                    Write-Theme -Action "Updated [+]" "Imaging Catalog"
         }                                                                            #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____   
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
