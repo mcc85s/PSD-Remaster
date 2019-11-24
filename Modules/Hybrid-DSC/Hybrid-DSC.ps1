@@ -1143,17 +1143,17 @@
     Function Resolve-MacAddress # Obtains the MAC Address Resolution Lists ______________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
 
-        $x = Resolve-HybridDSC -Module
-        $y = "Count" , "Index" , "Vendor"
+        $X      = Resolve-HybridDSC -Module
+
         $Return = [ Ordered ]@{ Count = "" ; Index = "" ; Vendor = "" }
         
-        ForEach ( $i in 0..2 ) 
+        ForEach ( $i in "Count" , "Index" , "Vendor" ) 
         {     
-            $Archive = @{ Path =    "$x\Map\$( $y[$I] ).zip" ; DestinationPath = "$x" ; Force = $True }
+            $Archive = @{ Path = "$x\Map\$I.zip" ; DestinationPath = $X ; Force = $True }
 
             Expand-Archive @Archive
 
-            "$x\$( $y[$I] ).txt" | % { $Return.$( $Y[$I] ) = GC $_ ; RI $_ }
+            "$x\$I.txt" | % { $Return.$I = GC $_ ; RI $_ }
         }
         Return $Return                                                               #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
@@ -1329,6 +1329,7 @@
         ForEach ( $A in 0..( $C - 1 ) )
         {
             Write-Progress -Activity "Scanning Network $( $S[$A] )" -PercentComplete ( ( $A / $C ) * 100 )
+
             If ( ( Test-Connection –BufferSize 32 –Count 1 –Quiet –ComputerName $S[$A] -EA 0 ) -ne $Null )
             {
                 Try 
@@ -2460,7 +2461,7 @@
     Function Import-MDTModule # Loads the module for MDT _______________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
        
-        GP "HKLM:\Software\Microsoft\Deployment 4" | % { GCI $_.Install_Dir "*Toolkit.psd1" -Recurse } | % { IPMO $_.FullName }
+        GP "HKLM:\Software\Microsoft\Deployment 4" | % { GCI $_.Install_Dir "*Toolkit.psd1" -Recurse } | % { IPMO $_.FullName -VB }
         Write-Theme -Action "Module [+]" "Microsoft Deployment Toolkit" 11 12 15 
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
@@ -2671,9 +2672,6 @@
 
         If ( $OP -eq $True ) 
         {   
-            $Code
-            Read-Host "Confirm?"
-
             If ( Test-Path $Code.Directory )
             {
                 Write-Theme -Action "Exception [!]" "Directory must not exist, breaking" 11 12 15
@@ -2699,6 +2697,7 @@
             }
             
             # Create the Samba Share
+
             $NSMBS = @{ Name        = $Code.Samba 
                         Path        = $Code.Directory 
                         FullAccess  = "Administrators" }
@@ -2784,6 +2783,12 @@
             $Values = $Names | % { $Code.$_ } 
             
             0..( $Names.Count - 1 ) | % { SP -Path $Path -Name $Names[$_] -Value $Values[$_] -Force }
+
+            SP -Path $Path -Name "Server" -Value "$ENV:ComputerName"
+
+            $Share = Resolve-HybridDSC -Share 
+            
+            $Share | % { SC -Path "$( $_.Directory )\DSC.txt" -Value ( $_ | ConvertTo-JSON ) -Force }
 
             If ( $Code.Remaster -eq "Selected" )
             {
@@ -3519,7 +3524,7 @@
         # New Items
         $FEX[2]   | ? { ! ( Test-Path $_ ) } | % { # OEM Background Folder
     
-            NI $_ -ItemType Directory 
+            NI $_ -ItemType Directory
             Write-Theme -Action "Created [+]" "OEM Background Directory" 11 12 15
 
         }
@@ -3553,3 +3558,120 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
         Write-Theme -Free # What Free Actually Means ____________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
      #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯       
+
+
+
+    Function Resolve-LocalMachine # Turns local machine info into an array        ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\
+    {
+        $Local = @( $Env:ComputerName , $Env:Processor_Architecture , "$Env:SystemDrive\" ; $Env:SystemRoot | % { "$_" , "$_\System32" } ; 
+        $Env:ProgramData , $Env:ProgramFiles )
+        
+        Return [ PSCustomObject ]@{ 
+            
+            ComputerName  = $Local[0]
+            Architecture  = $Local[1]
+            SystemDrive   = $Local[2]
+            SystemRoot    = $Local[3]
+            System32      = $Local[4]
+            ProgramData   = $Local[5]
+            ProgramFiles  = $Local[6]
+        }
+    }
+
+    Function Unlock-Script
+    {
+        $CS = GCIM Win32_OperatingSystem
+        IEX "Using Namespace System.Security.Principal"
+        "Windows" | % { IEX "( [ $_`Principal ] [ $_`Identity ]::GetCurrent() ).IsInRole( 'Administrator' )" } | % {
+        
+            If ( ( ( $_ -eq $False ) -and ( $CS | % { [ Int ]$_.BuildNumber -gt 6000 } ) ) -or ( $_ -eq $True ) )
+            {
+                $MyInvocation | % { SAPS PowerShell -Verb RunAs -Args "-File $( $_.PSCommandPath ) $( $_.UnboundArguments )" }
+                Set-ExecutionPolicy ByPass -Scope Process -Force
+            }
+
+            Else { Read-Host "[!] Access Failed. Press Enter to Exit" ; Exit }
+        }
+    }
+
+    Function Update-HybridDSC
+    {
+                    Write-Theme -Action "Provision Root [~]" "MDT Imaging/Task Sequence Recycler" 11 12 15
+                # ____   _________________________
+                #//¯¯\\__[___ Provisional Root __]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $Root      = Resolve-HybridDSC -Share
+
+                    $Section   = 0..2
+                    $SubTable  = 0..2
+
+                    $Root      | % { 
+
+                        $Provision = [ PSCustomObject ]@{ 
+            
+                            Name           = $_.Company
+                            Controller     = $_.Server
+                            PSDrive        = $_.DSDrive.Replace( ':' , '' )
+                            SMBShare       = $_.Samba
+                            NetworkPath    = "\\$( $_.Server )\$( $_.Samba )"
+                            HybridRoot     = "\\$( $_.Server )\$( $_.Samba )\$( $_.Company )"
+                        }
+                    }
+
+                    $Section[0]            = "Desired State Controller @ Source"
+
+                    $Names                 = ( $Provision | GM | ? MemberType -EQ NoteProperty | % { $_.Name } )[2,0,4,5,3,1]
+                    $Values                = $Names | % { $Provision.$_ }
+
+                    $Subtable[0]           = New-Subtable -Items $Names -Values $Values
+                # ____   _________________________
+                #//¯¯\\__[___ Local Variables ___]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $Local                 = Resolve-LocalMachine
+
+                    $Section[1]            = "Current Machine @ Variables"
+                    $Names                 = ( $Local | GM | ? MemberType -EQ NoteProperty | % { $_.Name } )[1,0,5,6,4,2,3]
+                    $Values                = $Names | % { $Local.$_ }
+
+                    $Subtable[1]           = New-Subtable -Items $Names -Values $Values
+                # ____   _________________________
+                #//¯¯\\__[___ Bridge Variables __]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $Target                = [ PScustomObject ]@{ 
+            
+                        Path               = "$ENV:SystemDrive\$( $Root.Company )"
+                    }
+
+                    $Tree                  = "Resources" , "Tools" , "Images" , "Profiles" , "Certificates" , "Applications"
+
+                    0..( $Tree.Count - 1 ) | % { 
+            
+                        $Splat             = @{ MemberType = "NoteProperty"
+                                                Name       = $Tree[$_]
+                                                Value      = "$( $Target.Path )\($_)$( $Tree[$_] )" 
+                        }
+                
+                        $Target            | Add-Member @Splat 
+                    }
+
+                    $Section[2]            = "Provision Index @ Bridge Control"
+
+                    $Names                 = ( $Target | GM | ? MemberType -EQ NoteProperty | % { $_.Name } )[3,5,6,2,4,1,0]
+                    $Values                = $Names | % { $Target.$_ }
+
+                    $Subtable[2]           = New-Subtable -Items $Names -Values $Values
+                # ____   _________________________
+                #//¯¯\\__[____ Display Panel ____]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $Panel                 = @{ Title = "Provisional Root Index"
+                                                Depth = 3
+                                                ID    = $Section | % { "( $_ )" }
+                                                Table = $Subtable }
+
+                    $Table                 = New-Table @Panel
+
+                    Write-Theme -Table $Table 11 12 15
+
+                    Read-Host "Press Enter to Continue"
+
+    }
