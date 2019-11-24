@@ -2700,7 +2700,8 @@
 
             $NSMBS = @{ Name        = $Code.Samba 
                         Path        = $Code.Directory 
-                        FullAccess  = "Administrators" }
+                        FullAccess  = "Administrators" 
+                        Description = $Code.Description }
     
             NSMBS @NSMBS
 
@@ -2784,7 +2785,7 @@
             
             0..( $Names.Count - 1 ) | % { SP -Path $Path -Name $Names[$_] -Value $Values[$_] -Force }
 
-            SP -Path $Path -Name "Server" -Value "$ENV:ComputerName"
+            SP -Path $Path -Name "Server" -Value $ENV:ComputerName
 
             $Share = Resolve-HybridDSC -Share 
             
@@ -2855,7 +2856,7 @@
 
             Write-Theme -Action "Reducing [~]" "Permissions Hardening on $( $Code.Samba )" 11 12 15
 
-            "Users" , "Administrators" , "SYSTEM" | % { ICACLS $W /Grant "$_`:(OI)(CI)(RX)" } 
+            "Users" , "Administrators" , "SYSTEM" | % { ICACLS $W /Grant "$_`:(OI)(CI)(RX)" }
 
             $Code.Samba | % { 
                 
@@ -2958,7 +2959,7 @@
                         }
             
                         Else 
-                        { 
+                        {
                             Write-Theme -Action "Running [+]" "$( $_.Name ) was already Active" 11 12 15
                         }
                     }
@@ -3097,7 +3098,7 @@
                     $Name      = (  "enabled" , "defaultMimeType" , "allowInfinitePropfindDepth" , "applyToWebDAV" )[0,0,1,2,2,3,3,3,3]
                     $Value     = (  "False" , "True" , "Text/XML" )[0,1,2,1,1,0,0,0,0]
 
-                    ForEach ( $i in 0..8 ) 
+                    ForEach ( $i in 0..8 )
                     { 
                         $Splat = @{ PSPath   = $PSPath[$i]
                                     Location = $Location[$i]
@@ -3182,11 +3183,11 @@
 
                     $List      = GCI $SSLTLS | % { $_.PSPath } 
                 
-                    $List | % { If ( $_.PSChildName -eq $Null ) { NI -Path $_ -Name "Server" ; NI -Path $_ -Name "Client" } }
+                    $List      | % { If ( $_.PSChildName -eq $Null ) { NI -Path $_ -Name "Server" ; NI -Path $_ -Name "Client" } }
 
-                    GCI $List | % { 
+                    GCI $List  | % { 
                 
-                        $V = $( If ( $_ -notlike "*TLS 1.2*" ) { 0 } Else { 1 } )
+                        $V = $( If ( $_ -like "*TLS 1.2*" ) { 1 } Else { 0 } )
                     
                         SP -Path $_.PSPath -Name "DisabledByDefault" -Value 0
                         SP -Path $_.PSPath -Name           "Enabled" -Value $V
@@ -3370,7 +3371,7 @@
                     $FX       = @( "ImageName" , "Architecture" , "Version" , "InstallationType" ; "Created" , "Modified" | % { "$_`Time" } )
 
                     ForEach ( $i in 0..6 )
-                    { 
+                    {
                         $Splat = @{ Items  = $FX
                                     Values = $FX | % { "$( $List[$I].$_ )" } }
                         
@@ -3672,6 +3673,112 @@
 
                     Write-Theme -Table $Table 11 12 15
 
-                    Read-Host "Press Enter to Continue"
+                    Read-Host "$( "¯" * 116 )`nPress Enter to Continue"
+                # ____   _________________________
+                #//¯¯\\__[_ Shape Variable Tree _]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $DeployRoot = Resolve-HybridDSC -Share | % { gci $_.Directory } | % { $_.FullName }
+                    
+                    $HybridRoot = $DeployRoot | ? { $_ -like "*$( $Root.Company )*" } | % { gci $_ } | % { $_.FullName }
 
+                    $Tag        = @( "DC2016" ; "E" , "H" , "P" | % { "$_`64" , "$_`86" } | % { "10$_" } )
+
+                    $Names      = @( 'ImageName' , 'Architecture' , 'Version' , 'InstallationType' ; 'Created' , 'Modified' | % { "$_`Time" } )
+                # ____   _________________________
+                #//¯¯\\__[__ Get Stored Images __]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $Images     = $HybridRoot | ? { $_ -like "*Images*" } | % { gci $_ *.wim* -Recurse } | % { $_.FullName }
+
+                    If ( $Images.Count -eq 0 )
+                    {
+                        Write-Theme -Action "Exception [!]" "Images were not detected" 11 12 15
+                        
+                        Read-Host "$( "¯" * 116 )`nPress Enter to Exit"
+                        
+                        Break
+                    }
+                    
+                    If ( $Images.Count -eq 1 )
+                    {
+                        Write-Theme -Action "Detected [+]" "( 1 ) Image, obtaining details" 11 12 15
+                        
+                        $Count      = 0
+
+                        $List       = Get-WindowsImage -ImagePath $Images -Index 1
+                    }
+
+                    If ( $Images.Count -gt 1 ) 
+                    { 
+                        Write-Theme -Action "Detected [+]" "( $( $Images.Count ) ) Images, obtaining details" 11 12 15
+                        
+                        $Count      = 0..( $Images.Count - 1 )
+
+                        $List       = $Count | % { Get-WindowsImage -ImagePath $Images[$_] -Index 1 }
+                    }
+
+                    $Store = $List  | % { 
+                        
+                        [ PSCustomObject ]@{ 
+                            
+                                ImageName        = $_.ImageName
+                                Architecture     = @( "x86" ; 1..8 | % { "" } ; "x64" )[ $_.Architecture ]
+                                Version          = $_.Version
+                                InstallationType = $_.InstallationType
+                                CreatedTime      = $_.CreatedTime
+                                ModifiedTime     = $_.ModifiedTime 
+                        }
+                    }
+                    
+                    $Panel = @{ Title = "Hybrid-DSC Client/Server Windows Image Recycler Panel"
+                                Depth = "" ; ID = "" ; Table = "" }
+
+
+                    If ( $Images.Count -eq 1 )
+                    {
+                        $Values      = $Names | % { "$( $Store.$_ )" }
+                      
+                        $Section     = $Store.ImageName
+
+                        $Subtable    = New-SubTable -Items $Names -Values $Values
+
+                        $Panel       | % { 
+
+                            $_.Depth = 1
+                            $_.ID    = "( $( $Section ) )"
+                            $_.Table = $Subtable 
+                        }
+                    }
+
+                    If ( $Images.Count -gt 1 )
+                    {
+                        $Count        = 0..( $Store.Count - 1 )
+
+                        $Section      = $Count | % { $_ }
+                        $Subtable     = $Count | % { $_ }
+
+                        ForEach ( $I in $Count )
+                        { 
+                            $X            = $Store[$I] 
+
+                            $Values       = $Names | % { "$( $X.$_ )" }
+                      
+                            $Section[$I]  = $X.ImageName
+                            
+                            $Subtable[$I] = New-SubTable -Items $Names -Values $Values
+                        }
+
+                        $Panel        | % { 
+                                        
+                            $_.Depth  = $Store.Count
+                            $_.ID     = $Count | % { "( $( $Section[$_] ) )" }
+                            $_.Table  = $Count | % { $Subtable[$_] } 
+                        }
+                    }
+
+                    $Table = New-Table @Panel
+
+                    Write-Theme -Table $Table 11 12 15
+
+                    Read-Host "$( "¯" * 116 )`nCarefully review these details. `nPress Enter to Continue"
     }
+    
