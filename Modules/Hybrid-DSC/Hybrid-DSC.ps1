@@ -3687,98 +3687,118 @@
                 # ____   _________________________
                 #//¯¯\\__[__ Get Stored Images __]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    $Images     = $HybridRoot | ? { $_ -like "*Images*" } | % { gci $_ *.wim* -Recurse } | % { $_.FullName }
-
-                    If ( $Images.Count -eq 0 )
-                    {
-                        Write-Theme -Action "Exception [!]" "Images were not detected" 11 12 15
-                        
-                        Read-Host "$( "¯" * 116 )`nPress Enter to Exit"
-                        
-                        Break
-                    }
+                    $Catalog    = @{ 
                     
-                    If ( $Images.Count -eq 1 )
-                    {
-                        Write-Theme -Action "Detected [+]" "( 1 ) Image, obtaining details" 11 12 15
-                        
-                        $Count      = 0
+                        Hybrid  = @{ Title  = "Hybrid-DSC Client/Server Windows Image Recycler Panel"
+                                     Images = $HybridRoot | ? { $_ -like "*Images*" } | % { gci $_ *.wim* -Recurse } | % { $_.FullName } }
 
-                        $List       = Get-WindowsImage -ImagePath $Images -Index 1
+                        Deploy  = @{ Title  = "MDT Boot Image Client/Server Windows Image Panel"
+                                     Images = $DeployRoot | ? { $_ -like "*Operating System*" } | % { gci $_ *.wim* -Recurse } | % { $_.FullName } }
                     }
 
-                    If ( $Images.Count -gt 1 ) 
-                    { 
-                        Write-Theme -Action "Detected [+]" "( $( $Images.Count ) ) Images, obtaining details" 11 12 15
-                        
-                        $Count      = 0..( $Images.Count - 1 )
+                    $Catalog    | % { $_.Hybrid , $_.Deploy } | % { 
 
-                        $List       = $Count | % { Get-WindowsImage -ImagePath $Images[$_] -Index 1 }
-                    }
-
-                    $Store = $List  | % { 
+                        $Title  = $_.Title 
+                        $Images = $_.Images
                         
-                        [ PSCustomObject ]@{ 
-                            
-                                ImageName        = $_.ImageName
-                                Architecture     = @( "x86" ; 1..8 | % { "" } ; "x64" )[ $_.Architecture ]
-                                Version          = $_.Version
-                                InstallationType = $_.InstallationType
-                                CreatedTime      = $_.CreatedTime
-                                ModifiedTime     = $_.ModifiedTime 
+                        If ( $Images -eq $Null )
+                        {
+                            Write-Theme -Action "Not Detected [!]" "$Title" 11 12 15
                         }
-                    }
+
+                        Else
+                        {
+                            If ( $Images.Count -eq 0 )
+                            {
+                                Write-Theme -Action "Exception [!]" "Images were not detected" 11 12 15
+                        
+                                Read-Host "$( "¯" * 116 )`nPress Enter to Exit"
+                        
+                                Break
+                            }
                     
-                    $Panel = @{ Title = "Hybrid-DSC Client/Server Windows Image Recycler Panel"
-                                Depth = "" ; ID = "" ; Table = "" }
+                            If ( $Images.Count -eq 1 )
+                            {
+                                Write-Theme -Action "Detected [+]" "( 1 ) Image, obtaining details" 11 12 15
+                        
+                                $Count      = 0
 
+                                $List       = Get-WindowsImage -ImagePath $Images -Index 1
+                            }
 
-                    If ( $Images.Count -eq 1 )
-                    {
-                        $Values      = $Names | % { "$( $Store.$_ )" }
-                      
-                        $Section     = $Store.ImageName
+                            If ( $Images.Count -gt 1 ) 
+                            { 
+                                Write-Theme -Action "Detected [+]" "( $( $Images.Count ) ) Images, obtaining details" 11 12 15
+                        
+                                $Count      = 0..( $Images.Count - 1 )
 
-                        $Subtable    = New-SubTable -Items $Names -Values $Values
+                                $List       = $Count | % { Get-WindowsImage -ImagePath $Images[$_] -Index 1 }
+                            }
 
-                        $Panel       | % { 
-
-                            $_.Depth = 1
-                            $_.ID    = "( $( $Section ) )"
-                            $_.Table = $Subtable 
-                        }
-                    }
-
-                    If ( $Images.Count -gt 1 )
-                    {
-                        $Count        = 0..( $Store.Count - 1 )
-
-                        $Section      = $Count | % { $_ }
-                        $Subtable     = $Count | % { $_ }
-
-                        ForEach ( $I in $Count )
-                        { 
-                            $X            = $Store[$I] 
-
-                            $Values       = $Names | % { "$( $X.$_ )" }
-                      
-                            $Section[$I]  = $X.ImageName
+                            $Store = $List  | % { 
+                        
+                                [ PSCustomObject ]@{ 
                             
-                            $Subtable[$I] = New-SubTable -Items $Names -Values $Values
-                        }
+                                        ImageName        = $_.ImageName
+                                        Architecture     = @( "x86" ; 1..8 | % { "" } ; "x64" )[ $_.Architecture ]
+                                        Version          = $_.Version
+                                        InstallationType = $_.InstallationType
+                                        CreatedTime      = $_.CreatedTime
+                                        ModifiedTime     = $_.ModifiedTime 
+                                }
+                            }
+                    
+                            $Panel = @{ Title = "Hybrid-DSC Client/Server Windows Image Recycler Panel"
+                                        Depth = "" ; ID = "" ; Table = "" }
 
-                        $Panel        | % { 
+
+                            If ( $Images.Count -eq 1 )
+                            {
+                                $Values      = $Names | % { "$( $Store.$_ )" }
+                      
+                                $Section     = $Store.ImageName
+
+                                $Subtable    = New-SubTable -Items $Names -Values $Values
+
+                                $Panel       | % { 
+
+                                    $_.Depth = 1
+                                    $_.ID    = "( $( $Section ) )"
+                                    $_.Table = $Subtable 
+                                }
+                            }
+
+                            If ( $Images.Count -gt 1 )
+                            {
+                                $Count        = 0..( $Store.Count - 1 )
+
+                                $Section      = $Count | % { $_ }
+                                $Subtable     = $Count | % { $_ }
+
+                                ForEach ( $I in $Count )
+                                { 
+                                    $X            = $Store[$I] 
+
+                                    $Values       = $Names | % { "$( $X.$_ )" }
+                      
+                                    $Section[$I]  = $X.ImageName
+                            
+                                    $Subtable[$I] = New-SubTable -Items $Names -Values $Values
+                                }
+
+                                $Panel        | % { 
                                         
-                            $_.Depth  = $Store.Count
-                            $_.ID     = $Count | % { "( $( $Section[$_] ) )" }
-                            $_.Table  = $Count | % { $Subtable[$_] } 
+                                    $_.Depth  = $Store.Count
+                                    $_.ID     = $Count | % { "( $( $Section[$_] ) )" }
+                                    $_.Table  = $Count | % { $Subtable[$_] } 
+                                }
+                            }
+
+                            $Table = New-Table @Panel
+
+                            Write-Theme -Table $Table 11 12 15
+
+                            Read-Host "$( "¯" * 116 )`nCarefully review these details. `nPress Enter to Continue"
                         }
                     }
-
-                    $Table = New-Table @Panel
-
-                    Write-Theme -Table $Table 11 12 15
-
-                    Read-Host "$( "¯" * 116 )`nCarefully review these details. `nPress Enter to Continue"
     }
-    
