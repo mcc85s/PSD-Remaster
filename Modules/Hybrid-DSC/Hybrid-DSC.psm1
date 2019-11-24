@@ -26,7 +26,8 @@
         Export-ModuleMember -Function Resolve-HybridDSC , New-Subtable , New-Table , Write-Theme , Show-Message , Convert-XAMLToWindow , 
         Show-WPFWindow , Get-XAML , Find-XAMLNamedElements , Get-NetworkInfo , Start-PingSweep , Get-NBTSCAN , Get-NetworkHosts ,
         Get-TelemetryData , Resolve-MacAddress , Start-NetworkInfo , Get-NetworkStatistics , Initialize-PortScan , Invoke-Login , Add-ACL , 
-        New-ACLObject , Import-MDTModule , Export-Ini , Resolve-UninstallList , Install-DSCRoot , Install-HybridDSC , Initialize-HybridDSC
+        New-ACLObject , Import-MDTModule , Export-Ini , Resolve-UninstallList , Install-DSCRoot , Install-HybridDSC , Initialize-HybridDSC ,
+        Unlock-Script , Resolve-LocalMachine , Update-HybridDSC
 
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 <#___                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
