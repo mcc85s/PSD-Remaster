@@ -608,7 +608,7 @@
                 $ID     = $Table | GM | ? { $_.MemberType -eq "NoteProperty" }
                 $Title  = $ID | ? { $_.Name -eq "Class" } | % { $Table.$( $_.Name ) }
 
-                If ( $Title.Length -gt 95 ) { $Title = "$( $Title[0..92] -Join '' ) ... " }
+                If ( $Title.Length -gt 95 ) { $Title = "$( $Title[0..92] -Join '' ) ..." }
 
                 $Title  = $Title | % { "[ $_ ]" }
                 $TT     = 108 - $Title.Length
@@ -3264,7 +3264,7 @@
 
         $DS      = Resolve-HybridDSC -Share | % { GCI ( $_.Directory , $_.Company -join '\' ) } | % { $_.FullName }
 
-        $Tag     = @( "DC2016" ; "E" , "H" , "P" | % { "$_`64" , "$_`86" } | % { "10$_" } )
+        $Tag     = @( "DC2016" ; "E" , "H" , "P" | % { "10$_`64" , "10$_`86" } )
 
         If ( $Images )
         {
@@ -3672,13 +3672,59 @@
 
                     Read-Host "$( "¯" * 116 )`nPress Enter to Continue"
                 # ____   _________________________
+                #//¯¯\\__[__ Get Deploy/Share  __]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    Write-Theme -Action "Loading [+]" "MDT Drive Content" 11 12 15
+
+                    Import-MDTModule
+
+                    $X = GDR -PSProvider MDTProvider
+
+                    If ( $X -ne $Null )
+                    {
+                        $X = $X | ? { $_.Name -like "*$( $Root.DSDrive.Split(':')[0] )*" -and $_.Root -eq $Root.Directory }
+                    }
+                    
+                    If ( $X -eq $Null )
+                    {
+                        $X = Get-MDTPersistentDrive
+                        
+                        If ( $X -eq $Null )
+                        {
+                            $Root | % { 
+
+                                $Splat = @{ Name        = $_.DSDrive.Split(':')[0]
+                                            PSProvider  = "MDTProvider"
+                                            Root        = $_.Directory
+                                            Description = $_.Description
+                                            NetworkPath = $Provision.NetworkPath }
+                            }
+
+                            NDR @Splat -VB | Add-MDTPersistentDrive
+                        }
+
+                        If ( $X -ne $Null )
+                        {
+                            GSMBS | ? { $_.Path -eq $X.Path } | % {
+                            
+                                $Splat = @{ Name        = $Y.Name
+                                            PSProvider  = "MDTProvider"
+                                            Root        = $_.Path
+                                            Description = $Y.Description 
+                                            NetworkPath = "\\$ENV:ComputerName\$( $_.Path )" }
+                            }
+                            
+                            NDR @Splat -VB
+                        }
+                    }
+                # ____   _________________________
                 #//¯¯\\__[_ Shape Variable Tree _]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                     $DeployRoot = Resolve-HybridDSC -Share | % { gci $_.Directory } | % { $_.FullName }
                     
                     $HybridRoot = $DeployRoot | ? { $_ -like "*$( $Root.Company )*" } | % { gci $_ } | % { $_.FullName }
 
-                    $Tag        = @( "DC2016" ; "E" , "H" , "P" | % { "$_`64" , "$_`86" } | % { "10$_" } )
+                    $Tag        = @( "DC2016" ; "E" , "H" , "P" | % { "10$_`64" , "10$_`86" } )
 
                     $Names      = @( 'ImageName' , 'Architecture' , 'Version' , 'InstallationType' ; 'Created' , 'Modified' | % { "$_`Time" } )
                 # ____   _________________________
@@ -3687,7 +3733,7 @@
                     $Catalog    = @{ 
                     
                         Hybrid  = @{ Title  = "Hybrid-DSC Client/Server Windows Image Recycler Panel"
-                                     Images = $HybridRoot | ? { $_ -like "*Images*" } | % { gci $_ *.wim* -Recurse } | % { $_.FullName } }
+                                     Images = $HybridRoot | ? { $_ -like           "*Images*" } | % { gci $_ *.wim* -Recurse } | % { $_.FullName } }
 
                         Deploy  = @{ Title  = "MDT Boot Image Client/Server Windows Image Panel"
                                      Images = $DeployRoot | ? { $_ -like "*Operating System*" } | % { gci $_ *.wim* -Recurse } | % { $_.FullName } }
@@ -3704,16 +3750,7 @@
                         }
 
                         Else
-                        {
-                            If ( $Images.Count -eq 0 )
-                            {
-                                Write-Theme -Action "Exception [!]" "Images were not detected" 11 12 15
-                        
-                                Read-Host "$( "¯" * 116 )`nPress Enter to Exit"
-                        
-                                Break
-                            }
-                    
+                        {                    
                             If ( $Images.Count -eq 1 )
                             {
                                 Write-Theme -Action "Detected [+]" "( 1 ) Image, obtaining details" 11 12 15
@@ -3745,9 +3782,7 @@
                                 }
                             }
                     
-                            $Panel = @{ Title = "Hybrid-DSC Client/Server Windows Image Recycler Panel"
-                                        Depth = "" ; ID = "" ; Table = "" }
-
+                            $Panel = @{ Title = $Title ; Depth = "" ; ID = "" ; Table = "" }
 
                             If ( $Images.Count -eq 1 )
                             {
@@ -3787,7 +3822,7 @@
                                         
                                     $_.Depth  = $Store.Count
                                     $_.ID     = $Count | % { "( $( $Section[$_] ) )" }
-                                    $_.Table  = $Count | % { $Subtable[$_] } 
+                                    $_.Table  = $Count | % { $Subtable[$_] }
                                 }
                             }
 
@@ -3797,7 +3832,104 @@
 
                             Read-Host "$( "¯" * 116 )`nCarefully review these details. `nPress Enter to Continue"
                         }
-        }                                                                            #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+                    }
+
+                # ____   _________________________
+                #//¯¯\\__[____ Recycle DISM _____]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $Output      = $HybridRoot | ? { $_ -like "*Images*" } 
+                    
+                    $Output      | % { gci $_ *.wim* } | ? { ! $Null } | % { RI $_.FullName -VB }
+                    
+                    $Destination = "$Output\$( Get-Date -UFormat "%m%d%Y" )"
+
+                    $Names       = @( "ImagePath" , "Index" | % { "Source$_" } ; "ImagePath" , "Name" | % { "Destination$_" } )
+
+                    ForEach ( $I in 0..( $Store.Count - 1 ) )
+                    {
+                        $Splat = @{ 
+
+                                SourceImagePath      = $Catalog.Hybrid.Images[$I]
+                                SourceIndex          = 1
+                                DestinationImagePath = "$Destination.x$( $Store.InstallationType[$I] )_$( $Store.Version[$I] ).wim"
+                                DestinationName      = $Store.ImageName[$I]
+                                Verbose              = $True
+                        }
+
+                        $Values = $Names | % { $Splat.$_ }
+
+                        New-SubTable -Items $Names -Values $Values | % { 
+
+                            New-Table -Title "DISM -> MDT" -Depth 1 -ID "( $( $Tag[$I] ) )" -Table $_ | % {
+
+                                Write-Theme -Table $_ 11 12 15
+                            }
+                        }
+
+                        Export-WindowsImage @Splat
+                    }
+                # ____   _________________________
+                #//¯¯\\__[__ Clear MDT Content __]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $MDTOS  = $DeployRoot | ? { $_ -like "*Operating Systems*" } 
+                    
+                    $MDTOS  | % { gci $_ } | ? { ! $Null } | % { RI $_.FullName -VB -Recurse -Force }
+                    
+                    $Paths  = "Operating Systems" , "Task Sequences" | % { "$( $Root.DSDrive )\$_" } 
+                    
+                    ForEach ( $i in $Paths )
+                    {
+                        GCI $I | % { 
+                        
+                            Write-Theme -Action "Relinquishing [+]" "$I\$( $_.Name )" 12 4 15
+                            RI "$I\$( $_.Name )" -Recurse -Force }
+                    }
+
+                # ____   _________________________
+                #//¯¯\\__[____ Recycle MDT ______]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $Output | % { gci $_ *.wim* } | % { 
+
+                        $File = $_.FullName
+                    
+                        $Parent , $Child = $_.BaseName.Split( '_' )
+
+                        $Parent = $Parent.Split( 'x' )[-1]
+
+                        "Operating Systems" , "Task Sequences" | % { 
+
+                            $Splat = @{ Path     = "$( $Root.DSDrive )\$_"
+                                        Enable   = "True"
+                                        Name     = "$Parent"
+                                        Comments = "$( Get-Date -UFormat "%m%d%Y" )"
+                                        ItemType = "Folder" }
+                            
+                            Write-Theme -Action "Generating [+]" "$( $Splat.Path )\$Parent" 11 11 15
+                            
+                            New-Item @Splat | Out-Null
+
+                            $Splat | % { 
+                            
+                                $_.Path = "$( $_.Path )\$Parent"
+                                $_.Name = "$Child"
+                            }
+
+                            Write-Theme -Action "Generating [+]" "$( $Splat.Path )\$Child" 11 11 15
+
+                            New-Item @Splat | Out-Null
+                        }
+
+                        $Splat = @{ Path              = "$( $Root.DSDrive )\Operating Systems\$Parent\$Child" 
+                                    SourceFile        = $File
+                                    DestinationFolder = $Child
+                                    Move              = $True   }
+                        
+                        Write-Theme -Action "Importing [+]" "Operating System Image File" 11 11 15
+
+                        Import-MDTOperatingSystem @Splat
+                    }
+
+                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
