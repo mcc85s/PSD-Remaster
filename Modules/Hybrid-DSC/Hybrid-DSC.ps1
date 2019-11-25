@@ -608,7 +608,7 @@
                 $ID     = $Table | GM | ? { $_.MemberType -eq "NoteProperty" }
                 $Title  = $ID | ? { $_.Name -eq "Class" } | % { $Table.$( $_.Name ) }
 
-                If ( $Title.Length -gt 95 ) { $Title = "$( $Title[0..92] -Join '' ) ..." }
+                If ( $Title.Length -gt 95 ) { $Title = "$( $Title[0..92] -Join '' ) ... " }
 
                 $Title  = $Title | % { "[ $_ ]" }
                 $TT     = 108 - $Title.Length
@@ -684,7 +684,7 @@
                     {
                         $Item."Item:$IX" | % { $Key = $_.ID ; $Val = $_.Value }
                         $Key = $( If ( $Key.Length -gt 20 ) { "$( $Key[0..20] -join '' ) ... " } Else { "$( $M2[ ( 25 - $Key.Length ) ])$Key" } )
-                        $Val = $( If ( $Val.Length -gt 75 ) { "$( $Val[0..75] -join '' ) ... " } Else { "$Val$( $M2[ ( 80 - $Val.Length ) ])" } )
+                        $Val = $( If ( $Val.Length -gt 74 ) { "$( $Val[0..74] -join '' ) ... " } Else { "$Val$( $M2[ ( 80 - $Val.Length ) ])" } )
 
                         $ST.Add( $ZX , @( $L[ $ZX % 2 ] , $Key , " : " , $Val , $R[ $ZX % 2 ] ) );
                         $FG.Add( $ZX , @( 0 , 2 , 1 , 2 , 0 ) )
@@ -2319,6 +2319,14 @@
                 "$( $Root.Base )\$_" | % { If ( ( Test-Path $_ ) -ne $True ) { NI $_ -ItemType Directory } Else { GI $_ } }
             }
 
+            $ENV:PSModulePath.Split( ';' ) | ? { GCI $_ -Recurse "*Hybrid-DSC*" } | % { "$_\Hybrid-DSC" } | % { 
+
+                ForEach ( $I in "Graphics" , "Map" , "Control" )
+                {
+                    "$_\$I.zip" | % { Expand-Archive -Path $_ -DestinationPath "$( $Base )\Hybrid" }
+                }
+            }
+
             $Registry     = Resolve-UninstallList
 
             $Base         = "$( $Root.Base )\Tools" | % { If ( ( Test-Path $_ ) -ne $True ) { NI $_ -ItemType Directory } Else { GI $_ } } | % { $_.FullName }
@@ -2675,7 +2683,9 @@
             If ( Test-Path $Code.Directory )
             {
                 Write-Theme -Action "Exception [!]" "Directory must not exist, breaking" 11 12 15
+                
                 Read-Host "Press Enter to Return"
+                
                 Break
             }
 
@@ -2718,6 +2728,7 @@
             }
 
             # Create the PSDrive/MDTPersistent Drive
+            
             $NDR = @{   Name        = $Code.DSDrive.Replace( ':' , '' )
                         PSProvider  = "MDTProvider"
                         Root        = $Code.Directory
@@ -2728,6 +2739,7 @@
             NDR @NDR | Add-MDTPersistentDrive -VB
 
             # Scaffold Hybrid-DSC Deployment Share Root Settings, Copy Designated/Default Background & Logo
+            
             $Code | % { 
 
                 $DSC = "$( $_.Directory )\$( $_.Company )"
@@ -2744,6 +2756,7 @@
                 $_.Background , $_.Logo | % { CP $_ $RES }
 
                 $_.Background = "$RES\$( $_.Background.Split('\')[-1] )"
+                
                 $_.Logo       = "$RES\$( $_.Logo.Split('\')[-1] )"
             }
 
@@ -2755,13 +2768,18 @@
             Else
             {
                 Write-Theme -Action "Exception [!]" "PSDrive/MDTPersistent Drive Creation Failed" 12 4 15
+
                 Read-Host "Press Enter to Exit"
+                
                 Break
             }
     
             # Plant Tree For Deployment Share Root Settings
+
             $Root = Resolve-HybridDSC -Root | % { $_.Root }
+
             $Tree = "Hybrid-DSC\$( $Code.Company )\$( $Code.DSDrive.Replace( ':' , '' ) )"
+
             $Rec  = $Tree.Split( '\' )
 
             $Path = $Root
@@ -2863,6 +2881,13 @@
                 GRSMBA -Name $_ -AccountName "EVERYONE" -AccessRight Change -Force
                 RKSMBA -Name $_ -AccountName "CREATOR OWNER" -Force 
             }
+
+            $Control = @{ Path        = GCI ( Resolve-HybridDSC -Root | % { $_.Tree } ) "*Control*" -Recurse | % { $_.FullName }
+                          Destination = $Share | % { gci $_.Directory "*(2)Images*" -Recurse } | % { $_.FullName }
+                          Recurse     = $True 
+                          Force       = $True }
+
+            CP @Control
 
             If ( $Code.Legacy -eq "Selected" )
             {
@@ -3707,10 +3732,10 @@
                         {
                             GSMBS | ? { $_.Path -eq $X.Path } | % {
                             
-                                $Splat = @{ Name        = $Y.Name
+                                $Splat = @{ Name        = $X.Name
                                             PSProvider  = "MDTProvider"
                                             Root        = $_.Path
-                                            Description = $Y.Description 
+                                            Description = $X.Description 
                                             NetworkPath = "\\$ENV:ComputerName\$( $_.Path )" }
                             }
                             
@@ -3831,6 +3856,8 @@
                             Write-Theme -Table $Table 11 12 15
 
                             Read-Host "$( "¯" * 116 )`nCarefully review these details. `nPress Enter to Continue"
+
+                            $DeployRoot | ? { $_ -like "*Operating Systems*" } | % { GCI $_ } | ? { $_ -ne $Null } | % { RI $_.FullName -Recurse -Force -VB }
                         }
                     }
 
@@ -3884,7 +3911,6 @@
                             Write-Theme -Action "Relinquishing [+]" "$I\$( $_.Name )" 12 4 15
                             RI "$I\$( $_.Name )" -Recurse -Force }
                     }
-
                 # ____   _________________________
                 #//¯¯\\__[____ Recycle MDT ______]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -3926,9 +3952,153 @@
                         
                         Write-Theme -Action "Importing [+]" "Operating System Image File" 11 11 15
 
-                        Import-MDTOperatingSystem @Splat
+                        Import-MDTOperatingSystem @Splat | Out-Null
+                    }
+                # ____   _________________________
+                #//¯¯\\__[____ Task Sequences ___]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $Control = gci $Output "*Control*" | % { $_.FullName }
+
+                    $TMPL    = $( If ( $Root.Remaster -eq "-" ) { "MDT" } If ( $Root.Legacy -eq "-" ) { "PSD" } ) 
+
+                    ForEach ( $I in "Client" , "Server" )
+                    {
+                        $TS , $OS = "Task Sequences" , "Operating Systems" | % { "$( $Root.DSDrive )\$_\$I" }
+
+                        $Build = GCI $OS | % { $_.Name }
+
+                        $List = @( )
+                        $GUID = @( )
+
+                        $Swap = GCI "$OS\$Build" 
+                        
+                        $Swap | % { $List += $_.Name ; $GUID += $_.GUID }
+
+                        ForEach ( $J in 0..( $List.Count - 1 ) )
+                        {
+                            $HEX = "$Control\$TMPL$I`Mod.xml"
+
+                            $TEX = GC $HEX
+
+                            0..( $TEX.Count - 1 ) | % {
+
+                                If ( $TEX[$_] -like "*OSGUID*" )
+                                { 
+                                    $TEX[$_] = ( $TEX[$_] | % { $_.Split( '{' )[0] , $GUID[$J] , $_.Split( '}' )[1] } ) -join ''
+                                }
+                            }
+
+                            SC $HEX -Value $TEX
+
+                            $List[$J] | % { 
+
+                                If ( $_ -like "*Server*" )
+                                {
+                                    $Name = "DC2016"
+                                }
+
+                                If ( $_ -notlike "*Server*" )
+                                {
+                                    $Arch = $( If ( $_ -like "*x64*" ) { "64" } If ( $_ -like "*x86*" ) { "86" } )
+                                    
+                                    $Name = "10$( If ( $_ -like "*Educ*" ) { "E" } If ( $_ -like "*Home*" ) { "H" } If ( $_ -like "*Pro*" ) { "P" } )$Arch"
+                                }
+                            }
+
+                            $Splat = @{ Path                = "$TS\$Build"
+                                        Name                = "$Name"
+                                        Template            = "$HEX"
+                                        Comments            = "Secure Digits Plus LLC [ Fighting Entropy ]"
+                                        ID                  = "$Name"
+                                        Version             = "1.0"
+                                        OperatingSystemPath = "$OS\$Build\$( $List[$J] )"
+                                        FullName            = $Root.LMCred_User
+                                        OrgName             = $Root.Company
+                                        HomePage            = $Root.WWW
+                                        AdminPassword       = $Root.LMCred_Pass }
+
+                            Write-Theme -Action "Importing [+]" "Task Sequence" 11 12 15
+
+                            Import-MDTTaskSequence @Splat | Out-Null
+
+                        }
                     }
 
+                    Write-Theme -Action "Imported [+]" "Task Sequences" 11 12 15
+                # ____   _________________________
+                #//¯¯\\__[____ Share Settings ___]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $Names  = @( "Comments" , "MonitorHost" ; 64 , 86 | % { "Boot.x$_" } | % { "$_.GenerateLiteTouchISO" ; "$_.LiteTouch" | % { 
+                                 "$_`WIMDescription" , "$_`ISOName" } ; "$_.BackgroundFile" } )
+
+                    $Values = @( "Secure Digits Plus LLC : Fighting Entropy ($( [ Char ]960 ))" , 
+                                 $Root.Server ; 64 , 86 | % { "True" ; "$( $Root.Company ) (x$_)" | % { "$_" , "$_.iso" } ; $Root.Background } )
+
+                    0..9 | % { 
+                    
+                        SP $Root.DSDrive -Name $Names[$_] -Value $Values[$_]
+                        Write-Host ( "_" * 116 ) -F 10
+                        Write-Theme -Function "$( $Names[$_] )" 11 11 15
+                        Write-Theme -Action "Configured [+]" "$( $Values[$_] )" 11 11 15
+                        Write-Host ( "¯" * 116 ) -F 10
+                    }
+                # ____   _________________________
+                #//¯¯\\__[__ Enable Monitoring __]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    ( Disable-MDTMonitorService -EA 0 )
+                
+                    $Splat = @{ EventPort = 9800
+                                DataPort  = 9801 }
+
+                    Enable-MDTMonitorService @Splat
+
+                    $CTRL = $DeployRoot | ? { $_ -like "*Control*" }
+
+                # ____   _________________________
+                #//¯¯\\__[____ Bootstrap INI ____]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $BootStrap       = @{ Settings = @{ Priority           = "Default" } 
+                                          Default  = @{ DeployRoot         = $Provision.NetworkPath
+                                                        UserID             = $Root.LMCred_User 
+                                                        UserPassword       = $Root.LMCred_Pass 
+                                                        UserDomain         = $Root.Branch 
+                                                        SkipBDDWelcome     = "YES" } }
+
+                    $Splat = @{ Path      = $CTRL
+                                Name      = "Bootstrap.ini"
+                                Value     = $Bootstrap
+                                Encoding  = "UTF8"
+                                UTF8NoBom = $True }
+
+                    Export-Ini @Splat
+                # ____   _________________________
+                #//¯¯\\__[_ CustomSettings INI __]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $CustomSettings  = @{ Settings = @{ Priority           = "Default" 
+                                                        Properties         = "MyCustomProperty" } 
+                                          Default  = @{ _SMSTSOrgName      = "$( $Root.Company )" 
+                                                        OSInstall          = "Y" 
+                                                        SkipCapture        = "NO" 
+                                                        SkipAdminPassword  = "YES" 
+                                                        SkipProductKey     = "YES" 
+                                                        SkipComputerBackup = "NO" 
+                                                        SkipBitLocker      = "YES" 
+                                                        KeyboardLocale     = "en-US" 
+                                                        TimeZoneName       = "$( ( Get-TimeZone ).ID )" 
+                                                        EventService       = "http://$( $Root.Server ):9800" } }
+
+                    $Splat | % { $_.Name  = "CustomSettings.ini"
+                                 $_.Value = $CustomSettings }
+
+                    Export-Ini @Splat
+                # ____   _________________________
+                #//¯¯\\__[_____ PXE Graphics ____]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    "computer.png" , "header-image.png" | % { 
+                    
+                        CP "$Control\$_" "$CTRL\$_" -Force 
+                        Write-Theme -Action "Copied [+]" "PXE Graphic ( $_ )" 11 11 15
+                    }
                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
