@@ -3856,14 +3856,14 @@
                             Write-Theme -Table $Table 11 12 15
 
                             Read-Host "$( "¯" * 116 )`nCarefully review these details. `nPress Enter to Continue"
-
-                            $DeployRoot | ? { $_ -like "*Operating Systems*" } | % { GCI $_ } | ? { $_ -ne $Null } | % { RI $_.FullName -Recurse -Force -VB }
                         }
                     }
 
                 # ____   _________________________
                 #//¯¯\\__[____ Recycle DISM _____]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $DeployRoot | ? { $_ -like "*Operating Systems*" } | % { GCI $_ } | ? { $_ -ne $Null } | % { RI $_.FullName -Recurse -Force -VB }
+    
                     $Output      = $HybridRoot | ? { $_ -like "*Images*" } 
                     
                     $Output      | % { gci $_ *.wim* } | ? { ! $Null } | % { RI $_.FullName -VB }
