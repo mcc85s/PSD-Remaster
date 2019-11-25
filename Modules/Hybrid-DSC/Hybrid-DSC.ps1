@@ -2090,6 +2090,9 @@
             [ Parameter ( Position = 1 , Mandatory = $True , ValueFromPipeline = $True ) ] [ String ] $Domain  ,
             [ Parameter ( Position = 2 , ValueFromPipeline = $True ) ]                     [ String ] $NetBIOS )
 
+
+        IEX "Using Namespace System.DirectoryServices"
+
         $MSG   = ( 0 , "Username" ) , ( 1 , "Password" ) , ( 2 , "Confirmation" ) , ( 3 , "Authentication" ) | % {
             
             $w , $X = $_[0..1]
@@ -3623,14 +3626,14 @@
                 # ____   _________________________
                 #//¯¯\\__[___ Provisional Root __]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    $Root      = Resolve-HybridDSC -Share
+                    $Root                  = Resolve-HybridDSC -Share
 
-                    $Section   = 0..2
-                    $SubTable  = 0..2
+                    $Section               = 0..2
+                    $SubTable              = 0..2
 
-                    $Root      | % { 
+                    $Root                  | % { 
 
-                        $Provision = [ PSCustomObject ]@{ 
+                        $Provision         = [ PSCustomObject ]@{ 
             
                             Name           = $_.Company
                             Controller     = $_.Server
@@ -3900,7 +3903,7 @@
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                     $MDTOS  = $DeployRoot | ? { $_ -like "*Operating Systems*" } 
                     
-                    $MDTOS  | % { gci $_ } | ? { ! $Null } | % { RI $_.FullName -VB -Recurse -Force }
+                    $MDTOS  | % { GCI $_ } | ? { ! $Null } | % { RI $_.FullName -VB -Recurse -Force }
                     
                     $Paths  = "Operating Systems" , "Task Sequences" | % { "$( $Root.DSDrive )\$_" } 
                     
@@ -3914,7 +3917,7 @@
                 # ____   _________________________
                 #//¯¯\\__[____ Recycle MDT ______]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    $Output | % { gci $_ *.wim* } | % { 
+                    $Output | % { GCI $_ *.wim* } | % { 
 
                         $File = $_.FullName
                     
@@ -4068,7 +4071,8 @@
                                 Name      = "Bootstrap.ini"
                                 Value     = $Bootstrap
                                 Encoding  = "UTF8"
-                                UTF8NoBom = $True }
+                                UTF8NoBom = $True 
+                                Force     = $True }
 
                     Export-Ini @Splat
                 # ____   _________________________
@@ -4099,6 +4103,114 @@
                         CP "$Control\$_" "$CTRL\$_" -Force 
                         Write-Theme -Action "Copied [+]" "PXE Graphic ( $_ )" 11 11 15
                     }
+                # ____   _________________________
+                #//¯¯\\__[____ Bridge Script ____]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    Resolve-HybridDSC -Domain | % { 
+    
+                        $NetBIOS    = $_.NetBIOS
+                        $DNS        = $_.Branch
+                        $Domain     = $_.Domain 
+                    }
+
+                    Resolve-HybridDSC -Share | % {
+
+                        $Company    = $_.Company 
+                        $Server     = $_.Server
+                        $DeployRoot = "\\$Server\$( $_.Samba )"
+                        $HybridRoot = "$DeployRoot\$( $_.Company )"
+                    }
+
+                    If ( $Domain -eq $True )
+                    {
+                        $DCCred = Invoke-Login -DC ( $Root.Server ) -Domain $DNS
+                    }
+
+                    If ( $Domain -eq $False )
+                    {
+                        Do
+                        {
+                            Add-Type -AssemblyName System.DirectoryServices.AccountManagement
+
+                            $DCCred = Get-Credential
+        
+                            $X      = $DCCred | % { Get-LocalUser -Name $_.UserName -EA 0 }
+        
+                            $Y      = [ System.DirectoryServices.AccountManagement.PrincipalContext ]::New( "Machine" , $ENV:ComputerName ) | % { 
+        
+                                $_.ValidateCredentials( $DCCred.UserName , $DCCred.GetNetworkCredential().Password ) | ? { $True }
+                            }
+
+                            If ( ( $X -eq $Null ) -or ( $X.Enabled -ne $True ) -or ( $Y -eq $False ) )
+                            {
+                                Switch( $Host.UI.PromptForChoice( "Invalid Credential" , "Attempt login again?" , 
+                                [ System.Management.Automation.Host.ChoiceDescription [] ]@( "&Yes" , "&No" ) , [ Int ] 0 ) )
+                                {
+                                    0 { $DCCred = $Null } 1 { $Exit = 1 }
+                                }
+                            }
+        
+                            Else
+                            {
+                                Return $DCCred
+                            }
+                        }
+
+                        Until ( ( $DCCred -ne $Null ) -or ( $Exit -eq 1 ) )
+                    }
+
+                    $RootVar         = [ PSCustomObject ]@{
+                        Company      = $Company
+                        NetworkShare = $DeployRoot
+                        Server       = $Server
+                        DomainUser   = $DCCred.UserName
+                        DomainPass   = $DCCred.GetNetworkCredential().Password
+                        Website      = $Root.WWW
+                        Phone        = $Root.Phone
+                        Hours        = $Root.Hours
+                        Logo         = GCI $HybridRoot "*$( $Root.Logo.Split('\')[-1] )*" -Recurse | % { $_.FullName }
+                        Background   = GCI $HybridRoot "*$( $Root.Background.Split('\')[-1] )*" -Recurse | % { $_.FullName }
+                        Certificate  = ""
+                        Domain       = $DNS
+                        LocalUser    = $Root.LMCred_User
+                        LocalPass    = $Root.LMCred_Pass
+                        Proxy        = $Root.IIS_Proxy
+                        NetBIOS      = $NetBIOS
+                        Directory    = $Root.Directory
+                    }
+
+                    $Return = @"
+
+                    Using Namespace System.Security.Principal
+                    Using Namespace System.Management.Automation
+    
+                    CMDKEY /add:$Server /user:$( $DCCred.Username ) /pass:$( $DCCred.GetNetworkCredential().Password )
+
+                    GCIM Win32_OperatingSystem | % { `$_.Caption } | % {
+        
+                        `$Type = "Initialize-Hybrid`$( If ( `$_ -like "*Server*" ) { "Server" } If ( `$_ -like "*Client*" ) { "Client" }  ).ps1"
+                    }
+
+                    `$Script = $HybridRoot | % { GCI `$_ "*`$Type*" -Recurse } | % { `$_.FullPath }
+
+                    CP `$Script "`$ENV:Temp\$Company"
+
+                    `$Local  = "`$ENV:Temp\`$Company"
+
+                    SC -Path "`$ENV:Temp\$Company\RootVar.ini" -Value $( $RootVar | ConvertTo-JSON )
+
+                    "`$home\Desktop\`$Hybrid.ps1" | ? { ( Test-Path `$_ ) -eq `$True } | % { RI `$_ -Force }
+                    SAPS PowerShell -Verb RunAs -Args "-File '`$Home\Desktop\`$Hybrid`$Type.ps1' -Args Set-ExecutionPolicy Bypass -Scope CurrentUser -Force"
+"@
+                    SC -Path "$DeployRoot\Scripts\Initialize-Hybrid.ps1" -Value $Return -Force
+                # ____   _________________________
+                #//¯¯\\__[__ Update Boot Images _]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    Update-MDTDeploymentShare -Path $Root.DSDrive -Force -VB
+
+
+
+
                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
