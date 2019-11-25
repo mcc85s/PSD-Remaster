@@ -54,7 +54,7 @@
             
                 If ( $_ -eq $Null ) 
                 { 
-                    Write-Theme -Action "Exception [!]" "Hybrid-DSC Module Resources Missing" 11 12 15 
+                    Write-Theme -Action "Exception [!]" "Hybrid-DSC Module Resources Missing"
                 }
             
                 If ( $_ -ne $Null )
@@ -109,7 +109,7 @@
             
                 If ( $Child.Count -gt 1 )
                 {
-                    Write-Theme -Action "Option [~]" "Multiple Companies Found" 11 12 15
+                    Write-Theme -Action "Option [~]" "Multiple Companies Found"
 
                     $C       = 0..( $Child.Count - 1 )
                     $Options = $C | % { "`n[$_] $( $Child[$_] )" }
@@ -129,7 +129,7 @@
             
                 If ( $Provision.Count -gt 1 )
                 {
-                    Write-Theme -Action "Option [~]" "Multiple Drives Found" 11 12 15
+                    Write-Theme -Action "Option [~]" "Multiple Drives Found"
 
                     $C       = 0..( $Provision.Count - 1 )
                     $Options = $C | % { "`n[$_] $( $Provision[$_] )" }
@@ -336,7 +336,7 @@
             [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "1" ) ]
             [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "2" ) ]
             [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "3" ) ]
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "4" ) ][    Int ]   $Edge = 10 ,
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "4" ) ][    Int ]   $Edge = 11 ,
             [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = "0" ) ]
             [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = "1" ) ]
             [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = "2" ) ]
@@ -346,7 +346,7 @@
             [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = "1" ) ]
             [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = "2" ) ]
             [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = "3" ) ]
-            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = "4" ) ][    Int ]   $Font = 14 ,
+            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = "4" ) ][    Int ]   $Font = 15 ,
             [ Parameter ( Position = 6 , ValueFromPipeline = $True , ParameterSetName = "0" ) ]
             [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = "1" ) ]
             [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = "2" ) ]
@@ -875,7 +875,7 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Start-PingSweep  # Gets actual used network host addresses _________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        Write-Theme -Action "Scanning [~]" "Network Host Range" 11 12 15
+        Write-Theme -Action "Scanning [~]" "Network Host Range"
 
         $Stopwatch = [ System.Diagnostics.Stopwatch ]::StartNew()
         
@@ -907,7 +907,7 @@
 
         $Stopwatch.Stop()
 
-        Write-Theme -Action "Complete [+]" "$( $Stopwatch.Elapsed ) / Hosts Found : [$( $Return.Success.Count )]" 11 12 15
+        Write-Theme -Action "Complete [+]" "$( $Stopwatch.Elapsed ) / Hosts Found : [$( $Return.Success.Count )]"
 
         Return $Return
                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
@@ -944,11 +944,11 @@
 
         $List = @( ) ; ForEach ( $i in 0..34 ) { $List += [ PSCustomObject ]@{ ID = $ID[$i] ; Type = $Type[$i] ; Service = $Service[$i] } }
 
-        Write-Theme -Action "Initiating [~]" "NetBIOS Scanner" 11 12 15
+        Write-Theme -Action "Initiating [~]" "NetBIOS Scanner"
 
         ForEach ( $I in ( 0..( $IP.Count - 1 ) ) ) 
         {
-            Write-Theme -Function "Host # $( $IP[$I] )" 11 12 15
+            Write-Theme -Function "Host # $( $IP[$I] )"
 
             $DNS = Resolve-DnsName -Name $IP[$I] -EA 0 | % { $_.Namehost }
                 
@@ -1064,11 +1064,11 @@
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         Test-Connection 1.1.1.1 -Count 1 | ? { $_ -eq $Null } | % { 
     
-            Write-Theme -Action "Exception [!]" "Not connected to the internet" 12
+            Write-Theme -Action "Exception [!]" "Not connected to the internet" 12 4 15
             Break
         }
 
-        Write-Theme -Action "Collecting [+]" "Telemetry Data / Certificate Information" 11 12 15
+        Write-Theme -Action "Collecting [+]" "Telemetry Data / Certificate Information"
 
         [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
 
@@ -1115,7 +1115,7 @@
         
         If ( $OP -eq $True )
         { 
-            Write-Theme -Action "Complete [+]" "Generating Certificate Information" 11 12 15
+            Write-Theme -Action "Complete [+]" "Generating Certificate Information"
 
             $Info | % { $_.Organization = $GUI.Company.Text 
                         $_.CommonName   = $GUI.Domain.Text  }
@@ -1266,7 +1266,7 @@
         <#[___ Display Table ____]#>
         <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
 
-        Write-Theme -Table $Table 11 12 15
+        Write-Theme -Table $Table
 
         Return $Table                                                                #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
@@ -2031,12 +2031,14 @@
 
         0..( $Item.Count - 1 ) | % { $Return += "$( $Item[$_] )`n" } ; 
 
-        $Certificate    | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                         "Certificate Panel" 11 12 15 }
-        $Login          | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                               "Login Panel" 11 12 15 }
-        $NewAccount     | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                         "New Account Panel" 11 12 15 }
-        $HybridDSCPromo | ? { $_ } | % { Write-Theme -Action "Loaded [+]"                    "Hybrid-DSC Promo Panel" 11 12 15 }
-        $DSCRoot        | ? { $_ } | % { Write-Theme -Action "Loaded [+]"     "Desired State Controller Root Install" 11 12 15 }
-        $ProvisionDSC   | ? { $_ } | % { Write-Theme -Action "Loaded [+]" "Provision Desired State Controller Server" 11 12 15 }
+        $X = $( $Certificate    | ? { $_ } | % {                         "Certificate Panel" }
+                $Login          | ? { $_ } | % {                               "Login Panel" }
+                $NewAccount     | ? { $_ } | % {                         "New Account Panel" }
+                $HybridDSCPromo | ? { $_ } | % {                    "Hybrid-DSC Promo Panel" }
+                $DSCRoot        | ? { $_ } | % {     "Desired State Controller Root Install" }
+                $ProvisionDSC   | ? { $_ } | % { "Provision Desired State Controller Server" } )
+
+        Write-Theme -Action "Loaded [+]" "$X"
         
         Return $Return                                                           
                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
@@ -2059,7 +2061,7 @@
     
             $Line = $Array[$_].Split(' ') | ? { $_.Length -ne 0 } 
 
-            $Collect += $Line[( 0..( $Line.Count - 1 ) | ? { $Line[$_] -eq "Name" }) + 2 ] 
+            $Collect += $Line[( 0..( $Line.Count - 1 ) | ? { $Line[$_] -eq "Name" } ) + 2 ] 
         }
 
         $Return = 0..( $Collect.Count - 1 ) | % { 
@@ -2129,7 +2131,7 @@
 
         If ( $OP -eq $True )
         {
-            Write-Theme -Action "Login [+]" "Successful" 11 12 15
+            Write-Theme -Action "Login [+]" "Successful"
             Return [ PSCredential ]::New( $GUI.Username.Text , $GUI.Password.SecurePassword )
         }
 
@@ -2188,7 +2190,7 @@
 
             GI $F
 
-            Write-Theme -Action "Completed [+]" "$( $MyInvocation.MyCommand.Name ) $F" 15 11 10
+            Write-Theme -Action "Completed [+]" "$( $MyInvocation.MyCommand.Name ) $F"
         }
 
         End
@@ -2203,11 +2205,7 @@
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
        [ CmdletBinding () ] Param ( [ String ] $Path , [ FileSystemAccessRule ] $ACL ) 
 
-            Get-ACL -Path $Path | % { 
-            
-                $_.AddAccessRule( $ACL )
-                Set-ACL -Path $Path -AclObject $_ 
-            }
+            Get-ACL -Path $Path | % { $_.AddAccessRule( $ACL ) ; Set-ACL -Path $Path -ACLObject $_ }
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
@@ -2279,12 +2277,12 @@
             {
                 NI $Root.Base -ItemType Directory
 
-                Write-Theme -Action "Created [+]" "Installation Directory" 11 12 15
+                Write-Theme -Action "Created [+]" "Installation Directory"
             }
 
             If ( Test-Path $Root.Base )
             {
-                Write-Theme -Action "Detected [+]" "Installation Directory" 11 12 15
+                Write-Theme -Action "Detected [+]" "Installation Directory"
             }
 
             Start $Root.Base
@@ -2295,7 +2293,7 @@
             
             $Base | % { If ( Test-Path $_ ) { RI $_ } }
 
-            Write-Theme -Action "Creating [~]" "Registry Entry for Installation Path" 11 12 15
+            Write-Theme -Action "Creating [~]" "Registry Entry for Installation Path"
 
             NI -Path $Root.Registry -Name $Root.Vendor 
 
@@ -2305,7 +2303,7 @@
 
             SP @Set
                 
-            Write-Theme -Action "Created [+]" "$( $Set.Name )" 11 12 15
+            Write-Theme -Action "Created [+]" "$( $Set.Name )"
 
             $Set = @{ Path  = $Base
                       Name  = "Installation Date"
@@ -2313,9 +2311,9 @@
             
             SP @Set
 
-            Write-Theme -Action "Created [+]" "$( $Set.Name )" 11 12 15
+            Write-Theme -Action "Created [+]" "$( $Set.Name )"
 
-            Write-Theme -Action "Installing [~]" "Hybrid-DSC Root Structure" 11 12 15
+            Write-Theme -Action "Installing [~]" "Hybrid-DSC Root Structure"
 
             "Hybrid" , "Libraries" , "Scripts" , "Templates" , "Install" | % { 
             
@@ -2372,7 +2370,7 @@
                                                                                            "/quiet /norestart" ) ) # ~  4s
             $ETA = "2m" , "10m" , "4s" | % { "Estimated Time [~] $_" }
         
-            Write-Theme -Action "Querying [~]" "Registry for installed applications" 11 12 15
+            Write-Theme -Action "Querying [~]" "Registry for installed applications"
 
             0..2      | % {
 
@@ -2384,18 +2382,18 @@
 
                 If ( ( $Item -ne $Null ) -and ( $Item.DisplayVersion -ge $X[1] ) )
                 {
-                    Write-Theme -Action "Confirmed [+]" "$( $X[3] ) meets minimum requirements" 11 12 15
+                    Write-Theme -Action "Confirmed [+]" "$( $X[3] ) meets minimum requirements"
                 }
 
                 ElseIf ( ( $Item -eq $Null ) -or ( $Item.DisplayVersion -lt $X[1] ) )
                 {
-                    Write-Theme -Action "Collecting [~]" "$( $X[3] )" 11 12 15
+                    Write-Theme -Action "Collecting [~]" "$( $X[3] )"
                 
                     If ( ! ( Test-Path $X[4] ) )
                     {
                         NI $X[4] -ItemType Directory
                     
-                        Write-Theme -Action "Created [+]" "$( $X[4] )" 11 12 15
+                        Write-Theme -Action "Created [+]" "$( $X[4] )"
                     }
 
                     IPMO BitsTransfer
@@ -2413,9 +2411,9 @@
                                 WorkingDirectory = $X[4]
                                 Passthru         = $True }
 
-                    Write-Theme -Action "Installing [+]" "$( $X[3] )" 11 12 15
+                    Write-Theme -Action "Installing [+]" "$( $X[3] )"
                     
-                    Write-Theme -Function "ETA $T" 11 12 15 
+                    Write-Theme -Function "ETA $T"
 
                     $Time = [ System.Diagnostics.Stopwatch ]::StartNew()
 
@@ -2441,14 +2439,14 @@
 
                     $Time.Stop()
 
-                    Write-Theme -Action "Installed [+]" "$( $X[3] )" 11 12 15
+                    Write-Theme -Action "Installed [+]" "$( $X[3] )"
 
-                    Write-Theme -Function "$( $Time.Elapsed )" 11 12 15 
+                    Write-Theme -Function "$( $Time.Elapsed )"
 
                 }
             }
 
-            Write-Theme -Action "Verified [+]" "PSD/MDT Dependencies" 11 12 15
+            Write-Theme -Action "Verified [+]" "PSD/MDT Dependencies"
 
             IPMO BitsTransfer
              
@@ -2473,7 +2471,7 @@
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
        
         GP "HKLM:\Software\Microsoft\Deployment 4" | % { GCI $_.Install_Dir "*Toolkit.psd1" -Recurse } | % { IPMO $_.FullName -VB }
-        Write-Theme -Action "Module [+]" "Microsoft Deployment Toolkit" 11 12 15 
+        Write-Theme -Action "Module [+]" "Microsoft Deployment Toolkit"
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
@@ -2685,7 +2683,7 @@
         {   
             If ( Test-Path $Code.Directory )
             {
-                Write-Theme -Action "Exception [!]" "Directory must not exist, breaking" 11 12 15
+                Write-Theme -Action "Exception [!]" "Directory must not exist, breaking"
                 
                 Read-Host "Press Enter to Return"
                 
@@ -2698,7 +2696,7 @@
 
                 If ( $? -eq $True )
                 {
-                    Write-Theme -Action "Successful [+]" "Directory Created" 11 12 15
+                    Write-Theme -Action "Successful [+]" "Directory Created"
                 }
 
                 Else
@@ -2720,7 +2718,7 @@
 
             If ( $? -eq $True )
             {
-                Write-Theme -Action "Successful [+]" "Samba Share Created" 11 12 15
+                Write-Theme -Action "Successful [+]" "Samba Share Created"
             }
 
             Else
@@ -2765,7 +2763,7 @@
 
             If ( $? -eq $True )
             {
-                Write-Theme -Action "Successful [+]" "PSDrive/MDTPersistent Drive Created" 11 12 15
+                Write-Theme -Action "Successful [+]" "PSDrive/MDTPersistent Drive Created"
             }
 
             Else
@@ -2814,7 +2812,7 @@
 
             If ( $Code.Remaster -eq "Selected" )
             {
-                Write-Theme -Action "Creating" "[+] PowerShell [ Deployment / Development ] Share" 11 12 15
+                Write-Theme -Action "Creating" "[+] PowerShell [ Deployment / Development ] Share"
                     
                 $Source   = Resolve-HybridDSC -Root | % { $_.Tree }
                 $Remaster = GCI $Source "*PSD*" -Recurse | % { $_.FullName }
@@ -2875,7 +2873,7 @@
 
             }
 
-            Write-Theme -Action "Reducing [~]" "Permissions Hardening on $( $Code.Samba )" 11 12 15
+            Write-Theme -Action "Reducing [~]" "Permissions Hardening on $( $Code.Samba )"
 
             "Users" , "Administrators" , "SYSTEM" | % { ICACLS $W /Grant "$_`:(OI)(CI)(RX)" }
 
@@ -2894,12 +2892,12 @@
 
             If ( $Code.Legacy -eq "Selected" )
             {
-                Write-Theme -Action "Complete [+]" "Legacy MDT Installed" 11 12 15
+                Write-Theme -Action "Complete [+]" "Legacy MDT Installed"
             }
             
             If ( $Code.Remaster )
             {
-                Write-Theme -Action "Complete [+]" "Hybrid-DSC/PSD Installed" 11 12 15
+                Write-Theme -Action "Complete [+]" "Hybrid-DSC/PSD Installed"
             }
                   
             If ( $Code.IIS_Install -eq "Selected" )
@@ -2953,11 +2951,11 @@
             
                     "WAS"         | % { "$_" , "$_-Process-Model" , "$_-Config-APIs" } )
 
-                    Write-Theme -Action "Checking [~]" "IIS / Windows Features" 11 12 15
+                    Write-Theme -Action "Checking [~]" "IIS / Windows Features"
 
                     Get-WindowsFeature | ? { $_.Name -in $Web -and $_.InstallState -ne "Installed" } | % {
 
-                        Write-Theme -Action "Installing [~]" "Installing $( $_.Name )" 11 12 15
+                        Write-Theme -Action "Installing [~]" "Installing $( $_.Name )"
     
                         Install-WindowsFeature -Name $_.Name -IncludeAllSubFeature -IncludeManagementTools
         
@@ -2967,11 +2965,11 @@
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                     IPMO WebAdministration
         
-                    Write-Theme -Action "Loaded [~]" "WebAdministration Module" 11 12 15
+                    Write-Theme -Action "Loaded [~]" "WebAdministration Module"
 
                     Get-Website | ? { $_.Name -eq "Default Web Site" } | Stop-Website | SP "IIS:\Sites\$( $_.Name )" ServerAutoStart False
 
-                    Write-Theme -Action "Stopped [+]" "Default Web Site" 11 12 15
+                    Write-Theme -Action "Stopped [+]" "Default Web Site"
 
                     "MRxDAV" , "WebClient" | % { Get-Service -Name $_ } | % { 
         
@@ -2983,12 +2981,12 @@
                 
                             Set-Service @Service
 
-                            Write-Theme -Action "Started [+]" "$( $_.Name ) Active" 11 12 15
+                            Write-Theme -Action "Started [+]" "$( $_.Name ) Active"
                         }
             
                         Else 
                         {
-                            Write-Theme -Action "Running [+]" "$( $_.Name ) was already Active" 11 12 15
+                            Write-Theme -Action "Running [+]" "$( $_.Name ) was already Active"
                         }
                     }
                 # ____   _________________________
@@ -2996,14 +2994,14 @@
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                     If ( ( Get-IISAppPool -Name $Site.Pool ) -ne $Null )
                     { 
-                        Write-Theme -Action "Removing [!]" "Prior Application Pool" 11 12 15
+                        Write-Theme -Action "Removing [!]" "Prior Application Pool"
             
                         Remove-WebAppPool -Name $Site.Pool
                     }
 
                     New-WebAppPool -Name $Site.Pool -Force
 
-                    Write-Theme -Action "Configuring" "[~] Application Pool Settings" 11 12 15
+                    Write-Theme -Action "Configuring" "[~] Application Pool Settings"
 
                     ( "Enable32BitAppOnWin64" , "True" ) , ( "ManagedRuntimeVersion" , "v4.0" ) , ( "ManagedPipelineMode" , "Integrated" ) | % { 
             
@@ -3016,7 +3014,7 @@
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                     If ( ( Get-WebSite -Name $Site.Name ) -ne $Null )
                     { 
-                        Write-Theme -Action "Removing [!]" "Prior Website" 11 12 15
+                        Write-Theme -Action "Removing [!]" "Prior Website"
 
                         Remove-Website -Name $Site.Name
                     }
@@ -3028,15 +3026,15 @@
 
                     New-Website @Splat
 
-                    Write-Theme -Action "Generated [+]" "IIS Web Site $( $Site.Name )" 11 12 15
+                    Write-Theme -Action "Generated [+]" "IIS Web Site $( $Site.Name )"
 
                     Start-Website -Name $Site.Name
 
-                    Write-Theme -Action "Started [+]" "IIS Web Site $( $Site.Name )" 11 12 15
+                    Write-Theme -Action "Started [+]" "IIS Web Site $( $Site.Name )"
                 # ____   _________________________
                 #//¯¯\\__[___ Set Web Binding ___]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    Write-Theme -Action "Binding [+]" "IIS Web Site $( $Site.Name )" 11 12 15
+                    Write-Theme -Action "Binding [+]" "IIS Web Site $( $Site.Name )"
 
                     $Splat = @{ Name             = $Site.Name
                                 HostHeader       = ""
@@ -3045,7 +3043,7 @@
 
                     Set-WebBinding @Splat
 
-                    Write-Theme -Action "Configured [+]" $Site.URL 11 12 15
+                    Write-Theme -Action "Configured [+]" $Site.URL
 
                     $Splat = @{ Site             = $Site.Name
                                 Name             = $Site.Host
@@ -3054,11 +3052,11 @@
 
                     New-WebVirtualDirectory @Splat
                 
-                    Write-Theme -Action "Complete [+]" "http://$( $Site.URL )" 11 12 15
+                    Write-Theme -Action "Complete [+]" "http://$( $Site.URL )"
                 # ____   _________________________
                 #//¯¯\\__[__ WebDAV Authoring ___]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    Write-Theme -Action "Configuring [~]" "WebDAV Authoring" 11 12 15
+                    Write-Theme -Action "Configuring [~]" "WebDAV Authoring"
             
                     $Splat = @{ PSPath           = $_.AppHost
                                 Location         = $_.Name
@@ -3068,11 +3066,11 @@
 
                     Set-WebConfigurationProperty @Splat
 
-                    Write-Theme -Action "Complete [~]" "WebDAV Authoring" 11 12 15
+                    Write-Theme -Action "Complete [~]" "WebDAV Authoring"
                 # ____   _________________________
                 #//¯¯\\__[____ WebDAV Rules _____]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    Write-Theme -Action "Generating [~]" "WebDAV Authoring Rules" 11 12 15
+                    Write-Theme -Action "Generating [~]" "WebDAV Authoring Rules"
             
                     $Config = $Site | % { 
             
@@ -3089,7 +3087,7 @@
                     
                     SAPS @Splat | Out-Null
                 
-                    Write-Theme -Action "Generating [~]" "WebDAV Authoring Rules" 11 12 15
+                    Write-Theme -Action "Generating [~]" "WebDAV Authoring Rules"
                 # ____   _________________________
                 #//¯¯\\__[____ Add Mime Type ____]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -3103,12 +3101,12 @@
 
                         Add-WebConfigurationProperty @Splat
                 
-                        Write-Theme -Action "Configured [+]" "[ fileExtension: '.*' ] / [ mimeType: 'Text/Plain' ]" 11 12 15
+                        Write-Theme -Action "Configured [+]" "[ fileExtension: '.*' ] / [ mimeType: 'Text/Plain' ]"
                     }
                 # ____   _________________________
                 #//¯¯\\__[__ Directory Browse ___]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    Write-Theme -Action "Enabling [+]" "Directory Browsing" 11 12 15
+                    Write-Theme -Action "Enabling [+]" "Directory Browsing"
 
                     $Splat     = @{ Filter = "/$( $Site.WebServer )/DirectoryBrowse"
                                     Name   = "Enabled"
@@ -3147,7 +3145,7 @@
         
                         $Table    =    New-Table @Panel
 
-                        Write-Theme -Table $Table 11 12 15
+                        Write-Theme -Table $Table
 
                         Set-WebConfigurationProperty @Splat
 
@@ -3176,7 +3174,7 @@
                 # ____   _________________________
                 #//¯¯\\__[_____ File System _____]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    Write-Theme -Action "Access Control [~]" "Configuring SAM / Access Control Permissions" 11 12 15
+                    Write-Theme -Action "Access Control [~]" "Configuring SAM / Access Control Permissions"
 
                     'IIS_IUSRS', 'IUSR', "IIS APPPOOL\$( $Site.Pool )" | % { 
 
@@ -3199,7 +3197,7 @@
                 # ____   _________________________
                 #//¯¯\\__[__ Strictly TLS 1.2 ___]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    Write-Theme -Action "Configuring [~]" "SCHANNEL [ SSL 2.0 - 3.0 ] & [ TLS 1.0 - 1.2 ]" 11 12 15
+                    Write-Theme -Action "Configuring [~]" "SCHANNEL [ SSL 2.0 - 3.0 ] & [ TLS 1.0 - 1.2 ]"
 
                     $SSLTLS    = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols"
 
@@ -3223,7 +3221,7 @@
                 # ____   _________________________
                 #//¯¯\\__[___ .Net FW TLS 1.2 ___]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    Write-Theme -Action "Configuring [~]" ".Net Framework [ v2.0.50727 ] & [ v4.0.30319 ]" 11 12 15
+                    Write-Theme -Action "Configuring [~]" ".Net Framework [ v2.0.50727 ] & [ v4.0.30319 ]"
 
                     ForEach ( $i in "" , "\WOW6432NODE" | % { "HKLM:\SOFTWARE$_\Microsoft\.NETFramework" } ) 
                     { 
@@ -3237,7 +3235,7 @@
                 # ____   _________________________
                 #//¯¯\\__[_ Website / DNS Setup _]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    Write-Theme -Action "Pausing [~]" "Website to modify DNS record" 11 12 15
+                    Write-Theme -Action "Pausing [~]" "Website to modify DNS record"
 
                     Stop-Website $Site.Name
 
@@ -3260,18 +3258,18 @@
 
                     Add-DNSServerResourceRecordCName @Splat
 
-                    Write-Theme -Action "Resuming [+]" "Website $( $Site.Name )" 11 12 15
+                    Write-Theme -Action "Resuming [+]" "Website $( $Site.Name )"
                     Start-Website $Site.Name
 
-                    Write-Theme -Action "Complete [+]" "Your Web Server should now be available to the internet" 11 12 15
+                    Write-Theme -Action "Complete [+]" "Your Web Server should now be available to the internet"
                     Start "http://$( $Site.URL )"
 
-                    Write-Theme -Action "Recommendation" "[!] You may want to configure SSL Certificates manually" 11 12 15
+                    Write-Theme -Action "Recommendation" "[!] You may want to configure SSL Certificates manually"
             } 
 
             If ( $Code.IIS_Skip -eq "Selected" )
             {
-                Write-Theme -Action "Bypass [~]" "MDT/IIS Server Setup" 11 12 15
+                Write-Theme -Action "Bypass [~]" "MDT/IIS Server Setup"
             }
         }
 
@@ -3299,23 +3297,23 @@
                 # ____   _________________________
                 #//¯¯\\__[___ Images Scaffold ___]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    Write-Theme -Action "Collecting [~]" "Windows Client/Server Images" 11 12 15
+                    Write-Theme -Action "Collecting [~]" "Windows Client/Server Images"
 
                     $WimImages  = $DS | ? { $_ -like "*Images*" }
 
                     0..6 | % { $X = $Tag[$_] ; "$WimImages\($_)$X" | ? { ! ( Test-Path $_ ) } | % { NI $_ -ItemType Directory ; NI "$_\_" -ItemType Directory } } 
             
-                    Write-Theme -Action "Forward Image [+]" "Scaffold Generated" 11 12 15
+                    Write-Theme -Action "Forward Image [+]" "Scaffold Generated"
                 # ____   _________________________
                 #//¯¯\\__[____ ISO Scaffold _____]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                     ForEach ( $i in @( "1607" ; 64 , 32 | % { "1909_x$_" } ) ) { "$WimImages\ISO\$I" | ? { ! ( Test-Path $_ ) } | % { NI $_ -ItemType Directory } } 
                     
-                    Write-Theme -Action "Windows Media [+]" "Scaffold Generated" 11 12 15
+                    Write-Theme -Action "Windows Media [+]" "Scaffold Generated"
                 # ____   _________________________
                 #//¯¯\\__[___ Clean Source ISO __] [ Server 2016 Eval / 1909 x86 / x64 ]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    Write-Theme -Action "Initializing [+]" "Retrieving Images Directly from Microsoft" 11 12 15
+                    Write-Theme -Action "Initializing [+]" "Retrieving Images Directly from Microsoft"
 
                     [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
 
@@ -3347,11 +3345,11 @@
                 # ____   _________________________
                 #//¯¯\\__[___ Clean Source ISO __]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    0..2 | % { $X = $Splat[$_] ; If ( ! ( Test-Path $X.Destination ) ) { Write-Theme -Action "Downloading [+]" $X.Description 11 12 15 ; Start-BitsTransfer @X } }
+                    0..2 | % { $X = $Splat[$_] ; If ( ! ( Test-Path $X.Destination ) ) { Write-Theme -Action "Downloading [+]" $X.Description ; Start-BitsTransfer @X } }
                 # ____   _________________________
                 #//¯¯\\__[___ Clean Source ISO __]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    Write-Theme -Action "Processing [+]" "ISO -> WIM File Conversion" 11 12 15
+                    Write-Theme -Action "Processing [+]" "ISO -> WIM File Conversion"
                     
                     $Dest   = ( GCI $WimImages | % { $_.FullName } )[0..6]
                     
@@ -3367,7 +3365,7 @@
 
                     0..6 | % {
 
-                        Write-Theme -Action "Extracting [~]" $DN[$_] 11 12 15
+                        Write-Theme -Action "Extracting [~]" $DN[$_]
 
                         Mount-DiskImage -ImagePath $IP[$_]
 
@@ -3413,7 +3411,7 @@
 
                     $Table = New-Table @Panel
 
-                    Write-Theme -Table $Table 11 12 15
+                    Write-Theme -Table $Table
 
                     Return $List
         }
@@ -3431,7 +3429,7 @@
                         
                             NI $_ -ItemType Directory 
 
-                            Write-Theme -Action "Created [+]" "( $I ) Update Directory " 11 12 15
+                            Write-Theme -Action "Created [+]" "( $I ) Update Directory"
                         }
 
                         ForEach ( $j in 86 , 64 )
@@ -3440,12 +3438,12 @@
                             
                                 NI $_ -ItemType Directory 
                             
-                                Write-Theme -Action "Created [+]" "( $I\x$J ) Update Directory " 11 12 15
+                                Write-Theme -Action "Created [+]" "( $I\x$J ) Update Directory"
                             }
                         }
                     }
 
-                    Write-Theme -Action "Windows Update [+]" "Scaffold Generated" 11 12 15
+                    Write-Theme -Action "Windows Update [+]" "Scaffold Generated"
 
                     $Path = GCI $DS[2] *.wim* -Recurse | % { $_.FullName }
 
@@ -3478,13 +3476,13 @@
                         
                             If ( ( $_ -ne $Null ) -and ( ( GCI $_.PackagePath *.msu* ) -ne $Null ) ) 
                             {
-                                Write-Theme -Action "Detected [+]" "Update Image Catalog" 11 12 15
+                                Write-Theme -Action "Detected [+]" "Update Image Catalog"
 
                                 $Splat = @{ ImagePath = $_.WimFile 
                                             Index     = 1
                                             Path      = $_.MountDir }
 
-                                Write-Theme -Action "Mounting [~]" "$( $_.Name )" 11 12 15
+                                Write-Theme -Action "Mounting [~]" "$( $_.Name )"
 
                                 Mount-WindowsImage @Splat
 
@@ -3492,19 +3490,19 @@
                                             LogPath     = "AddPackage.log" 
                                             IgnoreCheck = $True }
                             
-                                Write-Theme -Action "Processing [~]" "Update Packages" 11 12 15
+                                Write-Theme -Action "Processing [~]" "Update Packages"
                                     
                                 Add-WindowsPackage @Splat
 
-                                Write-Theme -Action "Cleaning [~]" "Component Store Cleanup" 11 12 15
+                                Write-Theme -Action "Cleaning [~]" "Component Store Cleanup"
 
                                 DISM /Image:$( $_.MountPath ) /Cleanup-Image /StartComponentCleanup /ResetBase
                             
-                                Write-Theme -Action "Dismounting [~]" "$( $_.Name )" 11 12 15
+                                Write-Theme -Action "Dismounting [~]" "$( $_.Name )"
 
                                 DISM /Unmount-WIM /MountDir:$( $_.MountDir ) /Commit
 
-                                Write-Theme -Action "Complete [+]" "$( $_.Name )" 11 12 15
+                                Write-Theme -Action "Complete [+]" "$( $_.Name )"
                             }
                         }
                     }
@@ -3554,7 +3552,7 @@
         $FEX[2]   | ? { ! ( Test-Path $_ ) } | % { # OEM Background Folder
     
             NI $_ -ItemType Directory
-            Write-Theme -Action "Created [+]" "OEM Background Directory" 11 12 15
+            Write-Theme -Action "Created [+]" "OEM Background Directory"
 
         }
 
@@ -3562,7 +3560,7 @@
     
             $X = $_.Split( '\' )[-1]
             NI $_ -Name $X
-            Write-Theme -Action "Created [+]" "Registry Key / $X" 11 12 15
+            Write-Theme -Action "Created [+]" "Registry Key / $X"
     
         }
 
@@ -3622,7 +3620,7 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Update-HybridDSC # Recycles *all* Deployment Share Content ________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        Write-Theme -Action "Provision Root [~]" "MDT Imaging/Task Sequence Recycler" 11 12 15
+        Write-Theme -Action "Provision Root [~]" "MDT Imaging/Task Sequence Recycler"
                 # ____   _________________________
                 #//¯¯\\__[___ Provisional Root __]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -3696,13 +3694,13 @@
 
                     $Table                 = New-Table @Panel
 
-                    Write-Theme -Table $Table 11 12 15
+                    Write-Theme -Table $Table
 
                     Read-Host "$( "¯" * 116 )`nPress Enter to Continue"
                 # ____   _________________________
                 #//¯¯\\__[__ Get Deploy/Share  __]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    Write-Theme -Action "Loading [+]" "MDT Drive Content" 11 12 15
+                    Write-Theme -Action "Loading [+]" "MDT Drive Content"
 
                     Import-MDTModule
 
@@ -3767,21 +3765,21 @@
                                      Images = $DeployRoot | ? { $_ -like "*Operating System*" } | % { gci $_ *.wim* -Recurse } | % { $_.FullName } }
                     }
 
-                    $Catalog    | % { $_.Hybrid , $_.Deploy } | % { 
+                    $Catalog    | % { $_.Deploy , $_.Hybrid } | % { 
 
                         $Title  = $_.Title 
                         $Images = $_.Images
                         
                         If ( $Images -eq $Null )
                         {
-                            Write-Theme -Action "Not Detected [!]" "$Title" 11 12 15
+                            Write-Theme -Action "Not Detected [!]" "$Title"
                         }
 
                         Else
                         {                    
                             If ( $Images.Count -eq 1 )
                             {
-                                Write-Theme -Action "Detected [+]" "( 1 ) Image, obtaining details" 11 12 15
+                                Write-Theme -Action "Detected [+]" "( 1 ) Image, obtaining details"
                         
                                 $Count      = 0
 
@@ -3790,7 +3788,7 @@
 
                             If ( $Images.Count -gt 1 ) 
                             { 
-                                Write-Theme -Action "Detected [+]" "( $( $Images.Count ) ) Images, obtaining details" 11 12 15
+                                Write-Theme -Action "Detected [+]" "( $( $Images.Count ) ) Images, obtaining details"
                         
                                 $Count      = 0..( $Images.Count - 1 )
 
@@ -3856,7 +3854,7 @@
 
                             $Table = New-Table @Panel
 
-                            Write-Theme -Table $Table 11 12 15
+                            Write-Theme -Table $Table
 
                             Read-Host "$( "¯" * 116 )`nCarefully review these details. `nPress Enter to Continue"
                         }
@@ -3892,7 +3890,7 @@
 
                             New-Table -Title "DISM -> MDT" -Depth 1 -ID "( $( $Tag[$I] ) )" -Table $_ | % {
 
-                                Write-Theme -Table $_ 11 12 15
+                                Write-Theme -Table $_
                             }
                         }
 
@@ -3933,7 +3931,7 @@
                                         Comments = "$( Get-Date -UFormat "%m%d%Y" )"
                                         ItemType = "Folder" }
                             
-                            Write-Theme -Action "Generating [+]" "$( $Splat.Path )\$Parent" 11 11 15
+                            Write-Theme -Action "Generating [+]" "$( $Splat.Path )\$Parent"
                             
                             New-Item @Splat | Out-Null
 
@@ -3943,7 +3941,7 @@
                                 $_.Name = "$Child"
                             }
 
-                            Write-Theme -Action "Generating [+]" "$( $Splat.Path )\$Child" 11 11 15
+                            Write-Theme -Action "Generating [+]" "$( $Splat.Path )\$Child"
 
                             New-Item @Splat | Out-Null
                         }
@@ -4020,14 +4018,14 @@
                                         HomePage            = $Root.WWW
                                         AdminPassword       = $Root.LMCred_Pass }
 
-                            Write-Theme -Action "Importing [+]" "Task Sequence" 11 12 15
+                            Write-Theme -Action "Importing [+]" "Task Sequence $Name"
 
                             Import-MDTTaskSequence @Splat | Out-Null
 
                         }
                     }
 
-                    Write-Theme -Action "Imported [+]" "Task Sequences" 11 12 15
+                    Write-Theme -Action "Imported [+]" "Task Sequences"
                 # ____   _________________________
                 #//¯¯\\__[____ Share Settings ___]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -4056,53 +4054,6 @@
                     Enable-MDTMonitorService @Splat
 
                     $CTRL = $DeployRoot | ? { $_ -like "*Control*" }
-
-                # ____   _________________________
-                #//¯¯\\__[____ Bootstrap INI ____]
-                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    $BootStrap       = @{ Settings = @{ Priority           = "Default" } 
-                                          Default  = @{ DeployRoot         = $Provision.NetworkPath
-                                                        UserID             = $Root.LMCred_User 
-                                                        UserPassword       = $Root.LMCred_Pass 
-                                                        UserDomain         = $Root.Branch 
-                                                        SkipBDDWelcome     = "YES" } }
-
-                    $Splat = @{ Path      = $CTRL
-                                Name      = "Bootstrap.ini"
-                                Value     = $Bootstrap
-                                Encoding  = "UTF8"
-                                UTF8NoBom = $True 
-                                Force     = $True }
-
-                    Export-Ini @Splat
-                # ____   _________________________
-                #//¯¯\\__[_ CustomSettings INI __]
-                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    $CustomSettings  = @{ Settings = @{ Priority           = "Default" 
-                                                        Properties         = "MyCustomProperty" } 
-                                          Default  = @{ _SMSTSOrgName      = "$( $Root.Company )" 
-                                                        OSInstall          = "Y" 
-                                                        SkipCapture        = "NO" 
-                                                        SkipAdminPassword  = "YES" 
-                                                        SkipProductKey     = "YES" 
-                                                        SkipComputerBackup = "NO" 
-                                                        SkipBitLocker      = "YES" 
-                                                        KeyboardLocale     = "en-US" 
-                                                        TimeZoneName       = "$( ( Get-TimeZone ).ID )" 
-                                                        EventService       = "http://$( $Root.Server ):9800" } }
-
-                    $Splat | % { $_.Name  = "CustomSettings.ini"
-                                 $_.Value = $CustomSettings }
-
-                    Export-Ini @Splat
-                # ____   _________________________
-                #//¯¯\\__[_____ PXE Graphics ____]
-                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    "computer.png" , "header-image.png" | % { 
-                    
-                        CP "$Control\$_" "$CTRL\$_" -Force 
-                        Write-Theme -Action "Copied [+]" "PXE Graphic ( $_ )" 11 11 15
-                    }
                 # ____   _________________________
                 #//¯¯\\__[____ Bridge Script ____]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -4191,26 +4142,69 @@
                         `$Type = "Initialize-Hybrid`$( If ( `$_ -like "*Server*" ) { "Server" } If ( `$_ -like "*Client*" ) { "Client" }  ).ps1"
                     }
 
-                    `$Script = $HybridRoot | % { GCI `$_ "*`$Type*" -Recurse } | % { `$_.FullPath }
+                    `$Script = '$HybridRoot' | % { GCI `$_ "*`$Type*" -Recurse } | % { `$_.FullPath }
 
                     CP `$Script "`$ENV:Temp\$Company"
 
                     `$Local  = "`$ENV:Temp\`$Company"
 
-                    SC -Path "`$ENV:Temp\$Company\RootVar.ini" -Value $( $RootVar | ConvertTo-JSON )
+                    SC -Path "`$ENV:Temp\$Company\RootVar.ini" -Value '$( $RootVar | ConvertTo-JSON )'
 
                     "`$home\Desktop\`$Hybrid.ps1" | ? { ( Test-Path `$_ ) -eq `$True } | % { RI `$_ -Force }
-                    SAPS PowerShell -Verb RunAs -Args "-File '`$Home\Desktop\`$Hybrid`$Type.ps1' -Args Set-ExecutionPolicy Bypass -Scope CurrentUser -Force"
+                    SAPS PowerShell -Verb RunAs -Args "-File '`$Script' -Args Set-ExecutionPolicy Bypass -Scope CurrentUser -Force"
 "@
                     SC -Path "$DeployRoot\Scripts\Initialize-Hybrid.ps1" -Value $Return -Force
                 # ____   _________________________
+                #//¯¯\\__[____ Bootstrap INI ____]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $BootStrap       = @{ Settings = @{ Priority           = "Default" } 
+                                          Default  = @{ DeployRoot         = $Provision.NetworkPath
+                                                        UserID             = $Root.LMCred_User 
+                                                        UserPassword       = $Root.LMCred_Pass 
+                                                        UserDomain         = $Root.Branch 
+                                                        SkipBDDWelcome     = "YES" } }
+
+                    $Splat = @{ Path      = $CTRL
+                                Name      = "Bootstrap.ini"
+                                Value     = $Bootstrap
+                                Encoding  = "UTF8"
+                                UTF8NoBom = $True 
+                                Force     = $True }
+
+                    Export-Ini @Splat
+                # ____   _________________________
+                #//¯¯\\__[_ CustomSettings INI __]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $CustomSettings  = @{ Settings = @{ Priority           = "Default" 
+                                                        Properties         = "MyCustomProperty" } 
+                                          Default  = @{ _SMSTSOrgName      = "$( $Root.Company )" 
+                                                        OSInstall          = "Y" 
+                                                        SkipCapture        = "NO" 
+                                                        SkipAdminPassword  = "YES" 
+                                                        SkipProductKey     = "YES" 
+                                                        SkipComputerBackup = "NO" 
+                                                        SkipBitLocker      = "YES" 
+                                                        KeyboardLocale     = "en-US" 
+                                                        TimeZoneName       = "$( ( Get-TimeZone ).ID )" 
+                                                        EventService       = "http://$( $Root.Server ):9800" } }
+
+                    $Splat | % { $_.Name  = "CustomSettings.ini"
+                                 $_.Value = $CustomSettings }
+
+                    Export-Ini @Splat
+                # ____   _________________________
+                #//¯¯\\__[_____ PXE Graphics ____]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    "computer.png" , "header-image.png" | % { 
+                    
+                        CP "$Control\$_" "$CTRL\$_" -Force 
+                        Write-Theme -Action "Copied [+]" "PXE Graphic ( $_ )" 11 11 15
+                    }
+                # ____   _________________________
                 #//¯¯\\__[__ Update Boot Images _]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    Write-Theme -Action "Updating [~]" "Deployment Share"
                     Update-MDTDeploymentShare -Path $Root.DSDrive -Force -VB
-
-
-
-
                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
