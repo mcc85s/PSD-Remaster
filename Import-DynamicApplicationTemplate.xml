@@ -1,0 +1,210 @@
+<# TODO
+
+.Migrate the rest of this script
+
+#>
+            Wrap-Action "Building" "[+] Tools"
+
+            ( 0 , "Drivers" ) , ( 2 , "VM" ) | % { 
+            
+            "$DS\(1)Tools\($( $_[0] ))$( $_[1] )" | % { If ( ( Test-Path $_ ) -ne $True ) { NI $_ -ItemType Directory } Else { GI $_ } } 
+            
+            }
+            
+            $Tools = @( gci "$DS\(1)Tools" ).FullName
+
+
+
+            $Path = $Tools[2]
+            $Name = "VMWare-Tools"
+            $File = "VMware-tools-10.3.10-12406962"
+
+            $VMWare_x86 = @{ 
+                URI     = "i386" | % { 
+                "https://packages.vmware.com/tools/releases/10.3.10/windows/x86/$File-$_.exe" }
+                OutFile = "i386" | % { "$Path\$Name-$_.exe" }
+                Hash    = "59A498CC1641A04C10D08709AC6DC6AA95CAFC7B56E6D613D3630E89083F0F4C" }
+
+            $VMWare_x64 = @{
+                URI     = "x86_64" | % { 
+                "https://packages.vmware.com/tools/releases/10.3.10/windows/x64/$File-$_.exe" }
+                OutFile = "x86_64" | % { "$Path\$Name-$_.exe" }
+                Hash    = "65D5CC22D2FAE73F104E985BAA7885A1544ADCEB0774CC302522C03541E5DD82" }
+
+            ( $VMWare_x86 , $VMWare_x64 ) | % { 
+                
+                Start-BitsTransfer -Source $_.URI -Destination $_.OutFile
+                If ( ( Get-FileHash -Path $_.OutFile ).Hash -eq $_.Hash ) 
+                { Wrap-Action "Checksum" "[+] $Name x86/x64 Validated" }
+                Else 
+                { Wrap-Action "Checksum" "[!] Not Valid, removing file" ; RI $_.OutFile -Force }
+            }
+
+            $Name = "VirtualBox Guest Additions"
+            $File = "VBoxGuestAdditions_6.0.10.iso"
+
+            $Oracle = @{
+                URI     = "https://download.virtualbox.org/virtualbox/6.0.10/$File"
+                OutFile = "$Path\$File"
+                Hash    = "c8a686f8c7ad9ca8375961ab19815cec6b1f0d2496900a356a38ce86fe8a1325" }
+
+            $Oracle | % {
+                
+                Start-BitsTransfer -Source $_.URI -Destination $_.OutFile
+                If ( ( Get-FileHash -Path $_.OutFile ).Hash -eq $_.Hash )
+                { Wrap-Action "Checksum" "[+] $Name Validated" }
+                Else
+                { Wrap-Action "Checksum" "[!] Not Valid, removing file" ; RI $_.OutFile -Force }
+            }
+
+            $Apps = @( gci $DS -Filter "*Applications" ).FullName
+            $Path = "chrome" , "silverlight" , "jre" , "libre" , "mwb" , "flash" , "air" , "reader" , "ccleaner" , "klite" ,  "tv"
+            0..10 | % { "$Apps\($_)$($Path[$_])" | % { If ( ( Test-Path $_ ) -ne $True ) { NI "$_" -ItemType Directory } Else { GI $_ } } }
+
+            $N = @( @( "Google Chrome" , "Microsoft Silverlight" , "Java Runtime Environment" , "Libre Office Fresh" | % { 
+            "$_ (x86)" , "$_ (x64)" } ) ; @( "Malwarebytes" ; 
+            @( "Flash" , "Air" + @( "Reader DC" | % { "$_" ; "$_ MUI" } ) | % { "Adobe $_" } ) +
+            "CCleaner" , "K-Lite Codec Pack Full" , "Teamviewer 14" ) | % { "$_ (x22)" } )
+
+            $V = @( 0..1 | % { "76.0.3809.87" } ; 0..1 | % { "5.1.50907.0" } ; 0..1 | % { "8.0.211" } ; 0..1 | % { "6.2.5" } ; 
+            "3.8.3.296511270" ; "32.0.0.223" ; "32.0.0.125" ; "2019.012.20064" ; "2019.012.20035" ; "5.60.7307" ; "15.0.4" ; "14.4.2669" )
+
+            $U = @( @( "" , "64"                    | % {
+                "https://dl.google.com/tag/s/dl/chrome/install/googlechromestandaloneenterprise$_.msi" } ) + 
+                    @( "" , "_x64"                  | % { 
+                "https://download.microsoft.com/download/F/D/0/FD0B0093-DE8A-4C4E-BDC4-F0C56D72018C/50907.00/Silverlight$_.exe" } ) + 
+                    @( 7 , 9                        | % { 
+                "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=23872$_`_478a62b7d4e34b78b671c754eaaf38ab" } ) + 
+                    @( ( "" , 86 ) , ( "_64" , 64 ) | % { 
+                "https://download.documentfoundation.org/libreoffice/stable/6.2.5/win/x86$( $_[0] )/LibreOffice_6.2.5_Win_x$( $_[1] ).msi" } ) + 
+                "https://downloads.malwarebytes.com/file/mb3/" , 
+                "https://download.macromedia.com/get/flashplayer/pdc/32.0.0.223/install_flash_player_32_plugin.msi" , 
+                "http://airdownload.adobe.com/air/win/download/32.0/AdobeAIRInstaller.exe" , 
+                "http://ardownload.adobe.com/pub/adobe/reader/win/AcrobatDC/1901020064/AcroRdrDC1901020064_MUI.exe" , 
+                "http://ftp.adobe.com/pub/adobe/reader/win/AcrobatDC/1901220035/AcroRdrDCUpd1901220035_MUI.msp" , 
+                "https://download.ccleaner.com/ccsetup560.exe" , 
+                "https://files3.codecguide.com/K-Lite_Codec_Pack_1504_Full.exe" , 
+                "https://download.teamviewer.com/download/version_14x/TeamViewer_Setup.exe" )
+
+            $F = @( @( "chrome" , "silverlight" , "jre" , "libre" | % { "$_(x86)" , "$_(x64)" } ) ;
+                    @( "mwb" ; @( "flash" , "air" + @( "reader" | % { "$_" ; "$_`mui" } ) ) + "ccleaner" , "klite" , "tv" ) | % { "$_(x22)" } )
+
+            $X = @( "msi" , "exe" , "msp" )[0,0,1,1,1,1,0,0,1,1,1,1,2,1,1,1]
+
+            $P = @( gci "$( $R[1] )\$( $R[0] )\(5)Applications" ).Fullname
+            
+            $P = $P[0,0,1,1,3,3,4,4,5,6,7,8,8,9,10,2]
+
+            $S =        "28F18228B074991FA9482873898BC9146527B539E08D38A75035CC9D8E6E5E83" ,  #                [ Google Chrome x86 ] //¯¯\\__//¯¯\\__//
+                        "2001F5F7A1BB25268E74045A119302812DB2643B7EF47C5E7A52D65A51FDAC84" ,  #                [ Google Chrome x64 ] \\__//¯¯\\__//¯¯\\
+                        "88e1b76bdf799478a72fa27db0bfe7bc5d02cc7e53675967399300448f0e266f" ,  #                  [ Silverlight x86 ] //¯¯\\__//¯¯\\__//
+                        "8d263a6f42a378073b6f057f242a42076f9f4082340153c2e27ecc959c5036aa" ,  #                  [ Silverlight x64 ] \\__//¯¯\\__//¯¯\\
+                        "47DE97325B8EA90EA9F93E1595CC7F843DA0C9C6E4C9532ABEA3A194CFB621D9" ,  #                         [ Java x86 ] //¯¯\\__//¯¯\\__//
+                        "C18CF8F2776B69DC838440AADFAAE36F50717636F38EEC5F1E4A27A8CB4F20FB" ,  #                         [ Java x64 ] \\__//¯¯\\__//¯¯\\
+                        "717fb9e17a3feb8af1662e668b919db86fab343303b78f88c7859003056ee010" ,  #                        [ Libre x86 ] //¯¯\\__//¯¯\\__//
+                        "9b01f6f382dbb31367e12cfb0ad4c684546f00edb20054eeac121e7e036a5389" ,  #                        [ Libre x64 ] \\__//¯¯\\__//¯¯\\
+                        "EE34F7A2ECD40039738861FD331FF9D9C5320A33D61B62AE71E108B78F999892" ,  #                 [ Malwarebytes x22 ] //¯¯\\__//¯¯\\__//
+                        "ee34f7a2ecd40039738861fd331ff9d9c5320a33d61b62ae71e108b78f999892" ,  #                  [ Adobe Flash x22 ] \\__//¯¯\\__//¯¯\\
+                        "6718308E10A45176155D0ECC8458BD3606308925B91F26A7D08C148CF52C9DB3" ,  #                    [ Adobe Air x22 ] //¯¯\\__//¯¯\\__//
+                        "81953f3cf426cbe9e6702d1af7f727c59514c012d8d90bacfb012079c7da6d23" ,  #              [ Adobe Reader DC x22 ] \\__//¯¯\\__//¯¯\\
+                        "67AAB19943FA63393F15E1354FACCE65BED476D1C2BB5D311DB8450614A33200" ,  #   [ Adobe Reader DC MUI/Update x22 ] //¯¯\\__//¯¯\\__//
+                        "00be05f95e08eb4f181ccde15403e782150a616cb93fd74525c99920f53a2cea" ,  #                     [ CCleaner x22 ] \\__//¯¯\\__//¯¯\\
+                        "1F6BDE89E752811FDC04492D0F73216720B625E54966B3E350659BABD9AD7A83" ,  #            [ K-Lite Codec Pack x22 ] //¯¯\\__//¯¯\\__//
+                        "df26627cc29716b65a3ed72f78d59808244f9bc4ad2624657ddbee79d2baa422"    #                [ Teamviewer 14 x22 ] \\__//¯¯\\__//¯¯\\
+#\\__________________________________________________________________________________________________________________________________//¯¯\\__//¯¯\\__//
+
+            $Item = @{ }
+
+            0..15 | % { $Item[$_] = @{   Name = "$( $N[$_] ) v$( $V[$_] )"
+                                                    File = "$( $P[$_] )\$( $F[$_] ).$( $X[$_] )"
+                                                     URL = "$( $U[$_] )" 
+                                                     Sum = "$( $S[$_] )" } }
+
+            Export-Ini -Path $Apps -Name "List.ini" -Value $Item -Encoding UTF8 -Force
+            
+            Wrap-Action "Applications" "[~] Make Selection"
+
+            Switch( $Host.UI.PromptForChoice( "Application Template Review" , "Review Designated Application Template ?" ,
+            [ System.Management.Automation.Host.ChoiceDescription [] ]@( '&Yes' , '&No' ) , [ Int ] 0 ) )
+            {   
+        
+                0 { Wrap-Action "Reviewing" "[~] Application Template"
+
+                    $j = 0
+                    $Item | % {
+                        
+                    "  ____                                                                                                                          ____  " ,
+                    " //¯¯\\________________________________________________________________________________________________________________________//¯¯\\ " ,
+                    " \\__//                                                                                                                        \\__// " ,
+                    "  ¯¯¯\\___ [ Program # $( If ( $j -lt 10 ) { "$J " } Else { "$J" } ) ] $( "____" * 25 )//¯¯\\" ,
+                    "" ,
+                    "     [ $(               $_.Name ) ]" ,
+                    "" ,
+                    "  Download String : $(      $_.URL )" ,
+                    "          OutFile : $(     $_.File )" ,
+                    "    Hash Checksum : $(      $_.Sum )" ,
+                    "" | % { Echo $_ }
+                    Sleep -M 200
+                    $j++
+                    }
+                
+                    Read-Host "Press Enter to Continue" }
+
+                1 { Wrap-Action "Skipping" "[~] Application Template Review" } 
+            }
+                
+            Wrap-Action "Downloading" "[+] Application Template"
+            IPMO BITSTransfer
+            [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
+            $Total = [ System.Diagnostics.Stopwatch ]::StartNew()
+
+            $Time  = @( 0..15 )
+        
+            0..15 | % { 
+
+                If ( ( Test-Path $Item[$_].File ) -ne $True )
+                {
+                    Wrap-Action "Downloading" "$( $Item[$_].Name )"
+                    $Time[$_] = [ System.Diagnostics.Stopwatch ]::StartNew()
+                
+                    $Item[$_] | % { Start-BitsTransfer -Source $_.URL -Destination  $_.File -Description $_.Name -EA SilentlyContinue
+                    If ( $? -eq $False ) { IWR -Uri $_.URL -OutFile $_.File } }
+
+                    $Time[$_].Stop()
+
+                    If ( ( Test-Path $Item[$_].File ) -ne $True ) { Wrap-Action "Exception" "[!] $( $Item[$_].Name ) Failed" ; $Check = "No" } 
+                    Else 
+                    { 
+                        If ( ( Get-FileHash -Path $Item[$_].File -Algorithm SHA256 ).Hash -eq $Item[$_].Sum ) { $Check = "Yes" }
+                        Else { Wrap-Action "Checksum" "[!] $( $Item[$_].Name ) Failed" ; RI $Item[$_].File -Force -VB ; $Check = "No"  } 
+                    } 
+
+                    If ( $Check -eq "Yes" )
+                    {
+                        $ITime   = $Time[$_].Elapsed
+                        $ILength = ( gp $Item[$_].File ).Length
+                        $ISize   = "$( $ILength / 1MB | % { "{0:n1}" -f $_ } )"
+                        $IRate   = ( $ILength / ( $ITime | % { ( $_.Minutes * 60 ) + ( $_.Seconds ) } ) / 1MB ) | % { "{0:n1}" -f $_ }
+                    }
+
+                    If ( $Check -eq "No" )
+                    {
+                        $ITime , $ILength , $ISize , $IRate = 0..3 | % { "N/A" }
+                    }
+
+                    Wrap-Title   "Item #$( $_ + 1 ) Download Statistics" 
+                    Wrap-Section "[ $( $Item[$_].Name ) ]" -In
+                    Wrap-Item      "Time" "$ITime"             -In
+                    Wrap-Item     "Size" "$ISize MB"           -Out
+                    Wrap-Item     "Rate" "$IRate MB/S"         -In
+                    Wrap-Item     "Hash" "Passed? ( $Check )"  -Out
+                    Wrap-Space                                 -In
+                    Wrap-Foot
+                }
+            }
+
+            $Total | % { $_.Stop() ; $T = $_.Elapsed }
+            $Size    = @( gci $Apps -Recurse -File | Select Length | % { $_.Length } | Measure -Sum ).Sum
+            $Rate    = ( ( $Size / 1MB ) / ( ( $T.Minutes * 60 ) + ( $T.Seconds ) )  | % { "{0:n3}" -f $_ } )
+
+            Wrap-Action "Downloads Complete" "[+] Time: $( $T ) / Size: $( $Size/1GB | % { "{0:n3}" -f $_ } ) GB / AVG-Rate @: $Rate MB/S ]"
