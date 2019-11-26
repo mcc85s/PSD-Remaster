@@ -2324,7 +2324,7 @@
 
                 ForEach ( $I in "Graphics" , "Map" , "Control" )
                 {
-                    "$_\$I.zip" | % { Expand-Archive -Path $_ -DestinationPath "$( $Base )\Hybrid" }
+                    "$_\$I.zip" | % { Expand-Archive -Path $_ -DestinationPath "$( $Root.Base )\Hybrid" }
                 }
             }
 
@@ -2875,7 +2875,7 @@
 
             Write-Theme -Action "Reducing [~]" "Permissions Hardening on $( $Code.Samba )"
 
-            "Users" , "Administrators" , "SYSTEM" | % { ICACLS $W /Grant "$_`:(OI)(CI)(RX)" }
+            "Users" , "Administrators" , "SYSTEM" | % { ICACLS $Code.Directory /Grant "$_`:(OI)(CI)(RX)" }
 
             $Code.Samba | % { 
                 
@@ -3321,7 +3321,7 @@
 
                     $ISO    = ( GCI "$WimImages\ISO" | % { $_.FullName } )[0,2,1]
 
-                    $Client = 64 , 32 | % { "https://software-download.microsoft.com/sg/Win10_1909_English_x$_.iso?t=c8e65018-41f9-4167-b612-0ae1e4e2dad4&e=1574466442" }
+                    $Client = 64 , 32 | % { "https://software-download.microsoft.com/db/Win10_1909_English_x$_.iso?t=b56fde02-8f2e-4c09-9a2d-e93a99596203" }
 
                     $Splat  = 0..2
                 # ____   _________________________
@@ -3333,13 +3333,13 @@
                 # ____   _________________________
                 #//¯¯\\__[___ Client x64 1909 ___]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    $Splat[1]  = @{    Source = "$( $Client[0] )&h=ea86de32f1bc1cadcba040baf804935e"
+                    $Splat[1]  = @{    Source = "$( $Client[0] )&e=1574831548&h=0898529f30d00f99cd6fdd9b889a43f7"
                                   Destination = "$( $ISO[1] )\1909x64.iso" 
                                   Description = "Windows Client ( 1909_x64.ISO )" }
                 # ____   _________________________
                 #//¯¯\\__[___ Client x32 1909 ___]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    $Splat[2]  = @{    Source = "$( $Client[1] )&h=1108750045f3ade5b8cfae9ccd88aa87"
+                    $Splat[2]  = @{    Source = "$( $Client[1] )&e=1574831549&h=f44e9f4e43ccd7bc7fdd3ee618073bfa"
                                   Destination = "$( $ISO[2] )\1909x32.iso"
                                   Description = "Windows Client ( 1909_x32.ISO )" }
                 # ____   _________________________
@@ -4159,8 +4159,8 @@
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                     $BootStrap       = @{ Settings = @{ Priority           = "Default" } 
                                           Default  = @{ DeployRoot         = $Provision.NetworkPath
-                                                        UserID             = $Root.LMCred_User 
-                                                        UserPassword       = $Root.LMCred_Pass 
+                                                        UserID             = $DCCred.Username
+                                                        UserPassword       = $DCCred.GetNetworkCredential().Password
                                                         UserDomain         = $Root.Branch 
                                                         SkipBDDWelcome     = "YES" } }
 
