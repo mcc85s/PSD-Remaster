@@ -3962,7 +3962,7 @@
 
                     $TMPL    = $( If ( $Root.Remaster -eq "-" ) { "MDT" } If ( $Root.Legacy -eq "-" ) { "PSD" } ) 
 
-                    ForEach ( $I in "Client" , "Server" )
+                    ForEach ( $I in "Server" , "Client" )
                     {
                         $TS , $OS = "Task Sequences" , "Operating Systems" | % { "$( $Root.DSDrive )\$_\$I" }
 
@@ -4035,13 +4035,13 @@
                     $Values = @( "Secure Digits Plus LLC : Fighting Entropy ($( [ Char ]960 ))" , 
                                  $Root.Server ; 64 , 86 | % { "True" ; "$( $Root.Company ) (x$_)" | % { "$_" , "$_.iso" } ; $Root.Background } )
 
-                    0..9 | % { 
-                    
-                        SP $Root.DSDrive -Name $Names[$_] -Value $Values[$_]
-                        Write-Host ( "_" * 116 ) -F 10
-                        Write-Theme -Function "$( $Names[$_] )" 11 11 15
-                        Write-Theme -Action "Configured [+]" "$( $Values[$_] )" 11 11 15
-                        Write-Host ( "¯" * 116 ) -F 10
+                    ForEach ( $i in 0..9 )
+                    {
+                        SP $Root.DSDrive -Name $Names[$I] -Value $Values[$I]
+                        Write-Host ( "_" * 116 )
+                        Write-Theme -Function "$( $Names[$I] )" 11 11 15
+                        Write-Theme -Action "Configured [+]" "$( $Values[$I] )" 11 11 15
+                        Write-Host ( "¯" * 116 )
                     }
                 # ____   _________________________
                 #//¯¯\\__[__ Enable Monitoring __]
@@ -4198,13 +4198,67 @@
                     "computer.png" , "header-image.png" | % { 
                     
                         CP "$Control\$_" "$CTRL\$_" -Force 
+
                         Write-Theme -Action "Copied [+]" "PXE Graphic ( $_ )" 11 11 15
                     }
                 # ____   _________________________
-                #//¯¯\\__[__ Update Boot Images _]
+                #//¯¯\\__[___ MDT Boot Images ___]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                     Write-Theme -Action "Updating [~]" "Deployment Share"
+
                     Update-MDTDeploymentShare -Path $Root.DSDrive -Force -VB
+                # ____   _________________________
+                #//¯¯\\__[___ WDS Boot Images ___]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    $OEM , $LT = $Provision.Name.Replace( ' ' , '_' ) , "LiteTouchPE"
+
+                    $Boot      = $Root.Directory | % { GCI $_ *Boot* } | % { $_.FullName }
+
+                    $Boot      | % { GCI $_ *$OEM* } | % { RI $_.FullName -VB }
+
+                    $Boot      | % { GCI $_  *$LT* } | % { RNI $_.FullName -NewName $_.FullName.Replace( $LT , $OEM ) -VB }
+
+                    $WDSImages = $Boot | % { GCI $_ *.wim* } 
+                    
+                    ForEach ( $I in 0..1 )
+                    {
+                        $Path  = ( $WDSImages | % { $_.FullName })[$I]
+                        $Arch  = ( 64 , 86 )[$I]
+                        $Name  = ( $WDSImages | % { Get-WindowsImage -ImagePath $_.FullName } | % { $_.ImageName })[$I]
+                                              
+                        Get-WDSBootImage -Architecture "X$Arch" -ImageName $Name -EA 0 | ? { ! $Null } | % {
+
+                            Write-Theme -Action "Found [~]" "$Name"
+                            
+                            Remove-WDSBootImage -Architecture "x$Arch" -ImageName $Name
+
+                            Write-Theme -Action "Removed [+]" "$Name"
+                        }
+
+                        Write-Theme -Action "Importing [~]" "$Name"
+
+                        Import-WDSBootImage -Path $Path -NewDescription $Name -SkipVerify
+                    
+                    }
+
+                    Write-Theme -Action "Complete [+]" "WDS Boot Images Recyled"
+                # ____   _________________________
+                #//¯¯\\__[_ Restart WDS Service _]
+                #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    Write-Theme -Action "Restarting [~]" "WDS Service"
+
+                    Restart-Service -Name WDSServer
+
+                    If ( $? -eq $True ) 
+                    { 
+                        Write-Theme -Foot
+                        Write-Theme -Action "Successful [+]" "Hybrid-DSC Fully Recycled"
+                    }
+
+                    Else
+                    { 
+                        Write-Theme -Action "Exception [!]" "The WDS Service has experienced an issue" 12 4 15
+                    } 
                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
