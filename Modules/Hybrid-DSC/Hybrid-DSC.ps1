@@ -4053,7 +4053,8 @@
 
                     Enable-MDTMonitorService @Splat
 
-                    $CTRL = $DeployRoot | ? { $_ -like "*Control*" }
+                    $CTRL   = $DeployRoot | ? { $_ -like "*Control*" }
+                    $Script = $DeployRoot | ? { $_ -like "*Scripts*" }
                 # ____   _________________________
                 #//¯¯\\__[____ Bridge Script ____]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -4197,7 +4198,7 @@
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                     "computer.png" , "header-image.png" | % { 
                     
-                        CP "$Control\$_" "$CTRL\$_" -Force 
+                        CP "$Control\$_" "$Script\$_" -Force 
 
                         Write-Theme -Action "Copied [+]" "PXE Graphic ( $_ )" 11 11 15
                     }
