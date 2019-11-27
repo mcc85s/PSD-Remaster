@@ -34,8 +34,6 @@
         If ( $MI -lt 10 ) { $MI = "0$MI" }
         If ( $SE -lt 10 ) { $SE = "0$SE" }
 
-        "$Y-$MO-$D`T$H`:$MI`:$SE`Z"
-
     $Action   = @{ Execute  = "PowerShell"
                    Argument = $Path }
 
