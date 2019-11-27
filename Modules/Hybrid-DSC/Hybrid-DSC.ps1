@@ -737,17 +737,33 @@
         {
             $GX = $Edge , $Center , $Font , $Back , 15 , 12 , 9 , 0 , 10
 
-            ForEach ( $I in ( 0..( $ST.Count - 1 ) ) ) { $FG[$I] = $FG[$I] | % { $GX[$_] } ; $BG[$I] = $BG[$I] | % { $GX[$_] } }
-            ForEach ( $I in ( 0..( $ST.Count - 1 ) ) ) 
+            ForEach ( $I in 0..( $ST.Count - 1 ) ) 
             { 
-                If ( $ST[$I].Count -eq 1 ) { Write-Host $ST[$I] -F $FG[$I] -B $BG[$I] }
+                $FG[$I] = $FG[$I] | % { $GX[$_] }
+                $BG[$I] = $BG[$I] | % { $GX[$_] } 
+
+                If ( $ST[$I].Count -eq 1 ) 
+                { 
+                    Write-Host $ST[$I] -F $FG[$I] -B $BG[$I] 
+                }
+
                 Else 
                 { 
-                    $XX = @( $ST[$I] ) ; $XY = @( $FG[$I] ) ; $XZ = @( $BG[$I] )
+                    $XX = @( $ST[$I] )
+                    $XY = @( $FG[$I] )
+                    $XZ = @( $BG[$I] )
+
                     ForEach ( $X in ( 0..( $XX.Count - 1 ) ) ) 
                     { 
-                        If ( $X -eq $XX.Count - 1 ) { Write-Host $XX[$X] -F $XY[$X] -B $XZ[$X]    }
-                        Else                        { Write-Host $XX[$X] -F $XY[$X] -B $XZ[$X] -N }
+                        If ( $X -eq $XX.Count - 1 ) 
+                        { 
+                            Write-Host $XX[$X] -F $XY[$X] -B $XZ[$X]    
+                        }
+
+                        Else                        
+                        { 
+                            Write-Host $XX[$X] -F $XY[$X] -B $XZ[$X] -N 
+                        }
                     }
                 }
             }
@@ -1355,8 +1371,8 @@
         [ CmdLetBinding () ] Param ( [ Parameter ( Position = 0 ) ] [ Switch ] $Underscore )
                         
         $Echo = @( "AD-Domain-Services" , "DHCP" , "DNS" , "GPMC" ; @( "" ; "-AdminCenter" , "-PowerShell" , "-Tools" | % { "-AD$_" } ; 
-        "" , "-Tools" | % { "-ADDS$_" } ; "-DHCP" , "-DNS-Server" , "-Role-Tools" ) | % { "RSAT$_" } ;
-        "" , "-AdminPack" , "-Deployment" , "-Transport"  | % { "WDS$_" } )
+                   "" , "-Tools" | % { "-ADDS$_" } ; "-DHCP" , "-DNS-Server" , "-Role-Tools" ) | % { "RSAT$_" } ;
+                   "" , "-AdminPack" , "-Deployment" , "-Transport"  | % { "WDS$_" } )
 
         If ( $Underscore ) { $Echo = $Echo.Replace( '-' , '_' ) } Return $Echo       #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
@@ -1764,6 +1780,7 @@
 
                     $XML.Add( "11" , @( 0..5 | % { $X[$_] + $Y[$_] } ) )
         }
+
         #/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\
         If ( $DCFound ) # Domain Controller Found                                    [
         {#___________________________________________________________________________/
@@ -3618,6 +3635,111 @@
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Export-BridgeScript # Exports the bridge script ___________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        Resolve-HybridDSC -Domain | % { 
+    
+            $NetBIOS    = $_.NetBIOS
+            $DNS        = $_.Branch
+            $Domain     = $_.Domain 
+        }
+
+        $Root = Resolve-HybridDSC -Share 
+        
+        $Root | % {
+
+            $Company    = $_.Company 
+            $Server     = $_.Server
+            $DeployRoot = "\\$Server\$( $_.Samba )"
+            $HybridRoot = "$DeployRoot\$( $_.Company )"
+        }
+
+        If ( $Domain )
+        {
+            Write-Theme -Action "Detected [+]" "Domain Environment, loading ADDS Login"
+
+            $DCCred = Invoke-Login -DC ( $Root.Server ) -Domain $DNS
+        }
+
+        If ( ! $Domain )
+        {
+            Write-Theme -Action "Detected [+]" "Workgroup Environment, loading Local User Login"
+            
+            Do
+            {
+                Add-Type -AssemblyName System.DirectoryServices.AccountManagement
+
+                $DCCred = Get-Credential
+        
+                $X      = $DCCred | % { Get-LocalUser -Name $_.UserName -EA 0 }
+        
+                $Y      = [ System.DirectoryServices.AccountManagement.PrincipalContext ]::New( "Machine" , $ENV:ComputerName ) | % { 
+        
+                    $_.ValidateCredentials( $DCCred.UserName , $DCCred.GetNetworkCredential().Password ) | ? { $True }
+                
+                }
+
+                If ( ( $X -eq $Null ) -or ( $X.Enabled -ne $True ) -or ( $Y -eq $False ) )
+                {
+                    Switch( $Host.UI.PromptForChoice( "Invalid Credential" , "Attempt login again?" , 
+                    [ System.Management.Automation.Host.ChoiceDescription [] ]@( "&Yes" , "&No" ) , [ Int ] 0 ) )
+                    {
+                        0 { $DCCred = $Null } 1 { $Exit = 1 }
+                    }
+                }
+        
+                Else
+                {
+                    Return $DCCred
+                }
+            }
+
+            Until ( ( $DCCred -ne $Null ) -or ( $Exit -eq 1 ) )
+        }
+
+        $RootVar         = [ PSCustomObject ]@{
+            Company      = $Company
+            NetworkShare = $DeployRoot
+            Server       = $Server
+            DomainUser   = $DCCred.UserName
+            DomainPass   = $DCCred.GetNetworkCredential().Password
+            Website      = $Root.WWW
+            Phone        = $Root.Phone
+            Hours        = $Root.Hours
+            Logo         = GCI $HybridRoot "*$( $Root.Logo.Split('\')[-1] )*" -Recurse | % { $_.FullName }
+            Background   = GCI $HybridRoot "*$( $Root.Background.Split('\')[-1] )*" -Recurse | % { $_.FullName }
+            Certificate  = ""
+            Domain       = $DNS
+            LocalUser    = $Root.LMCred_User
+            LocalPass    = $Root.LMCred_Pass
+            Proxy        = $Root.IIS_Proxy
+            NetBIOS      = $NetBIOS
+            Directory    = $Root.Directory
+        }
+
+        SC "$DeployRoot\root.txt" -Value ( $RootVar | ConvertTo-JSON )
+
+        <# Variables #> # $DeployRoot\root.txt
+        <#    Script #> # $DeployRoot\Scripts\Initialize-Hybrid.ps1
+        <#     Timer #> # $DeployRoot\Scripts\New-RunScheduledTask.ps1
+
+        $Return = @"
+       
+        `$DeployRoot   = "$( $Rootvar.NetworkShare )"
+        `$Root         = '$( GC "$DeployRoot\root.txt" )' | ConvertFrom-JSON
+        `$Company      = "$( $Root.Company )"
+
+        `$Splat        = @{ File = "`$DeployRoot\Scripts\Initialize-Hybrid.ps1"
+                           Path = "`$DeployRoot\Scripts\New-RunScheduledTask.ps1"
+                           Name = "PowerShell Script"
+                           Info = "Scheduled Task" }
+
+        SAPS PowerShell -Verb RunAs -ArgumentList @Splat
+"@
+        SC "$DeployRoot\Scripts\Import-BridgeScript.ps1" $Return -Force -VB         #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Update-HybridDSC # Recycles *all* Deployment Share Content ________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         Write-Theme -Action "Provision Root [~]" "MDT Imaging/Task Sequence Recycler"
@@ -3859,11 +3981,10 @@
                             Read-Host "$( "¯" * 116 )`nCarefully review these details. `nPress Enter to Continue"
                         }
                     }
-
                 # ____   _________________________
                 #//¯¯\\__[____ Recycle DISM _____]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    $DeployRoot | ? { $_ -like "*Operating Systems*" } | % { GCI $_ } | ? { $_ -ne $Null } | % { RI $_.FullName -Recurse -Force -VB }
+                    $DeployRoot  | ? { $_ -like "*Operating Systems*" } | % { GCI $_ } | ? { $_ -ne $Null } | % { RI $_.FullName -Recurse -Force -VB }
     
                     $Output      = $HybridRoot | ? { $_ -like "*Images*" } 
                     
@@ -4046,6 +4167,8 @@
                 # ____   _________________________
                 #//¯¯\\__[__ Enable Monitoring __]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                    Write-Theme -Action "Resetting [~]" "MDT Monitor Service"
+                    
                     ( Disable-MDTMonitorService -EA 0 )
                 
                     $Splat = @{ EventPort = 9800
@@ -4058,103 +4181,9 @@
                 # ____   _________________________
                 #//¯¯\\__[____ Bridge Script ____]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    Resolve-HybridDSC -Domain | % { 
-    
-                        $NetBIOS    = $_.NetBIOS
-                        $DNS        = $_.Branch
-                        $Domain     = $_.Domain 
-                    }
+                    Write-Theme -Action "Login [~]" "Provide a valid Deployment Credential"
 
-                    Resolve-HybridDSC -Share | % {
-
-                        $Company    = $_.Company 
-                        $Server     = $_.Server
-                        $DeployRoot = "\\$Server\$( $_.Samba )"
-                        $HybridRoot = "$DeployRoot\$( $_.Company )"
-                    }
-
-                    If ( $Domain -eq $True )
-                    {
-                        $DCCred = Invoke-Login -DC ( $Root.Server ) -Domain $DNS
-                    }
-
-                    If ( $Domain -eq $False )
-                    {
-                        Do
-                        {
-                            Add-Type -AssemblyName System.DirectoryServices.AccountManagement
-
-                            $DCCred = Get-Credential
-        
-                            $X      = $DCCred | % { Get-LocalUser -Name $_.UserName -EA 0 }
-        
-                            $Y      = [ System.DirectoryServices.AccountManagement.PrincipalContext ]::New( "Machine" , $ENV:ComputerName ) | % { 
-        
-                                $_.ValidateCredentials( $DCCred.UserName , $DCCred.GetNetworkCredential().Password ) | ? { $True }
-                            }
-
-                            If ( ( $X -eq $Null ) -or ( $X.Enabled -ne $True ) -or ( $Y -eq $False ) )
-                            {
-                                Switch( $Host.UI.PromptForChoice( "Invalid Credential" , "Attempt login again?" , 
-                                [ System.Management.Automation.Host.ChoiceDescription [] ]@( "&Yes" , "&No" ) , [ Int ] 0 ) )
-                                {
-                                    0 { $DCCred = $Null } 1 { $Exit = 1 }
-                                }
-                            }
-        
-                            Else
-                            {
-                                Return $DCCred
-                            }
-                        }
-
-                        Until ( ( $DCCred -ne $Null ) -or ( $Exit -eq 1 ) )
-                    }
-
-                    $RootVar         = [ PSCustomObject ]@{
-                        Company      = $Company
-                        NetworkShare = $DeployRoot
-                        Server       = $Server
-                        DomainUser   = $DCCred.UserName
-                        DomainPass   = $DCCred.GetNetworkCredential().Password
-                        Website      = $Root.WWW
-                        Phone        = $Root.Phone
-                        Hours        = $Root.Hours
-                        Logo         = GCI $HybridRoot "*$( $Root.Logo.Split('\')[-1] )*" -Recurse | % { $_.FullName }
-                        Background   = GCI $HybridRoot "*$( $Root.Background.Split('\')[-1] )*" -Recurse | % { $_.FullName }
-                        Certificate  = ""
-                        Domain       = $DNS
-                        LocalUser    = $Root.LMCred_User
-                        LocalPass    = $Root.LMCred_Pass
-                        Proxy        = $Root.IIS_Proxy
-                        NetBIOS      = $NetBIOS
-                        Directory    = $Root.Directory
-                    }
-
-                    $Return = @"
-
-                    Using Namespace System.Security.Principal
-                    Using Namespace System.Management.Automation
-    
-                    CMDKEY /add:$Server /user:$( $DCCred.Username ) /pass:$( $DCCred.GetNetworkCredential().Password )
-
-                    GCIM Win32_OperatingSystem | % { `$_.Caption } | % {
-        
-                        `$Type = "Initialize-Hybrid`$( If ( `$_ -like "*Server*" ) { "Server" } If ( `$_ -like "*Client*" ) { "Client" }  ).ps1"
-                    }
-
-                    `$Script = '$HybridRoot' | % { GCI `$_ "*`$Type*" -Recurse } | % { `$_.FullPath }
-
-                    CP `$Script "`$ENV:Temp\$Company"
-
-                    `$Local  = "`$ENV:Temp\`$Company"
-
-                    SC -Path "`$ENV:Temp\$Company\RootVar.ini" -Value '$( $RootVar | ConvertTo-JSON )'
-
-                    "`$home\Desktop\`$Hybrid.ps1" | ? { ( Test-Path `$_ ) -eq `$True } | % { RI `$_ -Force }
-                    SAPS PowerShell -Verb RunAs -Args "-File '`$Script' -Args Set-ExecutionPolicy Bypass -Scope CurrentUser -Force"
-"@
-                    SC -Path "$DeployRoot\Scripts\Initialize-Hybrid.ps1" -Value $Return -Force
+                    Export-BridgeScript
                 # ____   _________________________
                 #//¯¯\\__[____ Bootstrap INI ____]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -4260,7 +4289,7 @@
                     { 
                         Write-Theme -Action "Exception [!]" "The WDS Service has experienced an issue" 12 4 15
                     } 
-                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
