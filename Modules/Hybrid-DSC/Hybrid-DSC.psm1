@@ -27,7 +27,8 @@
         Show-WPFWindow , Get-XAML , Find-XAMLNamedElements , Get-NetworkInfo , Start-PingSweep , Get-NBTSCAN , Get-NetworkHosts ,
         Get-TelemetryData , Resolve-MacAddress , Start-NetworkInfo , Get-NetworkStatistics , Initialize-PortScan , Invoke-Login , Add-ACL , 
         New-ACLObject , Import-MDTModule , Export-Ini , Resolve-UninstallList , Install-DSCRoot , Install-HybridDSC , Initialize-HybridDSC ,
-        Unlock-Script , Resolve-LocalMachine , Update-HybridDSC , Update-Branding , Export-BridgeScript
+        Unlock-Script , Resolve-LocalMachine , Update-HybridDSC , Update-Branding , Export-BridgeScript , Get-DSCFeatureList , Validate-DomainName , 
+        Get-DSCPromoControl , Provision-DSCPromoTable , Get-DSCPromoSelection , Provision-DomainController
 
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 <#___                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
