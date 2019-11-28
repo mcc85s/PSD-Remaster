@@ -1,10 +1,9 @@
-
 [ CmdLetBinding () ] Param (
 
-    [ Parameter ( Mandatory = $True ) ] [ String ] $Path ,
-    [ Parameter ( Mandatory = $True ) ] [ String ] $Name ,
-    [ Parameter ( Mandatory = $True ) ] [ String ] $Info ,
-    [ Parameter ( Mandatory = $True ) ] [    Int ] $Lead = 15 )
+    [ ValidateNotNullOrEmpty ( ) ] [ Parameter ( Mandatory = $True ) ] [ String ] $Path ,
+    [ Parameter ( ) ]                                                  [ String ] $Name = "PowerShell Delayed Task" ,
+    [ Parameter ( ) ]                                                  [ String ] $Info = "Post Deployment" ,
+    [ Parameter ( ) ]                                                  [    Int ] $Lead = 15 )
 
         $Time = "Y,m,d,H,M,S".Split( ',' ) | % { [ Int ]( Get-Date -UFormat "%$_" ) }
 
@@ -14,6 +13,7 @@
         }
 
         $LY  = [ Int ]( 29 , 28 , 28 , 28 )[ $Time[0] % 4 ]
+
         $Y   = $Time[0]
         $MO  = $Time[1]
         $DIM = ( 30 , 31 , $LY )[ 1 , 2 , 1 , 0 , 1 , 0 , 1 , 1 , 0 , 1 , 0 , 1 ][ $Time[1] ]
@@ -34,15 +34,17 @@
         If ( $MI -lt 10 ) { $MI = "0$MI" }
         If ( $SE -lt 10 ) { $SE = "0$SE" }
 
-    $Action   = @{ Execute  = "PowerShell"
-                   Argument = $Path }
+        "$Y-$MO-$D`T$H`:$MI`:$SE`Z"
 
-    $Trigger  = @{ Once     = $True
-                   At       = "$Y-$MO-$D`T$H`:$MI`:$SE`Z" }
+        $Action   = @{ Execute  = "PowerShell"
+                       Argument = $Path }
 
-    $Task     = @{ Action      = New-ScheduledTaskAction @Action
-                   Trigger     = New-ScheduledTaskTrigger @Trigger
-                   TaskName    = $Name
-                   Description = $Info }
+        $Trigger  = @{ Once     = $True
+                       At       = "$Y-$MO-$D`T$H`:$MI`:$SE`Z" }
 
-    Register-ScheduledTask $Task
+        $Task     = @{ Action      = New-ScheduledTaskAction @Action
+                       Trigger     = New-ScheduledTaskTrigger @Trigger
+                       TaskName    = $Name
+                       Description = $Info }
+
+        Register-ScheduledTask @Task
