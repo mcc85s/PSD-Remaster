@@ -330,8 +330,8 @@
             [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = "2" ) ][ PSCustomObject ]    $Table ,
             [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = "3" ) ][         Switch ]     $Free ,
             [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = "4" ) ][         Switch ]     $Foot ,
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "0" ) ][ String ]      $Type  ,
-            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = "0" ) ][ String ]      $Info  ,
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "0" ) ][ String ]       $Type  ,
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = "0" ) ][ String ]       $Info  ,
             [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = "0" ) ]
             [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "1" ) ]
             [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "2" ) ]
@@ -353,6 +353,7 @@
             [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = "3" ) ]
             [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = "4" ) ][    Int ]   $Back =  0 ,
             [ Parameter ( Position = 5 , ValueFromPipeline = $True , ParameterSetName = "2" ) ][ String ]      $Prompt )
+
 
         Begin
         {
@@ -497,161 +498,223 @@
                     $_.ST[15] = @( "   \"     ; $10 * 13 ; $F[1] ,"/   " )
                     $_.ST[16] = @( "    ¯¯¯\" ; $10 * 12 ; $F[1] , "/¯¯¯    " )
                     $_.ST[17] = @( "        " , "¯¯¯\" , $F[1] ; $F * 11 ; "/¯¯¯" , "        " )
-                    $_.ST[18] = @( "        " ; @( " -- " , "¯¯¯¯" ) * 12 ; "            " ) 
+                    $_.ST[18] = @( "        " ; @( " -- " , "¯¯¯¯" ) * 12 ; "            " )
                 }
             }
 
             If ( $Table )
             {
-                $ST = @{ } ; $FG = @{ } ; $BG = @{ } ; $Index = @( ) ; $Section = @( ) ; $ZX = 0
+                $C                  = $Null
+                $Calc               = 8
+                $Z                  = 0
+                $ZXC = 0
 
-                $ID     = $Table | GM | ? { $_.MemberType -eq "NoteProperty" }
-                $Title  = $ID | ? { $_.Name -eq "Class" } | % { $Table.$( $_.Name ) }
-
-                If ( $Title.Length -gt 95 ) { $Title = "$( $Title[0..92] -Join '' ) ... " }
-
-                $Title  = $Title | % { "[ $_ ]" }
-                $TT     = 108 - $Title.Length
-                $TX     = $TT % 4
-                $TY     = ( $TT - $TX ) / 4
-                $TL,$TR = "_¯" , "¯_" | % { $_ * $TY } 
-                $T      = ( $Title | % { "$_" , "$_ " , " $_ " , " $_  " } )[ $TX ]
-
-                $ST.Add( $ZX , @( "  _ " ; 0..12 | % { "____" , " -- " } ; "____" , " _  " ) )
-                $FG.Add( $ZX , @( 0 ; 0..12 | % { 0,1 } ; 0 , 0 ) ); 
-                $BG.Add( $ZX , @( 0..28 | % { 3 } ) ) ; $ZX = $ZX + 1
+                $List               = [ PSCustomObject ]@{ 
                 
-                $ST.Add( $ZX , @( " ///" ; 0..12 | % { $F[0,1] } ; $F[0] , "\\\ " ) )
-                $FG.Add( $ZX , @( 0; 0..12 | % { 1 , 0 } ; 1 , 0 ) ); 
-                $BG.Add( $ZX , @( 0..28 | % { 3 } ) ) ; $ZX = $ZX + 1
-                
-                $ST.Add( $ZX , @( " \\\" ; 0..12 | % { $F[1,0] } ; $F[1] , "/// " ) )
-                $FG.Add( $ZX , @( 0 ; 0..12 | % { 1,0 } ; 1 , 0 ) )
-                $BG.Add( $ZX , @( 0..28 | % { 3 } ) ) ; 
-                $ZX = $ZX + 1
-                
-                $ST.Add( $ZX , @( " // " ; 0..12 | % { "¯¯¯¯" , "    " } ; "¯¯¯¯" , " \\ " ) )
-                $FG.Add( $ZX , @( 0..28 | % { 0 } ) )
-                $BG.Add( $ZX , @( 0..28 | % { 3 } ) ) ; $ZX = $ZX + 1
-                
-                $ST.Add( $ZX , @( " \\_" , $M1[108] , "_// " ) );
-                $FG.Add( $ZX , @( 0..2 | % { 0 } ) ) ; 
-                $BG.Add( $ZX , @( 0..2 | % { 3 } ) ) ; $ZX = $ZX + 1
-                
-                $ST.Add( $ZX , @( $S[0] , $TL , $T , $TR , $S[1] ) )
-                $FG.Add( $ZX , @( 0,1,2,1,0 ) ) ; 
-                $BG.Add( $ZX , @( 0..4 | % { 3 } ) );  $ZX = $ZX + 1
-
-                $ST.Add( $ZX , @( " \\¯" , $M0[108] ,"¯// " ) );
-                $FG.Add( $ZX , @( 0,0,0 )) ; $BG.Add( $ZX , @( 0..2 | % { 3 } ) );  $ZX = $ZX + 1
-
-                $ID | ? { $_.Name -like "*ID:*" } | % { $Index += $Table.$( $_.Name ) } ; $ID | ? { $_.Name -like "*Section:*" } | % { $Section += $Table.$( $_.Name ) }
-
-                If ( ( $Index.Count - 1 ) -gt 0 ) { $Count = 0..( $Index.Count - 1 ) } Else { $Count = 0 }
-                
-                $Count | % { If ( $Index.Count -gt 1 ) 
-                {
-                    If ( $C -ne $Null ) { $C = $C + 1 }
-                    If ( ( $C -eq $Null ) -and ( $Name -eq $Null ) )
-                    {
-                        $C = 0 
-                    }
-                    $Name = $Index[$C] ; $Item = $Section[$C]
-                }
-                    If ( $Index.Count -eq  1 ) { $Name = [ String ]$Index ; $Item = $Section  }
-                    If ( $Name.Length -gt 93 ) { $Name = "( $($Name[0..93] -join '' ) ) ... " }
-
-                    $U = 98 - $Name.Length
-            
-                        $ST.Add( $ZX , @( $L[$ZX % 2] , $M1[108] , $R[$ZX % 2]) )
-                        $FG.Add( $ZX , @( 0..2 | % { 0 } ) )
-                        $BG.Add( $ZX , @( 0..2 | % { 3 } ) )
-                        $ZX = $ZX + 1
-                        
-                        $ST.Add( $ZX , @( $L[$ZX % 2] , $M3[10] , $Name , $M3[$U] , $R[$ZX % 2] ) );
-                        $FG.Add( $ZX , @( 0,1,2,1,0 ) )
-                        $BG.Add( $ZX , @( 0..4 | % { 3 } ) )
-                        $ZX = $ZX + 1
-                        
-                        $ST.Add( $ZX , @( $L[$ZX % 2] , $M0[108], $R[$ZX % 2] ) )
-                        $FG.Add( $ZX , @( 0..2 | % { 0 } ) )
-                        $BG.Add( $ZX , @( 0..2 | % { 3 } ) )
-                        $ZX = $ZX + 1
-
-                    $Keys = @( $Item.Keys )
-
-                    ForEach( $IX in ( 0..( $Item.Keys.Count - 1 ) ) )
-                    {
-                        $Item."Item:$IX" | % { $Key = $_.ID ; $Val = $_.Value }
-                        $Key = $( If ( $Key.Length -gt 20 ) { "$( $Key[0..20] -join '' ) ... " } Else { "$( $M2[ ( 25 - $Key.Length ) ])$Key" } )
-                        $Val = $( If ( $Val.Length -gt 74 ) { "$( $Val[0..74] -join '' ) ... " } Else { "$Val$( $M2[ ( 80 - $Val.Length ) ])" } )
-
-                        $ST.Add( $ZX , @( $L[ $ZX % 2 ] , $Key , " : " , $Val , $R[ $ZX % 2 ] ) );
-                        $FG.Add( $ZX , @( 0 , 2 , 1 , 2 , 0 ) )
-                        $BG.Add( $ZX , @( 0..4 | % { 3 } ) )
-                        $ZX = $ZX + 1
-                    }
+                      Class         = @{ Name = $Table | GM | ? { $_.Name -like   "*Class*" } | % { $_.Name } ; Items = @( ) }
+                      ID            = @{ Name = $Table | GM | ? { $_.Name -like      "*ID*" } | % { $_.Name } ; Items = @( ) }
+                      Section       = @{ Name = $Table | GM | ? { $_.Name -like "*Section*" } | % { $_.Name } ; Items = @( ) } 
                 }
 
-                If ( $ZX % 2 -ne 0 ) 
+                $List.Class.Name    | % { $List.Class.Items   += $Table.$_ }
+                $List.ID.Name       | % { $List.ID.Items      += $Table.$_ }
+                $List.Section.Name  | % { $List.Section.Items += $Table.$_ }
+
+                $List.Section.Name  | % { $Calc = $Calc + 3 } ; $List.Section.Items.Keys | % { $Calc ++ } ; @( "" , $Calc ++ )[ $Calc % 2 ]
+                
+                $Echo               | % { $_.ST = 0..$Calc ; $_.FG = 0..$Calc ; $_.BG = 0..$Calc }
+
+                $Title              = $List.Class.Items | % { If ( $_.Length -gt 83 ) { "$( $_.Substring( 0 , 78 ) )..." } Else { $_ } } | % { "[ $_ ]" }
+
+                $Recurse            = $Title | % { 92 - $_.Length | % { $_ ; $_ % 2 ; ( $_ - ( $_ % 2 ) ) / 2 } }
+
+                $Output             = $ObjID | % { $M1[$Recurse[2]] , $M1[$Recurse[1]] , $Title , $M1[$Recurse[2]] -join '' }
+
+                $Echo               | % {
+
+                          $_.ST[$Z] = "  ____    $( $M1[100] )      "
+                          $_.FG[$Z] = 0
+                          $_.BG[$Z] = 3 
+                                $Z++
+                    
+                          $_.ST[$Z] = @( " /" ; $F ; "/$( $M0[98] )\" , "\___  " )
+                          $_.FG[$Z] = @( 0 , 1 , 0 , 1 , 0 )
+                          $_.BG[$Z] = 0..4 | % { 3 }
+                                $Z++
+
+                          $_.ST[$Z] = " \" , $F[1] , "/¯¯¯  " , $Output , "  ___/" , $F[0] , "\ "
+                          $_.FG[$Z] = @( 0 , 1 , 1 , 2 , 1 , 1 , 0 )
+                          $_.BG[$Z] = 0..6 | % { 3 }
+                                $Z++
+
+                          $_.ST[$Z] = @( " //¯¯\" , "\$( $M1[98] )/" ; $F ; "/ " )
+                          $_.FG[$Z] = @( 0 , 1 , 0 , 1 , 0 )
+                          $_.BG[$Z] = 0..4 | % { 3 }
+                                $Z++
+
+                          $_.ST[$Z] = " \\   $( $M0[100] )    ¯¯¯[  "
+                          $_.FG[$Z] = 0
+                          $_.BG[$Z] = 3
+                                $Z++
+                }
+
+                $Count = $( $List.ID.Items.Count - 1 | % { If ( $_ -gt 0 ) { 0..$_ } Else { 0 } } )
+
+                ForEach ( $Y in $Count )
                 { 
-                    $ST.Add( $ZX , @( " // " , $M2[108] , " \\ " ) )
-                    $FG.Add( $ZX , @( 0 , 0 , 0 ) )
-                    $BG.Add( $ZX , @( 0..100 | % { 3 } ) )
-                    $ZX = $ZX + 1 
+                    If ( $Count.Length -gt 1 )
+                    {
+                        $Index      = $List.ID.Items[$Y]
+                        $Section    = $List.Section.Items[$Y]
+                    }
+                        
+                    Else
+                    {
+                        $Index      = $List.ID.Items
+                        $Section    = $List.Section.Items
+                    }
+
+                    $Index  | % { If ( $_.Length -gt 93 ) { $NonIndex = "( $( $Index[ 0..93 ] -join '' ) ) ... " } }
+                       
+                    $Echo.ST[$Z]   = $L[ $Z % 2 ] , $M1[ 108 ] , $R[ $Z % 2 ]
+                    $Echo.FG[$Z]   = 0 , 0 , 0
+                    $Echo.BG[$Z]   = 0..2 | % { 3 }
+                             $Z++
+
+                    $Echo.ST[$Z]   = $L[ $Z % 2 ] , $M3[ 10  ] , $NonIndex , $M3[ ( 98 - $NonIndex.Length ) ] , $R[ $Z % 2 ]
+                    $Echo.FG[$Z]   = 0 , 1 , 2 , 1 , 0
+                    $Echo.BG[$Z]   = 0..4 | % { 3 }
+                             $Z++
+
+                    $Echo.ST[$Z]   = $L[ $Z % 2 ] , $M0[ 108 ] , $R[ $Z % 2 ]
+                    $Echo.FG[$Z]   = 0 , 0 , 0
+                    $Echo.BG[$Z]   = 0..2 | % { 3 }
+                             $Z++
+                        
+                    $Keys          = @( $Section.Keys )
+                    $Values        = @( $Section.Values )
+
+                    0..( $Keys.Count - 1 ) | % { 
+                        
+                        $RV = $Values[$_]
+
+                        $ID = $( If ( $RV.ID.Length -gt 20 )
+                        {
+                            "$( $RV.ID[0..20] -join '' ) ... "
+                        }
+
+                        Else 
+                        { 
+                            "$( $M2[ ( 25 - $RV.ID.Length ) ] )$( $RV.ID )" 
+                        })
+
+                        $VA = $( If ( $RV.Value.Length -gt 70 )
+                        {
+                            "$( $RV.Value[ 0..74 ] -join '' ) ... " 
+                        }
+
+                        Else 
+                        { 
+                           "$( $RV.Value )$( $M2[ ( 80 - $RV.Value.Length ) ])"
+                        })
+
+                        $Echo   | % { 
+
+                            $_.ST[$Z] = @( $L[ $Z % 2 ] , $ID , " : " , $VA , $R[ $Z % 2 ] )
+                            $_.FG[$Z] = 0 , 2 , 1 , 2 , 0
+                            $_.BG[$Z] = 0..4 | % { 3 }
+                                  $Z++ 
+                        }
+                    }
                 }
 
-                    $ST.Add( $ZX , @( " \\_" , $M1[108] ,"_// "  ) )
-                    $FG.Add( $ZX , @( 0 , 0, 0 ) )
-                    $BG.Add( $ZX , @(  0..2 | % { 3 } ) )
-                    $ZX = $ZX + 1
+                If ( $Z % 2 -ne 0 ) 
+                { 
+                    $Echo       | % {
+                        
+                        $_.ST[$Z] = " // " , $M2[108] , " \\ "
+                        $_.FG[$Z] = 0 , 0 , 0
+                        $_.BG[$Z] = 3 , 3 , 3
+                        $Z++ 
+                    }
+                }
 
-                    $ST.Add( $ZX , @( " //¯" , $M0[108] , "¯\\ " ) )
-                    $FG.Add( $ZX , @( 0 , 0 , 0 ) )
-                    $BG.Add( $ZX , @(  0..2 | % { 3 } ) )
-                    $ZX = $ZX + 1
+                $Echo   | % {
+                    
+                    $_.ST[$Z]   = @( " \\___" ; $M2[72] ; @( "____" , "    " ) * 4 ; "___// " )
+                    $_.FG[$Z]   = @( 0 ) * 11
+                    $_.BG[$Z]   = 0..10 | % { 3 }
+                          $Z++
 
-                    $ST.Add( $ZX , @( " \\ " ; 0..12 | % { "____" , "    " } ; "____" , " // " ) )
-                    $FG.Add( $ZX , @( 0..28 | % { 0 } ) )
-                    $BG.Add( $ZX , @( 0..28 | % { 3 } ) )
-                    $ZX = $ZX + 1
+                    $_.ST[$Z]   = @( " /" , $F[0] , "\$( $M1[70] )/" ; $F * 4 ; $F[0] , "\ " )
+                    $_.FG[$Z]   = @( @( 0 , 1 ) *  6 ; 0 )
+                    $_.BG[$Z]   = 0..12 | % { 3 }
+                          $Z++
 
-                    $ST.Add( $ZX , @( " ///" ; 0..12 | % { $F[0,1] } ; $F[0] , "\\\ " ) )
-                    $FG.Add( $ZX , @( 0 ; 0..13 | % { 1 , 0 } ) )
-                    $BG.Add( $ZX , @( 0..28 | % { 3 } ) )
-                    $ZX = $ZX + 1
+                    $_.ST[$Z]   = @( " \" , $F[1] , "/$( $M0[70] )\" ; @( $F[ 1 , 0 ] ) * 4 ; $F[1] , "/ " )
+                    $_.FG[$Z]   = @( 0 ; @( 1 ) * 11 ; 0 )
+                    $_.BG[$Z]   = 0..12 | % { 3 }
+                          $Z++
+                }
 
-                    $ST.Add( $ZX , @( " \\\" ; 0..12 | % { $F[1,0] } ; $F[1] , "/// " ) )
-                    $FG.Add( $ZX , @( 0 ; 0..13 | % { 1 , 0 } ) )
-                    $BG.Add( $ZX , @( 0..28 | % { 3 } ) )
-                    $ZX = $ZX + 1
+                If ( ! $Prompt ) 
+                { 
+                    $Echo.ST[$Z]   = @( "  ¯¯¯\" , "\$( $M1[70] )/" ; $F * 4 ; "/¯¯¯  " )
+                    $Echo.FG[$Z]   = @( 0 ; @( 1 , 0 ) * 6 )
+                    $Echo.BG[$Z]   = 0..12 | % { 3 }
+                }
 
-                    $ST.Add( $ZX , @( "  ¯ " ; 0..12 | % { "¯¯¯¯" , " -- " } ; "¯¯¯¯" , " ¯  " ) )
-                    $FG.Add( $ZX , @( 0 ; 0..12 | % { 0 , 1 } ; 0 , 0 ) )
-                    $BG.Add( $ZX , @( 0..28 | % { 3 } ) )
-                    $ZX = $ZX + 1
+                If ( $Prompt ) 
+                { 
+                    $Prompt | % { 
+                    
+                        If ( $_.Length -gt 64 ) 
+                        { 
+                            $Echo.ST[$Z]   = @( "  ¯¯¯\" , "\__[" , "$( $_.Substring( 0 , 60 ) )... " , "]__/" ; $F * 4 ; "/¯¯¯  " )
+                            $Echo.FG[$Z]   = @( 0 , 1 , 2 ; @( 1 , 0 ) * 6 )
+                            $Echo.BG[$Z]   = 0..12 | % { 3 }
+                        } 
+                        
+                        Else 
+                        { 
+                            $Echo.ST[$Z]   = @( "  ¯¯¯\" , "\__[" , " $_ " , "]$( $M1[ ( 62 - $_.Length ) ] )__/" ; $F * 4 ; "/¯¯¯  " )
+                            $Echo.FG[$Z]   = @( 0 , 1 , 2 ; @( 1 , 0 ) * 6 )
+                            $Echo.BG[$Z]   = 0..12 | % { 3 }
+                             
+                        } 
+                    }
+                }
+
+                $Z++
+ 
+                $Echo | % {
+
+                    $_.ST[$Z]   = @( "      $( $M0[72] )$( "    ¯¯¯¯" * 4 )      " )
+                    $_.FG[$Z]   = 0
+                    $_.BG[$Z]   = 3
+                }
             }
         }
-
+        
         End
         {
             $GX = $Edge , $Center , $Font , $Back , 15 , 12 , 9 , 0 , 10
 
-            ForEach ( $I in 0..( $ST.Count - 1 ) ) 
+            ForEach ( $I in 0..( $Echo.ST.Count - 1 ) )
             { 
-                $FG[$I] = $FG[$I] | % { $GX[$_] }
-                $BG[$I] = $BG[$I] | % { $GX[$_] } 
+                $Echo.FG[$I] = $GX[$Echo.FG[$I]]
+                $Echo.BG[$I] = $GX[$Echo.BG[$I]] 
 
-                If ( $ST[$I].Count -eq 1 ) 
+                If ( $Echo.ST[$I].Count -eq 1 ) 
                 { 
-                    Write-Host $ST[$I] -F $FG[$I] -B $BG[$I] 
+                    Write-Host $Echo.ST[$I] -F $Echo.FG[$I] -B $Echo.BG[$I] 
                 }
 
                 Else 
                 { 
-                    $XX = @( $ST[$I] )
-                    $XY = @( $FG[$I] )
-                    $XZ = @( $BG[$I] )
+                    $XX = @( $Echo.ST[$I] )
+                    $XY = @( $Echo.FG[$I] )
+                    $XZ = @( $Echo.BG[$I] )
 
                     ForEach ( $X in ( 0..( $XX.Count - 1 ) ) ) 
                     { 
@@ -666,6 +729,11 @@
                         }
                     }
                 }
+            }
+
+            If ( $Prompt )
+            {
+                Read-Host ( "¯" * 116 )
             }
         }                                                                            #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
