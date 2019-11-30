@@ -1,0 +1,12 @@
+I will write the issues I have with VSCode over ISE.
+
+First and foremost... sure would be nice to have a way to import the themes that I made for my ISE editor.
+Second,  cannot use the mouse to copy and paste from console to script environment, so that's a definite deal breaker.
+Third, there's no color scheming in the console. In ISE, you have two different things to apply a color theme to
+Fourth, this may be because I disabled script analyzer since I like to use heavy aliasing... but I don't see intellisense popping up in the command prompt.
+Not to mention, it's loading intellisense for a lot of other things rather than the task at hand. 
+so if I'm editing a ps1 file, it shouldn't be pulling up extensions for javascript and so forth.
+
+Other than that, it is definitely easier to manage the work with VSCode, but ^ those things are a hinderance to my productivity in their current state. 
+
+VSCode is by every right, far superior to the ISE, but there's a reason why I still choose the ISE, and ^ those would change that pretty quickly.
