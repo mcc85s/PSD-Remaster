@@ -97,7 +97,11 @@
             
             If ( $Control -eq $Null )
             {
-                nbtstat -N
+                If ( $Network -eq $Null )
+                {
+                    $Network = Start-NetworkInfo -Local
+                }
+
                 $Control    = $NBT | ? { $_.IP -eq $Network.IPV4 -and $_.ID -like "*00*" -and $_.Type -eq "GROUP" }
             }
 
