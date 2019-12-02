@@ -354,7 +354,6 @@
             [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = "4" ) ][    Int ]   $Back =  0 ,
             [ Parameter ( Position = 5 , ValueFromPipeline = $True , ParameterSetName = "2" ) ][ String ]      $Prompt )
 
-
         Begin
         {
             $GX   = $Edge , $Center , $Font , $Back ; $S = " // " , " \\ " ; $F = "/¯¯\" , "\__/" ; $L = $S[1..0] ; $R = $S[0..1]
@@ -490,44 +489,44 @@
                 
                     Y = @( 28 , 27 , 29 , 29 , 22 , 15 , 13 ; @( 11 ) * 6 ; 13 , 21 , 29 , 27 , 27, 26 ) } ; 7..12 | % { $Filter.X[$_] = 0 , 4 , 0 } ; 
 
-                    $Echo  | % { $_.ST = 0..18 ; $_.FG = 0..18 ; $_.BG = 0..18 
+                $Echo  | % { $_.ST = 0..18 ; $_.FG = 0..18 ; $_.BG = 0..18 
 
-                    ForEach ( $I in 0..18 ) 
-                    { 
-                        $_.FG[$I] = $( If ( $I -in 3, 14, 15 ) { @( 0 , 1 , 2 , 1 ; $Filter.X[$I] ; 1 , 2 , 1 , 0 ) }
-                                       If ( $I -in     4..13 ) { @( 0 , 1 , 2 , 2 ; $Filter.X[$I] ; 2 , 2 , 1 , 0 ) }
-                                       If ( $I -notin  3..15 ) { $Filter.X[$I] } )
+                ForEach ( $I in 0..18 ) 
+                { 
+                    $_.FG[$I] = $( If ( $I -in 3, 14, 15 ) { @( 0 , 1 , 2 , 1 ; $Filter.X[$I] ; 1 , 2 , 1 , 0 ) }
+                                   If ( $I -in     4..13 ) { @( 0 , 1 , 2 , 2 ; $Filter.X[$I] ; 2 , 2 , 1 , 0 ) }
+                                   If ( $I -notin  3..15 ) { $Filter.X[$I] } )
 
-                        $_.BG[$I] = @( 3 ) * $Filter.Y[$I]
-                    }
+                    $_.BG[$I] = @( 3 ) * $Filter.Y[$I]
+                }
 
-                    $101 = @( $F[1] ; $F ) ; $010 = @( $F ; $F[0] ) ; $10 = @( $F[1 , 0] )         
+                $101 = @( $F[1] ; $F ) ; $010 = @( $F ; $F[0] ) ; $10 = @( $F[1 , 0] )         
                 
-                    $_.ST[ 0] = @( "        " ; @( "____" , " -- " ) * 12 ; "____" , "        " )
-                    $_.ST[ 1] = @( "    ___/" ; @( $F ) * 12 ; $F[ 0 ] , "\___    " )
-                    $_.ST[ 2] = @( "   /"     ; @( $F ) * 13 ; $F[ 0 ] , "\   " )
-                    $_.ST[ 3] = @( "   \"     ; $10 * 13 ; $F[ 1 ] , "/   " )
-                    $_.ST[ 4] = @( "   /"     ; $F  *  2 ; $F[ 0 ] , "\ " ; @( "  ¯¯¯¯  " ) * 8 ; " /" ; $F * 2 ; $F[0] , "\   " )
-                    $_.ST[ 5] = @( "   \"     ; $10 *  2 ; $F[ 1 ] , "/ " , " [ $Title ] " , " \" , $F[1] ; $F * 2 ; "/   " )
-                    $_.ST[ 6] = @( "   /"     ; $F * 2  ; "/¯¯¯" , "   ¯¯¯¯\__/$( $M0[47] )\__/¯¯¯   " , "¯¯¯\" ; $10 * 2 ; "\   " )
-                    $_.ST[ 7] = @( "   \"     ; $101 ; "/¯¯¯" , "         __/¯¯\ ([ $( $SR[2] ) ]) /¯¯\__        " , "¯¯¯\" ; $101 ; "/   " )
-                    $_.ST[ 8] = @( "   /"     ; $010 ; "\" , "  $( $M1[9] )/¯¯\__/$( $M1[9] ) $( $M1[16] ) $( $M1[20] )\__/¯¯\$( $M1[8] )  " , "/" ; $010 ; "\   " )
-                    $_.ST[ 9] = @( "   \"     ; $101 ; "/" , " $Strength " , "\" ; $101 ; "/   " )
-                    $_.ST[10] = @( "   /"     ; $010 ; "\" , "  $( $M0[25] ) $( $M0[16] ) $( $M0[35] )  " , "/" ; $010 ; "\   " )
-                    $_.ST[11] = @( "   \"     ; $101 ; "/" , "   $Mark    " , "\" ; $101 ; "/   " )
-                    $_.ST[12] = @( "   /"     ; $010 ; "\___" , "$( $M0[32] )   $( $M0[13] )   $( $M0[24] ) " , "___/" ; $010 ; "\   " )
-                    $_.ST[13] = @( "   \"     ; $10  * 2 ; "\ " , "  $( $SR[9] )   " , " /" ; $F * 2 ; "/   " )
-                    $_.ST[14] = @( "   /"     ; $F * 2 ; "/ " ; @( "  ____  " ) * 9 ; " \" ; $10 * 2 ; "\   " )
-                    $_.ST[15] = @( "   \"     ; $10 * 13 ; $F[1] ,"/   " )
-                    $_.ST[16] = @( "    ¯¯¯\" ; $10 * 12 ; $F[1] , "/¯¯¯    " )
-                    $_.ST[17] = @( "        " , "¯¯¯\" , $F[1] ; $F * 11 ; "/¯¯¯" , "        " )
-                    $_.ST[18] = @( "        " ; @( " -- " , "¯¯¯¯" ) * 12 ; "            " )
+                    $_.ST = @{   0 = @( "        " ; @( "____" , " -- " ) * 12 ; "____" , "        " )
+                                 1 = @( "    ___/" ; @( $F ) * 12 ; $F[ 0 ] , "\___    " )
+                                 2 = @( "   /"     ; @( $F ) * 13 ; $F[ 0 ] , "\   " )
+                                 3 = @( "   \"     ; $10 * 13 ; $F[ 1 ] , "/   " )
+                                 4 = @( "   /"     ; $F  *  2 ; $F[ 0 ] , "\ " ; @( "  ¯¯¯¯  " ) * 8 ; " /" ; $F * 2 ; $F[0] , "\   " )
+                                 5 = @( "   \"     ; $10 *  2 ; $F[ 1 ] , "/ " , " [ $Title ] " , " \" , $F[1] ; $F * 2 ; "/   " )
+                                 6 = @( "   /"     ; $F * 2  ; "/¯¯¯" , "   ¯¯¯¯\__/$( $M0[47] )\__/¯¯¯   " , "¯¯¯\" ; $10 * 2 ; "\   " )
+                                 7 = @( "   \"     ; $101 ; "/¯¯¯" , "         __/¯¯\ ([ $( $SR[2] ) ]) /¯¯\__        " , "¯¯¯\" ; $101 ; "/   " )
+                                 8 = @( "   /"     ; $010 ; "\" , "  $( $M1[9] )/¯¯\__/$( $M1[9] ) $( $M1[16] ) $( $M1[20] )\__/¯¯\$( $M1[8] )  " , "/" ; $010 ; "\   " )
+                                 9 = @( "   \"     ; $101 ; "/" , " $Strength " , "\" ; $101 ; "/   " )
+                                10 = @( "   /"     ; $010 ; "\" , "  $( $M0[25] ) $( $M0[16] ) $( $M0[35] )  " , "/" ; $010 ; "\   " )
+                                11 = @( "   \"     ; $101 ; "/" , "   $Mark    " , "\" ; $101 ; "/   " )
+                                12 = @( "   /"     ; $010 ; "\___" , "$( $M0[32] )   $( $M0[13] )   $( $M0[24] ) " , "___/" ; $010 ; "\   " )
+                                13 = @( "   \"     ; $10  * 2 ; "\ " , "  $( $SR[9] )   " , " /" ; $F * 2 ; "/   " )
+                                14 = @( "   /"     ; $F * 2 ; "/ " ; @( "  ____  " ) * 9 ; " \" ; $10 * 2 ; "\   " )
+                                15 = @( "   \"     ; $10 * 13 ; $F[1] ,"/   " )
+                                16 = @( "    ¯¯¯\" ; $10 * 12 ; $F[1] , "/¯¯¯    " )
+                                17 = @( "        " , "¯¯¯\" , $F[1] ; $F * 11 ; "/¯¯¯" , "        " )
+                                18 = @( "        " ; @( " -- " , "¯¯¯¯" ) * 12 ; "            " ) }
                 }
             }
 
             If ( $Table )
             {
-                $C = $Null ; $Calc = 8 ; $Z = 0
+                $C = $Null ; $Calc = 0 ; $Z = 0
 
                 $List               = [ PSCustomObject ]@{ 
                 
@@ -536,11 +535,19 @@
                       Section       = @{ Name = $Table | GM | ? { $_.Name -like "*Section*" } | % { $_.Name } ; Items = @( ) } 
                 }
 
+                # Determine Count
+                
                 $List.Class.Name    | % { $List.Class.Items   += $Table.$_ }
                 $List.ID.Name       | % { $List.ID.Items      += $Table.$_ }
                 $List.Section.Name  | % { $List.Section.Items += $Table.$_ }
 
-                $List.Section.Name  | % { $Calc = $Calc + 3 } ; $List.Section.Items.Keys | % { $Calc ++ } ; @( "" , $Calc ++ )[ $Calc % 2 ]
+                $List.Class.Items        | % { $Calc = $Calc + 5 }
+                $List.Section.Name       | % { $Calc = $Calc + 3 }
+                $List.Section.Items.Keys | % { $Calc ++          } 
+                
+                @( $Calc ++ , $Null )[ $Calc % 2 ]
+                
+                $Calc = $Calc + 3
                 
                 $Echo               | % { $_.ST = 0..$Calc ; $_.FG = 0..$Calc ; $_.BG = 0..$Calc }
 
@@ -662,12 +669,11 @@
 
                 $Z ++
 
-                $Echo.ST[$Z] = @( "      $( $M0[72] )$( @( "    ¯¯¯¯" ) * 4 )      " )
+                $Echo.ST[$Z] = @( "      $( $M0[72] )$( "    ¯¯¯¯" * 4 )      " )
                 $Echo.FG[$Z] = 0
                 $Echo.BG[$Z] = 3
             }
         }
-        
         End
         {
             $GX = $Edge , $Center , $Font , $Back , 15 , 12 , 9 , 0 , 10
@@ -721,11 +727,39 @@
         Param ( [ Parameter ( Mandatory ) ] [ Windows.Window ] $GUI )
 
         $OP = $Null ; $Null = $GUI.Dispatcher.InvokeAsync( { $OP = $GUI.ShowDialog() ; SV -Name OP -Value $OP -Scope 1 } ).Wait() ; $OP 
-                                                                                      #____    ____    ____    ____    ____    ____    ____    ____      
+                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Find-XAMLNamedElements # Returns named items in a XAML HereString __________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        [ CmdLetBinding () ] [ OutputType ( "Array" ) ] Param (
+
+            [ Parameter ( Mandatory = $True , Position = 0 , HelpMessage = "XAML Here String" ) ] [ String ] $XAML )
+
+        $Xaml = $Xaml.Replace( '"' , "'" )
+        
+        $Array = $Xaml.Split( "`n" )
+
+        $Collect = @( )
+
+        0..( $Array.Count - 1 ) | ? { $Array[$_] -like "* Name = *" } | % {
+    
+            $Line = $Array[$_].Split(' ') | ? { $_.Length -ne 0 } 
+
+            $Collect += $Line[( 0..( $Line.Count - 1 ) | ? { $Line[$_] -eq "Name" } ) + 2 ] 
+        }
+
+        $Return = 0..( $Collect.Count - 1 ) | % { 
+        
+            $Collect[$_].Replace( "'" , '' ) 
+        }
+
+        Return $Return                                                                #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                              __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\____________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-#  Function Validate-DomainName # Verfies that text entries are valid ____________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+  Function Confirm-DomainName # Verifies that text entries are valid _____________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         [ CmdLetBinding () ] [ OutputType ( "String" ) ] Param (
 
@@ -779,14 +813,43 @@
             {
                 Return $X
             }
-        }
-    }
-<#                                                                                    ____    ____    ____    ____    ____    ____    ____    ____      
- ____                                                                              __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-//¯¯\\____________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-#>  Function Get-DSCPromoControl # Provides backend for reliable XAML Control ___________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        }                                                                             #____    ____    ____    ____    ____    ____    ____    ____      
+}#____                                                                              __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\____________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Get-DSCFeatureList # Collects all server features that pertain to DSC _______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        [ CmdLetBinding () ] Param ( [ Parameter ( Position = 0 ) ] [ Switch ] $Underscore )
+                        
+        $Echo = @( "AD-Domain-Services" , "DHCP" , "DNS" , "GPMC" ; @( "" ; "-AdminCenter" , "-PowerShell" , "-Tools" | % { "-AD$_" } ; 
+                   "" , "-Tools" | % { "-ADDS$_" } ; "-DHCP" , "-DNS-Server" , "-Role-Tools" ) | % { "RSAT$_" } ;
+                   "" , "-AdminPack" , "-Deployment" , "-Transport"  | % { "WDS$_" } )
+
+        If ( $Underscore ) 
+        { 
+            $Echo = $Echo.Replace( '-' , '_' ) 
+        } 
+        
+        Return $Echo                                                                  #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                              __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\____________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Get-DSCFeatureState # Determines Installation Loadout _______________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        [ CmdLetBinding () ] Param ( [ Parameter () ][ Switch ] $All )
+
+        $Services = Get-DSCFeatureList ; $GWF = Get-WindowsFeature ; $Array = @( ) ; $Table = [ Ordered ]@{ Installed = @( ) ; Available = @( ) }
+
+        ForEach ( $I in $Services ) { $X = $GWF | ? { $_.Name -eq $I } | % { 
+            If ( $_.InstallState -ne "Installed" ) { $Array += "$I [_]" ; $Table.Available += "$I [_]" }
+            If ( $_.InstallState -eq "Installed" ) { $Array += "$I [X]" ; $Table.Installed += "$I [X]" } } }
+
+        Return $( If ( !$All ) { $Table } If ( $All ) { $Array } )                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                              __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\____________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Get-DSCPromoControl # Provides backend for reliable XAML Control ____________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         Return [ PSCustomObject ]@{ 
         
         Command     = "" ; Process     = "" ; Forest      = "" ; Tree        = "" ; Child       = "" ; Clone       = "" ; 
@@ -807,14 +870,12 @@
         Credential  = "" ; DomainName  = "" ; DomainNetBIOSName              = "" ; NewDomainName                  = "" ; 
         NewDomainNetBIOSName           = "" ; SiteName                       = "" ; ReplicationSourceDC            = "" ; 
         
-        SafeModeAdministratorPassword  = "" }
-    }
-<#                                                                                    ____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
- ____                                                                              __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-//¯¯\\____________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-#>   Function Get-DSCPromoTable # _________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        SafeModeAdministratorPassword  = "" }                                         #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                              __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\____________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Get-DSCPromoTable # _________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         [ CmdLetBinding () ] Param (
 
             [ Parameter ( Position = 0 , ParameterSetName =      "All" ) ][ Switch ] $All        ,
@@ -860,11 +921,6 @@
             $B                            = $False , $True
             $Return                       = @( )
             $Code                         = Get-DSCPromoControl
-
-            If ( $ST -eq $Null ) 
-            { 
-                $ST                       = Get-DSCFeatureState -All 
-            }
         # ______________________________________________________________________________ #
         # Command
         # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ #
@@ -1060,7 +1116,9 @@
         
         Write-Theme -Action "Searching [~]" "For Valid Domain Controllers"
         
-        $Report                           = Get-NBTScan | ? { $_.ID -eq "<1C>" } 
+        $Report                           = Get-NBTScan 
+        $DomainController                 = $Report | ? { $_.ID -eq "<1C>" }
+        $MasterBrowser                    = $Report | ? { $_.ID -eq "<1B>" }
 
         Write-Theme -Action "Loading [~]" "Active Directory Configuration Utility"
 
@@ -1071,7 +1129,7 @@
             Convert-XAMLToWindow -XAML $_ -NE ( Find-XAMLNamedElements -Xaml $_ ) -PassThru 
         }
 
-        Get-DSCPromoSelection -Type 1 -GUI $GUI | % { $Code = $_.Code ; $GUI = $_.Window ; $Return = $_.Profile }
+        Get-DSCPromoSelection -Type 0 -GUI $GUI | % { $Code = $_.Code ; $GUI = $_.Window ; $Return = $_.Profile }
         
         $Named                            = Find-XAMLNamedElements -Xaml ( Get-XAML -HybridDSCPromo )
         
@@ -1106,11 +1164,30 @@
 
             If ( $Report -ne $Null ) 
             {
-                $Report                   | % { 
-                
-                    $DC                   = $_.Host.Split( '.' )[0]
-                    $Domain               = $_.Host.Replace( "$DC." , '' )
-                    $NetBIOS              = $_.Name 
+                $PDC = $Report | ? { $_.Service -eq "Domain Master Browser" }
+
+                If ( $PDC -ne $Null )
+                {
+                    $DC      = $PDC.Host.Split( '.' )[0]
+                    $Domain  = $PDC.Host.Replace( "$DC." , "" )
+                    $NetBIOS = $PDC.Name
+                }
+
+                If ( $PDC -eq $Null )
+                {
+                    $BDC = $Report | ? { $_.Service -eq "Domain Controller" }
+
+                    If ( $BDC.Count -gt 1 )
+                    {
+                        $BDC = $BDC[0]
+                    }
+
+                    If ( $BDC -ne $Null )
+                    {
+                        $DC      = $BDC.Host.Split( '.' )[0]
+                        $Domain  = $BDC.Host.Replace( "$DC." , "" )
+                        $NetBIOS = $BDC.Name
+                    }
                 }
 
                 $Popup                    = Get-XAML -DCFound | % { 
@@ -1118,27 +1195,24 @@
                     Convert-XAMLToWindow -XAML $_ -NE ( Find-XAMLNamedElements -XAML $_ ) -PassThru 
                 }
 
-                $Popup                    | % { 
+                $Popup.Ok                 | % { $_.Add_Click({ $Popup.DialogResult =  $True }) }
+                $Popup.Cancel             | % { $_.Add_Click({ $Popup.DialogResult = $False }) }
+                $Popup.DC                 | % { $_.Content = $DC      }
+                $Popup.Domain             | % { $_.Content = $Domain  }
+                $Popup.NetBIOS            | % { $_.Content = $NetBIOS }
 
-                    $_.Ok                 | % { $_.Add_Click({ $Popup.DialogResult =  $True }) }
-                    $_.Cancel             | % { $_.Add_Click({ $Popup.DialogResult = $False }) }
-                    $_.DC                 | % { $_.Content = $DC      }
-                    $_.Domain             | % { $_.Content = $Domain  }
-                    $_.NetBIOS            | % { $_.Content = $NetBIOS }
+                $Null                     = $Popup.Ok.Focus()
 
-                    $Null                 = $_.Ok.Focus()
-
-                    $PopupResult          = Show-WPFWindow -GUI $_
-
-                }
+                $PopupResult              = Show-WPFWindow -GUI $Popup
 
                 If ( $PopupResult -eq $True )
                 {
-                    $DCCred               = Enter-ServiceAccount -DC $DC -Domain $Domain
+                    $DCCred               = Invoke-Login -DC $DC -Domain $Domain
                 }
 
-                Else 
+                Else
                 {
+                    Write-Theme -Action "Exception [!]" "Either the user cancelled or the dialog failed" 12 4 15
                     $Alternate            = 1
                 }
             }
@@ -1158,7 +1232,7 @@
                 {
                     $X | % {
 
-                        If ( $Code.Process -eq 3 -and ( Validate-DomainName -Domain $X ) -ne $X )
+                        If ( $Code.Process -eq 3 -and ( Confirm-DomainName -Domain $X ) -ne $X )
                         {
                             Show-Message "Error" , "$X in Parent Domain Name"
                             Return
@@ -1171,7 +1245,7 @@
                         }
                     }
 
-                    $DCCred = Enter-ServiceAccount -DC $Y -Domain $X 
+                    $DCCred = Invoke-Login -DC $Y -Domain $X 
                 }
             } 
 
@@ -1217,7 +1291,7 @@
                 
                     If ( $X -eq "" ) { Show-Message -Message "$( $_[1] ) is missing" }
                 
-                    $Y = IEX "Validate-DomainName -$( $_[1] ) $X"
+                    $Y = IEX "Confirm-DomainName -$( $_[1] ) $X"
                 
                     If ( $X -eq $Y ) { $Code.$( $_[0] ) = $X } Else { Show-Message -Message $Y } 
                 }
@@ -1240,7 +1314,7 @@
                 
                         Else
                         {
-                            $X = Validate-DomainName -Domain $_
+                            $X = Confirm-DomainName -Domain $_
 
                             If ( $X -ne $_ ) { Show-Message -Message    $X } 
 
@@ -1271,7 +1345,7 @@
 
                             Else 
                             {
-                                $X = Validate-DomainName -Domain $_
+                                $X = Confirm-DomainName -Domain $_
                             
                                 If ( $X -eq $_ )     { $Code.NewDomainName        = $_ }
                             
@@ -1287,7 +1361,7 @@
                         ElseIf ( ( $NBIOS -ne $Null ) -and ( $_ -like "*$NBIOS*" ) ) { Show-Message -Message "New NetBIOS Domain Name is too similar" }
                         Else
                         {
-                            $X = Validate-DomainName -Domain $_
+                            $X = Confirm-DomainName -Domain $_
                             If ( $X -ne $_ ) { Show-Message -Message    $X } 
 
                             Else             { $Code.NewDomainNetBIOSName = $_ }
@@ -1299,7 +1373,7 @@
                 {
                     $GUI.DomainName.Text | % { 
             
-                        $X = Validate-DomainName -Domain $_ 
+                        $X = Confirm-DomainName -Domain $_ 
                         If ( $X -ne $_ ) { Show-Message -Message    $X } 
                         Else
                         { 
@@ -1320,7 +1394,7 @@
 
                 $GUI.SiteName.Text | % { 
         
-                    If ( ( Validate-DomainName -SiteName $_ ) -ne $_ )
+                    If ( ( Confirm-DomainName -SiteName $_ ) -ne $_ )
                     {
                         Show-Message -Message "Site Name is invalid"
                     }
@@ -1481,13 +1555,12 @@
         
         $NW        = Get-NetworkInfo -LocalHost
         $HR        = @( )
-        $PF        = "$( $NW.Prefix )."
+        $PF        = $NW.Prefix
+        $Range     = $NW | % { $_.Start , $_.End } | % { $_.Replace( "$PF." , "" ) }
+        $Start     = $Range[0]
+        $End       = $Range[1]
 
-        $HR       += Get-NetRoute -AddressFamily IPv4 | ? { $_.DestinationPrefix -like "*$PF*" } | % { $_.DestinationPrefix.Split('/')[0] }
-        $HR        = $HR | Sort 
-        $Range     = ( $HR[0].Replace( $PF , "" )..$HR[ ( $HR.Count - 1 ) ].Replace( $PF , "" ) )
-
-        $HostRange = 0..( $Range.Count - 1 ) | ? { $Range[$_] -ne $NW.Subnet.Replace( $PF,'' ) } | ? { $Range[$_] -ne $NW.Echo.Replace( $PF,'' ) } | % { "$PF$( $Range[$_] )" }
+        $HostRange = $Start..$End | % { "$PF.$_" }
 
         $Return    = @{ Success = @( ) ; Failure = @( ) }
 
@@ -1662,81 +1735,74 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Get-TelemetryData # Accesses Internet API's to recover Settings ____________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        Test-Connection 1.1.1.1 -Count 1 | ? { $_ -eq $Null } | % { 
+            Test-Connection 1.1.1.1 -Count 1 | ? { $_ -eq $Null } | % { 
     
-            Write-Theme -Action "Exception [!]" "Not connected to the internet" 12 4 15
-            Break
-        }
+                Write-Theme -Action "Exception [!]" "Not connected to the internet" 12 4 15
+                
+                Break
+            }
 
-        Write-Theme -Action "Collecting [+]" "Telemetry Data / Certificate Information"
+            [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
 
-        [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
+            $X = IRM -URI "http://ipinfo.io/$( ( IWR -URI 'http://ifconfig.me/ip' ).Content )" # < - [ Chrissy LeMaire ]
 
-        $X = IRM -URI "http://ipinfo.io/$( ( IWR -URI 'http://ifconfig.me/ip' ).Content )" # < - [ Chrissy LeMaire ]
+            $Info  = [ PSCustomObject ]@{ 
+                ExternalIP   = $X.IP
+                State        = $X.Region
+                Organization = "Default"
+                CommonName   = "Default"
+                Location     = $X.City
+                Country      = $X.Country
+                ZipCode      = $X.Postal
+                TimeZone     = "Default" 
+                SiteLink     = "Default-First-Site-Name" }
 
-        $Info  = [ PSCustomObject ]@{ 
-        ExternalIP   = $X.IP
-        State        = $X.Region
-        Organization = "Default"
-        CommonName   = "Default"
-        Location     = $X.City
-        Country      = $X.Country
-        ZipCode      = $X.Postal
-        TimeZone     = "Default" 
-        SiteLink     = "Default-First-Site-Name" } 
+            Write-Theme -Action "Collecting [+]" "Telemetry Data / Certificate Information"
         
-        $Key = "tZqSUOHxpjLy9kyOLKspvyZmjciB0nWpxz6PMl3KQNQBNEnW5sCbTKkKBPalSOBk"
+            $Key = "tZqSUOHxpjLy9kyOLKspvyZmjciB0nWpxz6PMl3KQNQBNEnW5sCbTKkKBPalSOBk"
 
-        $Y = IRM -URI "https://www.zipcodeapi.com/rest/$Key/info.json/$( $X.Postal )/degrees" -Method Get 
+            $Y = IRM -URI "https://www.zipcodeapi.com/rest/$Key/info.json/$( $X.Postal )/degrees" -Method Get 
 
-        $Info | % { $_.Location = $Y.City 
-                    $_.TimeZone = $Y.TimeZone.TimeZone_Identifier
-                    $_.SiteLink = "$( ( $Y.City.Split( ' ' ) | % { $_[0] } ) -join '' )-$( $X.Postal )" }
+            $Info | % { $_.Location = $Y.City 
+                        $_.TimeZone = $Y.TimeZone.TimeZone_Identifier
+                        $_.SiteLink = "$( ( $Y.City.Split( ' ' ) | % { $_[0] } ) -join '' )-$( $X.Postal )" }
 
-        $MSG  = "Company" , "Domain" | % { "[ System.Windows.MessageBox ]::Show( 'You must enter a $_' , '$_ Error' )" }
+            $MSG  = "Company" , "Domain" | % { "[ System.Windows.MessageBox ]::Show( 'You must enter a $_' , '$_ Error' )" }
 
-        $GUI = Get-XAML -Certificate | % { Convert-XAMLtoWindow -Xaml $_ -NE ( Find-XAMLNamedElements $_ ) -PassThru }
+            $GUI = Get-XAML -Certificate | % { Convert-XAMLtoWindow -Xaml $_ -NE ( Find-XAMLNamedElements $_ ) -PassThru }
 
-        $GUI.Cancel.Add_Click({ $GUI.DialogResult = $False })
+            $GUI.Cancel.Add_Click({ $GUI.DialogResult = $False })
 
-        $GUI.Ok.Add_Click({
+            $GUI.Ok.Add_Click({
 
-            If     ( $GUI.Company.Text -eq $Null )                 { IEX $MSG[0] }
-            ElseIf ( $GUI.Domain.Text  -eq $Null )                 { IEX $MSG[1] }
-            Else { $GUI.DialogResult = $True }
+                If     ( $GUI.Company.Text -eq $Null )                 { IEX $MSG[0] }
+                ElseIf ( $GUI.Domain.Text  -eq $Null )                 { IEX $MSG[1] }
+                Else { $GUI.DialogResult = $True }
 
-        })
+            })
 
-        $GUI.Domain | % { $_.Text = Get-NetworkInfo -LocalHost | % { $_.DNS } | % { If ( $_ -ne $Null ) { $_ } Else { "" } } }
+            $GUI.Domain | % { $_.Text = Get-NetworkInfo -LocalHost | % { $_.DNS } | % { If ( $_ -ne $Null ) { $_ } Else { "" } } }
 
-        $Null = $GUI.Company.Focus()
+            $Null = $GUI.Company.Focus()
 
-        $OP = Show-WPFWindow -GUI $GUI
+            $OP = Show-WPFWindow -GUI $GUI
         
-        If ( $OP -eq $True )
-        { 
-            Write-Theme -Action "Complete [+]" "Generating Certificate Information"
+            If ( $OP -eq $True )
+            { 
+                Write-Theme -Action "Complete [+]" "Generating Certificate Information"
 
-            $Info | % { $_.Organization = $GUI.Company.Text 
-                        $_.CommonName   = $GUI.Domain.Text  }
-            Return $Info
-        }
+                $Info | % { $_.Organization = $GUI.Company.Text 
+                            $_.CommonName   = $GUI.Domain.Text  }
 
-        Else 
-        { 
-            Write-Theme -Action "Cancelled [!]" "Abandoned Certificate Generation, using defaults" 11 12 15
+                Return $Info
+            }
 
-            Return [ PSCustomObject ]@{ 
-            ExternalIP   = $X.IP
-            State        = $X.Region
-            Organization = "Default"
-            CommonName   = "Default"
-            Location     = $X.City
-            Country      = $X.Country
-            ZipCode      = $X.Postal
-            TimeZone     = "Default" 
-            SiteLink     = "Default-First-Site-Lame" }
-        }                                                                            #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+            Else 
+            { 
+                Write-Theme -Action "Cancelled [!]" "Abandoned Certificate Generation, using defaults" 11 12 15
+
+                Return $Info
+            }                                                                        #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
@@ -1773,68 +1839,148 @@
 
             If ( $All )
             {
-                $Section  = @{ }
-                $SubTable = @{ }
-
-                0..3      | % { 
-            
-                    $Section.Add( $_ , "" )
-                    $SubTable.Add( $_ , "" ) 
-                    $Section[$_] = @{ Name = @( ) ; Value = @( ) ; Section = $Index[$_] }
-                }
-            }
-
-            If ( ( $Local ) -or ( $Map ) -or ( $NetBIOS ) -or ( $Telemetry ) )
-            {
-                $X = $( If ( $Local ) { 0 } If ( $Map ) { 1 } If ( $NetBIOS ) { 2 } If ( $Telemetry ) { 3 } )
-
-                $Section = @{ Name = @( ) ; Value = @( ) ; Section = $Index[$X] }
+                $Section    = @{ } ; $SubTable = @{ }
+                
+                0..3 | % { $Section.Add( $_ , "" ) ; $SubTable.Add( $_ , "" ) }
             }
         <#________________________#>
         <#[ Network Information  ]#>
         <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
-            $Item    = $( If ( $All ) { $Section[0] } If ( $Local ) { $Section } )
 
-            Get-NetworkInfo -LocalHost | GM | ? { $_.MemberType -like "*Note*" } | % { $Item.Name += $_.Name ; $Item.Value += $_.Definition.Split( '=' )[-1] }
+            $Network = Get-NetworkInfo -LocalHost
 
-            $Item | % { $_.Name = $_.Name[5,1,8,7,0,6,2,10,9,4,3] ; $_.Value = $_.Value[5,1,8,7,0,6,2,10,9,4,3] }
-            
-            New-Subtable -Items $Item.Name -Values $Item.Value | % { If ( $All ) { $Subtable[0] = $_ } If ( $Local     ) { $Subtable = $_ } }
+            If ( $Network -ne $Null )
+            {
+                $Subject    = ( $Network | GM | ? { $_.MemberType -like "*Note*" } )[5,1,8,7,0,6,2,10,9,4,3]
+                $Names      = $Subject   | % { $_.Name }
+                $Values     = $Subject   | % { $_.Definition.Split( '=' )[-1] }
+
+                $Output     = "[0]" , "" | % { 
+
+                    "`$Section$_    = @{ 
+                
+                        Name    = `$Names
+                        Value   = `$Values
+                        Section = `$Index[0] 
+                     }
+                 
+                    `$Subtable$_   = New-Subtable -Items `$Section$_.Name -Values `$Section$_.Value"
+                }
+
+                If ( $All   ) { IEX $Output[0] }
+                If ( $Local ) { IEX $Output[1] }
+            }
+
+            If ( $Network -eq $Null )
+            {
+                Write-Theme -Action "Exception [!]" "Network Adapter information not found" 12 4 15
+                Break
+            }
+
         <#________________________#>
         <#[   Network Host Map   ]#>
         <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
-            $Item    = $( If ( $All ) { $Section[1] } If ( $Map ) { $Section } )
 
-            Get-NetworkHosts | ? { $_.IPV4Class -like "*Class*" } | % { $Item.Name += $_.IPV4Address ; $Item.Value += $_.MacAddress }
+            $HostList       = Get-NetworkHosts | ? { $_.IPV4Class -like "*Class*" }
 
-            New-Subtable -Items $Item.Name -Values $Item.Value | % { If ( $All ) { $Subtable[1] = $_ } If ( $Map       ) { $Subtable = $_ } }
+            If ( $HostList -ne $Null )
+            {
+                $Names      = $HostList | % { $_.IPV4Address }
+                $Values     = $HostList | % { $_.MACAddress  }
+
+                $Output     = "[1]" , "" | % { 
+
+                    "`$Section$_    = @{ 
+                
+                        Name    = `$Names
+                        Value   = `$Values
+                        Section = `$Index[1] 
+                     }
+                 
+                    `$Subtable$_   = New-Subtable -Items `$Section$_.Name -Values `$Section$_.Value"
+                }
+                
+                If ( $All   ) { IEX $Output[0] }
+                If ( $Map   ) { IEX $Output[1] }
+            }
+
+            If ( $HostList -eq $Null )
+            {
+                Write-Theme -Action "Exception [!]" "Network Adapter information not found" 12 4 15
+                Break
+            }
+
         <#________________________#>
         <#[   NetBIOS / NBTScan  ]#>
         <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
-            $Item    = $( If ( $All ) { $Section[2] } If ( $NetBIOS ) { $Section } )
         
-            $NB             = Get-NBTSCAN 
-            $Control        = $NB | ? { $_.ID -like "*1C*" }
+            $NBT            = Get-NBTSCAN
+            $Control        = @( $NBT | ? { $_.ID -like "*1C*" } )
+
+            If ( $Control.Count -gt 1 )
+            {
+                $Control    = $Control[0] # Will write better selection logic for multiple servers
+            }
             
-            If ( $Control -eq $Null ) 
-            { 
-                $Control    = $NB | ? { $_.IP -eq ( Get-NetworkInfo -LocalHost | % { $_.IPV4 } ) -and $_.ID -like "*00*" -and $_.Type -eq "GROUP" }
+            If ( $Control -eq $Null )
+            {
+                nbtstat -N
+                $Control    = $NBT | ? { $_.IP -eq $Network.IPV4 -and $_.ID -like "*00*" -and $_.Type -eq "GROUP" }
             }
 
-            $Item.Name     += $NB | GM | ? { $_.MemberType -like "*Note*" } | % { $_.Name }
-            $Item.Value    += $Item.Name | % { $Control.$_ }
+            If ( $Control -ne $Null )
+            {
+                $Names      = ( $Control | GM | ? { $_.MemberType -like '*Note*' } )[2,0,3,1,5,4] | % { $_.Name }
+                $Values     = $Names | % { $Control.$_ }
 
-            New-Subtable -Items $Item.Name -Values $Item.Value | % { If ( $All ) { $Subtable[2] = $_ } If ( $NetBIOS   ) { $Subtable = $_ } }
+                $Output     = "[2]" , "" | % {
+
+                    "`$Section$_    = @{ 
+                
+                        Name    = `$Names
+                        Value   = `$Values
+                        Section = `$Index[2] 
+                     }
+                 
+                    `$Subtable$_   = New-Subtable -Items `$Section$_.Name -Values `$Section$_.Value"
+                }
+                
+                If ( $All       ) { IEX $Output[0] }
+                If ( $NetBIOS   ) { IEX $Output[1] }
+            }
+
         <#________________________#>
         <#[___ Telemetry Data ___]#>
         <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
-            $Item = $( If ( $All ) { $Section[3] } If ( $Telemetry ) { $Section } )
 
             $TD             = Get-TelemetryData
-            $Item.Name      = @( $TD | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,6,4,0,3,1,7,8,5]
-            $Item.Value     = $Item.Name | % { $TD.$_ }
+            
+            If ( $TD -eq $Null )
+            {
+                Write-Theme -Action "Exception [!]" "Certificate information not loaded" 12 4 15
+                Break
+            }
 
-            New-Subtable -Items $Item.Name -Values $Item.Value | % { If ( $All ) { $Subtable[3] = $_ } If ( $Telemetry ) { $Subtable = $_ } }
+            If ( $TD -ne $Null )
+            {
+                $Names       = @( $TD | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,6,4,0,3,1,7,8,5]
+                $Values      = $Names | % { $TD.$_ }
+
+                $Output     = "[3]" , "" | % {
+
+                    "`$Section$_    = @{ 
+                
+                        Name    = `$Names
+                        Value   = `$Values
+                        Section = `$Index[3] 
+                     }
+                 
+                    `$Subtable$_   = New-Subtable -Items `$Section$_.Name -Values `$Section$_.Value"
+                }
+
+                If ( $All       ) { IEX $Output[0] }
+                If ( $Telemetry ) { IEX $Output[1] }
+            }
         <#________________________#>
         <#[___ Generate Table ___]#>
         <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
@@ -1890,15 +2036,14 @@
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
 
         $Info            = Get-NetworkInfo -LocalHost
-        $Report          = @{ Success = @( ) ; Failure = @( ) }
-        Start-PingSweep  | % { $Report.Success += @( $_.Success ) ; $Report.Failure += @( $_.Failure ) }
-        $New_IPAddress   = $Report.Failure | Select -First 1
+        $Report          = Start-PingSweep
+        $IPAddress       = $Report.Failure | Select -First 1
 
         $Adapter         = Get-NetRoute -AddressFamily IPV4 | ? { $_.DestinationPrefix -like "*$( $Info.IPV4 )/*" } | % { $_.InterfaceIndex }
-        $Adapter         | % { Get-NetRoute -AddressFamily IPv4 | ? { $_.DestinationPrefix -eq "0.0.0.0/0" } | % { $Gateway = $_.NextHop } }
+        $Gateway         = Get-NetRoute -AddressFamily IPv4 -InterfaceIndex $Adapter | ? { $_.DestinationPrefix -eq "0.0.0.0/0" } | % { $_.NextHop }
         
-        $IPAddress       = @{    InterfaceIndex = $Adapter
-                                      IPAddress = $New_IPAddress
+        $Splat           = @{    InterfaceIndex = $Adapter
+                                      IPAddress = $IPAddress
                                    PrefixLength = $Info.CIDR
                                  DefaultGateway = $Gateway
                                   ValidLifeTime = [ TimeSpan ]::MaxValue
@@ -1906,10 +2051,10 @@
 
         New-NetIpAddress @IPAddress
     
-            $DNS             = @{    InterfaceIndex = $Adapter
-                                    ServerAddresses = "1.1.1.1" , "1.0.0.1" }
+        $Splat           = @{    InterfaceIndex = $Adapter
+                                ServerAddresses = "1.1.1.1" , "1.0.0.1" }
 
-        Set-DNSClientServerAddress @DNS
+        Set-DNSClientServerAddress @Splat
     
         0..10 | ? { ( Test-Connection -ComputerName "DSC$_" -Count 1 -EA 0 ) -eq $Null } | % { Rename-Computer "DSC$_" ; Restart-Computer }
 
@@ -1945,34 +2090,16 @@
                 }
             }
         }
-        If ( $Return ) { Return $Report.Client | FT -AutoSize }
-        Else { Return $Report }                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#___                                                                              __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Get-DSCFeatureList # Collects all server features that pertain to DSC ______//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        [ CmdLetBinding () ] Param ( [ Parameter ( Position = 0 ) ] [ Switch ] $Underscore )
-                        
-        $Echo = @( "AD-Domain-Services" , "DHCP" , "DNS" , "GPMC" ; @( "" ; "-AdminCenter" , "-PowerShell" , "-Tools" | % { "-AD$_" } ; 
-                   "" , "-Tools" | % { "-ADDS$_" } ; "-DHCP" , "-DNS-Server" , "-Role-Tools" ) | % { "RSAT$_" } ;
-                   "" , "-AdminPack" , "-Deployment" , "-Transport"  | % { "WDS$_" } )
 
-        If ( $Underscore ) { $Echo = $Echo.Replace( '-' , '_' ) } Return $Echo       #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Get-DSCFeatureState # Determines Installation Loadout ______________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        [ CmdLetBinding () ] Param ( [ Parameter () ][ Switch ] $All )
-
-        $Services = Get-DSCFeatureList ; $GWF = Get-WindowsFeature ; $Array = @( ) ; $Table = [ Ordered ]@{ Installed = @( ) ; Available = @( ) }
-
-        ForEach ( $I in $Services ) { $X = $GWF | ? { $_.Name -eq $I } | % { 
-            If ( $_.InstallState -ne "Installed" ) { $Array += "$I [_]" ; $Table.Available += "$I [_]" }
-            If ( $_.InstallState -eq "Installed" ) { $Array += "$I [X]" ; $Table.Installed += "$I [X]" } } }
-
-        Return $( If ( !$All ) { $Table } If ( $All ) { $Array } )                   #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+        If ( $Return ) 
+        { 
+            Return $Report.Client | FT -AutoSize 
+        }
+        
+        Else 
+        { 
+            Return $Report 
+        }                                                                            #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
@@ -2642,38 +2769,10 @@
         Write-Theme -Action "Loaded [+]" "$X"
         
         Return $Return                                                           
-                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Find-XAMLNamedElements # Returns named items in a XAML HereString __________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        [ CmdLetBinding () ] [ OutputType ( "Array" ) ] Param (
-
-            [ Parameter ( Mandatory = $True , Position = 0 , HelpMessage = "XAML Here String" ) ] [ String ] $XAML )
-
-        $Xaml = $Xaml.Replace( '"' , "'" )
-        
-        $Array = $Xaml.Split( "`n" )
-
-        $Collect = @( )
-
-        0..( $Array.Count - 1 ) | ? { $Array[$_] -like "* Name = *" } | % {
-    
-            $Line = $Array[$_].Split(' ') | ? { $_.Length -ne 0 } 
-
-            $Collect += $Line[( 0..( $Line.Count - 1 ) | ? { $Line[$_] -eq "Name" } ) + 2 ] 
-        }
-
-        $Return = 0..( $Collect.Count - 1 ) | % { 
-        
-            $Collect[$_].Replace( "'" , '' ) 
-        }
-
-        Return $Return                                                               #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}<#__                                                                              __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-//¯¯\\____________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// #>
+                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                              __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\____________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Show-Message # Returns a messagebox ________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         [ CmdLetBinding () ] Param (
@@ -2743,7 +2842,7 @@
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Export-Ini # Extensively modified version found on TechNet ________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    Function Export-Ini # Based on Oliver Lipkau's OutFile-INI on TechNet ______________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         [ CmdLetBinding () ] Param ( 
 
