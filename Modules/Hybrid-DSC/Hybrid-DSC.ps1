@@ -995,22 +995,22 @@
             $Default                      = @{ 0 = 1,0,0,0 ; 1 = 1,0,0,0 ; 2 = 1,1,0,0 ; 3 = 1,0,0,0 }
             
             $X                            = $Switch[$P]
+            $Y                            = $Default[$P]
 
-                0..( $Names.Count - 1 )   | % {  
+                ForEach ( $Z in 0..( $Names.Count - 1 ) )
+                {
+                    $Item                 = $Names[$Z]
 
-                    $Y                    = $Names[$_]
-
-                    $GUI.$Y               | % { $_.IsEnabled = $False ; $_.IsChecked = $True }
-                    
-                    If ( $X[$_] -eq 0 ) 
+                    If ( $X[$Z] -eq 0 ) 
                     { 
-                        $Code.$Y          = '-' 
+                        $Code.$Item       = '-'
+                        $GUI.$Item        | % { $_.IsEnabled = $False ; $_.IsChecked = $False }
                     }
 
-                    If ( $X[$_] -eq 1 ) 
+                    If ( $X[$Z] -eq 1 ) 
                     { 
-                        $Code.$Y          = $X[$_]
-                        $GUI.$Y.IsEnabled = $B[$Default[$P][$_]]
+                        $Code.$Item       = 1
+                        $GUI.$Item        | % { $_.IsEnabled =  $True ; $_.IsChecked = $B[$Y][$Z] }
                         $Return          += $Y 
                     }
                 }
@@ -1094,6 +1094,7 @@
         $Report                           = Get-NBTScan 
         $DomainController                 = $Report | ? { $_.ID -eq "<1C>" }
         $MasterBrowser                    = $Report | ? { $_.ID -eq "<1B>" }
+
         $ST                               = Get-DSCFeatureState -All
 
         Write-Theme -Action "Loading [~]" "Active Directory Configuration Utility"
@@ -1344,6 +1345,7 @@
                         Else
                         {
                             Resolve-DNSName $_ -Type A | % { Resolve-DNSName $_.IPAddress } | % { $Y = $_.NameHost.Replace( ".$X" , '' ) }
+
                             If ( $Y -eq $Null ) 
                             { 
                                 [ System.Windows.MessageBox ]::Show( "Failed to detect the domain controller" , "Error" )
@@ -1656,12 +1658,17 @@
             $Code.SafeModeAdministratorPassword = $GUI.SafeModeAdministratorPassword.SecurePassword
 
             
-            "ForestMode" , "DomainMode" | ? { $_ -in $Return } | % { 
+            "ForestMode" , "DomainMode" | % { 
             
-                $Code.$_ = $GUI.$_.SelectedIndex 
+                $Code.$_ = $GUI.$_.SelectedIndex
+
+                If ( $Code.$_ -eq 7 )
+                {
+                    $Code.$_ = 6
+                } 
             }
                 
-            Get-DSCPromoTable -Roles | ? { $_ -in $Return } | % { 
+            Get-DSCPromoTable -Roles | ? { $GUI.$_.IsEnabled } | % { 
             
                 $Code.$_ = $GUI.$_.IsChecked
             }
