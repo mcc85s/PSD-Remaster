@@ -234,10 +234,14 @@
         {
             If ( $Items.Count -gt 1 ) 
             { 
-                $Count = 0..( $Items.Count - 1 ) 
+                $Count = 0..( $Items.Count - 1 )
+                $Count | % { $Table | Add-Member -MemberType NoteProperty -Name "Item:$_" -Value @{ ID = "$( $Items[$_] )" ; Value = "$( $Values[$_] )" } }
             }
             
-            $Count | % { $Table | Add-Member -MemberType NoteProperty -Name "Item:$_" -Value @{ ID = "$( $Items[$_] )" ; Value = "$( $Values[$_] )" } }
+            If ( $Items.Count -eq 1 )
+            {
+                $Table | Add-Member -MemberType NoteProperty -Name "Item:0" -Value @{ ID = "$( $Items )" ; Value = "$( $Values )" } 
+            }
         }
         
         If ( $Items.Count -ne $Values.Count ) 
@@ -609,7 +613,7 @@
                         
                         $RV = $Values[$_]
 
-                        If ( $RV.ID.Length -gt 20 )    { $ID = "$( $RV.ID[0..20] -join '' ) ... " }      Else { $ID = "$( $M2[ ( 25 - $RV.ID.Length ) ] )$( $RV.ID )" }
+                        If ( $RV.ID.Length -gt 20 )    { $ID = "$( $RV.ID[0..20] -join '' ) ..." }      Else { $ID = "$( $M2[ ( 25 - $RV.ID.Length ) ] )$( $RV.ID )" }
                         If ( $RV.Value.Length -gt 70 ) { $VA = "$( $RV.Value[ 0..74 ] -join '' ) ... " } Else { $VA = "$( $RV.Value )$( $M2[ ( 80 - $RV.Value.Length ) ])" }
                         $Echo   | % { $_.ST[$Z] = @( $L[ $Z % 2 ] , $ID , " : " , $VA , $R[ $Z % 2 ] ) ; $_.FG[$Z] = 0 , 2 , 1 , 2 , 0 ; $_.BG[$Z] = 0..4 | % { 3 } ; $Z++ }
                     }
@@ -1292,6 +1296,7 @@
 
                     If ( $DCCred -eq $Null )
                     {
+                        Write-Theme -Action "Exception [!]" "Domain Credential not captured, attempting secondary login" 11 1 15
                         $Alternate = 1
                     }
                 }
@@ -1305,6 +1310,8 @@
 
             If ( ( $Report -eq $Null ) -or ( $Alternate -eq 1 ) )
             {
+                Write-Theme -Action "Not Detected [!]" "Found no network nodes, attempting manual configuration"
+
                 If ( ( $GUI.Tree.IsChecked ) -or ( $GUI.Child.IsChecked ) )
                 {
                     $Domain = $GUI.ParentDomainName.Text
@@ -1329,7 +1336,7 @@
                     Break
                 }
                 
-                Resolve-DNSName $Domain -Type A | % { Resolve-DNSName $_.IPAddress } | % { $DC = $_.NameHost.Replace( ".$X" , '' ) }
+                Resolve-DNSName $Domain -Type A | % { Resolve-DNSName $_.IPAddress } | % { $DC = $_.NameHost.Replace( ".$Domain" , '' ) }
 
                 If ( $DC -eq $Null )
                 { 
@@ -1701,33 +1708,141 @@
 
         If ( $OP -eq $True )
         {
-            $DSCLoadout    = Get-DSCPromoTable -Services | ? { $Code.$_ -eq "Available" -and $GUI.$_.IsChecked -eq $True } | % { $_.Replace( '_' , '-' ) }
-                
-            $Command       = $Code.Command
-            $Provision     = [ PSCustomObject ]@{ }
+            $DSCLoadout      = @( ) 
+            
+            Get-DSCPromoTable -Services | ? { $Code.$_ -eq "Available" -and $GUI.$_.IsChecked -eq $True } | % {
+            
+                $DSCLoadout += $_.Replace( '_' , '-' )
+            }
 
-            $Code.Process  | ? { $_ -in 1..2 } | % {
+            $Command         = $Code.Command
 
-                $Provision | Add-Member -MemberType NoteProperty -Name DomainType -Value ( Get-DSCPromoTable -DomainType )[$_]
+            $Provision       = [ Ordered ]@{ }
+
+            $Code.Process    | ? { $_ -in 1..2 } | % {
+
+                #$Provision  | Add-Member -MemberType NoteProperty -Name DomainType -Value ( Get-DSCPromoTable -DomainType )[$_]
+                $Provision.Add( "DomainType" , ( Get-DSCPromoTable -DomainType )[$_] )
             }
             
-            $Code.Profile  | % { 
+            $Code.Profile    | % { 
 
-                $Provision | Add-Member -MemberType NoteProperty -Name $_  -Value $Code.$_
+                #$Provision  | Add-Member -MemberType NoteProperty -Name $_  -Value $Code.$_
+                $Provision.Add( $_ , $Code.$_ )
             }
 
-            #$DSCLoadOut    | % {
+            "Database" , "Log" , "Sysvol" | % { "$_`Path" } | % { 
 
-            #    $Splat     = @{ Name                   = $_
-            #                    IncludeAllSubFeature   = $True 
-            #                    IncludeManagementTools = $True }
+                #$Provision  | Add-Member -MemberType NoteProperty -Name $_  -Value $Code.$_
+                $Provision.Add( $_ , $Code.$_ )
+            }
 
-            #    Install-WindowsFeature @FeatureInst
-            #}
+            ( "NoRebootUponCompletion" , $False ) , ( "Force" , $True ) | % {
+            
+                #$Provision  | Add-Member -MemberType NoteProperty -Name $_[0] -Value $_[1]
+                $Provision.Add( $_[0] , $_[1] )
+            }
 
-            Echo $DSCLoadout
-            Echo $Command
-            Echo $Provision
+            # Report/Confirmation Screen
+
+            $Section     = 0..2
+            $SubTable    = 0..2
+
+            $Section[0]  = "Service Configuration"
+
+            $Names       = @( )
+            $Values      = @( )
+            
+            ForEach ( $i in 0..( $DSCLoadOut.Count - 1 ) ) 
+            { 
+                $Names  += "Service [$I]" 
+                $Values += $DSCloadout[$I]
+            }
+
+            $Subtable[0] = New-SubTable -Items $Names -Values $Values
+
+            $Section[1]  = "Domain Controller Promotion"
+            $Subtable[1] = New-SubTable -Items "Command/Type" -Values $Command
+
+            $Section[2]  = "Parameters"
+            $Names       = @( ) 
+            $Values      = @( )
+
+            ForEach ( $i in 0..( $Provision.Keys.Count - 1 ) ) 
+            { 
+                $Names  += @( $Provision.Keys   )[$_] 
+                $Values += @( $Provision.Values )[$_] 
+            }
+            
+            $Subtable[2] = New-SubTable -Items $Names -Values $Values
+
+            $Splat       = @{ 
+                
+                Title    = "Hybrid-DSC Promo Loadout"
+                Depth    = 3 
+                ID       = 0..2 | % { $Section[$_] | % { "( $_ )" } }
+                Table    = 0..2 | % { $Subtable[$_] } 
+            }
+            
+            $Table       = New-Table @Splat
+
+            Write-Theme -Table $Table -Prompt "Press Enter to Continue, CTRL+C to Exit"
+
+            $DSCLoadOut    | % {
+
+                $Splat     = @{ Name                   = $_
+                                IncludeAllSubFeature   = $True 
+                                IncludeManagementTools = $True }
+
+                Install-WindowsFeature @Splat
+            }
+
+            IPMO ADDSDeployment
+
+            If ( $Command -eq "Install-ADDSForest" )
+            {
+                Test-ADDSForestInstallation @Provision
+
+                If ( $? -eq $True )
+                {
+                    Write-Theme -Action "Successful [+]" "Test-ADDSForestInstallation Passed"
+                }
+                
+                Else
+                {
+                    Write-Theme -Action "Exception [!]" "Test-ADDSForestInstallation Failed" 12 4 15
+                }
+            }
+
+            If ( $Command -eq "Install-ADDSDomain" )
+            {
+                Test-ADDSDomainInstallation @Provision
+                
+                If ( $? -eq $True )
+                {
+                    Write-Theme -Action "Successful [+]" "Test-ADDSDomainInstallation Passed"
+                }
+                
+                Else
+                {
+                    Write-Theme -Action "Exception [!]" "Test-ADDSDomainInstallation Failed" 12 4 15
+                }
+            }
+
+            If ( $Command -eq "Install-ADDSDomainController" )
+            {
+                Test-ADDSDomainControllerInstallation @Provision
+
+                If ( $? -eq $True )
+                {
+                    Write-Theme -Action "Successful [+]" "Test-ADDSDomainControllerInstallation Passed"
+                }
+                
+                Else
+                {
+                    Write-Theme -Action "Exception [!]" "Test-ADDSDomainControllerInstallation Failed" 12 4 15
+                }
+            }
         }
 
         Else { Write-Theme -Action "[!] Exception" "Either the user cancelled, or the dialog failed" 12 4 15 }
