@@ -1753,7 +1753,7 @@
             $Names       = @( )
             $Values      = @( )
             
-            ForEach ( $i in 0..( $DSCLoadOut.Count - 1 ) ) 
+            ForEach ( $I in 0..( $DSCLoadOut.Count - 1 ) ) 
             { 
                 $Names  += "Service [$I]" 
                 $Values += $DSCloadout[$I]
@@ -1768,10 +1768,10 @@
             $Names       = @( ) 
             $Values      = @( )
 
-            ForEach ( $i in 0..( $Provision.Keys.Count - 1 ) ) 
+            ForEach ( $I in 0..( $Provision.Keys.Count - 1 ) ) 
             { 
-                $Names  += @( $Provision.Keys   )[$_] 
-                $Values += @( $Provision.Values )[$_] 
+                $Names  += @( $Provision.Keys   )[$I] 
+                $Values += @( $Provision.Values )[$I] 
             }
             
             $Subtable[2] = New-SubTable -Items $Names -Values $Values
