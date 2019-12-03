@@ -28,11 +28,11 @@
         Get-TelemetryData , Resolve-MacAddress , Start-NetworkInfo , Get-NetworkStatistics , Initialize-PortScan , Invoke-Login , Add-ACL , 
         New-ACLObject , Import-MDTModule , Export-Ini , Resolve-UninstallList , Install-DSCRoot , Install-HybridDSC , Initialize-HybridDSC ,
         Unlock-Script , Resolve-LocalMachine , Update-HybridDSC , Update-Branding , Export-BridgeScript , Get-DSCFeatureList , Confirm-DomainName , 
-        Get-DSCPromoControl , Get-DSCPromoTable , Get-DSCPromoSelection , Initialize-DomainController , Initialize-Server
+        Get-DSCPromoTable , Get-DSCPromoSelection , Initialize-DomainController , Initialize-Server
 
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 <#___                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 //¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 \\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
- ¯¯¯#>  Write-Theme -Function "Hybrid-DSC Module Loaded" 11 12 15  <#___________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+ ¯¯¯#>  Write-Theme -Function "Hybrid-DSC Module Loaded"  <#____________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
      ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯     #>
