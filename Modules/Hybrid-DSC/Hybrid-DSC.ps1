@@ -1721,126 +1721,170 @@
 
             $Code.Process    | ? { $_ -in 1..2 } | % {
 
-                #$Provision  | Add-Member -MemberType NoteProperty -Name DomainType -Value ( Get-DSCPromoTable -DomainType )[$_]
                 $Provision.Add( "DomainType" , ( Get-DSCPromoTable -DomainType )[$_] )
             }
             
             $Code.Profile    | % { 
 
-                #$Provision  | Add-Member -MemberType NoteProperty -Name $_  -Value $Code.$_
                 $Provision.Add( $_ , $Code.$_ )
             }
 
             "Database" , "Log" , "Sysvol" | % { "$_`Path" } | % { 
 
-                #$Provision  | Add-Member -MemberType NoteProperty -Name $_  -Value $Code.$_
                 $Provision.Add( $_ , $Code.$_ )
-            }
-
-            ( "NoRebootUponCompletion" , $False ) , ( "Force" , $True ) | % {
-            
-                #$Provision  | Add-Member -MemberType NoteProperty -Name $_[0] -Value $_[1]
-                $Provision.Add( $_[0] , $_[1] )
             }
 
             # Report/Confirmation Screen
 
-            $Section     = 0..2
-            $SubTable    = 0..2
+             #_    ____________________________
+             #\\__//¯¯[_______ Services ______]
+             # ¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
-            $Section[0]  = "Service Configuration"
+            If ( $DSCLoadOut.Count -ge 1 )
+            {
+                $Section     = 0..2
+                $SubTable    = 0..2
+                $Z           = 0
 
-            $Names       = @( )
-            $Values      = @( )
+                $Section[$Z]  = "Service Configuration"
+
+                $Names       = @( )
+                $Values      = @( )
             
-            ForEach ( $I in 0..( $DSCLoadOut.Count - 1 ) ) 
-            { 
-                $Names  += "Service [$I]" 
-                $Values += $DSCloadout[$I]
+                ForEach ( $I in 0..( $DSCLoadOut.Count - 1 ) ) 
+                { 
+                    $Names  += "Service [$I]" 
+                    $Values += $DSCloadout[$I]
+                }
+                
+                $Subtable[$Z] = New-SubTable -Items $Names -Values $Values
+
+                $Z ++
             }
 
-            $Subtable[0] = New-SubTable -Items $Names -Values $Values
+             #_    ____________________________
+             #\\__//¯¯[_______ Command _______]
+             # ¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
-            $Section[1]  = "Domain Controller Promotion"
-            $Subtable[1] = New-SubTable -Items "Command/Type" -Values $Command
-
-            $Section[2]  = "Parameters"
-            $Names       = @( ) 
-            $Values      = @( )
-
-            ForEach ( $I in 0..( $Provision.Keys.Count - 1 ) ) 
-            { 
-                $Names  += @( $Provision.Keys   )[$I] 
-                $Values += @( $Provision.Values )[$I] 
+            If ( $DSCLoadOut.Count -eq 0 )
+            {
+                $Section     = 0..1
+                $SubTable    = 0..1
+                $Z           = 0
             }
+
+            $Section[$Z]  = "Domain Controller Promotion"
+            $Subtable[$Z] = New-SubTable -Items "Command/Type" -Values $Command
+
+            $Z ++
+
+             #_    ____________________________
+             #\\__//¯¯[______ Parameters _____]
+             # ¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+
+            $Section[$Z]  = "Parameters"
+            $Names        = @( $Provision.Keys ) 
+            $Values       = @( $Provision.Values )
             
-            $Subtable[2] = New-SubTable -Items $Names -Values $Values
+            $Subtable[$Z] = New-SubTable -Items $Names -Values $Values
+
+             #_    ____________________________
+             #\\__//¯¯[_____ Confirmation ____]
+             # ¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
             $Splat       = @{ 
                 
                 Title    = "Hybrid-DSC Promo Loadout"
-                Depth    = 3 
-                ID       = 0..2 | % { $Section[$_] | % { "( $_ )" } }
-                Table    = 0..2 | % { $Subtable[$_] } 
+                Depth    = $Section.Count
+                ID       = ForEach ( $I in 0..( $Section.Count - 1 ) ) { "( $( $Section[$I] ) )" }
+                Table    = ForEach ( $I in 0..( $Section.Count - 1 ) ) { $Subtable[$I] } 
             }
             
             $Table       = New-Table @Splat
 
-            Write-Theme -Table $Table -Prompt "Press Enter to Continue, CTRL+C to Exit"
+            Write-Theme -Table $Table -Prompt "Press Enter to Continue, CTRL + C to Exit"
 
-            $DSCLoadOut    | % {
+             #_    ____________________________
+             #\\__//¯¯[__ Service Installer __]
+             # ¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
-                $Splat     = @{ Name                   = $_
-                                IncludeAllSubFeature   = $True 
-                                IncludeManagementTools = $True }
+            If ( $DSCLoadout.Count -gt 0 )
+            {
+                Write-Theme -Action "Installing [~]" "Loadout Services"
 
-                Install-WindowsFeature @Splat
+                $DSCLoadOut    | % {
+
+                    $Splat     = @{ Name                   = $_
+                                    IncludeAllSubFeature   = $True 
+                                    IncludeManagementTools = $True }
+
+                    Install-WindowsFeature @Splat
+                }
             }
 
-            IPMO ADDSDeployment
+            IPMO ADDSDeployment -VB
 
-            If ( $Command -eq "Install-ADDSForest" )
-            {
+             #_    ____________________________
+             #\\__//¯¯[____ DCPromo Tester ___]
+             # ¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+
+            Write-Theme -Action "Testing [~]" "Promotion Parameters"
+
+            $Promote = 0
+
+            If ( $Command -eq "Install-ADDSForest" ) 
+            { 
+                $EXE = 0
+                $MSG = "Test-ADDSForestInstallation"
+
                 Test-ADDSForestInstallation @Provision
-
-                If ( $? -eq $True )
-                {
-                    Write-Theme -Action "Successful [+]" "Test-ADDSForestInstallation Passed"
-                }
-                
-                Else
-                {
-                    Write-Theme -Action "Exception [!]" "Test-ADDSForestInstallation Failed" 12 4 15
-                }
             }
 
             If ( $Command -eq "Install-ADDSDomain" )
             {
+                $EXE = 1
+                $MSG = "Test-ADDSDomainInstallation"
+
                 Test-ADDSDomainInstallation @Provision
-                
-                If ( $? -eq $True )
-                {
-                    Write-Theme -Action "Successful [+]" "Test-ADDSDomainInstallation Passed"
-                }
-                
-                Else
-                {
-                    Write-Theme -Action "Exception [!]" "Test-ADDSDomainInstallation Failed" 12 4 15
-                }
             }
 
             If ( $Command -eq "Install-ADDSDomainController" )
             {
-                Test-ADDSDomainControllerInstallation @Provision
+                $EXE = 2
+                $MSG = "Test-ADDSDomainControllerInstallation"
 
-                If ( $? -eq $True )
-                {
-                    Write-Theme -Action "Successful [+]" "Test-ADDSDomainControllerInstallation Passed"
-                }
+                Test-ADDSDomainControllerInstallation @Provision
+            }
+
+            If ( $? -eq $True )
+            {
+                Write-Theme -Action "Successful [+]" "$MSG Passed"
+                $Promote = 1
+            }
                 
-                Else
+            If ( $? -eq $False )
+            {
+                Write-Theme -Action "Exception [!]" "$MSG Failed" 12 4 15
+                Break
+            }
+
+            If ( $Promote -eq 1 )
+            {
+                Switch( $Host.UI.PromptForChoice( "Test Successful" , "Proceed with Domain Controller Promotion?" ,
+                [ System.Management.Automation.Host.ChoiceDescription [] ]@( "&Yes" , "&No" ) , [ Int ] 1 ) )
                 {
-                    Write-Theme -Action "Exception [!]" "Test-ADDSDomainControllerInstallation Failed" 12 4 15
+                    0   {   Write-Theme -Action "Selected [+]" "Promote to Domain Controller"
+
+                            ( "NoRebootOnCompletion" , $False ) , ( "Force" , $True ) | % { $Provision.Add( $_[0] , $_[1] ) }
+
+                            If ( $EXE -eq 0 )   { Install-ADDSForest @Provision }
+                            If ( $EXE -eq 1 )   { Install-ADDSDomain @Provision }
+                            If ( $EXE -eq 2 )   { Install-ADDSDomainController @Provision }
+
+                            If ( $? -eq $True ) { Write-Theme -Action "Successful [+]" "Promotion Complete, Rebooting" }
+                        }
+                    
+                    1   {   Write-Theme -Action "Selected [+]" "Do not promote to Domain Controller"   }
                 }
             }
         }
