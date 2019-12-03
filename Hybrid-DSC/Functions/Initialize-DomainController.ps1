@@ -15,7 +15,6 @@
         $Promo                            = Get-XAML -HybridDSCPromo   
         $Named                            = Find-XAMLNamedElements -XAML $Promo 
         $GUI                              = Convert-XAMLToWindow   -XAML $Promo -NE $Named -PassThru
-        $Selection                        = @( )
         $Code                             = [ PSCustomObject ]@{ 
         
                     Command     = "" ; Process     = "" ; Forest      = "" ; Tree        = "" ; Child       = "" ; Clone       = "" ; 
@@ -36,13 +35,12 @@
                     Credential  = "" ; DomainName  = "" ; DomainNetBIOSName              = "" ; NewDomainName                  = "" ; 
                     NewDomainNetBIOSName           = "" ; SiteName                       = "" ; ReplicationSourceDC            = "" ; 
         
-                    SafeModeAdministratorPassword  = "" }
+                    SafeModeAdministratorPassword  = "" ; Profile                        = "" }
 
         Get-DSCPromoSelection -Type 0 -Control $Code -Services $ST -GUI $GUI | % { 
         
             $Code      = $_.Code
             $GUI       = $_.Window
-            $Selection = $_.Profile
             
             $GUI.Forest.IsChecked = $True
 
@@ -55,7 +53,6 @@
         
                 $Code      = $_.Code
                 $GUI       = $_.Window
-                $Selection = $_.Profile 
             }
 
             $GUI.Forest.IsChecked = $True
@@ -69,7 +66,6 @@
         
                 $Code      = $_.Code
                 $GUI       = $_.Window
-                $Selection = $_.Profile 
             }
 
             $GUI.Tree.IsChecked = $True
@@ -83,7 +79,6 @@
         
                 $Code      = $_.Code
                 $GUI       = $_.Window
-                $Selection = $_.Profile 
             }
 
             $GUI.Child.IsChecked = $True
@@ -97,7 +92,6 @@
         
                 $Code      = $_.Code
                 $GUI       = $_.Window
-                $Selection = $_.Profile 
             }
 
             $GUI.Clone.IsChecked = $True
@@ -120,101 +114,96 @@
 
             $Alternate           = 0
 
-            If ( $Report -ne $Null ) 
+            If ( $Report -ne $Null )
             {
-                $PDC             = $Report | ? { $_.Service -eq "Domain Master Browser" }
+                $PDC                              = $Report | ? { $_.Service -eq "Domain Master Browser" }
 
                 If ( $PDC.Count -gt 1 )
                 {
-                    $PDC         = $PDC[0]
+                    $PDC                          = $PDC[0]
                 }
 
                 If ( $PDC -ne $Null )
                 {
-                    $DC          = $PDC.Host.Split( '.' )[0]
-                    $Domain      = $PDC.Host.Replace( "$DC." , "" )
-                    $NetBIOS     = $PDC.Name
+                    $DC                           = $PDC.Host.Split( '.' )[0]
+                    $Domain                       = $PDC.Host.Replace( "$DC." , "" )
+                    $NetBIOS                      = $PDC.Name
                 }
 
                 If ( $PDC -eq $Null )
                 {
-                    $BDC         = $Report | ? { $_.Service -eq "Domain Controller" }
+                    $BDC                          = $Report | ? { $_.Service -eq "Domain Controller" }
 
                     If ( $BDC.Count -gt 1 )
                     {
-                        $BDC     = $BDC[0]
+                        $BDC                      = $BDC[0]
                     }
 
                     If ( $BDC -ne $Null )
                     {
-                        $DC      = $BDC.Host.Split( '.' )[0]
-                        $Domain  = $BDC.Host.Replace( "$DC." , "" )
-                        $NetBIOS = $BDC.Name
+                        $DC                       = $BDC.Host.Split( '.' )[0]
+                        $Domain                   = $BDC.Host.Replace( "$DC." , "" )
+                        $NetBIOS                  = $BDC.Name
                     }
                 }
 
-                $Popup = Get-XAML -DCFound 
-                $GUIX  = Convert-XAMLToWindow -XAML $Popup -NE ( Find-XAMLNamedElements -XAML $Popup ) -PassThru
+                $Popup                            = Get-XAML -DCFound 
+                $GUIX                             = Convert-XAMLToWindow -XAML $Popup -NE ( Find-XAMLNamedElements -XAML $Popup ) -PassThru
 
-                $GUIX.Ok         | % { $_.Add_Click({ $GUIX.DialogResult =  $True }) }
-                $GUIX.Cancel     | % { $_.Add_Click({ $GUIX.DialogResult = $False }) }
-                $GUIX.DC         | % { $_.Content = $DC      }
-                $GUIX.Domain     | % { $_.Content = $Domain  }
-                $GUIX.NetBIOS    | % { $_.Content = $NetBIOS }
+                $GUIX.Ok                          | % { $_.Add_Click({ $GUIX.DialogResult =  $True }) }
+                $GUIX.Cancel                      | % { $_.Add_Click({ $GUIX.DialogResult = $False }) }
+                $GUIX.DC                          | % { $_.Content = $DC      }
+                $GUIX.Domain                      | % { $_.Content = $Domain  }
+                $GUIX.NetBIOS                     | % { $_.Content = $NetBIOS }
 
-                $Null            = $GUIX.Ok.Focus()
+                $Null                             = $GUIX.Ok.Focus()
 
-                $PopupResult     = Show-WPFWindow -GUI $GUIX
+                $PopupResult                      = Show-WPFWindow -GUI $GUIX
 
                 If ( $PopupResult -eq $True )
                 {
-                    $DCCred      = Invoke-Login -DC $DC -Domain $Domain
+                    $DCCred                       = Invoke-Login -DC $DC -Domain $Domain
                     
                     If ( $DCCred -ne $Null )
                     {
-                        $GUI.Credential    | % { $_.Text = $DCCred.UserName ; $_.IsEnabled = $False }
+                        $GUI.Credential           | % { $_.Text = $DCCred.UserName ; $_.IsEnabled = $False }
 
-                        $Code.Credential   = $DCCred
+                        $Code.Credential          = $DCCred
                         
                         If ( ( $GUI.Forest.IsChecked ) -or ( $GUI.Child.IsChecked ) )
                         {
-                            "ParentDomainName"   | % { 
+                            "ParentDomainName"    | % { 
                             
-                                $GUI.$_.Text     = "$Domain"
-                                $Code.$_         = "$Domain"
+                                $GUI.$_.Text      = "$Domain"
+                                $Code.$_          = "$Domain"
                             }
 
-                            "DomainNetBIOSName"  | % {
+                            "DomainNetBIOSName"   | % {
                             
-                                $GUI.$_.Text     = "$NetBIOS"
-                                $Code.$_         = "$Domain"
+                                $GUI.$_.Text      = "$NetBIOS"
+                                $Code.$_          = "$Domain"
                             }
                         }
 
                         If ( $GUI.Clone.IsChecked )
                         {
-                            "DomainName"         | % {
+                            "DomainName"          | % {
                             
-                                $GUI.$_.Text     = "$Domain"
-                                $Code.$_         = "$Domain"
-                            }
-
-                            "DomainNetBIOSName"  | % {
-
-                                $GUI.$_.Text     = "$NetBIOS"
-                                $Code.$_         = "$NetBIOS"
+                                $GUI.$_.Text      = "$Domain"
+                                $Code.$_          = "$Domain"
                             }
 
                             "ReplicationSourceDC" | % {
                             
-                                $GUI.$_.Text = "$DC.$Domain"
-                                $Code.$_     = "$DC.$Domain"
+                                $GUI.$_.Text      = "$DC.$Domain"
+                                $Code.$_          = "$DC.$Domain"
                             }
                         }
                     }
 
                     If ( $DCCred -eq $Null )
                     {
+                        Write-Theme -Action "Exception [!]" "Domain Credential not captured, attempting secondary login" 11 1 15
                         $Alternate = 1
                     }
                 }
@@ -228,71 +217,96 @@
 
             If ( ( $Report -eq $Null ) -or ( $Alternate -eq 1 ) )
             {
-                If ( $Code.Process -in 1,2 ) 
-                { 
-                    $X = $GUI.ParentDomainName.Text 
+                Write-Theme -Action "Not Detected [!]" "Found no network nodes, attempting manual configuration"
+
+                If ( ( $GUI.Tree.IsChecked ) -or ( $GUI.Child.IsChecked ) )
+                {
+                    $Domain = $GUI.ParentDomainName.Text
                 }
                 
-                If ( $Code.Process -eq 3   ) 
+                If ( $GUI.Clone.IsChecked ) 
                 { 
-                    $X = $GUI.DomainName.Text 
+                    $Domain = $GUI.DomainName.Text 
                 }
 
-                If ( ( $X -eq "" ) -or ( $X -eq $Null ) )
+                If ( ( $Domain -eq "" ) -or ( $Domain -eq $Null ) )
                 {
                     Show-Message "Error" "Domain Name is Null/Empty"
                     Break
                 }
 
-                Else
+                $X = Confirm-DomainName -Domain $Domain
+                
+                If ( $X -ne $Domain )
                 {
-                    $X | % {
+                    Show-Message "Error" "$X"
+                    Break
+                }
+                
+                Resolve-DNSName $Domain -Type A | % { Resolve-DNSName $_.IPAddress } | % { $DC = $_.NameHost.Replace( ".$Domain" , '' ) }
 
-                        If ( $Code.Process -eq 3 -and ( Confirm-DomainName -Domain $X ) -ne $X )
-                        {
-                            Show-Message "Error" "$X in Parent Domain Name"
-                            Break
-                        }
-                    
-                        Else
-                        {
-                            Resolve-DNSName $_ -Type A | % { Resolve-DNSName $_.IPAddress } | % { $Y = $_.NameHost.Replace( ".$X" , '' ) }
-
-                            If ( $Y -eq $Null ) 
-                            { 
-                                [ System.Windows.MessageBox ]::Show( "Failed to detect the domain controller" , "Error" )
-                                Return 
-                            }
-                        }
-                    }
-
-                    $DCCred = Invoke-Login -DC $Y -Domain $X
+                If ( $DC -eq $Null )
+                { 
+                    Show-Message "Error" "Failed to detect the domain controller"
+                    Return
                 }
 
+                $DCCred = Invoke-Login -DC $DC -Domain $Domain
+
                 If ( $DCCred -ne $Null )
-                { 
-                    $GUI.Credential    | % { $_.Text = $DCCred.UserName ; $_.IsEnabled = $False }
-                    $Code.Credential   = $DCCred
+                {
+                    IEX "Using Namespace System.DirectoryServices"
 
-                    If ( $Code.Process -in 1 , 2 ) 
-                    {
-                        $GUI.ParentDomainName.Text = $X
-            
-                        $AD = "LDAP://$( $DC )/CN=Partitions,CN=Configuration,DC=$( $Domain.Split('.') -join ',DC=' )"
+                    $AD                       = "LDAP://$( $DC )/CN=Partitions,CN=Configuration,DC=$( $Domain.Split( '.' ) -join ',DC=' )"
+                        
+                    $Searcher                 = [ DirectorySearcher ]::New() 
 
-                        $Searcher = [ DirectorySearcher ]::New() | % {
-                            $_.SearchRoot = [ DirectoryEntry ]::New( $AD , $DCCred.Username , $DCCred.GetNetworkCredential().Password )
-                            $_.PageSize   = 1000
-                            $_.PropertiesToLoad.Clear()
-                        }
-
-                        $EXE = $Searcher.FindAll()
-                        0..( $EXE.Count - 1 ) | % { $EXE[$_].Properties } | ? { $_.netbiosname } | % { $NetBIOS = $_.netbiosname }
+                    $Searcher                 | % {
+                    
+                        $_.SearchRoot         = [ DirectoryEntry ]::New( $AD , $DCCred.Username , $DCCred.GetNetworkCredential().Password )
+                        $_.PageSize           = 1000
+                        $_.PropertiesToLoad.Clear()
                     }
 
-                    If ( $Code.Process -eq 3 )
-                    { 
-                        $GUI.DomainName.Text = $X 
+                    $EXE = $Searcher.FindAll()
+
+                    0..( $EXE.Count - 1 )     | % { $EXE[$_].Properties } | ? { $_.netbiosname } | % { 
+                        
+                        $NetBIOS              = $_.netbiosname
+                    }
+                    
+                    $GUI.Credential           | % { $_.Text = $DCCred.UserName ; $_.IsEnabled = $False }
+
+                    $Code.Credential          = $DCCred
+
+                    If ( ( $GUI.Forest.IsChecked ) -or ( $GUI.Child.IsChecked ) )
+                    {
+                        "ParentDomainName"    | % { 
+                            
+                            $GUI.$_.Text      = "$Domain"
+                            $Code.$_          = "$Domain"
+                        }
+
+                        "DomainNetBIOSName"   | % {
+                            
+                            $GUI.$_.Text      = "$NetBIOS"
+                            $Code.$_          = "$NetBIOS"
+                        }
+                    }
+
+                    If ( $GUI.Clone.IsChecked )
+                    {
+                        "DomainName"          | % {
+                        
+                            $GUI.$_.Text      = "$Domain"
+                            $Code.$_          = "$Domain"
+                        }
+
+                        "ReplicationSourceDC" | % {
+                           
+                            $GUI.$_.Text      = "$DC.$Domain"
+                            $Code.$_          = "$DC.$Domain"
+                        }
                     }
                 }
 
@@ -313,7 +327,7 @@
 
                     If ( $_ -eq "" )
                     {
-                        Show-Message -Message "Domain Name is missing"
+                        Show-Message "Error" "Domain Name is missing"
                         Break
                     }
 
@@ -321,7 +335,7 @@
                     
                     If ( $X -ne $_ )
                     {
-                        Show-Message -Message $X
+                        Show-Message "Error" $X
                         Break
                     }
 
@@ -335,7 +349,7 @@
 
                     If ( $_ -eq "" )
                     {
-                        Show-Message -Message "Domain Name is missing"
+                        Show-Message "Error" "Domain Name is missing"
                         Break
                     }
 
@@ -343,7 +357,7 @@
                     
                     If ( $X -ne $_ )
                     {
-                        Show-Message -Message $X
+                        Show-Message "Error" $X
                         Break
                     }
 
@@ -360,7 +374,7 @@
             
                     If ( $_ -eq "" )
                     { 
-                        Show-Message -Message "Credential Missing"
+                        Show-Message "Error" "Credential Missing"
                         Break
                     }
                 }
@@ -372,7 +386,7 @@
 
                     If ( $_ -eq "" ) 
                     { 
-                        Show-Message -Message "Parent Domain Name is missing"
+                        Show-Message "Error" "Parent Domain Name is missing"
                         Break
                     }
                 
@@ -380,7 +394,7 @@
 
                     If ( $X -ne $_ )
                     {
-                        Show-Message -Message $X
+                        Show-Message "Error" $X
                         Break
                     } 
 
@@ -394,7 +408,7 @@
                 
                     If ( $_ -eq "" ) 
                     { 
-                        Show-Message -Message "New Domain Name is missing"
+                        Show-Message "Error" "New Domain Name is missing"
                         Break
                     }
 
@@ -402,13 +416,13 @@
                     {
                         If ( $GUI.Tree.IsChecked )
                         {
-                            Show-Message -Message "New Domain Name is too similar to Parent Domain"
+                            Show-Message "Error" "New Domain Name is too similar to Parent Domain"
                             Break
                         }
                     
                         If ( $GUI.Child.IsChecked )
                         {
-                            Show-Message -Message "Child Domain Name cannot contain Parent Domain"
+                            Show-Message "Error" "Child Domain Name cannot contain Parent Domain"
                             Break
                         }
                     }
@@ -419,7 +433,7 @@
                             
                         If ( $X -ne $_ )
                         {
-                            Show-Message -Message $X
+                            Show-Message "Error" $X
                             Break
                         }
 
@@ -435,7 +449,7 @@
                             
                         If ( $X -ne $_ )
                         {
-                            Show-Message -Message $X
+                            Show-Message "Error" $X
                             Break
                         }
 
@@ -450,13 +464,13 @@
             
                     If ( $_ -eq "" ) 
                     { 
-                        Show-Message -Message "New NetBIOS Domain Name is missing"
+                        Show-Message "Error" "New NetBIOS Domain Name is missing"
                         Break
                     }
 
                     ElseIf ( ( $NetBIOS -ne $Null ) -and ( $_ -like "*$NetBIOS*" ) ) 
                     { 
-                        Show-Message -Message "New NetBIOS Domain Name is too similar"
+                        Show-Message "Error" "New NetBIOS Domain Name is too similar to Parent"
                         Break
                     }
 
@@ -466,7 +480,7 @@
 
                         If ( $X -ne $_ ) 
                         { 
-                            Show-Message -Message $X
+                            Show-Message "Error" $X
                             Break
                         } 
 
@@ -484,7 +498,7 @@
                         
                     If ( $_ -eq "" )
                     {
-                        Show-Message -Message "Domain Name cannot be empty"
+                        Show-Message "Error" "Domain Name cannot be empty"
                         Break
                     }
 
@@ -492,7 +506,7 @@
                         
                     If ( $X -ne $_ ) 
                     { 
-                        Show-Message -Message    $X
+                        Show-Message "Error" $X
                         Break
                     } 
                         
@@ -506,7 +520,7 @@
             
                     If ( $_ -eq "" )
                     {
-                        Show-Message -Message "Source Domain Controller Missing"
+                        Show-Message "Error" "Source Domain Controller Missing"
                         Break
                     }
 
@@ -514,7 +528,7 @@
 
                     If ( $X -ne $_ ) 
                     { 
-                        Show-Message -Message $X
+                        Show-Message "Error" $X
                         Break
                     }
 
@@ -529,7 +543,7 @@
                 
                 If ( $_ -eq "" )
                 {
-                    Show-Message "Site Name missing"
+                    Show-Message "Error" "Site Name missing"
                     Break
                 }
 
@@ -537,7 +551,7 @@
                 
                 If ( $X -ne $_ )
                 {
-                    Show-Message -Message "Site Name is invalid"
+                    Show-Message "Error" $X
                     Break
                 }
 
@@ -551,25 +565,24 @@
 
             If ( $GUI.SafeModeAdministratorPassword.Password -eq "" )                          
             { 
-                Show-Message -Message "DSRM is empty"
+                Show-Message "Error" "DSRM Key is empty"
                 Break
             }
 
             If ( $GUI.SafeModeAdministratorPassword.Password.Length -lt 8 )
             { 
-                Show-Message -Message "Password is too short"
+                Show-Message "Error" "Password is too short"
                 Break
             }
 
             If ( $GUI.SafeModeAdministratorPassword.Password -notmatch $GUI.Confirm.Password )
             { 
-                Show-Message -Message "Invalid Confirmation"
+                Show-Message "Error" "Invalid Confirmation"
                 Break
             }
             
             $Code.SafeModeAdministratorPassword = $GUI.SafeModeAdministratorPassword.SecurePassword
 
-            
             "ForestMode" , "DomainMode" | % { 
             
                 $Code.$_ = $GUI.$_.SelectedIndex
@@ -580,9 +593,12 @@
                 } 
             }
                 
-            Get-DSCPromoTable -Roles | ? { $GUI.$_.IsEnabled } | % { 
+            Get-DSCPromoTable -Roles | % {
             
-                $Code.$_ = $GUI.$_.IsChecked
+                If ( $GUI.$_.IsEnabled ) 
+                { 
+                    $Code.$_ = $GUI.$_.IsChecked
+                }
             }
 
             $GUI.DialogResult = $True
@@ -599,24 +615,185 @@
 
         If ( $OP -eq $True )
         {
-            Return $Code
-            #Get-DSCPromoTable -Services | % {
+            $DSCLoadout      = @( ) 
+            
+            Get-DSCPromoTable -Services | ? { $Code.$_ -eq "Available" -and $GUI.$_.IsChecked -eq $True } | % {
+            
+                $DSCLoadout += $_.Replace( '_' , '-' )
+            }
 
-            #    If ( ( $Code.$_ -eq "Available" ) -and ( $GUI.$_.IsChecked -eq $True ) )
-            #    {
-            #        $FeatureInst = @{ Name                   = $_.Replace( '_' , '-' )
-            #                          IncludeAllSubFeature   = $True 
-            #                          IncludeManagementTools = $True                   }
+            $Command         = $Code.Command
 
-             #       Install-WindowsFeature @FeatureInst
-             #   }
+            $Provision       = [ Ordered ]@{ }
 
-            #$Command = @{ }
+            $Code.Process    | ? { $_ -in 1..2 } | % {
 
-            #0..( $Return.Count - 1 ) | % { $Command.Add( $_ , $Code.$( $Return[$_] ) ) }
+                $Provision.Add( "DomainType" , ( Get-DSCPromoTable -DomainType )[$_] )
+            }
+            
+            $Code.Profile    | % { 
 
-            #Echo $Code.Command , $Return 
+                $Provision.Add( $_ , $Code.$_ )
+            }
 
+            "Database" , "Log" , "Sysvol" | % { "$_`Path" } | % { 
+
+                $Provision.Add( $_ , $Code.$_ )
+            }
+
+            # Report/Confirmation Screen
+
+             #_    ____________________________
+             #\\__//¯¯[_______ Services ______]
+             # ¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+
+            If ( $DSCLoadOut.Count -ge 1 )
+            {
+                $Section     = 0..2
+                $SubTable    = 0..2
+                $Z           = 0
+
+                $Section[$Z]  = "Service Configuration"
+
+                $Names       = @( )
+                $Values      = @( )
+            
+                ForEach ( $I in 0..( $DSCLoadOut.Count - 1 ) ) 
+                { 
+                    $Names  += "Service [$I]" 
+                    $Values += $DSCloadout[$I]
+                }
+                
+                $Subtable[$Z] = New-SubTable -Items $Names -Values $Values
+
+                $Z ++
+            }
+
+             #_    ____________________________
+             #\\__//¯¯[_______ Command _______]
+             # ¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+
+            If ( $DSCLoadOut.Count -eq 0 )
+            {
+                $Section     = 0..1
+                $SubTable    = 0..1
+                $Z           = 0
+            }
+
+            $Section[$Z]  = "Domain Controller Promotion"
+            $Subtable[$Z] = New-SubTable -Items "Command/Type" -Values $Command
+
+            $Z ++
+
+             #_    ____________________________
+             #\\__//¯¯[______ Parameters _____]
+             # ¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+
+            $Section[$Z]  = "Parameters"
+            $Names        = @( $Provision.Keys ) 
+            $Values       = @( $Provision.Values )
+            
+            $Subtable[$Z] = New-SubTable -Items $Names -Values $Values
+
+             #_    ____________________________
+             #\\__//¯¯[_____ Confirmation ____]
+             # ¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+
+            $Splat       = @{ 
+                
+                Title    = "Hybrid-DSC Promo Loadout"
+                Depth    = $Section.Count
+                ID       = ForEach ( $I in 0..( $Section.Count - 1 ) ) { "( $( $Section[$I] ) )" }
+                Table    = ForEach ( $I in 0..( $Section.Count - 1 ) ) { $Subtable[$I] } 
+            }
+            
+            $Table       = New-Table @Splat
+
+            Write-Theme -Table $Table -Prompt "Press Enter to Continue, CTRL + C to Exit"
+
+             #_    ____________________________
+             #\\__//¯¯[__ Service Installer __]
+             # ¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+
+            If ( $DSCLoadout.Count -gt 0 )
+            {
+                Write-Theme -Action "Installing [~]" "Loadout Services"
+
+                $DSCLoadOut    | % {
+
+                    $Splat     = @{ Name                   = $_
+                                    IncludeAllSubFeature   = $True 
+                                    IncludeManagementTools = $True }
+
+                    Install-WindowsFeature @Splat
+                }
+            }
+
+            IPMO ADDSDeployment -VB
+
+             #_    ____________________________
+             #\\__//¯¯[____ DCPromo Tester ___]
+             # ¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+
+            Write-Theme -Action "Testing [~]" "Promotion Parameters"
+
+            $Promote = 0
+
+            If ( $Command -eq "Install-ADDSForest" ) 
+            { 
+                $EXE = 0
+                $MSG = "Test-ADDSForestInstallation"
+
+                Test-ADDSForestInstallation @Provision
+            }
+
+            If ( $Command -eq "Install-ADDSDomain" )
+            {
+                $EXE = 1
+                $MSG = "Test-ADDSDomainInstallation"
+
+                Test-ADDSDomainInstallation @Provision
+            }
+
+            If ( $Command -eq "Install-ADDSDomainController" )
+            {
+                $EXE = 2
+                $MSG = "Test-ADDSDomainControllerInstallation"
+
+                Test-ADDSDomainControllerInstallation @Provision
+            }
+
+            If ( $? -eq $True )
+            {
+                Write-Theme -Action "Successful [+]" "$MSG Passed"
+                $Promote = 1
+            }
+                
+            If ( $? -eq $False )
+            {
+                Write-Theme -Action "Exception [!]" "$MSG Failed" 12 4 15
+                Break
+            }
+
+            If ( $Promote -eq 1 )
+            {
+                Switch( $Host.UI.PromptForChoice( "Test Successful" , "Proceed with Domain Controller Promotion?" ,
+                [ System.Management.Automation.Host.ChoiceDescription [] ]@( "&Yes" , "&No" ) , [ Int ] 1 ) )
+                {
+                    0   {   Write-Theme -Action "Selected [+]" "Promote to Domain Controller"
+
+                            ( "NoRebootOnCompletion" , $False ) , ( "Force" , $True ) | % { $Provision.Add( $_[0] , $_[1] ) }
+
+                            If ( $EXE -eq 0 )   { Install-ADDSForest @Provision }
+                            If ( $EXE -eq 1 )   { Install-ADDSDomain @Provision }
+                            If ( $EXE -eq 2 )   { Install-ADDSDomainController @Provision }
+
+                            If ( $? -eq $True ) { Write-Theme -Action "Successful [+]" "Promotion Complete, Rebooting" }
+                        }
+                    
+                    1   {   Write-Theme -Action "Selected [+]" "Do not promote to Domain Controller"   }
+                }
+            }
         }
 
         Else { Write-Theme -Action "[!] Exception" "Either the user cancelled, or the dialog failed" 12 4 15 }
