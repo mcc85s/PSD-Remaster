@@ -1,4 +1,4 @@
-﻿    Function New-SubTable # Converts array of keys and values into an Object ___________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    Function New-SubTable # Converts array of keys and values into an Object ___________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         [ CmdLetBinding ( ) ] Param (
 
@@ -11,10 +11,14 @@
         {
             If ( $Items.Count -gt 1 ) 
             { 
-                $Count = 0..( $Items.Count - 1 ) 
+                $Count = 0..( $Items.Count - 1 )
+                $Count | % { $Table | Add-Member -MemberType NoteProperty -Name "Item:$_" -Value @{ ID = "$( $Items[$_] )" ; Value = "$( $Values[$_] )" } }
             }
             
-            $Count | % { $Table | Add-Member -MemberType NoteProperty -Name "Item:$_" -Value @{ ID = "$( $Items[$_] )" ; Value = "$( $Values[$_] )" } }
+            If ( $Items.Count -eq 1 )
+            {
+                $Table | Add-Member -MemberType NoteProperty -Name "Item:0" -Value @{ ID = "$( $Items )" ; Value = "$( $Values )" } 
+            }
         }
         
         If ( $Items.Count -ne $Values.Count ) 
