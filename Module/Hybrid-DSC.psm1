@@ -1,4 +1,4 @@
-﻿<#___ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____  
+<#___ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____  
 //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
 //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\   ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯   //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
@@ -28,7 +28,7 @@
         Get-TelemetryData , Resolve-MacAddress , Start-NetworkInfo , Get-NetworkStatistics , Initialize-PortScan , Invoke-Login , Add-ACL , 
         New-ACLObject , Import-MDTModule , Export-Ini , Resolve-UninstallList , Install-DSCRoot , Install-HybridDSC , Initialize-HybridDSC ,
         Unlock-Script , Resolve-LocalMachine , Update-HybridDSC , Update-Branding , Export-BridgeScript , Get-DSCFeatureList , Confirm-DomainName , 
-        Get-DSCPromoTable , Get-DSCPromoSelection , Initialize-DomainController , Initialize-Server
+        Get-DSCPromoTable , Get-DSCPromoSelection , Initialize-DomainController , Initialize-Server , Get-CurrentServices , Sync-DNSSuffix
 
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 <#___                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
