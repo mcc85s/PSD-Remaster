@@ -1,21 +1,156 @@
-##########
-# Win 10 Black Viper Service Configuration Script
-#
-# Script + Menu(GUI) By
-#  Author: Madbomb122
-# Website: https://GitHub.com/Madbomb122/BlackViperScript/
-#
-# Black Viper's Service Configurations By
-#  Author: Charles "Black Viper" Sparks
-# Website: http://www.BlackViper.com/
-#
+<#___ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____  
+//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\   ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯   //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//  [ Secure Digits Plus LLC | Hybrid | Desired State Controller ]  \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯       _____________________________________________________        ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯        __/¯¯\__[ Dynamically Engineered Digital Security ]__/¯¯\__         ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\  _________________________ ________________ ___________________________________  //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+\\__//¯¯\\__//¯¯\\__//¯¯\\__// | Application Development | Virtualization | Network and Hardware Magistration | \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\  ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯  //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+\\__//¯¯\\__//¯¯\\__//¯¯\\__//   https://www.securedigitsplus.com | Server-Client | Seedling-Spawning Script    \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\   [ Provisional Author : Michael C Cook Sr. | "The Buck Stops Here" ]    //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
+//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//   ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+\\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__// 
+//¯¯    
+\\  [ Use-ViperBombServices ] @: Services & Group Policy Template Generator [ Extensively Modified version of "MadBomb122" & Charles Spark's scripts ]
+//   ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____      
+\\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/---\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\___  
+//¯¯\\___________________________________________________________________________________¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯\\ 
+\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\___ __ ____ -- ____ __ ____ -- ____ __ ____ -- ____ __ ___// 
+ ¯¯¯\\__[ Initial Script Prerequisite Declarations ]____________________________________//¯¯\----/¯¯\\==//¯¯\----/¯¯\\==//¯¯\----/¯¯\\==//¯¯\----/¯¯¯  
+     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
 
-    Function Get-ScriptInfo
-    {
+      Foreword: This script has been extensively modified/completely revamped, however I still make every effort to credit the original authors.
+      ¯¯¯¯¯¯¯¯                       ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯          ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                Revisions include, the 'code-behind' PowerShell script, as well as the XAML GUI.
+
+                MadBomb122 has a real name and in respect to him, I have chosen to leave that information outside of this script.
+                I have collaborated with MadBomb122 over the course of the last 6-7 months, tentatively, in helping to teach him some refinement
+                techniques on my journey to advance my Application Development experience.
+
+                The desired end result of working with this script, is to easily implement government grade STIG templates for end users, which 
+                you can find some of those technical details/documents here -> @ https://github.com/nsacyber/Windows-Secure-Host-Baseline
+                
+              - MCC / SDP
+                ¯¯¯¯¯¯¯¯¯
+    _________________________
+    [ Original Script & GUI ]
+    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+         Author: Madbomb122
+        Website: https://GitHub.com/Madbomb122/BlackViperScript/
+    _________________________
+    [ Service Configuration ]
+    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+         Author: Charles "Black Viper" Sparks
+        Website: http://www.BlackViper.com/
+    _________________________
+    [_ Comment Based Help __]
+    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+        <#--------------------------------------------------------------------------------
+
+        .Prerequisite to run script
+	        System*: Windows 10 x64 (64-bit)
+	        Edition*: Home or Pro
+	        Min Build*: Creator's Update
+	        Max Build*: April 2018 Update
+	        Files: This script and 'BlackViper.csv' (Service Configurations)
+          *Can run on x32/32-bit or other Edition, Build AT YOUR OWN RISK)
+
+        .DESCRIPTION
+	        Script that can set services based on Black Viper's Service Configurations
+	        or your own custom services, or backup services (created by this script)
+
+        .AT YOUR OWN RISK YOU CAN
+	        1. Run the script on x86 (32-bit) w/o changing settings (But shows a warning)
+	        2. Skip the check for
+		        A. Home/Pro ($EditionCheck variable bottom of script or use -sec switch)
+		        B. Creator's Update ($BuildCheck variable bottom of script or use -sbc switch)
+
+        .BASIC USAGE
+	        1. Run script with (Next Line)
+        powershell.exe -NoProfile -ExecutionPolicy Bypass -File BlackViper-Win10.ps1
+	        2. Use bat file provided
+
+	        Use Gui to Select the desired Choices and click Run
+
+        .ADVANCED USAGE
+	        One of the following Methods...
+	        1. Edit values at bottom of the script then run script
+	        2. Edit bat file and run
+	        3. Run the script with one of these switches (space between multiple)
+	        4. Run the script and pick options in GUI
+
+          Switch          Description of Switch
+        -- Basic Switches --
+          -atos            Accepts ToS
+          -auto            Implies -atos...Runs the script to be Automated.. Closes on - User Input, Errors, or End of Script
+
+        --Service Configuration Switches--
+          -default         Runs the script with Services to Default Configuration
+          -safe            Runs the script with Services to Black Viper's Safe Configuration
+          -tweaked         Runs the script with Services to Black Viper's Tweaked Configuration
+          -lcsc File.csv   Loads Custom Service Configuration, File.csv = Name of your backup/custom file
+
+        --Service Choice Switches--
+          -all             Every windows services will change
+          -min             Just the services different from the default to safe/tweaked list
+          -sxb             Skips changes to all XBox Services
+
+        --Update Switches--
+          -usc             Checks for Update to Script file before running
+          -use             Checks for Update to Service file before running
+          -sic             Skips Internet Check, if you can't ping GitHub.com for some reason
+
+        --Log Switches--
+          -log             Makes a log file using default name Script.log
+          -log File.log    Makes a log file named File.log
+          -baf             Log File of Services Configuration Before and After the script
+
+        --Backup Service Configuration--
+          -bscc            Backup Current Service Configuration, Csv File
+          -bscr            Backup Current Service Configuration, Reg File
+          -bscb            Backup Current Service Configuration, Csv and Reg File
+
+        --Display Switches--
+          -sas             Show Already Set Services
+          -snis            Show Not Installed Services
+          -sss             Show Skipped Services
+
+        --Misc Switches--
+          -dry             Runs the Script and Shows what services will be changed
+          -css             Change State of Service
+          -sds             Stop Disabled Service
+
+        --AT YOUR OWN RISK Switches--
+          -secp            Skips Edition Check by Setting Edition as Pro
+          -sech            Skips Edition Check by Setting Edition as Home
+          -sbc             Skips Build Check
+
+        --Dev Switches--
+          -devl            Makes a log file with various Diagnostic information, Nothing is Changed
+          -diag            Shows diagnostic information, Stops -auto
+          -diagf           Forced diagnostic information, Script does nothing else
+
+        --Help--
+          -help            Shows list of switches, then exits script.. alt -h
+          -copy            Shows Copyright/License Information, then exits script
+
+        ------------------------------------------------------------------------------#>
+        
+
+                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+# ____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Resolve-Script # Provides Global Script Definitions _______________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         [ CmdLetBinding () ] Param (
 
-            [ Parameter ( ParameterSetName =  "Version" ) ] [ Switch ] $Version ,
-            [ Parameter ( ParameterSetName =     "Path" ) ] [ Switch ] $Path    )
+            [ Parameter ( ParameterSetName =   "Version" ) ] [ Switch ] $Version   ,
+            [ Parameter ( ParameterSetName =      "Path" ) ] [ Switch ] $Path      ,
+            [ Parameter ( ParameterSetName = "Copyright" ) ] [ Switch ] $Copyright )
 
         If ( $Version )
         {
@@ -39,258 +174,282 @@
                 }
             }
         }
+
+        If ( $Copyright )
+        {   
+            Return $( 
+            "  ____    ____    ____    ____    ____    ____    ____    ____    ____    ____  " ,
+            " //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ " ,
+            " \\   ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯   // " ,
+            " //                                                                          \\ " ,
+            " \\  Copyright (c) 2019 Zero Rights Reserved                                 // " ,
+            " //           - Services Configuration by Charles 'Black Viper' Sparks       \\ " ,
+            " \\                                                                          // " ,
+            " // ------------------------------------------------------------------------ \\ " ,
+            " \\                                                                          // " ,
+            " //  The MIT License (MIT) + an added Condition                              \\ " ,
+            " \\                                                                          // " ,
+            " //  Copyright (c) 2017-2019 Madbomb122                                      \\ " ,
+            " \\           - Black Viper Service Script                                   // " ,
+            " //                                                                          \\ " ,
+            " \\  Permission is hereby granted, free of charge, to any person obtaining   // " ,
+            " //  a copy of this software and associated documentation files (the         \\ " ,
+            " \\  'Software'), to deal in the Software without restriction, including     // " ,
+            " //  without limitation the rights to use, copy, modify, merge, publish,     \\ " ,
+            " \\  distribute, sublicense, and/or sell copies of the Software, and to      // " ,
+            " //  permit persons to whom the Software is furnished to do so, subject to   \\ " ,
+            " \\  the following conditions:                                               // " ,
+            " //                                                                          \\ " ,
+            " \\  The above copyright notice(s), this permission notice and ANY original  // " ,
+            " //  donation link shall be included in all copies or substantial portions   \\ " ,
+            " \\  of the Software.                                                        // " ,
+            " //                                                                          \\ " ,
+            " \\  THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY               // " ,
+            " //  KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE              \\ " ,
+            " \\  WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR                 // " ,
+            " //  PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS              \\ " ,
+            " \\  OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR                // " ,
+            " //  OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR              \\ " ,
+            " \\  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE               // " ,
+            " //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                  \\ " ,
+            " \\                                                                          // " ,
+            " //   ____    ____    ____    ____    ____    ____    ____    ____    ____   \\ " ,
+            " \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// " ,
+            "  ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯  " -join "`n" )
+        }
+                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Initialize-ScriptMode # Script Variable Collection ________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        [ CmdLetBinding () ] Param (
+
+            [ Parameter ( ParameterSetName =     'All' ) ] [ Switch ] $All     , 
+            [ Parameter ( ParameterSetName =     'Min' ) ] [ Switch ] $Min     , 
+            [ Parameter ( ParameterSetName =    'BSCC' ) ] [ Switch ] $BSCC    , 
+            [ Parameter ( ParameterSetName =    'BSCR' ) ] [ Switch ] $BSCR    , 
+            [ Parameter ( ParameterSetName =    'BSCB' ) ] [ Switch ] $BSCB    , 
+            [ Parameter ( ParameterSetName =     'BAF' ) ] [ Switch ] $BAF     , 
+            [ Parameter ( ParameterSetName =    'SNIS' ) ] [ Switch ] $SNIS    , 
+            [ Parameter ( ParameterSetName =     'SSS' ) ] [ Switch ] $SSS     , 
+            [ Parameter ( ParameterSetName =     'SAS' ) ] [ Switch ] $SAS     , 
+            [ Parameter ( ParameterSetName =     'SDS' ) ] [ Switch ] $SDS     , 
+            [ Parameter ( ParameterSetName =     'SIC' ) ] [ Switch ] $SIC     , 
+            [ Parameter ( ParameterSetName =     'CSS' ) ] [ Switch ] $CSS     , 
+            [ Parameter ( ParameterSetName =     'USC' ) ] [ Switch ] $USC     , 
+            [ Parameter ( ParameterSetName =     'USE' ) ] [ Switch ] $USE     , 
+            [ Parameter ( ParameterSetName =    'ATOS' ) ] [ Switch ] $ATOS    , 
+            [ Parameter ( ParameterSetName =     'Dry' ) ] [ Switch ] $Dry     , 
+            [ Parameter ( ParameterSetName =    'Devl' ) ] [ Switch ] $Devl    , 
+            [ Parameter ( ParameterSetName =     'SBC' ) ] [ Switch ] $SBC     , 
+            [ Parameter ( ParameterSetName =     'SXB' ) ] [ Switch ] $SXB     , 
+            [ Parameter ( ParameterSetName =    'SECH' ) ] [ Switch ] $SECH    , 
+            [ Parameter ( ParameterSetName =    'SECP' ) ] [ Switch ] $SECP    , 
+            [ Parameter ( ParameterSetName =     'SEC' ) ] [ Switch ] $SEC     , 
+            [ Parameter ( ParameterSetName = 'Default' ) ] [ Switch ] $Default , 
+            [ Parameter ( ParameterSetName =    'Safe' ) ] [ Switch ] $Safe    , 
+            [ Parameter ( ParameterSetName = 'Tweaked' ) ] [ Switch ] $Tweaked , 
+            [ Parameter ( ParameterSetName =    'Auto' ) ] [ Switch ] $Auto    , 
+            [ Parameter ( ParameterSetName =    'Diag' ) ] [ Switch ] $Diag    , 
+            [ Parameter ( ParameterSetName =     'Log' ) ] [ Switch ] $Log     , 
+            [ Parameter ( ParameterSetName =    'Logc' ) ] [ Switch ] $Logc    )
+
+        $Arch     = GCIM Win32_ComputerSystem | % { $_.PCSystemType | % { $_ -eq 1  , $_ -ne 1 } }
+
+        $X        = $(
+
+            If ( $All     ) { @{ 0 = '-all'     ; 1 =  1 ; 2 = $True  ; 3 = 'All_or_Min=-Full'                              } }
+            If ( $Min     ) { @{ 0 = '-min'     ; 1 =  1 ; 2 = $True  ; 3 = 'All_or_Min=-Min'                               } }
+            If ( $BSCC    ) { @{ 0 = '-bscc'    ; 1 =  2 ; 2 = $True  ; 3 = "Config=1" , "Type=1" | % { "BackupService$_" } } }
+            If ( $BSCR    ) { @{ 0 = '-bscr'    ; 1 =  2 ; 2 = $True  ; 3 = "Config=1" , "Type=0" | % { "BackupService$_" } } }
+            If ( $BSCB    ) { @{ 0 = '-bscb'    ; 1 =  2 ; 2 = $True  ; 3 = "Config=1" , "Type=2" | % { "BackupService$_" } } }
+            If ( $BAF     ) { @{ 0 = '-baf'     ; 1 =  1 ; 2 = $True  ; 3 = 'LogBeforeAfter=1'                              } } 
+            If ( $SNIS    ) { @{ 0 = '-snis'    ; 1 =  1 ; 2 = $True  ; 3 = 'ShowNonInstalled=1'                            } }
+            If ( $SSS     ) { @{ 0 = '-sss'     ; 1 =  1 ; 2 = $True  ; 3 = 'ShowSkipped=1'                                 } }
+            If ( $SAS     ) { @{ 0 = '-sas'     ; 1 =  1 ; 2 = $True  ; 3 = 'ShowAlreadySet=1'                              } }
+            If ( $SDS     ) { @{ 0 = '-sds'     ; 1 =  1 ; 2 = $True  ; 3 = 'StopDisabled=1'                                } }
+            If ( $SIC     ) { @{ 0 = '-sic'     ; 1 =  1 ; 2 = $True  ; 3 = 'InternetCheck=1'                               } }
+            If ( $CSS     ) { @{ 0 = '-css'     ; 1 =  1 ; 2 = $True  ; 3 = 'ChangeState=1'                                 } }
+            If ( $USC     ) { @{ 0 = '-usc'     ; 1 =  1 ; 2 = $True  ; 3 = 'ScriptVerCheck=1'                              } }
+            If ( $USE     ) { @{ 0 = '-use'     ; 1 =  1 ; 2 = $True  ; 3 = 'ServiceVerCheck=1'                             } }
+            If ( $ATOS    ) { @{ 0 = '-atos'    ; 1 =  1 ; 2 = $True  ; 3 = 'AcceptToS=Accepted'                            } }
+            If ( $Dry     ) { @{ 0 = '-dry'     ; 1 =  1 ; 2 = $True  ; 3 = 'DryRun=1'                                      } }
+            If ( $Devl    ) { @{ 0 = '-devl'    ; 1 =  1 ; 2 = $True  ; 3 = 'DevLog=1'                                      } }
+            If ( $SBC     ) { @{ 0 = '-sbc'     ; 1 =  1 ; 2 = $True  ; 3 = 'BuildCheck=1'                                  } }
+            If ( $SXB     ) { @{ 0 = '-sxb'     ; 1 =  1 ; 2 = $True  ; 3 = 'XboxService=1'                                 } }
+            If ( $SECH    ) { @{ 0 = '-sech'    ; 1 =  1 ; 2 = $True  ; 3 = 'EditionCheck=Home'                             } }
+            If ( $SECP    ) { @{ 0 = '-secp'    ; 1 =  1 ; 2 = $True  ; 3 = 'EditionCheck=Pro'                              } }
+            If ( $SEC     ) { @{ 0 = '-sec'     ; 1 = -1 ; 2 = $True  ; 3 = 'EditionCheck=Pro'                              } }
+            If ( $Default ) { @{ 0 = '-default' ; 1 =  1 ; 2 = $False ; 3 = 'Black_Viper=1' , 'BV_ArgUsed=2'                } }
+            If ( $Safe    ) { @{ 0 = '-safe'    ; 1 =  1 ; 2 = $False ; 3 = 'Black_Viper=2' , 'BV_ArgUsed=2'                } }
+            If ( $Tweaked ) { @{ 0 = '-tweaked' ; 1 =  1 ; 2 = $False ; 3 = ( 0 , 3 | % { "BlackViper=$_" } )[$Arch] , ( 1 , 2 | % { "BV_ArgUsed=$_" } )[$Arch] } }
+            If ( $Auto    ) { @{ 0 = '-auto'    ; 1 =  1 ; 2 = $False ; 3 = 'Automated=1' , 'AcceptToS=Accepted'            } }
+            If ( $Diag    ) { @{ 0 = '-diag'    ; 1 =  2 ; 2 = $True  ; 3 = 'Diagnostic=1' , 'Automated=0'                  } }
+            If ( $Log     ) { @{ 0 = '-log'     ; 1 = -1 ; 2 = $True  ; 3 = 'ScriptLog=1' , 'LogName=-'                     } }
+            If ( $LogC    ) { @{ 0 = '-logc'    ; 1 = -1 ; 2 = $True  ; 3 = 'ScriptLog=2' , 'LogName=-'                     } } )
+
+        Return [ PSCustomObject ]@{ Arg = $X[0] ; Match = $X[1] ; Gui = $X[2] ; Var = $X[3] }
+
+                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Resolve-ScriptVars # Script Variable Collection ___________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+
+    # Operating System Delimiter
+
+    [ Environment ]::OSVersion.Version.Major | % { 
+        
+        If ( $_ -ne 10 )
+        {
+            Write-Theme -Action "Exception [!]" "Only Windows 10 Client is currently supported" 12 4 15
+            Read-Host "Press Enter to Exit"
+            Exit
+        }
     }
 
-##########
+    # Script Operation Mode
 
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!                                         !!
-# !!            SAFE TO EDIT ITEM            !!
-# !!           AT BOTTOM OF SCRIPT           !!
-# !!                                         !!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!                                         !!
-# !!                 CAUTION                 !!
-# !!       DO NOT EDIT PAST THIS POINT       !!
-# !!                                         !!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-<#------------------------------------------------------------------------------#>
-$Copyright = ' Copyright (c) 2019 Zero Rights Reserved                                
-          - Services Configuration by Charles "Black Viper" Sparks      
-                                                                        
-------------------------------------------------------------------------
-                                                                        
- The MIT License (MIT) + an added Condition                             
-                                                                        
- Copyright (c) 2017-2019 Madbomb122                                     
-          - Black Viper Service Script                                  
-                                                                        
- Permission is hereby granted, free of charge, to any person obtaining  
- a copy of this software and associated documentation files (the        
- "Software"), to deal in the Software without restriction, including    
- without limitation the rights to use, copy, modify, merge, publish,    
- distribute, sublicense, and/or sell copies of the Software, and to     
- permit persons to whom the Software is furnished to do so, subject to  
- the following conditions:                                              
-                                                                        
- The above copyright notice(s), this permission notice and ANY original 
- donation link shall be included in all copies or substantial portions  
- of the Software.                                                       
-                                                                        
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY  
- KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
- WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR    
- PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS 
- OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR   
- OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
- OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE  
- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.     
-                                                            '
-<#--------------------------------------------------------------------------------
-
-.Prerequisite to run script
-	System*: Windows 10 x64 (64-bit)
-	Edition*: Home or Pro
-	Min Build*: Creator's Update
-	Max Build*: April 2018 Update
-	Files: This script and 'BlackViper.csv' (Service Configurations)
-  *Can run on x32/32-bit or other Edition, Build AT YOUR OWN RISK)
-
-.DESCRIPTION
-	Script that can set services based on Black Viper's Service Configurations
-	or your own custom services, or backup services (created by this script)
-
-.AT YOUR OWN RISK YOU CAN
-	1. Run the script on x86 (32-bit) w/o changing settings (But shows a warning)
-	2. Skip the check for
-		A. Home/Pro ($EditionCheck variable bottom of script or use -sec switch)
-		B. Creator's Update ($BuildCheck variable bottom of script or use -sbc switch)
-
-.BASIC USAGE
-	1. Run script with (Next Line)
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File BlackViper-Win10.ps1
-	2. Use bat file provided
-
-	Use Gui to Select the desired Choices and click Run
-
-.ADVANCED USAGE
-	One of the following Methods...
-	1. Edit values at bottom of the script then run script
-	2. Edit bat file and run
-	3. Run the script with one of these switches (space between multiple)
-	4. Run the script and pick options in GUI
-
-  Switch          Description of Switch
--- Basic Switches --
-  -atos            Accepts ToS
-  -auto            Implies -atos...Runs the script to be Automated.. Closes on - User Input, Errors, or End of Script
-
---Service Configuration Switches--
-  -default         Runs the script with Services to Default Configuration
-  -safe            Runs the script with Services to Black Viper's Safe Configuration
-  -tweaked         Runs the script with Services to Black Viper's Tweaked Configuration
-  -lcsc File.csv   Loads Custom Service Configuration, File.csv = Name of your backup/custom file
-
---Service Choice Switches--
-  -all             Every windows services will change
-  -min             Just the services different from the default to safe/tweaked list
-  -sxb             Skips changes to all XBox Services
-
---Update Switches--
-  -usc             Checks for Update to Script file before running
-  -use             Checks for Update to Service file before running
-  -sic             Skips Internet Check, if you can't ping GitHub.com for some reason
-
---Log Switches--
-  -log             Makes a log file using default name Script.log
-  -log File.log    Makes a log file named File.log
-  -baf             Log File of Services Configuration Before and After the script
-
---Backup Service Configuration--
-  -bscc            Backup Current Service Configuration, Csv File
-  -bscr            Backup Current Service Configuration, Reg File
-  -bscb            Backup Current Service Configuration, Csv and Reg File
-
---Display Switches--
-  -sas             Show Already Set Services
-  -snis            Show Not Installed Services
-  -sss             Show Skipped Services
-
---Misc Switches--
-  -dry             Runs the Script and Shows what services will be changed
-  -css             Change State of Service
-  -sds             Stop Disabled Service
-
---AT YOUR OWN RISK Switches--
-  -secp            Skips Edition Check by Setting Edition as Pro
-  -sech            Skips Edition Check by Setting Edition as Home
-  -sbc             Skips Build Check
-
---Dev Switches--
-  -devl            Makes a log file with various Diagnostic information, Nothing is Changed
-  -diag            Shows diagnostic information, Stops -auto
-  -diagf           Forced diagnostic information, Script does nothing else
-
---Help--
-  -help            Shows list of switches, then exits script.. alt -h
-  -copy            Shows Copyright/License Information, then exits script
-
-------------------------------------------------------------------------------#>
-
-##########
-# Pre-Script/Needed Variable -Start
-##########
-
-$WindowVersion        = [ Environment ]::OSVersion.Version.Major
-
-If ( $WindowVersion -ne 10 )
-{
-	Write-Host 'Sorry, this Script supports Windows 10 ONLY.' -F 11 -B 0
-	
-    If ( $Automated -ne 1 )
-    { 
-        Read-Host -Prompt "`nPress Any key to Close..." 
-    }
+    $Release_Type = Resolve-Script -Version | % { $_.Release } 
     
-    Exit
-}
+    $Release_Type | % { 
+        
+        If ( $_ -eq "Stable" )
+        {
+            $ErrorActionPreference = 'SilentlyContinue'
+        }
 
-If ( $Release_Type -eq 'Stable' )
-{ 
-    $ErrorActionPreference = 'SilentlyContinue' 
-} 
-
-Else
-{ 
-    $Release_Type      = 'Testing' 
-}
-
-    $PassedArg         = $args
-
-    IEX "Using Namespace System.Security.Principal"
-
-    If ( ! ( "Windows" | % { IEX "( [ $_`Principal ][ $_`Identity ]::GetCurrent() ).IsInRole( 'Administrator' )" } ) )
-    {
-        $False         | % { SAPS PowerShell "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`" $PassedArg" -Verb RunAs ; Exit }
+        Else
+        {
+            $Release_Type          = 'Testing'
+        }
     }
-    
-    Else
-    {
-        $True          | % { Echo "Access Granted [+]" }
-    }
+                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Initialize-Script # Script Variable Collection ____________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        $PassedArg             = $args # <-- Replace $Args w/ 'Initialize-ScriptMode -$Switch'
 
-    $OS , $CS          = "Operating" , "Computer" | % { GCIM Win32_$_`System }
+        IEX "Using Namespace System.Security.Principal"
 
-    $PCType            = $CS.PCSystemType
-    $Arch              = @( $PCType -eq 1 , $PCType -ne 1 )
-    $WinSku            = $OS.OperatingSystemSKU
-    $FullWinEdition    = $OS.Caption
-    $BuildVer          = $OS.BuildNumber
-    $OSBit             = $OS.OSArchitecture
-    
-    $WinSkuList        =  48 , <# Pro                    #> 
-                          49 , <# Pro N                  #>
-                          98 , <# Home N                 #>
-                         100 , <# Home (Single Language) #>
-                         101   <# Home                   #>
+        ( "Windows" | % { "( [ $_`Principal ][ $_`Identity ]::GetCurrent() ).IsInRole( 'Administrator' )" } ) | % {
 
-    $WinEdition        = $FullWinEdition.Split( ' ' )[-1]
+            If ( ( IEX $_ ) -ne $True )
+            { 
+                Write-Theme -Action "Access [!]" "Limited, attempting elevation" 12 4 15
 
-    # Pro or Home
-
-    # https://en.wikipedia.org/wiki/Windows_10_version_history
-
-    $Win10Ver          = GP 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' | % { $_.ReleaseId }
-
-    $MaxVer            = 1909 
-    $MinVer            = 1703
-    $MaxVerName        = 'October 2019 Update'
-    $MinVerName        = 'Creators Update'
-
-    # 1909, October 2019
-    # 1903, May 2019
-    # 1809, October 2018
-    # 1803, April 2018
-    # 1709, Fall Creators Update 2017
-
-
-    
-    # 1607, Anniversary Update
-    # 1511, November Update (First Major Update)
-    # 1507, First Release
-
-    "https://GitHub.com/madbomb122/BlackViperScript" | % {
-
-        $MySite        = $_
-        $URL_Base      = $_.Replace( '//' , '//raw.' ) + '/master'
-    }
-
-    $URL_Base          | % {
-
-        $Version_URL   = "$_`Version/Version.CSV"
-        $Service_URL   = "$_`BlackViper.CSV"
-        $Donate_URL    = "https://www.amazon.com/gp/registry/wishlist/YBAYWBJES5DE/"
-    }
+                SAPS PowerShell "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`" $PassedArg" -Verb RunAs
                 
-    $colors            =  'black'       , <#  0 #>
-                          'blue'        , <#  1 #>
-                          'cyan'        , <#  2 #>
-                          'darkblue'    , <#  3 #>
-                          'darkcyan'    , <#  4 #>
-                          'darkgray'    , <#  5 #>
-                          'darkgreen'   , <#  6 #>
-                          'darkmagenta' , <#  7 #>
-                          'darkred'     , <#  8 #>
-                          'darkyellow'  , <#  9 #>
-                          'gray'        , <# 10 #>
-                          'green'       , <# 11 #>
-                          'magenta'     , <# 12 #>
-                          'red'         , <# 13 #>
-                          'white'       , <# 14 #>
-                          'yellow'        <# 15 #>
+                If ( ( IEX $_ ) -ne $True )
+                {
+                    Write-Theme -Action "Exception [!]" "Elevation has failed"
+                    Read-Host "Press Enter to Exit"
+                    Exit
+                }
+            }
 
-    $ColorsGUI           = $Colors[14,15,7,3,4,5,6,2,8,9,10,11,12,13,0,1]
+            Write-Theme -Action "Access [+]" "Granted" 11 11 15
+        }                                                                           #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Resolve-ScriptVars # Script Variable Collection ___________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+
+        $OS , $CS          = "Operating" , "Computer" | % { GCIM Win32_$_`System }
+
+        $PCType            = $CS.PCSystemType
+        $WinSku            = $OS.OperatingSystemSKU
+        $FullWinEdition    = $OS.Caption
+        $BuildVer          = $OS.BuildNumber
+        $OSBit             = $OS.OSArchitecture
+    
+        $WinSkuList        =  48 , <# Pro                    #> 
+                              49 , <# Pro N                  #>
+                              98 , <# Home N                 #>
+                             100 , <# Home (Single Language) #>
+                             101   <# Home                   #>
+
+        $WinEdition        = $FullWinEdition.Split( ' ' )[-1]
+
+        # Pro or Home
+
+        # https://en.wikipedia.org/wiki/Windows_10_version_history
+
+        $Win10Ver          = GP 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' | % { $_.ReleaseId }
+
+        $MaxVer            = 1909 
+        $MinVer            = 1703
+        $MaxVerName        = 'October 2019 Update'
+        $MinVerName        = 'Creators Update'
+
+        # 1909, October 2019
+        # 1903, May 2019
+        # 1809, October 2018
+        # 1803, April 2018
+        # 1709, Fall Creators Update 2017
+    
+        # 1607, Anniversary Update
+        # 1511, November Update (First Major Update)
+        # 1507, First Release
+
+        "https://GitHub.com/madbomb122/BlackViperScript" | % {
+
+            $MySite        = $_
+            $URL_Base      = $_.Replace( '//' , '//raw.' ) + '/master'
+        }
+
+        $URL_Base          | % {
+
+            $Version_URL   = "$_`Version/Version.CSV"
+            $Service_URL   = "$_`BlackViper.CSV"
+            $Donate_URL    = "https://www.amazon.com/gp/registry/wishlist/YBAYWBJES5DE/"
+        }
+                
+        $colors            =  'black'       , <#  0 #>
+                              'blue'        , <#  1 #>
+                              'cyan'        , <#  2 #>
+                              'darkblue'    , <#  3 #>
+                              'darkcyan'    , <#  4 #>
+                              'darkgray'    , <#  5 #>
+                              'darkgreen'   , <#  6 #>
+                              'darkmagenta' , <#  7 #>
+                              'darkred'     , <#  8 #>
+                              'darkyellow'  , <#  9 #>
+                              'gray'        , <# 10 #>
+                              'green'       , <# 11 #>
+                              'magenta'     , <# 12 #>
+                              'red'         , <# 13 #>
+                              'white'       , <# 14 #>
+                              'yellow'        <# 15 #>
+
+        $ColorsGUI         = $Colors[14,15,7,3,4,5,6,2,8,9,10,11,12,13,0,1]
+
+        $ServiceTable      = [ PSCustomObject ]@{
+
+            TypeList       = 'Skip'     , <# 0 -Skip/Not Installed #>
+                             'Disabled' , <# 1 #>
+                             'Manual'   , <# 2 #>
+                             'Auto'     , <# 3 #>
+                             'Auto'       <# 4 -Auto ( Delayed ) #>
+
+            TypeFull       = ""
+            RegTypeList    = '' , '4' , '3' , '2' , '2' <# Order is same as ServicesTypeFull #>
+            StateList      = 'Running' , 'Stopped'
+            Xbox           = 'XblAuthManager' , 'XblGameSave' , 'XboxNetApiSvc' , 'XboxGipSvc' , 'xbgm'
+            NetTCP         = "Msmq" , "Pipe" , "Tcp" | % { "Net$_`Activator" }
+            FilterList     = 'CheckboxChecked' , 'CName' , 'ServiceName' , 'CurrType' , 'BVType' , 'SrvState' , 'SrvDesc' , 'SrvPath' , 'RowColor'
+            DevLogList     = 'ScriptLog' , 'Diagnostic' , 'LogBeforeAfter' , 'DryRun' , 'ShowNonInstalled' , 'ShowAlreadySet' | % { "WPF_$_`_CB" }
+        }
+
+        $ServiceTable      | % { 
+    
+            $_.TypeFull    = @( $_.Typelist[0..3] ; $_.Typelist[4] , "(Delayed)" -join ' ' )
+        }
 
     $ServicesTypeList    =  'Skip'     , <# 0 -Skip/Not Installed #>
                             'Disabled' , <# 1 #>
@@ -308,21 +467,32 @@ Else
     $FilterList          = 'CheckboxChecked' , 'CName' , 'ServiceName' , 'CurrType' , 'BVType' , 'SrvState' , 'SrvDesc' , 'SrvPath' , 'RowColor'
     $DevLogList          = 'ScriptLog' , 'Diagnostic' , 'LogBeforeAfter' , 'DryRun' , 'ShowNonInstalled' , 'ShowAlreadySet' | % { "WPF_$_`_CB" }
 
-    $FileBase = "$( 
-    If ( $psISE ) 
-    { 
-        Split-Path $psISE.CurrentFile.FullPath -Parent 
-    } 
-    
-    Else
-    { 
-        $PSScriptRoot
-    })"
+    Function Get-ScriptPath
+    {
+        $Return            = [ PSCustomObject ]@{ } 
+
+        "Parent" , "Leaf"  | % { 
+        
+            $Splat         = @{ 
+                
+                MemberType = "NoteProperty"
+                Name       = $_ 
+                Value      = IEX "Split-Path $( ( $PSCommandPath , $PSISE.CurrentFile.FullPath )[ $PSISE -ne $Null ] ) -$_"
+            }
+
+            $Return        | Add-Member @Splat
+        }
+
+        $Return
+    }
+
+    $FileBase              = Get-ScriptPath | % { $_.Parent } 
 
     $FileBase | % { 
     
-        $SettingPath     = "$_\BVSetting.xml"
-        $ServiceFilePath = "$_\BlackViper.csv"
+        
+        $SettingPath       = "$_\BVSetting.xml"
+        $ServiceFilePath   = "$_\BlackViper.csv"
     }
 
     $BVServiceFilePath   = $ServiceFilePath
@@ -339,48 +509,6 @@ Else
     $LaptopTweaked       = 0
     $ErrCount            = $Error.Count
     $GuiSwitch           = $False
-
-    $ArgList             = [ PSCustomObject ]@{ }
-
-    @( "All" , "Min" ; "C" , "R" , "B" | % { "BSC$_" } ; "BAF" , "SNIS" ; "S" , "A" , "D" | % { "S$_`S" } ; "SIC" , "CSS" , "USC" , "USE" , "ATOS" , 
-    "Dry" , "Devl" , "SBC" , "SXB" ; "H" , "P" , "" | % { "SEC$_" } ; "Default" , "Safe" , "Tweaked" , "Auto" , "Diag" , "Log" , "Logc" ) | % { 
-
-        $ArgList | Add-Member -MemberType NoteProperty -Name $_ -Value ""
-
-    }
-
-    $ArgList | % { 
-    
-        $_.All      = @{ Arg = '-all'     ; Match =  1 ; Gui = $True  ; Var = 'All_or_Min=-Full'                              }
-        $_.Min      = @{ Arg = '-min'     ; Match =  1 ; Gui = $True  ; Var = 'All_or_Min=-Min'                               }
-        $_.BSCC     = @{ Arg = '-bscc'    ; Match =  2 ; Gui = $True  ; Var = "Config=1" , "Type=1" | % { "BackupService$_" } }
-        $_.BSCR     = @{ Arg = '-bscr'    ; Match =  2 ; Gui = $True  ; Var = "Config=1" , "Type=0" | % { "BackupService$_" } }
-        $_.BSCB     = @{ Arg = '-bscb'    ; Match =  2 ; Gui = $True  ; Var = "Config=1" , "Type=2" | % { "BackupService$_" } }
-        $_.BAF      = @{ Arg = '-baf'     ; Match =  1 ; Gui = $True  ; Var = 'LogBeforeAfter=1'                              }
-        $_.SNIS     = @{ Arg = '-snis'    ; Match =  1 ; Gui = $True  ; Var = 'ShowNonInstalled=1'                            }
-        $_.SSS      = @{ Arg = '-sss'     ; Match =  1 ; Gui = $True  ; Var = 'ShowSkipped=1'                                 }
-        $_.SAS      = @{ Arg = '-sas'     ; Match =  1 ; Gui = $True  ; Var = 'ShowAlreadySet=1'                              }
-        $_.SDS      = @{ Arg = '-sds'     ; Match =  1 ; Gui = $True  ; Var = 'StopDisabled=1'                                }
-        $_.SIC      = @{ Arg = '-sic'     ; Match =  1 ; Gui = $True  ; Var = 'InternetCheck=1'                               }
-        $_.CSS      = @{ Arg = '-css'     ; Match =  1 ; Gui = $True  ; Var = 'ChangeState=1'                                 }
-        $_.USC      = @{ Arg = '-usc'     ; Match =  1 ; Gui = $True  ; Var = 'ScriptVerCheck=1'                              }
-        $_.USE      = @{ Arg = '-use'     ; Match =  1 ; Gui = $True  ; Var = 'ServiceVerCheck=1'                             }
-        $_.ATOS     = @{ Arg = '-atos'    ; Match =  1 ; Gui = $True  ; Var = 'AcceptToS=Accepted'                            }
-        $_.Dry      = @{ Arg = '-dry'     ; Match =  1 ; Gui = $True  ; Var = 'DryRun=1'                                      }
-        $_.Devl     = @{ Arg = '-devl'    ; Match =  1 ; Gui = $True  ; Var = 'DevLog=1'                                      }
-        $_.SBC      = @{ Arg = '-sbc'     ; Match =  1 ; Gui = $True  ; Var = 'BuildCheck=1'                                  }
-        $_.SXB      = @{ Arg = '-sxb'     ; Match =  1 ; Gui = $True  ; Var = 'XboxService=1'                                 }
-        $_.SECH     = @{ Arg = '-sech'    ; Match =  1 ; Gui = $True  ; Var = 'EditionCheck=Home'                             }
-        $_.SECP     = @{ Arg = '-secp'    ; Match =  1 ; Gui = $True  ; Var = 'EditionCheck=Pro'                              }
-        $_.SEC      = @{ Arg = '-sec'     ; Match = -1 ; Gui = $True  ; Var = 'EditionCheck=Pro'                              }
-        $_.Default  = @{ Arg = '-default' ; Match =  1 ; Gui = $False ; Var = 'Black_Viper=1' , 'BV_ArgUsed=2'                }
-        $_.Safe     = @{ Arg = '-safe'    ; Match =  1 ; Gui = $False ; Var = 'Black_Viper=2' , 'BV_ArgUsed=2'                }
-        $_.Tweaked  = @{ Arg = '-tweaked' ; Match =  1 ; Gui = $False ; Var = ( 0 , 3 | % { "BlackViper=$_" } )[$Arch] , ( 1 , 2 | % { "BV_ArgUsed=$_" } )[$Arch] }
-        $_.Auto     = @{ Arg = '-auto'    ; Match =  1 ; Gui = $False ; Var = 'Automated=1' , 'AcceptToS=Accepted'            }
-        $_.Diag     = @{ Arg = '-diag'    ; Match =  2 ; Gui = $True  ; Var = 'Diagnostic=1' , 'Automated=0'                  }
-        $_.Log      = @{ Arg = '-log'     ; Match = -1 ; Gui = $True  ; Var = 'ScriptLog=1' , 'LogName=-'                     }
-        $_.LogC     = @{ Arg = '-logc'    ; Match = -1 ; Gui = $True  ; Var = 'ScriptLog=2' , 'LogName=-'                     }
-    }
 
 ##########
 # Pre-Script/Needed Variable -End
