@@ -1,4 +1,4 @@
-﻿<#___ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____  
+<#___ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____  
 //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
 \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
 //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\   ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯   //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
@@ -541,27 +541,27 @@
 
                 # Determine Count
                 
-                $List.Class.Name    | % { $List.Class.Items   += $Table.$_ }
-                $List.ID.Name       | % { $List.ID.Items      += $Table.$_ }
-                $List.Section.Name  | % { $List.Section.Items += $Table.$_ }
+                $List.Class.Name         | % { $List.Class.Items   += $Table.$_ }
+                $List.ID.Name            | % { $List.ID.Items      += $Table.$_ }
+                $List.Section.Name       | % { $List.Section.Items += $Table.$_ }
 
                 $List.Class.Items        | % { $Calc = $Calc + 5 }
                 $List.Section.Name       | % { $Calc = $Calc + 3 }
-                $List.Section.Items.Keys | % { $Calc ++          } 
+                $List.Section.Items.Keys | % { $Calc ++          }
                 
-                @( $Calc ++ , $Null )[ $Calc % 2 ]
+                # End Section
                 
-                $Calc = $Calc + 3
+                $Calc                    = $Calc + $( If ( $Calc % 2 -ne 0 ) { 5 } Else { 4 } )
                 
-                $Echo               | % { $_.ST = 0..$Calc ; $_.FG = 0..$Calc ; $_.BG = 0..$Calc }
+                $Echo                    | % { $_.ST = 0..$Calc ; $_.FG = 0..$Calc ; $_.BG = 0..$Calc }
 
-                $Title              = $List.Class.Items | % { If ( $_.Length -gt 83 ) { "$( $_.Substring( 0 , 78 ) )..." } Else { $_ } } | % { "[ $_ ]" }
+                $Title                   = $List.Class.Items | % { If ( $_.Length -gt 83 ) { "$( $_.Substring( 0 , 78 ) )..." } Else { $_ } } | % { "[ $_ ]" }
 
-                $Recurse            = $Title | % { 92 - $_.Length | % { $_ ; $_ % 2 ; ( $_ - ( $_ % 2 ) ) / 2 } }
+                $Recurse                 = $Title | % { 92 - $_.Length | % { $_ ; $_ % 2 ; ( $_ - ( $_ % 2 ) ) / 2 } }
 
-                $Output             = $ObjID | % { $M1[$Recurse[2]] , $M1[$Recurse[1]] , $Title , $M1[$Recurse[2]] -join '' }
+                $Output                  = $ObjID | % { $M1[$Recurse[2]] , $M1[$Recurse[1]] , $Title , $M1[$Recurse[2]] -join '' }
 
-                $Echo               | % {
+                $Echo                    | % {
 
                     $_.ST[$Z] = "  ____    $( $M1[100] )      "                                  ; $_.FG[$Z] = 0                              ; $_.BG[$Z] = 3              ; $Z++
                     $_.ST[$Z] = @( " /" ; $F ; "/$( $M0[98] )\" , "\___  " )                     ; $_.FG[$Z] = @( 0 , 1 , 0 , 1 , 0 )         ; $_.BG[$Z] = 0..4 | % { 3 } ; $Z++
@@ -606,15 +606,15 @@
                         $_.ST[$Z] = $L[ $Z % 2 ] , $M0[ 108 ] , $R[ $Z % 2 ]                                      ; $_.FG[$Z] = 0 , 0 , 0                ; $_.BG[$Z] = 3 , 3 , 3         ; $Z ++
                     }
                         
-                    $Keys          = @( $Section.Keys )
-                    $Values        = @( $Section.Values )
+                    $Keys          = @( $Section.Keys   | Sort )
+                    $Values        = @( $Section.Values | Sort )
 
                     0..( $Keys.Count - 1 ) | % { # Determines distance and overflow handling for all provided names and values
                         
                         $RV = $Values[$_]
 
                         If ( $RV.ID.Length -gt 20 )    { $ID = "$( $RV.ID[0..20] -join '' ) ..." }      Else { $ID = "$( $M2[ ( 25 - $RV.ID.Length ) ] )$( $RV.ID )" }
-                        If ( $RV.Value.Length -gt 70 ) { $VA = "$( $RV.Value[ 0..74 ] -join '' ) ... " } Else { $VA = "$( $RV.Value )$( $M2[ ( 80 - $RV.Value.Length ) ])" }
+                        If ( $RV.Value.Length -gt 75 ) { $VA = "$( $RV.Value[ 0..75 ] -join '' ) ..." } Else { $VA = "$( $RV.Value )$( $M2[ ( 80 - $RV.Value.Length ) ])" }
                         $Echo   | % { $_.ST[$Z] = @( $L[ $Z % 2 ] , $ID , " : " , $VA , $R[ $Z % 2 ] ) ; $_.FG[$Z] = 0 , 2 , 1 , 2 , 0 ; $_.BG[$Z] = 0..4 | % { 3 } ; $Z++ }
                     }
                 }
@@ -624,23 +624,23 @@
                     $Echo | % { $_.ST[$Z] = @( " // " , $M2[108] , " \\ " )
                                 $_.FG[$Z] = 0 , 0 , 0
                                 $_.BG[$Z] = 3 , 3 , 3 }
-                                      $Z ++ 
+                                      $Z  ++ 
                 }
 
                 $Echo | % { $_.ST[$Z] = @( " \\___" ; $M2[72] ; @( "____" , "    " ) * 4 ; "___// " )
                             $_.FG[$Z] = @( 0 ) * 11
                             $_.BG[$Z] = 0..10 | % { 3 }
-                                  $Z ++
+                                  $Z  ++
 
                             $_.ST[$Z] = @( " /" , $F[0] , "\$( $M1[70] )/" ; $F * 4 ; $F[0] , "\ " )
                             $_.FG[$Z] = @( @( 0 , 1 ) *  6 ; 0 )
                             $_.BG[$Z] = 0..12 | % { 3 }
-                                  $Z ++
+                                  $Z  ++
 
                             $_.ST[$Z] = @( " \" , $F[1] , "/$( $M0[70] )\" ; @( $F[ 1 , 0 ] ) * 4 ; $F[1] , "/ " )
                             $_.FG[$Z] = @( 0 ; @( 1 ) * 11 ; 0 )
                             $_.BG[$Z] = 0..12 | % { 3 }
-                                  $Z++
+                                  $Z  ++
                 }
 
                 If ( ! $Prompt ) 
@@ -648,6 +648,7 @@
                     $Echo.ST[$Z] = @( "  ¯¯¯\" , "\$( $M1[70] )/" ; $F * 4 ; "/¯¯¯  " )
                     $Echo.FG[$Z] = @( 0 ; @( 1 , 0 ) * 6 )
                     $Echo.BG[$Z] = 0..12 | % { 3 }
+                             $Z  ++
                 }
 
                 If ( $Prompt ) 
@@ -668,10 +669,9 @@
                             $Echo.BG[$Z] = 0..12 | % { 3 }
                              
                         }
+                        $Z ++
                     }
                 }
-
-                $Z ++
 
                 $Echo.ST[$Z] = @( "      $( $M0[72] )$( "    ¯¯¯¯" * 4 )      " )
                 $Echo.FG[$Z] = 0
@@ -684,20 +684,26 @@
 
             ForEach ( $I in 0..( $Echo.ST.Count - 1 ) )
             { 
-                $ST , $FG , $BG = $Echo | % { $_.ST[$I] , $GX[$_.FG[$I]] , $GX[$_.BG[$I]] }
-
-                If ( $ST.Count -eq 1 ) 
-                { 
-                    Write-Host $ST -F $FG -B $BG
+                If ( $Echo.ST.Count -eq 1 )
+                {
+                    $Echo | % { Write-Host $_.ST -F $GX[$_.FG] -B $GX[$_.BG] }
                 }
 
-                Else 
-                { 
-                    ForEach ( $J in 0..( $ST.Count - 1 ) ) 
-                    {
-                        $IEX = " -N" , "" | % { "Write-Host `$ST[`$J] -F `$FG[`$J] -B `$BG[`$J]$_" }
+                Else
+                {
+                    $Echo | % { $ST = $_.ST[$I] ; $FG = $GX[$_.FG[$I]] ; $BG = $GX[$_.BG[$I]] }
 
-                        If ( $J -ne $ST.Count - 1 ) { IEX $IEX[0] } Else { IEX $IEX[1] } 
+                    ForEach ( $J in 0..( $ST.Count - 1 ) )
+                    {
+                        If ( $J -lt $ST.Count - 1 )
+                        {
+                            Write-Host $ST[$J] -F $FG[$J] -B $BG[$J] -N
+                        }
+
+                        If ( $J -eq $ST.Count - 1 ) 
+                        { 
+                            Write-Host $ST[$J] -F $FG[$J] -B $BG[$J]
+                        }
                     }
                 }
             }
@@ -1034,7 +1040,7 @@
         # Domain
         # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ #
             $Names                        = Get-DSCPromoTable -Domain
-            $Switch                       = @{ 0 = 0,1,1,0,0,0,1 ; 1 = 1,0,0,1,1,0,1 ; 2 = 1,0,0,1,1,0,1 ; 3 = 1,1,0,0,0,1,1 }
+            $Switch                       = @{ 0 = 0,1,1,0,0,0,0 ; 1 = 1,0,0,1,1,0,1 ; 2 = 1,0,0,1,1,0,1 ; 3 = 1,1,0,0,0,1,1 }
             
             $X                            = $Switch[$P]
 
@@ -1130,7 +1136,7 @@
         
                     SafeModeAdministratorPassword  = "" ; Profile                        = "" }
 
-        Get-DSCPromoSelection -Type 0 -Control $Code -Services $ST -GUI $GUI | % { 
+        Get-DSCPromoSelection -Type $P -Control $Code -Services $ST -GUI $GUI | % { 
         
             $Code      = $_.Code
             $GUI       = $_.Window
@@ -1471,6 +1477,28 @@
                         Break
                     }
                 }
+
+                $GUI.SiteName.Text | % { 
+                
+                    If ( $_ -eq "" )
+                    {
+                        Show-Message "Error" "Site Name missing"
+                        Break
+                    }
+
+                    $X = Confirm-DomainName -SiteName $_
+                
+                    If ( $X -ne $_ )
+                    {
+                        Show-Message "Error" $X
+                        Break
+                    }
+
+                    Else
+                    {
+                        $Code.SiteName = $_
+                    }
+                }
             }
 
             If ( ( $GUI.Tree.IsChecked ) -or ( $GUI.Child.IsChecked ) )
@@ -1629,28 +1657,6 @@
                     { 
                         $Code.ReplicationSourceDC  = $_ 
                     } 
-                }
-            }
-
-            $GUI.SiteName.Text | % { 
-                
-                If ( $_ -eq "" )
-                {
-                    Show-Message "Error" "Site Name missing"
-                    Break
-                }
-
-                $X = Confirm-DomainName -SiteName $_
-                
-                If ( $X -ne $_ )
-                {
-                    Show-Message "Error" $X
-                    Break
-                }
-
-                Else
-                {
-                    $Code.SiteName = $_
                 }
             }
 
@@ -2490,7 +2496,14 @@
                                   ValidLifeTime = [ TimeSpan ]::MaxValue
                               PreferredLifeTime = [ TimeSpan ]::MaxValue }
 
-        New-NetIpAddress @IPAddress            $Splat           = @{    InterfaceIndex = $Adapter                                ServerAddresses = "1.1.1.1" , "1.0.0.1" }        Set-DNSClientServerAddress @Splat            0..10 | ? { ( Test-Connection -ComputerName "DSC$_" -Count 1 -EA 0 ) -eq $Null } | % { Rename-Computer "DSC$_" ; Restart-Computer }
+        New-NetIpAddress @IPAddress
+    
+        $Splat           = @{    InterfaceIndex = $Adapter
+                                ServerAddresses = "1.1.1.1" , "1.0.0.1" }
+
+        Set-DNSClientServerAddress @Splat
+    
+        0..10 | ? { ( Test-Connection -ComputerName "DSC$_" -Count 1 -EA 0 ) -eq $Null } | % { Rename-Computer "DSC$_" ; Restart-Computer }
 
                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
@@ -5407,7 +5420,116 @@
                     { 
                         Write-Theme -Action "Exception [!]" "The WDS Service has experienced an issue" 12 4 15
                     } 
-                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____     
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Get-CurrentServices # Retrieves/Displays Current Services _________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        # Based on MadBomb122/Black Viper's Service Configurations in 'Use-ViperBombServices'
+
+        [ CmdLetBinding () ] Param (
+
+            [ Parameter ( ParameterSetName = "Theme" ) ] [ Switch ] $Display )
+
+        $Return = GCIM Win32_Service | % {
+    
+            [ PSCustomObject ]@{ 
+            
+                Status      = $_.State
+                StartType   = $_.StartMode
+                Name        = $_.Name 
+                DisplayName = $_.DisplayName
+                PathName    = $_.PathName
+                Description = $_.Description
+            }
+        }
+
+        If ( $Display )
+        {
+            $Range               = 0..( $Return.Count - 1 )
+            $Section             = 0..( $Return.Count - 1 )
+            $Subtable            = 0..( $Return.Count - 1 )
+    
+            $Names               = @( "Status" , "StartType" ; @( "" , "Display" , "Path" | % { "$_`Name" } ) )
+
+            ForEach ( $i in 0..( $Return.Count - 1 ) )
+            {
+                $X               = $Return[$I]
+        
+                $Section[$I]     = "( $( $X.DisplayName ) )"
+        
+                $Splat           = @{ 
+
+                    Items        = 0..4 | % {       $Names[$_] }
+                    Values       = 0..4 | % { $X.$( $Names[$_] )    }
+
+                }
+
+                $SubTable[$I]    = New-SubTable @Splat
+            }
+
+            $Table = New-Table -Depth $Range.Count -Title "Current Services" -ID $Section -Table $SubTable
+    
+            Write-Theme -Table $Table -Prompt "Press Enter to Continue"
+        }
+
+        Return $Return   
+                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____  
+}#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Sync-DNSSuffix # Modified / Jeff Hicks @ github.com/jdhitsolutions _________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        [ CmdLetBinding () ] Param ( 
+        
+            # Not supporting multiple or network based computers yet.
+            # Based on registry modification, was still very critical to implement domain membership sync
+
+            [ Parameter ( Position = 0 , ParameterSetName = "Get" ) ] [ Switch ] $Get    ,
+            [ Parameter ( Position = 0 , ParameterSetName = "Set" ) ] [ Switch ] $Set    ,
+            [ Parameter ( Position = 1 , ParameterSetName = "Set" ) ] [ Switch ] $Domain )
+
+            Begin 
+            {
+                $Query = "HKLM:\System\CurrentControlSet\Services\TCPIP\Parameters"
+                $CS    = GCIM Win32_ComputerSystem
+            }
+
+            Process
+            {
+                If ( $Get )
+                {
+                    GP $Query | % { 
+
+                        Return [ PSCustomObject ]@{
+
+                            Computername      = $_.hostname
+                            Domain            = $_.Domain
+                            'NV Domain'       = $_.'NV Domain'
+                            SynchronizeSuffix = $_.SyncDomainWithMembership -as [ Bool ]
+                        }
+                    }
+                }
+
+                If ( $Set )
+                {
+                    If ( ! ( $CS.PartOfDomain ) )
+                    {
+                        "Domain" | % { $_ , "NV $_" } | % { 
+                        
+                            SP -Path $Query -Name $_ -Value $Domain
+                        }
+
+                        SP -Path $Query -Name SyncDomainWithMembership -Value 1
+                    }
+
+                    If ( $CS.PartOfDomain )
+                    {
+                        [ System.Windows.Forms.MessageBox ]::Show( "System is part of a domain" , "Exception" )
+                    }
+                }
+            }                                                                        #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____  
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
