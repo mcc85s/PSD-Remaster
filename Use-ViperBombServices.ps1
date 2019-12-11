@@ -10,16 +10,36 @@
 # Website: http://www.BlackViper.com/
 #
 
-Function Get-ScriptVersion
-{
+    Function Get-ScriptInfo
+    {
+        [ CmdLetBinding () ] Param (
 
-    Return [ PSCustomObject ]@{ 
+            [ Parameter ( ParameterSetName =  "Version" ) ] [ Switch ] $Version ,
+            [ Parameter ( ParameterSetName =     "Path" ) ] [ Switch ] $Path    )
+
+        If ( $Version )
+        {
+        
+            Return [ PSCustomObject ]@{ 
     
-        Version = '6.2.0' 
-        Date    = 'Nov-13-2019'
-        Release = "Stable"
+                Version        = '6.2.0' 
+                Date           = 'Nov-13-2019'
+                Release        = "Stable"
+            }
+        }
+
+        If ( $Path )
+        {
+            ( $PSCommandPath , $PSISE.CurrentFile.FullPath )[ $PSISE -ne $Null ] | % {
+            
+                Return [ PSCustomObject ]@{ 
+            
+                    Parent = Split-Path $_ -Parent
+                    Leaf   = Split-Path $_ -Leaf 
+                }
+            }
+        }
     }
-}
 
 ##########
 
