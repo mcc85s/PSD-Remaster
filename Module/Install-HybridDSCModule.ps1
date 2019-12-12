@@ -46,7 +46,7 @@
             }
         }
 
-        $Source = Get-ScriptDirectory -Path
+        $Source = Get-ScriptDirectory | % { $_.Path }
     
         "Hybrid-DSC" | % { 
         
