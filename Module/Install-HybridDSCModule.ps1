@@ -1,6 +1,6 @@
     Function Get-ScriptDirectory 
     {
-        $( If ( $psise ) { Split-Path $psise.CurrentFile.FullPath } Else { $PSScriptRoot } ) | % {
+        $( If ( $psise ) { $psise.CurrentFile.FullPath } Else { $PSScriptRoot } ) | % {
 
             Return [ PSCustomObject ]@{
 
