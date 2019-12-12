@@ -1,6 +1,13 @@
-﻿    Function Get-ScriptDirectory 
+    Function Get-ScriptDirectory 
     {
-        Return $( If ( $psise ) { Split-Path $psise.CurrentFile.FullPath } Else { $PSScriptRoot } )
+        $( If ( $psise ) { Split-Path $psise.CurrentFile.FullPath } Else { $PSScriptRoot } ) | % {
+
+            Return [ PSCustomObject ]@{
+
+                Path = Split-Path $_ -Parent
+                File = Split-Path $_ -Leaf
+            }
+        }
     }
     
     Function Install-HybridDSCModule
@@ -39,7 +46,7 @@
             }
         }
 
-        $Source = Get-ScriptDirectory
+        $Source = Get-ScriptDirectory -Path
     
         "Hybrid-DSC" | % { 
         
@@ -63,7 +70,7 @@
             Expand-Archive "$Destination\$_.zip" $Destination
         }
     
-        IPMO Hybrid-DSC -Force
+        Import-Module Hybrid-DSC -Force
     }
 
     Install-HybridDSCModule
