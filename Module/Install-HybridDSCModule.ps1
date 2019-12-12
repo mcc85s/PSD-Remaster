@@ -1,13 +1,6 @@
-    Function Get-ScriptDirectory 
+﻿    Function Get-ScriptDirectory 
     {
-        $( If ( $psise ) { Split-Path $psise.CurrentFile.FullPath } Else { $PSScriptRoot } ) | % {
-        
-            Return [ PSCustomObject ]@{
-
-                Path = Split-Path $_ -Parent
-                File = Split-Path $_ -Leaf
-            }
-        }
+        Return $( If ( $psise ) { Split-Path $psise.CurrentFile.FullPath } Else { $PSScriptRoot } )
     }
     
     Function Install-HybridDSCModule
@@ -46,7 +39,7 @@
             }
         }
 
-        $Source = Get-ScriptDirectory -Path
+        $Source = Get-ScriptDirectory
     
         "Hybrid-DSC" | % { 
         
