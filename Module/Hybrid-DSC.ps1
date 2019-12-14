@@ -27,11 +27,8 @@
             IEX "Using Namespace System.$_"
         
         }
-            
-        <#[¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯]#>
-        <#[   Module / Resources   ]#>
-        <#[________________________]#>                                              #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-# ____   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+# ____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Resolve-HybridDSC # Module Root Path Delcaration __________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
@@ -2343,34 +2340,34 @@
 
         IEX "Using Namespace System.Net.NetworkInformation"
 
-        Get-NetworkInfo -LocalHost | % {
+        Get-NetworkInfo -LocalHost      | % {
 
-            $Range                 = ForEach ( $I in $_.Start , $_.End )
+            $Range                      = ForEach ( $I in $_.Start , $_.End )
             {
                 $I.Replace( $_.Prefix + '.' , "" )
             }
 
-            $HostRange             = ForEach ( $I in $Range[0]..$Range[1] )
+            $HostRange                  = ForEach ( $I in $Range[0]..$Range[1] )
             {
                  $_.Prefix + ".$I"
             }
         }
 
-        $Stopwatch                 = [ System.Diagnostics.Stopwatch ]::StartNew()
+        $Stopwatch                      = [ System.Diagnostics.Stopwatch ]::StartNew()
 
-        $Return                    = [ PSCustomObject ]@{ 
+        $Return                         = [ PSCustomObject ]@{ 
         
-            Success                = @( )
-            Failure                = @( ) 
+            Success                     = @( )
+            Failure                     = @( ) 
         }
 
-        $B                         = 97..119 + 97..105 | % { "0x$( "{0:x}" -f $_ )" }
+        $B                              = 97..119 + 97..105 | % { "0x$( "{0:x}" -f $_ )" }
 
-        $O                         = New-Object PingOptions
+        $O                              = New-Object PingOptions
 
-        $Report                    = ForEach ( $I in $HostRange )
+        $Report                         = ForEach ( $I in $HostRange )
         {
-            New-Object Ping | % { $_.SendPingAsync( $I , 100 , $B , $O ) } 
+            New-Object Ping             | % { $_.SendPingAsync( $I , 100 , $B , $O ) } 
         }
 
         $Stopwatch.Stop()
@@ -2379,9 +2376,9 @@
 
 
 
-        $Report.Result | ? { $_.Status -eq "Success"   } | % { $Return.Success += $_.Address.ToString() }
+        $Report.Result                  | ? { $_.Status -eq "Success"   } | % { $Return.Success += $_.Address.ToString() }
             
-        $HostRange     | ? { $_ -notin $Return.Success } | % { $Return.Failure += $_ }
+        $HostRange                      | ? { $_ -notin $Return.Success } | % { $Return.Failure += $_ }
 
         Return $Return
                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
@@ -2394,44 +2391,44 @@
 
             [ Parameter ( Position = 0 , HelpMessage = "Output the information to a table" )][ Switch ] $Table )
 
-        $Return                    = @( )
+        $Return                         = @( )
 
-        $IP                        = Start-PingSweep | ? { $_.Success -ne $Null } | % { $_.Success }
+        $IP                             = Start-PingSweep | ? { $_.Success -ne $Null } | % { $_.Success }
 
-        $IPV4                      = Get-NetworkInfo -LocalHost | % { $_.IPV4 }
+        $IPV4                           = Get-NetworkInfo -LocalHost | % { $_.IPV4 }
 
-        $ID                        =  "00" , "01" , "01" , "03" , "06" , "1F" , "20" , "21" , "22" , "23" , "24" , "30" , "31" , "43" , "44" , 
-                                      "45" , "46" , "4C" , "42" , "52" , "87" , "6A" , "BE" , "BF" , "03" , "00" , "1B" , "1C" , "1D" , "1E" , 
-                                      "2B" , "2F" , "33" , "20" , "01" | % { "<$_>" }
+        $ID                             =  "00" , "01" , "01" , "03" , "06" , "1F" , "20" , "21" , "22" , "23" , "24" , "30" , "31" , "43" , "44" , 
+                                           "45" , "46" , "4C" , "42" , "52" , "87" , "6A" , "BE" , "BF" , "03" , "00" , "1B" , "1C" , "1D" , "1E" , 
+                                           "2B" , "2F" , "33" , "20" , "01" | % { "<$_>" }
 
-        $Type                      = ( "UNIQUE" , "GROUP" )[ 0 , 0 , 1 + @( 0 ) * 22 + 1 , 0 , 1 , 0 , 1 , 0 , 1 , 1 , 1 , 1 ]
+        $Type                           = ( "UNIQUE" , "GROUP" )[ 0 , 0 , 1 + @( 0 ) * 22 + 1 , 0 , 1 , 0 , 1 , 0 , 1 , 1 , 1 , 1 ]
 
-        $SVX                       = "Workstation" , "Messenger" , "Master Browser" , "Messenger" , "RAS Server" , "NetDDE" , "File Server" ,  
-                                     "RAS Client" , "Interchange(MSMail Connector)" , "Store" , "Directory" , "Server" , "Client" , "Control" , 
-                                     "SMS Administrators Remote Control Tool" , "Chat" , "Transfer" , "on Windows NT" , "mccaffee anti-virus" , 
-                                     "on Windows NT" , "MTA" , "IMC" , "Network Monitor Agent" , "Network Monitor Application" , "Messenger" , 
-                                     "Name" , "Master Browser" , "Controllers" , "Master Browser" , "Browser Service Elections" , "Server" , "" , 
-                                     "" , "DCA IrmaLan Gateway Server" , "MS NetBIOS Browse"
+        $SVX                            = "Workstation" , "Messenger" , "Master Browser" , "Messenger" , "RAS Server" , "NetDDE" , "File Server" ,  
+                                          "RAS Client" , "Interchange(MSMail Connector)" , "Store" , "Directory" , "Server" , "Client" , "Control" , 
+                                          "SMS Administrators Remote Control Tool" , "Chat" , "Transfer" , "on Windows NT" , "mccaffee anti-virus" , 
+                                          "on Windows NT" , "MTA" , "IMC" , "Network Monitor Agent" , "Network Monitor Application" , "Messenger" , 
+                                          "Name" , "Master Browser" , "Controllers" , "Master Browser" , "Browser Service Elections" , "Server" , 
+                                          "" , "" , "DCA IrmaLan Gateway Server" , "MS NetBIOS Browse"
 
-        $Filter                    = 0,0,7,0,0,0,0,0,1,1,1,3,3,4,0,4,4,6,7,6,1,1,7,7,0,5,5,5,7,7,2,2,2,7,0
+        $Filter                         = 0,0,7,0,0,0,0,0,1,1,1,3,3,4,0,4,4,6,7,6,1,1,7,7,0,5,5,5,7,7,2,2,2,7,0
 
-        $Item                      = @( "SVX Service" ; "Microsoft Exchange" , "Lotus Notes" , "Modem Sharing" , "SMS Clients Remote" , "Domain" , 
-                                        "DEC TCPIP SVC" | % { "$_ SVX" } ; "SVX" )
+        $Item                           = @( "SVX Service" ; "Microsoft Exchange" , "Lotus Notes" , "Modem Sharing" , "SMS Clients Remote" , "Domain" , 
+                                             "DEC TCPIP SVC" | % { "$_ SVX" } ; "SVX" )
 
-        $Service                   = ForEach ( $I in 0..34 ) 
+        $Service                        = ForEach ( $I in 0..34 ) 
         { 
             $Item[ ( $Filter[$I] ) ].Replace( "SVX" ,"$( $SVX[$I] )" )  
         }
 
-        $List                      = @( )
+        $List                           = @( )
         
         ForEach ( $I in 0..34 ) 
         { 
-            $List                 += [ PSCustomObject ]@{ 
+            $List                      += [ PSCustomObject ]@{ 
             
-                ID                 = $ID[$I]
-                Type               = $Type[$I]
-                Service            = $Service[$I] 
+                ID                      = $ID[$I]
+                Type                    = $Type[$I]
+                Service                 = $Service[$I] 
             } 
         }
 
@@ -2441,33 +2438,33 @@
         {
             Write-Theme -Function "Host # $( $IP[$I] )"
 
-            $DNS                   = Resolve-DnsName -Name $IP[$I] -EA 0 | % { $_.Namehost }
+            $DNS                        = Resolve-DnsName -Name $IP[$I] -EA 0 | % { $_.Namehost }
                 
             If ( $DNS -eq $Null ) 
             { 
-                $DNS               = "*No Hostname*" 
+                $DNS                    = "*No Hostname*" 
             }
 
-            $X                     = @( )
+            $X                          = @( )
 
             If ( $IP[$I] -eq $IPV4 ) 
             { 
-                NBTSTAT -n         | ? { $_ -like "*Registered*" } | % { 
+                NBTSTAT -n              | ? { $_ -like "*Registered*" } | % { 
                 
                     If ( $_ -notin $X ) 
                     { 
-                        $X        += $_ 
+                        $X             += $_ 
                     } 
                 } 
             }
 
             If ( $IP[$I] -ne $IPV4 ) 
             { 
-                NBTSTAT -A $IP[$I] | ? { $_ -like "*Registered*" } | % { 
+                NBTSTAT -A $IP[$I]      | ? { $_ -like "*Registered*" } | % { 
                 
                     If ( $_ -notin $X ) 
                     { 
-                        $X        += $_ 
+                        $X             += $_ 
                     } 
                 } 
             }
@@ -2476,27 +2473,27 @@
             { 
                 If ( $X[$Y] -like "*__MSBROWSE__*" ) 
                 { 
-                    $X[$Y]         = "    MSBROWSE       <01>  GROUP       Registered " 
+                    $X[$Y]              = "    MSBROWSE       <01>  GROUP       Registered " 
                 } 
             }
 
-            $X                     | % { 
+            $X                          | % { 
 
-                $Z                 = @( $_[0..18] , $_[19..23] , $_[24..32] | % { ( $_ -ne " " ) -join '' } )
+                $Z                      = @( $_[0..18] , $_[19..23] , $_[24..32] | % { ( $_ -ne " " ) -join '' } )
 
-                $List              | ? { $Z[1] -eq $_.ID -and $Z[2] -eq $_.Type } | % { 
+                $List                   | ? { $Z[1] -eq $_.ID -and $Z[2] -eq $_.Type } | % { 
                 
-                    $SVC           = $_.Service 
+                    $SVC                = $_.Service 
                 }
 
-                $Return           += [ PSCustomObject ]@{ 
+                $Return                += [ PSCustomObject ]@{ 
                 
-                    IP             = $IP[$I]
-                    Host           = $DNS
-                    Name           = $Z[0]
-                    ID             = $Z[1]
-                    Type           = $Z[2]
-                    Service        = $SVC 
+                    IP                  = $IP[$I]
+                    Host                = $DNS
+                    Name                = $Z[0]
+                    ID                  = $Z[1]
+                    Type                = $Z[2]
+                    Service             = $SVC 
                 }
             }
         }
@@ -2508,7 +2505,7 @@
 
         If ( $Table ) 
         { 
-            Return $Return            | FT -AutoSize 
+            Return $Return              | FT -AutoSize 
         }
                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
@@ -2517,28 +2514,28 @@
     Function Get-NetworkHosts # Gets actual used network host addresses _________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         
-        $Mac                        = Resolve-MacAddress 
+        $Mac                            = Resolve-MacAddress 
 
         Function Return-Vendor
         {
             [ CmdLetBinding () ] Param ( [ Parameter ( Position = 0 , Mandatory = $True ) ] [ String ] $MacAddress )
 
-            $Mac                    | % { 
+            $Mac                        | % { 
             
-                $Code               = $_.Count
-                $Index              = $_.Index
-                $Vendor             = $_.Vendor 
+                $Code                   = $_.Count
+                $Index                  = $_.Index
+                $Vendor                 = $_.Vendor 
             }
 
-            $Item                   = ( $MacAddress[ 0..5 ] -join '' )
+            $Item                       = ( $MacAddress[ 0..5 ] -join '' )
 
-            $Count                  = 0
+            $Count                      = 0
 
-            $Item                   = $Item | % { [ Convert ]::ToInt64( $_ , 16 ) }
+            $Item                       = $Item | % { [ Convert ]::ToInt64( $_ , 16 ) }
 
             ForEach ( $i in 1..( $Code.Count ) )
             {
-                $Count              = $Count + $Code[$I]
+                $Count                  = $Count + $Code[$I]
                 
                 If ( $Count -eq $Item ) 
                 { 
@@ -2553,8 +2550,8 @@
 
                 [ Parameter ( Position = 0 , Mandatory = $True ) ] [ String ] $IPAddress )
 
-            $Class                  = "N" , "A" , "B" ,"C" , "MC" , "R" , "BR" ,"L"
-            $Range                  = @( 0 ; 1..126 | % { 1 } ; 7 ; 128..191 | % { 2 } ; 192..223 | % { 3 } ; 224..239 | % { 4 } ; 240..254 | % { 5 } ; 6 )
+            $Class                       = "N" , "A" , "B" ,"C" , "MC" , "R" , "BR" ,"L"
+            $Range                       = @( 0 ; @( 1 ) * 126 ; 7 ; @( 2 ) * 64 ; @( 3 ) * 32 ; @( 4 ) * 16 ; @( 5 ) * 15 ; 6 )
 
             Return $( $Class[ ( $Range[ ( $IPAddress.Split('.')[ 0 ] ) ] ) ] | % {
 
@@ -2567,41 +2564,68 @@
             })
         }
 
-        $List = @( )
+        $List                            = @( )
 
         ForEach ( $i in "dynamic" , "static" )
         { 
-            $List += arp -a | ? { $_ -like "*$I*" }
+            $List                       += arp -a | ? { $_ -like "*$I*" }
         }
 
-        $Parse = @( )
+        $Parse                           = @( )
 
-        Get-NetworkInfo -LocalHost | % { $Parse += [ PSCustomObject ]@{ IPAddress = $_.IPV4 ; MacAddress = $_.MAC ; LeaseType = "localhost" } }
+        Get-NetworkInfo -LocalHost       | % { 
+        
+            $Parse                      += [ PSCustomObject ]@{ 
+            
+                IPAddress                = $_.IPV4
+                MacAddress               = $_.MAC
+                LeaseType                = "localhost" 
+            } 
+        }
 
         ForEach ( $i in 0..( $List.Count - 1 ) )
         {
-            $X , $Y , $Z = $List[$I]    | % { $_[0..23] , $_[24..40] , $_[41..55] | % { $_ -join ""  } }
-            $X , $Y , $Z = $X , $Y , $Z | % { $_.Replace( " " , '' ) } | % { $_.Replace( "-" , '' ) }
-            $Parse += [ PSCustomObject ]@{ IPAddress = $X ; MacAddress = $Y ; LeaseType = $Z }
+            $X , $Y , $Z                 = $List[$I] | % { 
+            
+                $_[0..23] , $_[24..40] , $_[41..55] | % { $_ -join ""  } 
+            }
+
+            $X , $Y , $Z                 = $X , $Y , $Z | % { $_.Replace( " " , '' ) } | % { $_.Replace( "-" , '' ) }
+
+            $Parse                      += [ PSCustomObject ]@{ 
+            
+                IPAddress                = $X
+                MacAddress               = $Y 
+                LeaseType                = $Z
+            }
         }
 
-        $Reparse = @( )
+        $Reparse                         = @( )
 
         ForEach ( $i in 0..( $Parse.Count - 1 ) )
         {
-            $Parse[$I] | % { 
+            $Parse[$I]                   | % { 
             
-                $X    = $Parse[$I]
-                $MACV = $( $X.MacAddress | % { 
+                $X                       = $Parse[$I]
+                $MACV                    = $( $X.MacAddress | % { 
             
-                    If ( $_.StartsWith( "01005e" ) -or $_.StartsWith( "ffffff" ) ) { "-" } 
-                    Else { Return-Vendor -MacAddress ( $X.MacAddress ) } } )
+                    If ( $_.StartsWith( "01005e" ) -or $_.StartsWith( "ffffff" ) )
+                    { 
+                        "-" 
+                    }
+
+                    Else 
+                    { 
+                        Return-Vendor -MacAddress ( $X.MacAddress ) 
+                    } 
+                })
 
                 Return [ PSCustomObject ]@{ 
-                    IPV4Address = $_.IPAddress
-                    IPV4Class   = Return-Class -IPAddress $_.IPAddress
-                    MACAddress  = $_.MacAddress
-                    MACVendor   = $MACV
+
+                    IPV4Address          = $_.IPAddress
+                    IPV4Class            = Return-Class -IPAddress $_.IPAddress
+                    MACAddress           = $_.MacAddress
+                    MACVendor            = $MACV
                 }
             }
        }                                                                             #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
@@ -2613,34 +2637,38 @@
             Test-Connection 1.1.1.1 -Count 1 | ? { $_ -eq $Null } | % { 
     
                 Write-Theme -Action "Exception [!]" "Not connected to the internet" 12 4 15
-                
                 Break
             }
 
-            [ Net.ServicePointManager ]::SecurityProtocol = [ Net.SecurityProtocolType ]::TLS12
+            "SecurityProtocol"           | % { IEX "[ Net.ServicePointManager ]::$_ = [ Net.$_`Type ]::TLS12" }
 
-            $X = IRM -URI "http://ipinfo.io/$( ( IWR -URI 'http://ifconfig.me/ip' ).Content )" # < - [ Chrissy LeMaire ]
+            $X                           = IRM -URI "http://ipinfo.io/$( ( IWR -URI 'http://ifconfig.me/ip' | % { $_.Content } ) )"
 
-            $Info  = [ PSCustomObject ]@{ 
-                ExternalIP   = $X.IP
-                State        = $X.Region
-                Organization = "Default"
-                CommonName   = "Default"
-                Location     = $X.City
-                Country      = $X.Country
-                ZipCode      = $X.Postal
-                TimeZone     = "Default" 
-                SiteLink     = "Default-First-Site-Name" }
+            $Info                        = [ PSCustomObject ]@{
+
+                ExternalIP               = $X.IP
+                State                    = $X.Region
+                Organization             = "Default"
+                CommonName               = "Default"
+                Location                 = $X.City
+                Country                  = $X.Country
+                ZipCode                  = $X.Postal
+                TimeZone                 = "Default" 
+                SiteLink                 = "Default-First-Site-Name" 
+            }
 
             Write-Theme -Action "Collecting [+]" "Telemetry Data / Certificate Information"
         
-            $Key = "tZqSUOHxpjLy9kyOLKspvyZmjciB0nWpxz6PMl3KQNQBNEnW5sCbTKkKBPalSOBk"
+            $Key                         = "tZqSUOHxpjLy9kyOLKspvyZmjciB0nWpxz6PMl3KQNQBNEnW5sCbTKkKBPalSOBk"
 
-            $Y = IRM -URI "https://www.zipcodeapi.com/rest/$Key/info.json/$( $X.Postal )/degrees" -Method Get 
+            $Y                           = IRM -URI "https://www.zipcodeapi.com/rest/$Key/info.json/$( $X.Postal )/degrees" -Method Get 
 
-            $Info | % { $_.Location = $Y.City 
-                        $_.TimeZone = $Y.TimeZone.TimeZone_Identifier
-                        $_.SiteLink = "$( ( $Y.City.Split( ' ' ) | % { $_[0] } ) -join '' )-$( $X.Postal )" }
+            $Info                        | % { 
+            
+                $_.Location              = $Y.City 
+                $_.TimeZone              = $Y.TimeZone.TimeZone_Identifier
+                $_.SiteLink              = "$( ( $Y.City.Split( ' ' ) | % { $_[0] } ) -join '' )-$( $X.Postal )" 
+            }
 
             $MSG  = "Company" , "Domain" | % { "[ System.Windows.MessageBox ]::Show( 'You must enter a $_' , '$_ Error' )" }
 
@@ -2650,24 +2678,52 @@
 
             $GUI.Ok.Add_Click({
 
-                If     ( $GUI.Company.Text -eq $Null )                 { IEX $MSG[0] }
-                ElseIf ( $GUI.Domain.Text  -eq $Null )                 { IEX $MSG[1] }
-                Else { $GUI.DialogResult = $True }
+                If     ( $GUI.Company.Text -eq $Null )                 
+                { 
+                    IEX $MSG[0] 
+                }
+
+                ElseIf ( $GUI.Domain.Text  -eq $Null )
+                { 
+                    IEX $MSG[1] 
+                }
+
+                Else 
+                { 
+                    $GUI.DialogResult     = $True 
+                }
 
             })
 
-            $GUI.Domain | % { $_.Text = Get-NetworkInfo -LocalHost | % { $_.DNS } | % { If ( $_ -ne $Null ) { $_ } Else { "" } } }
+            $GUI.Domain                  | % { 
+            
+                $_.Text                  = Get-NetworkInfo -LocalHost | % { $_.DNS } | % { 
+                
+                    If ( $_ -ne $Null ) 
+                    { 
+                        $_ 
+                    } 
+                    
+                    Else 
+                    { 
+                        "" 
+                    } 
+                } 
+            }
 
-            $Null = $GUI.Company.Focus()
+            $Null                        = $GUI.Company.Focus()
 
-            $OP = Show-WPFWindow -GUI $GUI
+            $OP                          = Show-WPFWindow -GUI $GUI
         
             If ( $OP -eq $True )
             { 
                 Write-Theme -Action "Complete [+]" "Generating Certificate Information"
 
-                $Info | % { $_.Organization = $GUI.Company.Text 
-                            $_.CommonName   = $GUI.Domain.Text  }
+                $Info                    | % { 
+                
+                    $_.Organization      = $GUI.Company.Text 
+                    $_.CommonName        = $GUI.Domain.Text 
+                }
 
                 Return $Info
             }
@@ -2684,24 +2740,39 @@
     Function Resolve-MacAddress # Obtains the MAC Address Resolution Lists ______________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
 
-        $X      = Resolve-HybridDSC -Module
+        $X                               = Resolve-HybridDSC -Module
 
-        $Return = [ Ordered ]@{ Count = "" ; Index = "" ; Vendor = "" }
+        $Return                          = [ PSCustomObject ]@{ 
+        
+            Count                        = ""
+            Index                        = ""
+            Vendor                       = "" 
+        }
         
         ForEach ( $i in "Count" , "Index" , "Vendor" ) 
         {     
-            $Archive = @{ Path = "$x\Map\$I.zip" ; DestinationPath = $X ; Force = $True }
+            $Archive                     = @{ 
+            
+                Path                     = "$x\Map\$I.zip"
+                DestinationPath          = $X
+                Force                    = $True 
+            }
 
             Expand-Archive @Archive
 
-            "$x\$I.txt" | % { $Return.$I = GC $_ ; RI $_ }
+            "$x\$I.txt"                  | % { 
+            
+                $Return.$I               = GC $_
+
+                RI $_ 
+            }
         }
 
         Return $Return                                                               #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Start-NetworkInfo  # Collects all needed interface data ____________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    Function Start-NetworkInfo # Collects all needed interface data _____________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         [ CmdLetBinding () ] Param (
 
@@ -2711,41 +2782,27 @@
             [ Parameter ( ParameterSetName = "Telemetry" ) ] [ Switch ] $Telemetry ,
             [ Parameter ( ParameterSetName =       "All" ) ] [ Switch ]       $All )
 
-            $Index = "Network Adapter" , "Network Host IP/MAC" ,  "NetBIOS / Domain" , "Certificate / Location" | % { "$_ Information" }
+        If ( $All )
+        {
+            $Section                     = "Network Adapter" , "Network Host IP/MAC" ,  "NetBIOS / Domain" , "Certificate / Location" | % { "$_ Information" }
+            $Subtable                    = 0..3
 
-            If ( $All )
-            {
-                $Section    = @{ } ; $SubTable = @{ }
-                
-                0..3 | % { $Section.Add( $_ , "" ) ; $SubTable.Add( $_ , "" ) }
+            $Splat                       = @{ 
+            
+                Names                    = ""
+                Values                   = "" 
             }
-        <#________________________#>
-        <#[ Network Information  ]#>
-        <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
 
-            $Network = Get-NetworkInfo -LocalHost
+            <# Network Information #>
+
+            $Network                     = Get-NetworkInfo -LocalHost
 
             If ( $Network -ne $Null )
             {
-                $Subject    = ( $Network | GM | ? { $_.MemberType -like "*Note*" } )[5,1,8,7,0,6,2,10,9,4,3]
+                $Splat.Items             = ( $Network | GM | ? MemberType -like *Note* | % { $_.Name } )[5,1,8,7,0,6,2,10,9,4,3]
+                $Splat.Values            = $Splat.Items | % { $Network.$_ }
 
-                $Names      = $Subject   | % { $_.Name }
-                $Values     = $Subject   | % { $_.Definition.Split( '=' )[-1] }
-
-                $Output     = "[0]" , "" | % { 
-
-                    "`$Section$_    = @{ 
-                
-                        Name    = `$Names
-                        Value   = `$Values
-                        Section = `$Index[0] 
-                     }
-                 
-                    `$Subtable$_   = New-Subtable -Items `$Section$_.Name -Values `$Section$_.Value"
-                }
-
-                If ( $All   ) { IEX $Output[0] }
-                If ( $Local ) { IEX $Output[1] }
+                $Subtable[0]             = New-SubTable @Splat
             }
 
             If ( $Network -eq $Null )
@@ -2754,31 +2811,16 @@
                 Break
             }
 
-        <#________________________#>
-        <#[   Network Host Map   ]#>
-        <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
+            <# Network Host Map #>
 
-            $HostList       = Get-NetworkHosts | ? { $_.IPV4Class -like "*Class*" }
+            $HostList                    = Get-NetworkHosts | ? { $_.IPV4Class -like "*Class*" }
 
             If ( $HostList -ne $Null )
             {
-                $Names      = $HostList | % { $_.IPV4Address }
-                $Values     = $HostList | % { $_.MACAddress  }
-
-                $Output     = "[1]" , "" | % { 
-
-                    "`$Section$_    = @{ 
-                
-                        Name    = `$Names
-                        Value   = `$Values
-                        Section = `$Index[1] 
-                     }
+                $Splat.Items             = $HostList | % { $_.IPV4Address }
+                $Splat.Values            = $HostList | % { $_.MACAddress  }
                  
-                    `$Subtable$_   = New-Subtable -Items `$Section$_.Name -Values `$Section$_.Value"
-                }
-                
-                If ( $All   ) { IEX $Output[0] }
-                If ( $Map   ) { IEX $Output[1] }
+                $Subtable[1]             = New-Subtable @Splat
             }
 
             If ( $HostList -eq $Null )
@@ -2787,124 +2829,133 @@
                 Break
             }
 
-        <#________________________#>
-        <#[   NetBIOS / NBTScan  ]#>
-        <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
-        
-            $NBT            = Get-NBTSCAN
-            $Control        = @( $NBT | ? { $_.ID -like "*1C*" } )
-
-            If ( $Control.Count -gt 1 )
-            {
-                $Control    = $Control[0] # Will write better selection logic for multiple servers
-            }
+            <# NetBIOS / NBTScan #>
             
-            If ( $Control -eq $Null )
-            {
-                nbtstat -N
-                $Control    = $NBT | ? { $_.IP -eq $Network.IPV4 -and $_.ID -like "*00*" -and $_.Type -eq "GROUP" }
+            $NBT                         = Get-NBTSCAN
+
+            $Control                     = $NBT | % { 
+            
+                If ( ( $_.ID -like "*1C*" ).Count -gt 1 )
+                {
+                    $_                   | ? { ( $_.ID -like "*1C*" )[0] }
+                }
+
+                If ( ( $_.ID -like "*1C*" ).Count -eq 1 )
+                {
+                    $_                   | ? { $_.ID -like "*1C*" }
+                }
+
+                If ( ( $_.ID -like "*1C*" ).Count -eq 0 )
+                {
+                    $_                   | ? { $_.IP -eq $Network.IPV4 -and $_.ID -like "*00*" -and $_.Type -eq "GROUP" }
+                }
             }
 
             If ( $Control -ne $Null )
             {
-                $Names      = ( $Control | GM | ? { $_.MemberType -like '*Note*' } )[2,0,3,1,5,4] | % { $_.Name }
-                $Values     = $Names | % { $Control.$_ }
-
-                $Output     = "[2]" , "" | % {
-
-                    "`$Section$_    = @{ 
-                
-                        Name    = `$Names
-                        Value   = `$Values
-                        Section = `$Index[2] 
-                     }
+                $Splat.Items             = "IP" , "Host" , "Name" , "ID" , "Type" , "Service"
+                $Splat.Values            = $Splat.Items | % { $Control.$_ }
                  
-                    `$Subtable$_   = New-Subtable -Items `$Section$_.Name -Values `$Section$_.Value"
-                }
-                
-                If ( $All       ) { IEX $Output[0] }
-                If ( $NetBIOS   ) { IEX $Output[1] }
+                $Subtable[2]             = New-Subtable @Splat
             }
 
-        <#________________________#>
-        <#[___ Telemetry Data ___]#>
-        <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
+            <# Telemetry Data #>
 
-            $TD             = Get-TelemetryData
-            
+            $TD                          = Get-TelemetryData
+
+            If ( $TD -ne $Null )
+            {
+                $Splat.Items             = ( $TD | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,6,4,0,3,1,7,8,5]
+                $Splat.Values            = $Splat.Items | % { $TD.$_ }
+
+                $Subtable[3]             = New-Subtable @Splat
+            }
+
             If ( $TD -eq $Null )
             {
                 Write-Theme -Action "Exception [!]" "Certificate information not loaded" 12 4 15
                 Break
             }
 
-            If ( $TD -ne $Null )
-            {
-                $Names       = @( $TD | GM | ? { $_.MemberType -eq "NoteProperty" } | % { $_.Name } )[2,6,4,0,3,1,7,8,5]
-                $Values      = $Names | % { $TD.$_ }
-
-                $Output     = "[3]" , "" | % {
-
-                    "`$Section$_    = @{ 
-                
-                        Name    = `$Names
-                        Value   = `$Values
-                        Section = `$Index[3] 
-                     }
-                 
-                    `$Subtable$_   = New-Subtable -Items `$Section$_.Name -Values `$Section$_.Value"
-                }
-
-                If ( $All       ) { IEX $Output[0] }
-                If ( $Telemetry ) { IEX $Output[1] }
-            }
-        <#________________________#>
-        <#[___ Generate Table ___]#>
-        <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
+            <# Generate Table #>
             
-            $Panel = @{ Title = "Domain Controller Bootstrap" ; Depth = "" ; ID = "" ; Table = "" }
-
-            If ( $All )
-            {
-                $Panel | % { 
-                    
-                    $_.Depth = 4
-                    $_.ID    = 0..3 | % { $Section[$_].Section  | % { "( $_ )" } }
-                    $_.Table = 0..3 | % { $Subtable[$_] } 
-                }
-            }
-
-            If ( ( $Local ) -or ( $Map ) -or ( $NetBIOS ) -or ( $Telemetry ) )
-            {
-                $Panel | % {
-
-                    $_.Depth = 1
-                    $_.ID    = $Section.Section
-                    $_.Table = $Subtable 
-                 }
+            $Panel                       = @{ 
+            
+                Title                    = "Domain Controller Bootstrap"
+                Depth                    = 4 
+                ID                       = 0..3 | % { $Section[$_]  | % { "( $_ )" } }
+                Table                    = 0..3 | % { $Subtable[$_] }  
             }
         
-            $Table          =    New-Table @Panel
-        <#________________________#>
-        <#[___ Display Table ____]#>
-        <#¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯#>
+            $Table                       = New-Table @Panel
 
-        Write-Theme -Table $Table
+            <# Display Table #>
 
-        Return $Table                                                                #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+            Write-Theme -Table $Table
+
+            Return [ PSCustomObject ]@{ 
+        
+                LocalHost                = $Network
+                NetworkHost              = $HostList
+                NetBIOS                  = $Control
+                Certificate              = $TD
+            }
+        }
+
+        If ( $Local ) 
+        { 
+            Return Get-NetworkInfo -LocalHost
+        }
+
+        If ( $Map  )
+        {
+            Return Get-NetworkHosts      | ? { $_.IPV4Class -like "*Class*" }
+        }
+
+        If ( $NetBIOS )
+        {
+            Return Get-NBTSCAN 
+        }
+
+        If ( $Telemetry )
+        {
+            Return $TD
+        }
+                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Get-NetworkStatistics # Like if netstat by itself wasn't so lame ___________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        $OP     = netstat -ant | ? { $_ -like "*TCP*" -or $_ -like "*UDP*" }
+        $OP                              = netstat -ant | ? { $_ -like "*TCP*" -or $_ -like "*UDP*" }
 
-        $OP     | ? { $_ -notmatch '\*' } | % { $X = $_.Split( ' ' ) | ? { $_.Length -gt 0 }
-        Return  [ PSCustomObject ]@{ Protocol = $X[0] ; Local = $X[1] ; Foreign = $X[2] ; LinkState = $X[3] ; Stream = $X[4] } }
+        $OP                              | ? { $_ -notmatch '\*' } | % { 
+        
+            $X                           = $_.Split( ' ' ) | ? { $_.Length -gt 0 }
+            
+            Return [ PSCustomObject ]@{ 
+            
+                Protocol                 = $X[0]
+                Local                    = $X[1]
+                Foreign                  = $X[2]
+                LinkState                = $X[3]
+                Stream                   = $X[4] 
+            }
+        }
 
-        $OP     | ? { $_    -match '\*' } | % { $X = $_.Split( ' ' ) | ? { $_.Length -gt 0 }
-        Return  [ PSCustomObject ]@{ Protocol = $X[0] ; Local = $X[1] ; Foreign = "*:*" ; LinkState = "*:*" ; Stream = "*:*" } }
+        $OP                              | ? { $_    -match '\*' } | % { 
+        
+            $X                           = $_.Split( ' ' ) | ? { $_.Length -gt 0 }
 
+            Return [ PSCustomObject ]@{ 
+            
+                Protocol                 = $X[0]
+                Local                    = $X[1]
+                Foreign                  = "*:*"
+                LinkState                = "*:*" 
+                Stream                   = "*:*" 
+            }
+        }
                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
@@ -2912,24 +2963,30 @@
     Function Initialize-Server # This commandlet does stuff _____________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
 
-        $Info            = Get-NetworkInfo -LocalHost
-        $Report          = Start-PingSweep
-        $IPAddress       = $Report.Failure | Select -First 1
+        $Info                            = Get-NetworkInfo -LocalHost
+        $Report                          = Start-PingSweep
+        $IPAddress                       = $Report.Failure | Select -First 1
 
-        $Adapter         = Get-NetRoute -AddressFamily IPV4 | ? { $_.DestinationPrefix -like "*$( $Info.IPV4 )/*" } | % { $_.InterfaceIndex }
-        $Gateway         = Get-NetRoute -AddressFamily IPv4 -InterfaceIndex $Adapter | ? { $_.DestinationPrefix -eq "0.0.0.0/0" } | % { $_.NextHop }
+        $Adapter                         = Get-NetRoute -AddressFamily IPV4 | ? { $_.DestinationPrefix -like "*$( $Info.IPV4 )/*" } | % { $_.InterfaceIndex }
+        $Gateway                         = Get-NetRoute -AddressFamily IPv4 -InterfaceIndex $Adapter | ? { $_.DestinationPrefix -eq "0.0.0.0/0" } | % { $_.NextHop }
         
-        $Splat           = @{    InterfaceIndex = $Adapter
-                                      IPAddress = $IPAddress
-                                   PrefixLength = $Info.CIDR
-                                 DefaultGateway = $Gateway
-                                  ValidLifeTime = [ TimeSpan ]::MaxValue
-                              PreferredLifeTime = [ TimeSpan ]::MaxValue }
+        $Splat                           = @{    
+        
+            InterfaceIndex               = $Adapter
+            IPAddress                    = $IPAddress
+            PrefixLength                 = $Info.CIDR
+            DefaultGateway               = $Gateway
+            ValidLifeTime                = [ TimeSpan ]::MaxValue
+            PreferredLifeTime            = [ TimeSpan ]::MaxValue 
+        }
 
         New-NetIpAddress @IPAddress
     
-        $Splat           = @{    InterfaceIndex = $Adapter
-                                ServerAddresses = "1.1.1.1" , "1.0.0.1" }
+        $Splat                           = @{    
+        
+            InterfaceIndex               = $Adapter
+            ServerAddresses              = "1.1.1.1" , "1.0.0.1" 
+        }
 
         Set-DNSClientServerAddress @Splat
     
@@ -2946,7 +3003,10 @@
             [ ValidateNotNullOrEmpty () ] [ Parameter ( Position = 0 ) ][    Int ] $Port = 80 ,
             [ ValidateNotNullOrEmpty () ] [ Parameter ( Position = 1 ) ][ Switch ] $Return    )
 
-        $Collection = Start-PingSweep ; $S = $Collection.Success ; $C = $S.Count ; $Report = 0..( $C - 1 )
+        $Collection                     = Start-PingSweep
+        $S                              = $Collection.Success
+        $C                              = $S.Count
+        $Report                         = 0..( $C - 1 )
 
         ForEach ( $A in 0..( $C - 1 ) )
         {
@@ -2957,20 +3017,34 @@
                 Try 
                 { 
                     New-Object System.Net.Sockets.TcpClient -Args ( $S[$A] , $Port ) -EA 0 | % { 
-                    $Report[$A] = [ PSCustomObject ]@{ ID = $A ; IPAddress = $S[$A] ; Client = $_.Client ; Connected = $_.Connected } }
+                        
+                        $Report[$A]     = [ PSCustomObject ]@{
+                    
+                            ID          = $A
+                            IPAddress   = $S[$A]
+                            Client      = $_.Client
+                            Connected   = $_.Connected
+                        } 
+                    }
                 }
                 
                 Catch 
                 {
                     [ Void ]$_.Exception.Message
-                    $Report[$A] = [ PSCustomObject ]@{ ID = $A ; IPAddress = $S[$A] ; Connected = "False" }
+                    
+                    $Report[$A]         = [ PSCustomObject ]@{ 
+                    
+                        ID              = $A
+                        IPAddress       = $S[$A]
+                        Connected       = "False" 
+                    }
                 }
             }
         }
 
         If ( $Return ) 
         { 
-            Return $Report.Client | FT -AutoSize 
+            Return $Report.Client       | FT -AutoSize 
         }
         
         Else 
@@ -2992,15 +3066,15 @@
             [ Parameter ( ParameterSetName =         "DSCRoot" ) ][ Switch ] $DSCRoot        ,
             [ Parameter ( ParameterSetName =    "ProvisionDSC" ) ][ Switch ] $ProvisionDSC   )
 
-            $XML       = @{ }
+            $XML                        = @{ }
+            $Schema                     = "http://schemas.microsoft.com/winfx/2006/xaml"
+            $Author                     = "Secure Digits Plus LLC"
 
-            $Schema    = "http://schemas.microsoft.com/winfx/2006/xaml" ; $Author = "Secure Digits Plus LLC"
+            $CS                         = GCIM Win32_OperatingSystem | % { $_.Caption }
+            $B                          = $False , $True 
+            $YZ                         = "[X]" , "[_]"
 
-            $CS        = GCIM Win32_OperatingSystem | % { $_.Caption }
-            $B         = $False , $True 
-            $YZ        = "[X]" , "[_]"
-
-            $Glossary  = 
+            $Glossary                   = 
             "   `$W = 'Width'             " , "   `$H = 'Height'            " , "  `$MA = 'Margin'          " , 
             "  `$MN = 'Menu'              " , " `$MNI = 'MenuItem'          " , "  `$HD = 'Header'          " , 
             "  `$GB = 'GroupBox'          " , " `$GBI = 'GroupBoxItem'      " , "  `$CB = 'ComboBox'        " , 
@@ -3012,37 +3086,46 @@
             "   `$Q = 'Name'              " , "  `$SE = 'Setter'            " , "  `$PR = 'Property'        " ,
             "  `$BG = 'Background'        " , "  `$RB = 'RadioButton'       " , "  `$TW = 'TextWrapping'    "
             
-            $Glossary   | % { IEX $_ }
-            $GRD , $GCD = $RD , $CD | % { "$G.$_`s" }
-            $Glossary  += " `$GRD = '$GRD'" , " `$GCD = '$GCD'" 
+            $Glossary                   | % { IEX $_ }
 
-            $HAL        =  "Left" ,   "Center" ,  "Right" | % { "HorizontalAlignment = '$_'" } ; $HCAL =  $HAL | % { $_.Replace( 'lA' , 'lContentA' ) }
-            $VAL        =   "Top" ,   "Center" , "Bottom" | % { "VerticalAlignment = '$_'"   } ; $VCAL =  $VAL | % { $_.Replace( 'lA' , 'lContentA' ) } 
+            $GRD , $GCD                 = $RD , $CD | % { "$G.$_`s" }
 
-            $SP         = 0..14 | % { "    " * $_ }
+            $Glossary                  += " `$GRD = '$GRD'" , " `$GCD = '$GCD'" 
 
-            $VC , $VV   = "Collapsed" , "Visible" | % { "Visibility = '$_'" }
-            $CF ,  $OK ,  $CA = "Confirm" , "Start" , "Cancel"             
-            $PW , $PWB , $PWC = "Password" | % { "$_" , "$_`Box" , "$_`Char" }
+            $HAL                        = "Left" ,   "Center" ,  "Right" | % { "HorizontalAlignment = '$_'" }
+            
+            $HCAL                       = $HAL | % { $_.Replace( 'lA' , 'lContentA' ) }
 
-            $GFX        = Resolve-HybridDSC -Graphics
+            $VAL                        =   "Top" ,   "Center" , "Bottom" | % { "VerticalAlignment = '$_'" }
+            
+            $VCAL                       =  $VAL | % { $_.Replace( 'lA' , 'lContentA' ) } 
 
-            $Z          = 0
+            $SP                         = 0..14 | % { "    " * $_ }
+
+            $VC , $VV                   = "Collapsed" , "Visible" | % { "Visibility = '$_'" }
+
+            $CF ,  $OK ,  $CA           = "Confirm" , "Start" , "Cancel"
+                    
+            $PW , $PWB , $PWC           = "Password" | % { "$_" , "$_`Box" , "$_`Char" }
+
+            $GFX                        = Resolve-HybridDSC -Graphics
+
+            $Z                          = 0
 
         #/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\
         If ( $Certificate ) # Certificate/Domain XAML                                [
         {#___________________________________________________________________________/
 
-            $Title      = "Certificate Info"       
+            $Title                      = "Certificate Info"       
                 
              # ____   _________________________
              #//¯¯\\__[_______ Header ________] 
              #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                 $X      = @( 2 ; @( 13 ) * 7 ; 10 , 9 ) | % { $SP[$_] }
 
-                $Y      = @(  "<Window" , "  xmlns = '$Schema/presentation'" , "xmlns:x = '$Schema'" , "  Title = '$Author | Hybrid @ $Title'" ,  
-                              "  $W = '350'" , " $H = '200'" , "Topmost = 'True' " , "   Icon = '$( $GFX.Icon )'" , "$( $HAL[1] )" , 
-                              "  WindowStartupLocation = 'CenterScreen' >" )
+                $Y      = @( "<Window" , "  xmlns = '$Schema/presentation'" , "xmlns:x = '$Schema'" , "  Title = '$Author | Hybrid @ $Title'" ,  
+                             "  $W = '350'" , " $H = '200'" , "Topmost = 'True' " , "   Icon = '$( $GFX.Icon )'" , "$( $HAL[1] )" , 
+                             "  WindowStartupLocation = 'CenterScreen' >" )
 
                 $XML[0] = 0..( $X.Count - 1 ) | % { $X[$_] + $Y[$_] }
              # ____   _________________________
@@ -3670,29 +3753,68 @@
 
         IEX "Using Namespace System.DirectoryServices"
 
-        $MSG   = ( 0 , "Username" ) , ( 1 , "Password" ) , ( 2 , "Confirmation" ) , ( 3 , "Authentication" ) | % {
+        $MSG          = ( 0 , "Username" ) , ( 1 , "Password" ) , ( 2 , "Confirmation" ) , ( 3 , "Authentication" ) | % {
             
-            $w , $X = $_[0..1]
+            $w , $X   = $_[0..1]
 
-            If ( $W -lt 2 ) { "Show-Message       '$X Failure'                       'You must enter a $X' " }
-            If ( $W -eq 2 ) { "Show-Message 'Password Failure'                       '$_ must match the $X'" }
-            If ( $W -eq 3 ) { "Show-Message       '$X Failure' 'Submitted information is invalid/incorrect'" }
+            If ( $W -lt 2 ) 
+            { 
+                "Show-Message '$X Failure' 'You must enter a $X' " 
+            }
+            
+            If ( $W -eq 2 ) 
+            { 
+                "Show-Message 'Password Failure' '$_ must match the $X'" 
+            }
+            
+            If ( $W -eq 3 ) 
+            { 
+                "Show-Message '$X Failure' 'Submitted information is invalid/incorrect'" 
+            }
         }
 
-        $GUIX = Get-XAML -Login | % { Convert-XAMLtoWindow -Xaml $_ -NE ( Find-XAMLNamedElements -XAML $_ ) -PassThru }
+        $GUIX         = Get-XAML -Login | % { Convert-XAMLtoWindow -Xaml $_ -NE ( Find-XAMLNamedElements -XAML $_ ) -PassThru }
 
         $GUIX.Switch.Add_Click(  { $GUIX.Port.IsEnabled    =  $True } )
         $GUIX.Cancel.Add_Click(  { $GUIX.DialogResult      = $False } )
         $GUIX.Ok.Add_Click({ 
         
-            $Port         = $GUIX.Port | % { If ( $_.IsEnabled ) { $_.Text } Else { 389 } }
-            $DomX         = $Domain.Split( '.' ) -join ',DC='
-            $DX           = [ DirectoryEntry ]::New( "LDAP://$DC`:$Port/DC=$DomX" , $GUIX.Username.Text , $GUIX.Password.Password )
+            $Port     = $GUIX.Port | % { 
+            
+                If ( $_.IsEnabled ) 
+                { 
+                    $_.Text 
+                } 
+                
+                Else 
+                { 
+                    389 
+                } 
+            }
 
-                    If ( $GUIX.Username | ? { $_.Text     -eq $Null } )             { IEX $MSG[0] }
-                ElseIf ( $GUIX.Password | ? { $_.Password -eq $Null } )             { IEX $MSG[1] }
-                ElseIf ( $GUIX.Confirm  | ? { $_.Password -eq $Null } )             { IEX $MSG[2] }
-                ElseIf ( $GUIX.Password.Password -notmatch $GUIX.Confirm.Password ) { IEX $MSG[2] }
+            $DomX     = $Domain.Split( '.' ) -join ',DC='
+
+            $DX       = [ DirectoryEntry ]::New( "LDAP://$DC`:$Port/DC=$DomX" , $GUIX.Username.Text , $GUIX.Password.Password )
+
+            If ( $GUIX.Username | ? { $_.Text     -eq $Null } )             
+            { 
+                IEX $MSG[0] 
+            }
+
+            ElseIf ( $GUIX.Password | ? { $_.Password -eq $Null } )
+            { 
+                IEX $MSG[1] 
+            }
+            
+            ElseIf ( $GUIX.Confirm  | ? { $_.Password -eq $Null } )
+            { 
+                IEX $MSG[2] 
+            }
+            
+            ElseIf ( $GUIX.Password.Password -notmatch $GUIX.Confirm.Password ) 
+            { 
+                IEX $MSG[2] 
+            }
                 ElseIf ( $DX.Name -eq $Null )                                       { IEX $MSG[3] }
                 Else   { $GUIX.DialogResult = $True }
         })
@@ -3733,15 +3855,36 @@
         {
             $P , $E , $F , $O , $HT = $Path , $Encoding , "$Path\$Name" , $Value , "Hashtable"
 
-            If ( !$O )                { Write-Theme -Action "Exception [!]" "Value is Null" ; Break }
-            If ( !( Test-Path $P ) )  { Write-Theme -Action "Exception [!]" "Invalid Path"  ; Break }
-            If ( ( Test-Path $F ) -and ( !$Force ) )
+            If ( !$O )
             { 
-                If (  $Append )       { $OF = @( GC $F ) }
-                If ( !$Append )       { Write-Theme -Action "Exception [!]" "File exists @: Use -Force or -Append" ; Break }
+                Write-Theme -Action "Exception [!]" "Value is Null"
+                Break 
             }
 
-            Else { $OF = @( ) }
+            If ( !( Test-Path $P ) )
+            { 
+                Write-Theme -Action "Exception [!]" "Invalid Path"
+                Break 
+            }
+
+            If ( ( Test-Path $F ) -and ( !$Force ) )
+            { 
+                If (  $Append )
+                { 
+                    $OF = @( GC $F ) 
+                }
+                
+                If ( !$Append )
+                { 
+                    Write-Theme -Action "Exception [!]" "File exists @: Use -Force or -Append"
+                    Break 
+                }
+            }
+
+            Else 
+            { 
+                $OF = @( ) 
+            }
         }
 
         Process
@@ -3750,11 +3893,27 @@
 
             ForEach ( $i in $O.Keys )
             {
-                If ( $( $O[$i].GetType().Name ) -ne $HT ) { $OF += "$i=$( $O[$i] )" } Else { $OF += "[$i]" }
+                If ( $( $O[$i].GetType().Name ) -ne $HT ) 
+                { 
+                    $OF += "$i=$( $O[$i] )" 
+                } 
+                
+                Else 
+                { 
+                    $OF += "[$i]" 
+                }
 
                 ForEach ( $j in $( $O[$i].Keys | Sort ) ) 
                 {                                                                                          
-                    If ( $j -Match "^Comment[\d]+" ) { $OF += "$( $O[$i][$j] )" } Else { $OF += "$j=$( $O[$i][$j] )" }
+                    If ( $j -Match "^Comment[\d]+" ) 
+                    { 
+                        $OF += "$( $O[$i][$j] )" 
+                    } 
+                    
+                    Else 
+                    { 
+                        $OF += "$j=$( $O[$i][$j] )" 
+                    }
                 }
 
                 SC -Path $F -Value @( $OF ) -Encoding $E
@@ -3767,7 +3926,10 @@
 
         End
         {
-            If ( $UTF8NoBom ) { [ System.IO.File ]::WriteAllLines( ( $F ) , ( GC $F ) , ( New-Object System.Text.UTF8Encoding $False ) ) }
+            If ( $UTF8NoBom ) 
+            { 
+                [ System.IO.File ]::WriteAllLines( ( $F ) , ( GC $F ) , ( New-Object System.Text.UTF8Encoding $False ) ) 
+            }
         }
                                                                                      #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
@@ -3777,7 +3939,8 @@
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
        [ CmdletBinding () ] Param ( [ String ] $Path , [ FileSystemAccessRule ] $ACL ) 
 
-            Get-ACL -Path $Path | % { $_.AddAccessRule( $ACL ) ; Set-ACL -Path $Path -ACLObject $_ }
+            Get-ACL -Path $Path | % { $_.AddAccessRule( $ACL )
+            Set-ACL -Path $Path -ACLObject $_ }
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
@@ -3794,6 +3957,7 @@
             IEX "Using Namespace System.Security.AccessControl"
 
             Return [ FileSystemAccessRule ]::New( $SAM , $Rights , $Inherit , $Propagate , $Access ) 
+
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
@@ -3828,22 +3992,31 @@
 
             If ( $GUI.Install.Text -eq "" ) 
             { 
-                "Installation Location" | % { Show-Message -Title "$_ Missing" -Message "You must enter a $_" } 
+                "Installation Location" | % { 
+                
+                    Show-Message -Title "$_ Missing" -Message "You must enter a $_" 
+                } 
             }   
             
-            Else                            { $GUI.DialogResult = $True }
+            Else
+            { 
+                $GUI.DialogResult = $True 
+            }
         })
 
-        $OP = Show-WPFWindow -GUI $GUI
+        $OP                       = Show-WPFWindow -GUI $GUI
 
-        $Null = $GUI.Install.Focus()
+        $Null                     = $GUI.Install.Focus()
 
         If ( $OP -eq $True )
         {
-            $Root = @{ Base     = $GUI.Install.Text
-                       Registry = "HKLM:\SOFTWARE\Policies"
-                       Vendor   = "Secure Digits Plus LLC" 
-                       Date     = Get-Date }
+            $Root                 = @{ 
+            
+                Base              = $GUI.Install.Text
+                Registry          = "HKLM:\SOFTWARE\Policies"
+                Vendor            = "Secure Digits Plus LLC" 
+                Date              = Get-Date 
+            }
             
             If ( ! ( Test-Path $Root.Base ) )
             {
@@ -5114,13 +5287,16 @@
         }
 
         # Registry Links
+
         $REX       = 0..3 | % { "$( $Registry.Hive[$_] )\$( $Registry.Link[$_] )\$( $Registry.Mark[$_] )" }
     
         # File Links
+
         $FEX       = @( @( "" ; "" , "\Backgrounds" | % { "\OOBE\Info$_" } ) | % { "$SYS$_" } ; 
                         @( "Screen" , "Wallpaper\Windows" | % { "$SR\Web\$_" } ; "$PGD\Microsoft\User Account Pictures" ) )
     
         # New Items
+
         $FEX[2]   | ? { ! ( Test-Path $_ ) } | % { # OEM Background Folder
     
             NI $_ -ItemType Directory
@@ -5137,14 +5313,17 @@
         }
 
         # Copy Items 
+
         $FEX[0,1,5] | % { CP $Root.Logo       $_ -VB } # Logo
         $FEX[2..4]  | % { CP $Root.Background $_ -VB } # Background
 
         $Properties = [ PSCustomObject ]@{
 
             Path    = $REX[0,0,1,1,1,1,1,3,2]
+
             Name    = @( "" , "Style" | % { "Wallpaper$_" } ; "Logo" , "Manufacturer" ; "Phone" , "Hours" , "URL" | % { "Support$_" } ; 
                          "LockScreenImage" , "OEMBackground" )
+
             Value   = $Root | % { "$( $FEX[4] )\$( $_.Background )" , 2 , "$SYS\$( $_.Logo )" , $_.Company , $_.Phone , $_.Hours , $_.WWW , 
                       "$( $FEX[3] )\$( $_.Background )" , 1 }
     
@@ -5176,12 +5355,15 @@
     Function Unlock-Script # Allows for elevation ( Not Finished ) _____________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         $CS = GCIM Win32_OperatingSystem
+
         IEX "Using Namespace System.Security.Principal"
+
         "Windows" | % { IEX "( [ $_`Principal ] [ $_`Identity ]::GetCurrent() ).IsInRole( 'Administrator' )" } | % {
         
             If ( ( ( $_ -eq $False ) -and ( $CS | % { [ Int ]$_.BuildNumber -gt 6000 } ) ) -or ( $_ -eq $True ) )
             {
-                $MyInvocation | % { SAPS PowerShell -Verb RunAs -Args "-File $( $_.PSCommandPath ) $( $_.UnboundArguments )" }
+                SAPS PowerShell -Verb RunAs -Args "-File `"$PSCommandPath` $( $MyInvocation.UnboundArguments )"
+
                 Set-ExecutionPolicy ByPass -Scope Process -Force
             }
 
@@ -5254,6 +5436,7 @@
         }
 
         $RootVar         = [ PSCustomObject ]@{
+
             Company      = $Company
             NetworkShare = $DeployRoot
             DSDrive      = $Drive
@@ -5303,7 +5486,9 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Update-HybridDSC # Recycles *all* Deployment Share Content ________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+
         Write-Theme -Action "Provision Root [~]" "MDT Imaging/Task Sequence Recycler"
+
                 # ____   _________________________
                 #//¯¯\\__[___ Provisional Root __]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -5377,9 +5562,7 @@
 
                     $Table                 = New-Table @Panel
 
-                    Write-Theme -Table $Table
-
-                    Read-Host "$( "¯" * 116 )`nPress Enter to Continue"
+                    Write-Theme -Table $Table -Prompt "Press Enter to Continue, or CTRL+C to Exit"
                 # ____   _________________________
                 #//¯¯\\__[__ Get Deploy/Share  __]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -5862,16 +6045,14 @@
 
             [ Parameter ( ParameterSetName = "Theme" ) ] [ Switch ] $Display )
 
-        $Return = GCIM Win32_Service | % {
-    
-            [ PSCustomObject ]@{ 
+        $Return                  = GCIM Win32_Service | % { [ PSCustomObject ]@{ 
             
-                Status      = $_.State
-                StartType   = $_.StartMode
-                Name        = $_.Name 
-                DisplayName = $_.DisplayName
-                PathName    = $_.PathName
-                Description = $_.Description
+                Status           = $_.State
+                StartType        = $_.StartMode
+                Name             = $_.Name 
+                DisplayName      = $_.DisplayName
+                PathName         = $_.PathName
+                Description      = $_.Description
             }
         }
 
@@ -5899,7 +6080,7 @@
                 $SubTable[$I]    = New-SubTable @Splat
             }
 
-            $Table = New-Table -Depth $Range.Count -Title "Current Services" -ID $Section -Table $SubTable
+            $Table               = New-Table -Depth $Range.Count -Title "Current Services" -ID $Section -Table $SubTable
     
             Write-Theme -Table $Table -Prompt "Press Enter to Continue"
         }
@@ -5963,11 +6144,8 @@
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-        Write-Theme -Free # What Free Actually Means ____________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-     #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-
-     Function Register-PDCTimeSource
-     {
+     Function Register-PDCTimeSource # What Free Actually Means _________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         [ CmdLetBinding () ] Param (
 
             [ Parameter ( Position = 0 , Mandatory = $True ) ] [ String [] ] $Servers        ,
@@ -5992,6 +6170,9 @@
 
             Write-Theme -Action   $_[1] $_[2] 
             Write-Theme -Function $Splat.Path
-        }
-    }
-
+        }                                                                            #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____  
+}#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+        Write-Theme -Free # What Free Actually Means ____________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+     #¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
