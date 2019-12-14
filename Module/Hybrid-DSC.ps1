@@ -3836,102 +3836,132 @@
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Export-Ini # Based on Oliver Lipkau's OutFile-INI on TechNet ______________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    Function Export-INI # Originally based on Outfile-INI by Oliver Lipkau _____________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        [ CmdLetBinding () ] Param ( 
+        [ CmdLetBinding () ] Param (
 
-            [ Parameter ( Mandatory = $True , Position = 0 ) ][ String ] $Path , 
-            [ ValidateNotNullOrEmpty () ][ ValidatePattern ( '^([a-zA-Z]\:)?.+\.ini$' ) ] 
-            [ Parameter ( Mandatory = $True , Position = 1 ) ][ String ] $Name ,
-            [ ValidateNotNullOrEmpty () ]
-            [ Parameter ( Mandatory = $True , Position = 2 , ValueFromPipeline = $True ) ][ Hashtable ] $Value , 
-            [ ValidateSet ( "Unicode" , "UTF7" , "UTF8" , "UTF32" , "ASCII" , "BigEndianUnicode" , "Default" , "OEM" ) ] 
-            [ Parameter ( Mandatory = $True , Position = 3 ) ][ String ] $Encoding = "Unicode" ,
-                [ Switch ] $Force     , 
-                [ Switch ] $Append    , 
-                [ Switch ] $UTF8NoBOM ) 
+            [ Parameter ( Mandatory , ValueFromPipeline ) ][ ValidateScript ({
+
+                Test-Path $_ -PathType Container        })][      String ] $Path ,
+            #\________________________________________________________________
+            [ Parameter ( Mandatory , ValueFromPipeline ) ][ ValidateScript ({
+            #/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                $_.Split( '.' )[-1] -ne ".ini"          })][      String ] $Name ,
+            #\________________________________________________________________
+            [ Parameter ( Mandatory , ValueFromPipeline ) ][ ValidateScript ({
+            #/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+                $_ -ne $Null                            })][   Hashtable ] $Content ,
+            #\________________________________________________________________
+            [ Parameter ( ) ]                              [ ValidateScript ({
+            
+                $_ -in @( 'Unicode' ; 7 , 8 , 32 | % { "UTF$_" } ; 'ASCII' , 'BigEndianUnicode' , 'Default' , 'OEM' )
+                
+                                                        })][      String ] $Encoding = "Unicode" ,
+            #\________________________________________________________________
+            [ Parameter ( ) ]                              [      Switch ] $Force                ,
+            [ Parameter ( ) ]                              [      Switch ] $Append               ,
+            [ Parameter ( ) ]                              [      Switch ] $UTF8NoBOM            )
 
         Begin
         {
-            $P , $E , $F , $O , $HT = $Path , $Encoding , "$Path\$Name" , $Value , "Hashtable"
+            "$Path\$Name"                                      | % { 
 
-            If ( !$O )
-            { 
-                Write-Theme -Action "Exception [!]" "Value is Null"
-                Break 
-            }
+                If ( Test-Path $_ )
+                {
+                    If ( ! ( $Force -or $Append ) ) 
+                    {
+                        Write-Theme -Action "Exception [!]" "File exists, must use 'Force' or 'Append' to modify" 12 4 15
+                        Break
+                    }
 
-            If ( !( Test-Path $P ) )
-            { 
-                Write-Theme -Action "Exception [!]" "Invalid Path"
-                Break 
-            }
+                    If ( $Append )
+                    {
+                        $Output                                = GC $_
 
-            If ( ( Test-Path $F ) -and ( !$Force ) )
-            { 
-                If (  $Append )
-                { 
-                    $OF = @( GC $F ) 
+                        Write-Theme -Action "Imported [+]" "$_" 11 11 15
+                    }
+
+                    If ( $Force )
+                    {
+                        $Output                                = @( )
+
+                        Write-Theme -Action "Force Replaced [+]" "$_" 11 11 15
+                    }
                 }
-                
-                If ( !$Append )
-                { 
-                    Write-Theme -Action "Exception [!]" "File exists @: Use -Force or -Append"
-                    Break 
-                }
-            }
 
-            Else 
-            { 
-                $OF = @( ) 
+                Else
+                {
+                    $Outout                                    = @( )
+                }
             }
         }
 
         Process
         {
-            Write-Theme -Action "Processing [~]" "Output"
-
-            ForEach ( $i in $O.Keys )
-            {
-                If ( $( $O[$i].GetType().Name ) -ne $HT ) 
-                { 
-                    $OF += "$i=$( $O[$i] )" 
-                } 
-                
-                Else 
-                { 
-                    $OF += "[$i]" 
-                }
-
-                ForEach ( $j in $( $O[$i].Keys | Sort ) ) 
-                {                                                                                          
-                    If ( $j -Match "^Comment[\d]+" ) 
-                    { 
-                        $OF += "$( $O[$i][$j] )" 
-                    } 
+            $Table                                             | % { 
+        
+                $_.GetEnumerator()                             | % { 
+            
+                    If ( $_.Value.GetType().Name -eq "Hashtable" )
+                    {
+                        "[$( $_.Name )]"                       | % {
                     
-                    Else 
-                    { 
-                        $OF += "$j=$( $O[$i][$j] )" 
+                            Write-Theme -Action "New Section [~]" "$_" 11 11 15
+
+                            $Output                           += $_
+                        }
+
+                        $Table.$( $_.Name ).GetEnumerator()    | % { 
+
+                            $_.Name , $_.Value -join '='       | % { 
+
+                                Write-Theme -Action "Item [+]" "$_" 11 11 15
+                            
+                                $Output                       += $_
+                            }
+                        }
+
+                        Write-Theme -Action "End Section [+]" "$_" 11 11 15
+
+                        $Output                               += ""
+                    }
+
+                    Else
+                    {
+                        $_.Name , $_.Value -join '='           | % { 
+
+                            Write-Theme -Action "Single Key [+]" "$_" 11 11 15
+
+                            $Output                           += $_
+                        }
                     }
                 }
 
-                SC -Path $F -Value @( $OF ) -Encoding $E
+                $Output                                       += ""
             }
-
-            GI $F
-
-            Write-Theme -Action "Completed [+]" "$( $MyInvocation.MyCommand.Name ) $F"
         }
 
         End
         {
-            If ( $UTF8NoBom ) 
-            { 
-                [ System.IO.File ]::WriteAllLines( ( $F ) , ( GC $F ) , ( New-Object System.Text.UTF8Encoding $False ) ) 
+            "$Path\$Name"                                      | % { 
+        
+                $Splat                                         = @{
+
+                    Path                                       = $_
+                    Value                                      = $Output
+                    Encoding                                   = $Encoding
+                }
+
+                SC @Splat
+        
+                GI $_
+
+                If ( $UTF8NoBOM )
+                {
+                    [ System.IO.File ]::WriteAllLines( $_ , ( GC $_ ) , ( New-Object System.Text.UTF8Encoding $False ) )
+                }
             }
-        }
-                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+        }                                                                            #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                             __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\___________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
@@ -3964,20 +3994,9 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Resolve-UninstallList # Collects installed applications from the registry__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        $Return = "" , "\WOW6432Node" | % { "HKLM:\SOFTWARE$_\Microsoft\Windows\CurrentVersion\Uninstall\*" }
-        
-        $env:PROCESSOR_ARCHITECTURE | % { 
-        
-            If ( $_ -eq "AMD64" ) 
-            {
-                Return $Return | % { GP $_ }
-            }
+        Return GP ( "" ,"\WOW6432Node" | % { "HKLM:\SOFTWARE$_\Microsoft\Windows\CurrentVersion\Uninstall\*" })[@{ x86 = 0 ; AMD64 = 0..1 }[$Env:Processor_Architecture]]
 
-            Else
-            {
-                Return GP $Return[0]
-            }
-        }                                                                           #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+                                                                                  #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
