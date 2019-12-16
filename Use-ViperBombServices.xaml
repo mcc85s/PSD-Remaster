@@ -1,0 +1,511 @@
+<Window 
+                       xmlns = 'http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+                     xmlns:x = 'http://schemas.microsoft.com/winfx/2006/xaml'
+                       Title = 'Secure Digits Plus LLC | Hybrid @ ViperBomb Service Configuration Utility'
+                      Height = '540'
+                       Width = '720'
+                        Icon = ''
+                     Topmost = 'True'
+                 BorderBrush = 'Black'
+                  ResizeMode = 'NoResize'
+         HorizontalAlignment = 'Center'
+       WindowStartupLocation = 'CenterScreen'>
+    <Window.Resources>
+        <Style x:Key         = 'SeparatorStyle1' 
+               TargetType    = '{x:Type Separator}'>
+            <Setter Property = 'SnapsToDevicePixels' 
+                    Value    = 'True'/>
+            <Setter Property = 'Margin' 
+                    Value    = '0,0,0,0'/>
+            <Setter Property = 'Template'>
+                <Setter.Value>
+                    <ControlTemplate TargetType     = '{x:Type Separator}'>
+                        <Border Height              = '24' 
+                                SnapsToDevicePixels = 'True' 
+                                Background          = '#FF4D4D4D' 
+                                BorderBrush         = 'Azure' 
+                                BorderThickness     = '1,1,1,1' 
+                                CornerRadius        = '5,5,5,5'/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType    = '{x:Type ToolTip}'>
+            <Setter Property = 'Background' 
+                    Value    = '#FFFFFFBF'/>
+        </Style>
+    </Window.Resources>
+    <Window.Effect>
+        <DropShadowEffect/>
+    </Window.Effect>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height        = '24'/>
+            <RowDefinition Height        = '*'/>
+            <RowDefinition Height        = '48'/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row                   = '0' 
+              IsMainMenu                 = 'True' 
+              Padding                    = '5' 
+              FontFamily                 = 'Lucida Console'>
+            <MenuItem     Header         = 'Configuration'  
+                          BorderBrush    = 'Gainsboro'>
+                <MenuItem Name           = 'Menu_Config_0' 
+                          Header         = 'Maximum'/>
+                <MenuItem Name           = 'Menu_Config_1' 
+                          Header         = 'Minimum'/>
+                <MenuItem Name           = 'Menu_Config_2' 
+                          Header         = 'Default'/>
+                <MenuItem Name           = 'Menu_Config_3' 
+                          Header         = 'Safe'/>
+                <MenuItem Name           = 'Menu_Config_4' 
+                          Header         = 'Tweaked'/>
+                <MenuItem Name           = 'Menu_Config_5' 
+                          Header         = 'Custom'/>
+            </MenuItem>
+            <MenuItem     Header         = 'Info'>
+                <MenuItem Name           = 'Menu_Info_0'
+                          Header         = 'Feedback'/>
+                <MenuItem Name           = 'Menu_Info_1'
+                          Header         = 'FAQ'/>
+                <MenuItem Name           = 'Menu_Info_2'   
+                          Header         = 'About'/>
+                <MenuItem Name           = 'Menu_Info_3'   
+                          Header         = 'Copyright'/>
+                <MenuItem Header         = 'MadBomb122'>
+                    <MenuItem Name       = 'Menu_MB_0'
+                              Header     = 'Donate to MadBomb122'/>
+                    <MenuItem Name       = 'Menu_MB_1'
+                              Header     = 'GitHub'/>
+                </MenuItem>
+                <MenuItem     Header     = 'BlackViper'>
+                    <MenuItem Name       = 'Menu_BV_0'     
+                              Header     = 'BlackVipers Website'/>
+                </MenuItem>
+                <MenuItem     Name       = 'Menu_SD_0'
+                              Header     = 'Secure Digits Plus LLC'/>
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row                   = '1'>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width  = '*'/>
+            </Grid.ColumnDefinitions>
+            <TabControl BorderBrush      = 'Gainsboro' 
+                        Grid.Row         = '1' 
+                        Name             = 'TabControl'>
+                <TabControl.Resources>
+                    <Style TargetType    = 'TabItem'>
+                        <Setter Property = 'Template'>
+                            <Setter.Value>
+                                <ControlTemplate TargetType                   = 'TabItem'>
+                                    <Border Name                              = 'Border' 
+                                            BorderThickness                   = '1,1,1,0' 
+                                            BorderBrush                       = 'Gainsboro' 
+                                            CornerRadius                      = '4,4,0,0' 
+                                            Margin                            = '2,0'>
+                                        <ContentPresenter x:Name              = 'ContentSite' 
+                                                          VerticalAlignment   = 'Center' 
+                                                          HorizontalAlignment = 'Center' 
+                                                          ContentSource       = 'Header' 
+                                                          Margin              = '10,2'/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property      = 'IsSelected' 
+                                                 Value         = 'True'>
+                                            <Setter TargetName = 'Border' 
+                                                    Property   = 'Background' 
+                                                    Value      = 'LightSkyBlue'/>
+                                        </Trigger>
+                                        <Trigger Property      = 'IsSelected' 
+                                                 Value         = 'False'>
+                                            <Setter TargetName = 'Border' 
+                                                    Property   = 'Background' 
+                                                    Value      = 'GhostWhite'/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+                <TabItem Name   = 'Service_Dialog_Tab' 
+                         Header = 'Service Dialog'>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height = '25'/>
+                            <RowDefinition Height = '30'/>
+                            <RowDefinition Height =  '*'/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row       = '0' 
+                                   Margin         = '5' 
+                                   TextAlignment  = 'Center'>Service State:
+							<Run   Background     = '#66FF66' 
+                                   Text           = 'Compliant'/> /
+                            <Run   Background     = '#FFFF66' 
+                                   Text           = 'Unspecified'/> /
+                            <Run   Background     = '#FF6666' 
+                                   Text           = 'Non Compliant'/>
+                        </TextBlock>
+                        <Grid Grid.Row            = '1'>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width = '*'/>
+                                <ColumnDefinition Width = '*'/>
+                                <ColumnDefinition Width = '*'/>
+                            </Grid.ColumnDefinitions>
+                            <Button   Grid.Column = '0' Margin ='5' Name = 'Service_Dialog_Load'   Content           = 'Load Services'/>
+                            <TextBox  Grid.Column = '1' Margin ='5' Name = 'Service_Dialog_Search' TextWrapping      = 'Wrap'>Search</TextBox>
+                            <ComboBox Grid.Column = '2' Margin ='5' Name = 'Service_Dialog_Select' VerticalAlignment = 'Center'>
+                                <ComboBoxItem Content = 'Checked'/>
+                                <ComboBoxItem Content = 'Common Name' IsSelected='True'/>
+                                <ComboBoxItem Content = 'Service Name'/>
+                                <ComboBoxItem Content = 'Current Setting'/>
+                            </ComboBox>
+                        </Grid>
+                        <DataGrid Grid.Row            = '2'
+                                  Grid.Column         = '0'
+                                  Name                = 'Service_Dialog_Grid'
+                                  FrozenColumnCount   = '2' 
+                                  AutoGenerateColumns = 'False' 
+                                  AlternationCount    = '2' 
+                                  HeadersVisibility   = 'Column' 
+                                  CanUserResizeRows   = 'False' 
+                                  CanUserAddRows      = 'False' 
+                                  IsTabStop           = 'True' 
+                                  IsTextSearchEnabled = 'True' 
+                                  SelectionMode       = 'Extended'>
+                            <DataGrid.RowStyle>
+                                <Style TargetType     = '{x:Type DataGridRow}'>
+                                    <Style.Triggers>
+                                        <Trigger Property    = 'AlternationIndex'
+                                                 Value       = '0'>
+                                            <Setter Property = 'Background'
+                                                    Value    = 'White'/>
+                                        </Trigger>
+                                        <Trigger Property    = 'AlternationIndex'
+                                                 Value       = '1'>
+                                            <Setter Property = 'Background'
+                                                    Value    = '#FFD8D8D8'/>
+                                        </Trigger>
+                                        <Trigger Property    = 'IsMouseOver'
+                                                 Value       = 'True'>
+                                            <Setter Property = 'ToolTip'>
+                                                <Setter.Value>
+                                                    <TextBlock Text         = '{Binding Service_Description}'
+                                                               TextWrapping = 'Wrap'
+                                                               Width        = '400'
+                                                               Background   = '#FFFFFFBF'
+                                                               Foreground   = 'Black'/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property                = 'ToolTipService.ShowDuration'
+                                                    Value                   = '360000000'/>
+                                        </Trigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding          = '{Binding Service_Toggle}'
+                                                           Value            = 'True'/>
+                                                <Condition Binding          = '{Binding Matches}' 
+                                                           Value            = 'False'/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property                = 'Background' 
+                                                    Value                   = '#F08080'/>
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding          = '{Binding Service_Toggle}'
+                                                           Value            = 'False'/>
+                                                <Condition Binding          = '{Binding Matches}' 
+                                                           Value            = 'False'/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property                = 'Background' 
+                                                    Value                   = '#FFFFFF64'/>
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding          = '{Binding Service_Toggle}'
+                                                           Value            = 'True'/>
+                                                <Condition Binding          = '{Binding Matches}'
+                                                           Value            = 'True'/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property                = 'Background'
+                                                    Value                   = 'LightGreen'/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn SortMemberPath      = 'Service_Toggle' 
+                                                        CanUserSort         = 'True'>
+                                    <DataGridTemplateColumn.Header>
+                                        <CheckBox       Name                = 'Service_Profile' 
+                                                        IsEnabled           = 'False'/>
+                                    </DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked             = '{Binding Service_Toggle ,
+                                                                                        Mode                  = TwoWay,
+                                                                                        UpdateSourceTrigger   = PropertyChanged,
+                                                                                        NotifyOnTargetUpdated = True}' 
+                                                      IsEnabled             = '{Binding ElementName           = Custom_Profile, 
+                                                                                        Path                  = IsChecked}'/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header                  = 'Display Name' 
+                                                    Width                   = '120'
+                                                    Binding                 = '{Binding Service_DisplayName}'
+                                                    CanUserSort             = 'True'
+                                                    IsReadOnly              = 'True'/>
+                                <DataGridTextColumn Header                  = 'Name'
+                                                    Width                   = '120'
+                                                    Binding                 = '{Binding Service_Name}'
+                                                    IsReadOnly              = 'True'/>
+                                <DataGridTextColumn Header                  = 'Current Setting'
+                                                    Width                   = '100'
+                                                    Binding                 = '{Binding Service_Type}'
+                                                    IsReadOnly              = 'True'/>
+                                <DataGridTemplateColumn Header              = 'Profile'
+                                                        Width               = '100'
+                                                        SortMemberPath      = 'Service_Profile'
+                                                        CanUserSort         = 'True'>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource           = '{Binding Service_Type_List}'
+                                                      Text                  = '{Binding Path                 = Service_Profile,
+                                                                                        Mode                 = TwoWay,
+                                                                                        UpdateSourceTrigger  = PropertyChanged}'
+                                                      IsEnabled             = '{Binding ElementName          = Custom_Profile,
+                                                                                        Path                 = IsChecked}'/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header              = 'State' 
+                                                        Width               = '80' 
+                                                        SortMemberPath      = 'Service_State' 
+                                                        CanUserSort         = 'True'>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource           = '{Binding Service_State_List}'
+                                                      Text                  = '{Binding Path                 = Service_State,
+                                                                                        Mode                 = TwoWay,
+                                                                                        UpdateSourceTrigger  = PropertyChanged}'
+                                                      IsEnabled             = '{Binding ElementName          = Custom_Profile,
+                                                                                        Path                 = IsChecked}'/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header                  = 'Description'
+                                                    Width                   = '120'
+                                                    Binding                 = '{Binding Service_Description}'
+                                                    CanUserSort             = 'True'
+                                                    IsReadOnly              = 'True'/>
+                                <DataGridTextColumn Header                  = 'Path'
+                                                    Width                   = '120'
+                                                    Binding                 = '{Binding Service_Path}'
+                                                    CanUserSort             = 'True'
+                                                    IsReadOnly              = 'True'/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+                <TabItem                            Name                    = 'Preferences_Tab'
+                                                    Header                  = 'Preferences'>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width = '*'/>
+                            <ColumnDefinition Width = '*'/>
+                            <ColumnDefinition Width = '*'/>
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid Grid.Column       = '0'>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height = '120'/>
+                                    <RowDefinition Height = '150'/>
+                                    <RowDefinition Height = '150'/>
+                                </Grid.RowDefinitions>
+                                <GroupBox Grid.Row = '0' Header = 'Display Options' Margin = '5' >
+                                    <Grid >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height = '30'/>
+                                            <RowDefinition Height = '30'/>
+                                            <RowDefinition Height = '30'/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width = '25'/>
+                                            <ColumnDefinition Width = '*'/>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'Pref_Disp_0'/>
+                                        <TextBlock Grid.Row = '0' Grid.Column = '1' Margin = '5' >Show Active Services</TextBlock>
+                                        <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'Pref_Disp_1'/>
+                                        <TextBlock Grid.Row = '1' Grid.Column = '1' Margin = '5' >Show Inactive Services</TextBlock>
+                                        <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'Pref_Disp_2'/>
+                                        <TextBlock Grid.Row = '2' Grid.Column = '1' Margin = '5' >Show Skipped Services</TextBlock>
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox Grid.Row = '1' Header = 'Miscellaneous' Margin = '5'>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height = '30'/>
+                                            <RowDefinition Height = '30'/>
+                                            <RowDefinition Height = '30'/>
+                                            <RowDefinition Height = '30'/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width = '25'/>
+                                            <ColumnDefinition Width = '*'/>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_0'/>
+                                        <TextBlock Grid.Row = '0' Grid.Column = '1' Margin = '5' >Simulate Changes [ Dry Run ]</TextBlock>
+                                        <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_1'/>
+                                        <TextBlock Grid.Row = '1' Grid.Column = '1' Margin = '5' >Skip All Xbox Services</TextBlock>
+                                        <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_2'/>
+                                        <TextBlock Grid.Row = '2' Grid.Column = '1' Margin = '5' >Allow Change of Service State</TextBlock>
+                                        <CheckBox  Grid.Row = '3' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_3'/>
+                                        <TextBlock Grid.Row = '3' Grid.Column = '1' Margin = '5' >Stop Disabled Services</TextBlock>
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox Grid.Row='2' Header = 'Development' Margin='5'>
+                                    <Grid >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height = '30'/>
+                                            <RowDefinition Height = '30'/>
+                                            <RowDefinition Height = '30'/>
+                                            <RowDefinition Height = '30'/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width = '25'/>
+                                            <ColumnDefinition Width = '*'/>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_0' />
+                                        <TextBlock Grid.Row = '0' Grid.Column = '1' Margin = '5' >Diagnostic Output [ On Error ]</TextBlock>
+                                        <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_1' />
+                                        <TextBlock Grid.Row = '1' Grid.Column = '1' Margin = '5' >Enable Development Logging</TextBlock>
+                                        <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_2' />
+                                        <TextBlock Grid.Row = '2' Grid.Column = '1' Margin = '5' >Show Console Window</TextBlock>
+                                        <CheckBox  Grid.Row = '3' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_3' />
+                                        <TextBlock Grid.Row = '3' Grid.Column = '1' Margin = '5' >Show Diagnostic</TextBlock>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </Grid>
+                        <Grid Grid.Column='1'>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height = '120'/>
+                                <RowDefinition Height = '150'/>
+                                <RowDefinition Height = '150'/>
+                            </Grid.RowDefinitions>
+                            <GroupBox Grid.Row = '0' Header = 'Bypass / Checks [ Risky Options ]' Margin = '5'>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height = '30'/>
+                                        <RowDefinition Height = '30'/>
+                                        <RowDefinition Height = '30'/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width = '25'/>
+                                        <ColumnDefinition Width = '*'/>
+                                    </Grid.ColumnDefinitions>
+                                    <CheckBox   Grid.Row = '0' Margin = '5' Name = 'Pref_Bypass_Laptop'/>
+                                    <TextBlock  Grid.Row = '0' Margin = '5' Grid.Column = '1' >
+                                        Enable Laptop Tweaks
+                                    </TextBlock>
+                                    <CheckBox   Grid.Row = '1' Margin = '5' Name = 'Pref_Bypass_Build'/>
+                                    <TextBlock  Grid.Row = '1' Margin = '5' Grid.Column = '1' >
+                                        Skip Build/Version Check
+                                    </TextBlock>
+                                    <ComboBox   Grid.Row = '2' Margin = '5' Grid.ColumnSpan = '2' Name = 'Pref_Bypass_Drop'>
+                                        <ComboBoxItem Content = 'Override Edition Check' IsSelected = 'True'/>
+                                        <ComboBoxItem Content = 'Windows 10 Home'/>
+                                        <ComboBoxItem Content = 'Windows 10 Pro'/>
+                                    </ComboBox>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Grid.Row = '1' Header = 'Logging' Margin = '5'>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height = '30'/>
+                                        <RowDefinition Height = '30'/>
+                                        <RowDefinition Height = '30'/>
+                                        <RowDefinition Height = '30'/>
+                                    </Grid.RowDefinitions>
+                                    <Button  Grid.Row = '0' Margin = '5' Name = 'Pref_Log_Service_Browse'>Generate Service Log</Button>
+                                    <TextBox Grid.Row = '1' Margin = '5' Name = 'Pref_Log_Service_Path' TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
+                                    <Button  Grid.Row = '2' Margin = '5' Name = 'Pref_Log_Script_Browse' >Generate Script Log</Button>
+                                    <TextBox Grid.Row = '3' Margin = '5' Name = 'Pref_Log_Script_Path'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Grid.Row='2' Header='Backup' Margin='5'>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height ='30'/>
+                                        <RowDefinition Height ='30'/>
+                                        <RowDefinition Height ='30'/>
+                                        <RowDefinition Height ='30'/>
+                                    </Grid.RowDefinitions>
+                                    <Button  Grid.Row = '0' Margin = '5' Name = 'Pref_Backup_Reg_Browse'>Export (.reg) File</Button>
+                                    <TextBox Grid.Row = '1' Margin = '5' Name = 'Pref_Backup_Reg_Path'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
+                                    <Button  Grid.Row = '2' Margin = '5' Name = 'Pref_Backup_CSV_Browse'>Export (.csv) File</Button>
+                                    <TextBox Grid.Row = '3' Margin = '5' Name = 'Pref_Backup_CSV_Path'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+                        <Grid Grid.Column='2'>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height = '90'/>
+                                <RowDefinition Height = '90'/>
+                            </Grid.RowDefinitions>
+                            <GroupBox Grid.Row = '0' Header = 'Service Configuration' Margin = '5'>
+                                <Grid Grid.Row = '0'>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height = '25'/>
+                                        <RowDefinition Height = '35'/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row = '0' Margin = '5' Name = 'Pref_Config_Version' >Sparks v1.0</TextBlock>
+                                    <ComboBox  Grid.Row = '1' Margin = '5' Name = 'Pref_Config_Profile' Height ='24'>
+                                        <ComboBoxItem Content = 'Black Viper (Sparks v1.0)' IsSelected =  'True' />
+                                        <ComboBoxItem Content = 'DevOPS (Not yet available)' IsEnabled = 'False'/>
+                                    </ComboBox>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Grid.Row = '1' Header = 'User Interface' Margin = '5'>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height = '25'/>
+                                        <RowDefinition Height = '35'/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row = '0' Margin = '5' Name = 'Pref_Module_Version' >MadBomb v1.0</TextBlock>
+                                    <ComboBox  Grid.Row = '1' Margin = '5' Name = 'Pref_Module_Profile' Height = '24' >
+                                        <ComboBoxItem Content = 'DevOPS (MC/SDP v1.0)' IsSelected =  'True' />
+                                        <ComboBoxItem Content = '[Legacy (Levy v1.0)'  IsEnabled  = 'False'  />
+                                    </ComboBox>
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Name = 'Console_Tab' Header = 'Console'>
+                    <Grid Background = '#FFE5E5E5'>
+                        <ScrollViewer VerticalScrollBarVisibility = 'Visible'>
+                            <TextBlock Name = 'Console_Output' TextTrimming = 'CharacterEllipsis' Background = 'White' FontFamily = 'Lucida Console'/>
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+                <TabItem Name = 'Diagnostic_Tab' Header = 'Diagnostic' Visibility = 'Visible'>
+                    <Grid Background = '#FFE5E5E5'>
+                        <ScrollViewer VerticalScrollBarVisibility = 'Visible'>
+                            <TextBlock Name = 'Diagnostic_Output' TextTrimming = 'CharacterEllipsis' Background = 'White' FontFamily = 'Lucida Console'/>
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+        <Grid Grid.Row = '2'>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width = '*'/>
+                <ColumnDefinition Width = '*'/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column = '0' Name =  'Start' Content = 'Start'  FontWeight = 'Bold' Margin = '10'/>
+            <Button Grid.Column = '1' Name = 'Cancel' Content = 'Cancel' FontWeight = 'Bold' Margin = '10'/>
+        </Grid>
+    </Grid>
+</Window>
