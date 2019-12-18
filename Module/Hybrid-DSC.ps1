@@ -326,34 +326,41 @@
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         [ CmdLetBinding ( ) ] Param ( 
 
-            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = "0" ) ][         Switch ]   $Action ,
-            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = "1" ) ][         String ] $Function ,
-            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = "2" ) ][ PSCustomObject ]    $Table ,
-            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = "3" ) ][         Switch ]     $Free ,
-            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = "4" ) ][         Switch ]     $Foot ,
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "0" ) ][ String ]       $Type  ,
-            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = "0" ) ][ String ]       $Info  ,
-            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = "0" ) ]
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "1" ) ]
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "2" ) ]
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "3" ) ]
-            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = "4" ) ][    Int ]   $Edge = 11 ,
-            [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = "0" ) ]
-            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = "1" ) ]
-            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = "2" ) ]
-            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = "3" ) ]
-            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = "4" ) ][    Int ] $Center = 12 ,
-            [ Parameter ( Position = 5 , ValueFromPipeline = $True , ParameterSetName = "0" ) ]
-            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = "1" ) ]
-            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = "2" ) ]
-            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = "3" ) ]
-            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = "4" ) ][    Int ]   $Font = 15 ,
-            [ Parameter ( Position = 6 , ValueFromPipeline = $True , ParameterSetName = "0" ) ]
-            [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = "1" ) ]
-            [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = "2" ) ]
-            [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = "3" ) ]
-            [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = "4" ) ][    Int ]   $Back =  0 ,
-            [ Parameter ( Position = 5 , ValueFromPipeline = $True , ParameterSetName = "2" ) ][ String ]      $Prompt )
+            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = 0 ) ][         Switch ]   $Action ,
+            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = 1 ) ][         String ] $Function ,
+            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = 2 ) ][      String [] ]    $Array ,
+            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = 3 ) ][ PSCustomObject ]    $Table ,
+            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = 4 ) ][         Switch ]     $Free ,
+            [ Parameter ( Mandatory = $True , Position = 0 , ValueFromPipeline = $True , ParameterSetName = 5 ) ][         Switch ]     $Foot ,
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = 0 ) ][ String ]       $Type  ,
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = 0 ) ][ String ]       $Info  ,
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = 2 ) ][ String ]      $Title  ,
+            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = 0 ) ]
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = 1 ) ]
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = 2 ) ]
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = 3 ) ]
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = 4 ) ]
+            [ Parameter ( Position = 1 , ValueFromPipeline = $True , ParameterSetName = 5 ) ][    Int ]   $Edge = 11 ,
+            [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = 0 ) ]
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = 1 ) ]
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = 2 ) ]
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = 3 ) ]
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = 4 ) ]
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = 5 ) ][    Int ] $Center = 12 ,
+            [ Parameter ( Position = 5 , ValueFromPipeline = $True , ParameterSetName = 0 ) ]
+            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = 1 ) ]
+            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = 2 ) ]
+            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = 3 ) ]
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = 4 ) ]
+            [ Parameter ( Position = 3 , ValueFromPipeline = $True , ParameterSetName = 5 ) ][    Int ]   $Font = 15 ,
+            [ Parameter ( Position = 6 , ValueFromPipeline = $True , ParameterSetName = 0 ) ]
+            [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = 1 ) ]
+            [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = 2 ) ]
+            [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = 3 ) ]
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = 4 ) ]
+            [ Parameter ( Position = 4 , ValueFromPipeline = $True , ParameterSetName = 5 ) ][    Int ]   $Back =  0 ,
+            [ Parameter ( Position = 5 , ValueFromPipeline = $True , ParameterSetName = 2 ) ]
+            [ Parameter ( Position = 2 , ValueFromPipeline = $True , ParameterSetName = 3 ) ][ String ]      $Prompt )
 
         Begin
         {
@@ -621,6 +628,172 @@
 
                     $Return[$I].BG = @( 3 ) * $Math.BG[$I]
                     $Return[$I].ST = $Math.ST[$I]
+                }
+            }
+
+                        If ( $Array )
+            {
+                $Top                     = 5
+                $Bottom                  = @( 6 , 5 )[ $Array.Count % 2 ]
+                
+                $Return                  = 0..( $Top + $Array.Count - 1 + $Bottom )
+
+                $Return                  | % {
+                
+                    $Return[$_]          = [ PSCustomObject ]@{ 
+                    
+                        ST               = ""
+                        FG               = ""
+                        BG               = "" 
+                    } 
+                }
+
+                $Title                   = $Title | % { If ( $_.Length -gt 83 ) { "$( $_.Substring( 0 , 78 ) )..." } Else { $_ } } | % { "[ $_ ]" }
+
+                $Recurse                 = $Title | % { 92 - $_.Length | % { $_ ; $_ % 2 ; ( $_ - ( $_ % 2 ) ) / 2 } }
+
+                $Output                  = $M1[$Recurse[2]] , $M1[$Recurse[1]] , $Title , $M1[$Recurse[2]] -join ''
+
+                $Z                       = 0
+
+                $Return[$Z]              | % {
+
+                    $_.ST                = "  ____    $( $M1[100] )      "
+                    $_.FG                = 0
+                    $_.BG                = 3
+                }
+
+                $Z ++
+
+                $Return[$Z]              | % {
+                
+                    $_.ST                = @( " /" ; $F ; "/$( $M0[98] )\" , "\___  " )
+                    $_.FG                = 0 , 1 , 0 , 1 , 0
+                    $_.BG                = @( 3 ) * 5
+                }
+
+                $Z ++
+
+                $Return[$Z]              | % {
+
+                    $_.ST                = " \" , $F[1] , "/¯¯¯  " , $Output , "  ___/" , $F[0] , "\ "
+                    $_.FG                = 0 , 1 , 1 , 2 , 1 , 1 , 0
+                    $_.BG                = @( 3 ) * 7
+                }
+
+                $Z ++
+
+                $Return[$Z]              | % { 
+                
+                    $_.ST                = @( " //¯¯\" , "\$( $M1[98] )/" ; $F ; "/ " )
+                    $_.FG                = 0 , 1 , 0 , 1 , 0
+                    $_.BG                = @( 3 ) * 5
+                }
+
+                $Z ++
+
+                $Return[$Z]              | % { 
+
+                    $_.ST                = " \\   $( $M0[100] )    ¯¯\(  "
+                    $_.FG                = 0
+                    $_.BG                = 3
+                }
+
+                $Z ++
+
+                ForEach ( $I in 0..( $Array.Count - 1 ) )
+                {
+                    $Line                = $Array[$I] | % { If ( $_.Length -gt 108 ) { "$( $_.Substring( 0 , 105 ) )..." } Else { $_ } }
+
+                    $Recurse             = $Line | % { 108 - $_.Length | % { $_ ; $_ % 2 ; ( $_ - ( $_ % 2 ) ) / 2 } }
+
+                    $Output              = $M2[$Recurse[2]] , $M2[$Recurse[1]] , $Line , $M2[$Recurse[2]] -join ''
+
+                    $Return[$Z]          | % { 
+
+                        $_.ST            = $L[ $Z % 2 ] , $Output , $R[ $Z % 2 ]
+                        $_.FG            = 0 , 2 , 0 
+                        $_.BG            = @( 3 ) * 3
+                    }
+
+                    $Z++
+                }
+
+                If ( $Z % 2 -ne 0 ) 
+                { 
+                    $Return[$Z]          | % {
+                    
+                        $_.ST            = " // " , $M2[108] , " \\ "
+                        $_.FG            = @( 0 ) * 3
+                        $_.BG            = @( 3 ) * 3 
+                    }
+
+                    $Z  ++ 
+                }
+
+                $Return[$Z]              | % {
+
+                    $_.ST                = @( " \\___" ; $M2[72] ; @( "____" , "    " ) * 4 ; "___// " )
+                    $_.FG                = @( 0 ) * 11
+                    $_.BG                = @( 3 ) * 11
+                }
+
+                $Z  ++
+
+                $Return[$Z]              | % { 
+
+                    $_.ST                = @( " /" , $F[0] , "\$( $M1[70] )/" ; $F * 4 ; $F[0] , "\ " )
+                    $_.FG                = @( @( 0 , 1 ) *  6 ; 0 )
+                    $_.BG                = @( 3 ) * 13
+                }
+                
+                $Z  ++
+
+                $Return[$Z]              | % { 
+
+                    $_.ST                = @( " \" , $F[1] , "/$( $M0[70] )\" ; @( $F[ 1 , 0 ] ) * 4 ; $F[1] , "/ " )
+                    $_.FG                = @( 0 ; @( 1 ) * 11 ; 0 )
+                    $_.BG                = @( 3 ) * 13
+                }
+
+                $Z  ++
+
+               If ( ! $Prompt ) 
+               { 
+
+                    $Return[$Z]          | % {
+                        
+                        $_.ST            = @( "  ¯¯¯\" , "\$( $M1[70] )/" ; $F * 4 ; "/¯¯¯  " )
+                        $_.FG            = @( 0 ; @( 1 , 0 ) * 6 )
+                        $_.BG            = @( 3 ) * 13
+                    }
+
+                    $Z  ++
+                }
+
+                If ( $Prompt )
+                {
+                    $P = $Prompt | % { 
+
+                        If ( $_.Length -gt 63 ) { "$( $_.Substring( 0 , 59 ) )..." , " ]__/"    } 
+                        Else                    { " $_ " , "]$( $M1[ ( 61 - $_.Length ) ] )__/" }
+                    }
+
+                    $Return[$Z]          | % { 
+
+                        $_.ST            = @( "  ¯¯¯\" , "\__[ " ; $P ; $F * 4 ; "/¯¯¯  " )
+                        $_.FG            = @( 0 , 1 , 2 ; @( 1 , 0 ) * 6 )
+                        $_.BG            = @( 3 ) * 13
+                    }
+
+                    $Z ++
+                }
+
+                $Return[$Z] | % {
+
+                    $_.ST = "      $( $M0[72] )$( "    ¯¯¯¯" * 4 )      "
+                    $_.FG = 0
+                    $_.BG = 3
                 }
             }
 
@@ -3994,7 +4167,11 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Resolve-UninstallList # Collects installed applications from the registry__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        Return GP ( "" ,"\WOW6432Node" | % { "HKLM:\SOFTWARE$_\Microsoft\Windows\CurrentVersion\Uninstall\*" })[@{ x86 = 0 ; AMD64 = 0..1 }[$Env:Processor_Architecture]]
+        Return GP ( "" ,"\WOW6432Node" | % { 
+        
+            "HKLM:\SOFTWARE$_\Microsoft\Windows\CurrentVersion\Uninstall\*" 
+        
+        })[@{ x86 = 0 ; AMD64 = 0..1 }[$Env:Processor_Architecture]]
 
                                                                                   #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
@@ -5934,13 +6111,20 @@
                     
                     ( Disable-MDTMonitorService -EA 0 )
                 
-                    $Splat = @{ EventPort = 9800
-                                DataPort  = 9801 }
+                    $Splat = @{ 
+                    
+                        EventPort = 9800
+                        DataPort  = 9801 
+                    }
 
                     Enable-MDTMonitorService @Splat
 
-                    $CTRL   = $DeployRoot | ? { $_ -like "*Control*" }
-                    $Script = $DeployRoot | ? { $_ -like "*Scripts*" }
+                    $DeployRoot | % { 
+                    
+                        $CTRL   = $_ | ? { $_ -like "*Control*" }
+                        $Script = $_ | ? { $_ -like "*Scripts*" }
+                    }
+
                 # ____   _________________________
                 #//¯¯\\__[____ Bridge Script ____]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -5950,39 +6134,65 @@
                 # ____   _________________________
                 #//¯¯\\__[____ Bootstrap INI ____]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    $BootStrap       = @{ Settings = @{ Priority           = "Default" } 
-                                          Default  = @{ DeployRoot         = $Provision.NetworkPath
-                                                        UserID             = $DCCred.Username
-                                                        UserPassword       = $DCCred.GetNetworkCredential().Password
-                                                        UserDomain         = $Root.Branch 
-                                                        SkipBDDWelcome     = "YES" } }
+                    $BootStrap                 = @{ 
+                    
+                        Settings               = @{ 
+                        
+                            Priority           = "Default" 
+                        } 
+                        
+                        Default                = @{ 
+                        
+                            DeployRoot         = $Provision.NetworkPath
+                            UserID             = $DCCred.Username
+                            UserPassword       = $DCCred.GetNetworkCredential().Password
+                            UserDomain         = $Root.Branch 
+                            SkipBDDWelcome     = "YES" 
+                        } 
+                    }
 
-                    $Splat = @{ Path      = $CTRL
-                                Name      = "Bootstrap.ini"
-                                Value     = $Bootstrap
-                                Encoding  = "UTF8"
-                                UTF8NoBom = $True 
-                                Force     = $True }
+                    $Splat                     = @{ 
+                    
+                        Path                   = $CTRL
+                        Name                   = "Bootstrap.ini"
+                        Value                  = $Bootstrap
+                        Encoding               = "UTF8"
+                        UTF8NoBom              = $True 
+                        Force                  = $True 
+                    }
 
                     Export-Ini @Splat
                 # ____   _________________________
                 #//¯¯\\__[_ CustomSettings INI __]
                 #¯    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-                    $CustomSettings  = @{ Settings = @{ Priority           = "Default" 
-                                                        Properties         = "MyCustomProperty" } 
-                                          Default  = @{ _SMSTSOrgName      = "$( $Root.Company )" 
-                                                        OSInstall          = "Y" 
-                                                        SkipCapture        = "NO" 
-                                                        SkipAdminPassword  = "YES" 
-                                                        SkipProductKey     = "YES" 
-                                                        SkipComputerBackup = "NO" 
-                                                        SkipBitLocker      = "YES" 
-                                                        KeyboardLocale     = "en-US" 
-                                                        TimeZoneName       = "$( ( Get-TimeZone ).ID )" 
-                                                        EventService       = "http://$( $Root.Server ):9800" } }
+                    $CustomSettings            = @{ 
+                    
+                        Settings               = @{ 
+                        
+                            Priority           = "Default" 
+                            Properties         = "MyCustomProperty" 
+                        } 
+                        
+                        Default                = @{
 
-                    $Splat | % { $_.Name  = "CustomSettings.ini"
-                                 $_.Value = $CustomSettings }
+                            _SMSTSOrgName      = "$( $Root.Company )" 
+                            OSInstall          = "Y" 
+                            SkipCapture        = "NO" 
+                            SkipAdminPassword  = "YES" 
+                            SkipProductKey     = "YES" 
+                            SkipComputerBackup = "NO" 
+                            SkipBitLocker      = "YES" 
+                            KeyboardLocale     = "en-US" 
+                            TimeZoneName       = "$( ( Get-TimeZone ).ID )" 
+                            EventService       = "http://$( $Root.Server ):9800" 
+                        } 
+                    }
+
+                    $Splat                     | % { 
+                    
+                        $_.Name                = "CustomSettings.ini"
+                        $_.Value               = $CustomSettings 
+                    }
 
                     Export-Ini @Splat
                 # ____   _________________________
