@@ -76,69 +76,228 @@
 	        Use Gui to Select the desired Choices and click Run
 
         .ADVANCED USAGE
+            Details within global control hash table below
 	        One of the following Methods...
 	        1. Edit values at bottom of the script then run script
 	        2. Edit bat file and run
 	        3. Run the script with one of these switches (space between multiple)
 	        4. Run the script and pick options in GUI
 
-          Switch          Description of Switch
-        -- Basic Switches --
-          -atos            Accepts ToS
-          -auto            Implies -atos...Runs the script to be Automated.. Closes on - User Input, Errors, or End of Script
 
-        --Service Configuration Switches--
-          -default         Runs the script with Services to Default Configuration
-          -safe            Runs the script with Services to Black Viper's Safe Configuration
-          -tweaked         Runs the script with Services to Black Viper's Tweaked Configuration
-          -lcsc File.csv   Loads Custom Service Configuration, File.csv = Name of your backup/custom file
-
-        --Service Choice Switches--
-          -all             Every windows services will change
-          -min             Just the services different from the default to safe/tweaked list
-          -sxb             Skips changes to all XBox Services
-
-        --Update Switches--
-          -usc             Checks for Update to Script file before running
-          -use             Checks for Update to Service file before running
-          -sic             Skips Internet Check, if you can't ping GitHub.com for some reason
-
-        --Log Switches--
-          -log             Makes a log file using default name Script.log
-          -log File.log    Makes a log file named File.log
-          -baf             Log File of Services Configuration Before and After the script
-
-        --Backup Service Configuration--
-          -bscc            Backup Current Service Configuration, Csv File
-          -bscr            Backup Current Service Configuration, Reg File
-          -bscb            Backup Current Service Configuration, Csv and Reg File
-
-        --Display Switches--
-          -sas             Show Already Set Services
-          -snis            Show Not Installed Services
-          -sss             Show Skipped Services
-
-        --Misc Switches--
-          -dry             Runs the Script and Shows what services will be changed
-          -css             Change State of Service
-          -sds             Stop Disabled Service
-
-        --AT YOUR OWN RISK Switches--
-          -secp            Skips Edition Check by Setting Edition as Pro
-          -sech            Skips Edition Check by Setting Edition as Home
-          -sbc             Skips Build Check
-
-        --Dev Switches--
-          -devl            Makes a log file with various Diagnostic information, Nothing is Changed
-          -diag            Shows diagnostic information, Stops -auto
-          -diagf           Forced diagnostic information, Script does nothing else
-
-        --Help--
-          -help            Shows list of switches, then exits script.. alt -h
-          -copy            Shows Copyright/License Information, then exits script
 
         ------------------------------------------------------------------------------#>
 
+    $Control = [ PSCustomObject ]@{ 
+
+        PassedArgs          = $( If ( ! $Args ) { "N/A" } Else { $Args } )
+
+        <#  Switch          Description of Switch
+            ¯¯¯¯¯¯          ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            Basic Switches
+            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            -atos           Accepts ToS
+            -auto           Implies -atos...Runs the script to be Automated.. Closes on - User Input, Errors, or End of Script
+
+            Service Configuration Switches
+            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            -default        Runs the script with Services to Default Configuration
+            -safe           Runs the script with Services to Black Viper's Safe Configuration
+            -tweaked        Runs the script with Services to Black Viper's Tweaked Configuration
+            -lcsc File.csv  Loads Custom Service Configuration, File.csv = Name of your backup/custom file
+
+            Service Choice Switches
+            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            -all            Every windows services will change
+            -min            Just the services different from the default to safe/tweaked list
+            -sxb            Skips changes to all XBox Services
+
+            Update Switches
+            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            -usc            Checks for Update to Script file before running
+            -use            Checks for Update to Service file before running
+            -sic            Skips Internet Check, if you can't ping GitHub.com for some reason
+
+            Log Switches
+            ¯¯¯¯¯¯¯¯¯¯¯¯
+            -log            Makes a log file using default name Script.log
+            -log File.log   Makes a log file named File.log
+            -baf            Log File of Services Configuration Before and After the script
+
+            Backup Service Configuration
+            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            -bscc           Backup Current Service Configuration, Csv File
+            -bscr           Backup Current Service Configuration, Reg File
+            -bscb           Backup Current Service Configuration, Csv and Reg File
+
+            Display Switches
+            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            -sas            Show Already Set Services
+            -snis           Show Not Installed Services
+            -sss            Show Skipped Services
+
+            Misc Switches
+            ¯¯¯¯¯¯¯¯¯¯¯¯¯
+            -dry            Runs the Script and Shows what services will be changed
+            -css            Change State of Service
+            -sds            Stop Disabled Service
+
+            AT YOUR OWN RISK Switches
+            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            -secp           Skips Edition Check by Setting Edition as Pro
+            -sech           Skips Edition Check by Setting Edition as Home
+            -sbc            Skips Build Check
+
+            Dev Switches
+            ¯¯¯¯¯¯¯¯¯¯¯¯
+            -devl           Makes a log file with various Diagnostic information, Nothing is Changed
+            -diag           Shows diagnostic information, Stops -auto
+            -diagf          Forced diagnostic information, Script does nothing else
+
+            Help
+            ¯¯¯¯
+            -help           Shows list of switches, then exits script.. alt -h
+            -copy           Shows Copyright/License Information, then exits script #>
+
+        #AcceptTOS           = 0
+        TermsOfService       = 0
+
+            # 0 = See ToS
+            # Anything Else = Accept ToS
+
+        # ShowActiveServices = 1
+        DisplayActive        = 1
+
+            # 0 = Don't Show Already set Services
+            # 1 = Show Already set Services
+
+        # ShowNonInstalled   = 0
+        DisplayInactive      = 0
+
+            # 0 = Don't Show Services not present
+            # 1 = Show Services not present
+
+        # ShowSkipped        = 0
+        DisplaySkipped       = 0
+
+            # 0 = Don't Show Skipped Services
+            # 1 = Show Skipped Services
+
+        # DryRun             = 0
+        MiscSimulate         = 0
+
+            # 0 = Runs script normally
+            # 1 = Runs script but shows what will be changed
+
+        # XboxService        = 0
+        MiscXbox             = 0
+
+            # 0 = Change Xbox Services
+            # 1 = Skip Change Xbox Services
+
+        #ChangeState         = 0
+        MiscChange           = 0
+
+            # 0 = Dont Change State of service to specified/loaded
+            # 1 = Change State of service to specified/loaded
+
+        #StopDisabled        = 0
+        MiscStopDisabled     = 0
+
+            # 0 = Dont change running status
+            # 1 = Stop services that are disabled
+
+        # Diagnostic         = 0
+        DevelDiagErrors      = 0
+
+            # 0 = Doesn't output diagnostic errors
+            # 1 = Output diagnostic errors
+
+        # DevLog             = 0
+        DevelLog             = 0
+
+            # 0 = Doesn't make a Dev Log
+            # 1 = Makes a log files
+            # Devlog Contains -> Service Change, Before & After for Services, and Diagnostic Info --Runs as Dryrun
+
+        # ShowConsole        = 0
+        DevelConsole         = 0
+
+            # 0 = Hides console window (Only on stable release)
+            # 1 = Shows console window -Forced in Testing release
+
+        # Not Enabled
+        DevelDiagReport      = 0
+
+            # 0 = Does not load Diagnostic panel
+            # 1 = Loads Diagnostic Panel
+
+        #BuildCheck          = 0
+        BypassBuild          = 0
+
+            # 0 = Check Build (Creator's Update Minimum)
+            # 1 = Skips this check
+
+        #EditionCheck        = 0
+        BypassEdition        = 0
+
+            # 0 = Check if Home or Pro Edition
+            # 'Pro' = Set Edition as Pro (Needs 's)
+            # 'Home' = Set Edition as Home (Needs 's)
+
+        #Laptop
+        BypassLaptop         = 0
+
+            # 0 = Does not bypass/load laptop override settings
+            # 1 = Overrides potential laptop settings
+
+        #ScriptLog           = 0
+        LoggingService       = 0
+
+            # 0 = No Services Logging
+            # 1 = Services Logging
+
+        LoggingServiceFile   = "Service.log"
+
+            # Path to Service Log File
+
+        LoggingScript        = 0
+
+            # 0 = No Transcript
+            # 1 = Enable Transcript
+
+        LoggingScriptFile    = "Script.log"
+
+            # Path to Transcript Log File
+
+        BackupRegistry       = 0
+
+            # 0 = Does not back up the current service/registry settings
+            # 1 = Enables path to backup current service registry
+
+        BackupRegistryPath   = "Backup.reg"
+
+            # Path to Current Service Registry Output
+
+        BackupTemplate       = 0
+
+            # 0 = Does not back up the current service/template settings
+            # 1 = Enables path to backup current service template
+
+        BackupTemplatePath   = "Backup.csv"
+
+            # Path to Current Service Template Output
+        
+            # 0 = Don't make a log file
+            # 1 = Make a log file
+            # Will be script's directory named `Script.log` (default)
+
+        ServiceConfig        = "Default"
+        ServiceProfile       = "Default"
+
+        ScriptConfig         = "Default"
+        ScriptProfile        = "Default"
+
+    }
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 # ____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
@@ -149,7 +308,8 @@
 
             [ Parameter ( ParameterSetName =   "Version" ) ] [ Switch ] $Version   ,
             [ Parameter ( ParameterSetName =      "Path" ) ] [ Switch ] $Path      ,
-            [ Parameter ( ParameterSetName = "Copyright" ) ] [ Switch ] $Copyright )
+            [ Parameter ( ParameterSetName = "Copyright" ) ] [ Switch ] $Copyright ,
+            [ Parameter ( ParameterSetName =      "Help" ) ] [ Switch ] $Help      )
 
         If ( $Version )
         {
@@ -208,343 +368,486 @@
             "IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR   " ,
             "THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                                                "
         }
+
+        If ( $Help )
+        {
+            "List of Switches                                                                                          " , 
+            "$( "-" * 108 )" , 
+            "   " ,
+            " Switch            Description of Switch                                                                  " , 
+            "   " , 
+            " -- Basic Switches --                                                                                     " , 
+            "  -atos            Accepts ToS                                                                            " , 
+            "  -auto            Implies -atos ... Runs the script to be Automated..                                    " , 
+            "                   Closes on - User Input, Errors, or End of Script                                       " , 
+            "   " , 
+	        " -- Service Configuration Switches --                                                                     " , 
+	        "  -default         Runs the script with Services to Default Configuration                                 " , 
+            "  -safe            Runs the script with Services to Black Viper's Safe Configuration                      " , 
+            "  -tweaked         Runs the script with Services to Black Viper's Tweaked Configuration                   " , 
+            "  -lcsc File.csv   Loads Custom Service Configuration, File.csv = Name of your backup/custom file         " , 
+            "   " ,
+            " --Service Choice Switches--                                                                              " , 
+            "  -all             Every windows services will change                                                     " , 
+            "  -min             Just the services different from the default to safe/tweaked list                      " , 
+            "  -sxb             Skips changes to all XBox Services                                                     " , 
+            "   " ,
+            " --Update Switches--                                                                                      " , 
+	        "  -usc             Checks for Update to Script file before running                                        " , 
+            "  -use             Checks for Update to Service file before running                                       " , 
+            "  -sic             Skips Internet Check, if you can't ping GitHub.com for some reason                     " , 
+            "   " ,
+            " --Log Switches--                                                                                         " , 
+            "  -log             Makes a log file named using default name Script.log                                   " , 
+            "  -log File.log    Makes a log file named File.log                                                        " , 
+            "  -baf             Log File of Services Configuration Before and After the script                         " , 
+            "   " ,
+            " --Backup Service Configuration--                                                                         " , 
+            "  -bscc            Backup Current Service Configuration, Csv File                                         " , 
+            "  -bscr            Backup Current Service Configuration, Reg File                                         " , 
+            "  -bscb            Backup Current Service Configuration, Csv and Reg File                                 " , 
+            "   " ,
+            " --Display Switches--                                                                                     " , 
+            "  -sas             Show Already Set Services                                                              " , 
+            "  -snis            Show Not Installed Services                                                            " , 
+            "  -sss             Show Skipped Services                                                                  " , 
+            "   " ,
+            " --Misc Switches--                                                                                        " , 
+            "  -dry             Runs the Script and Shows what services will be changed                                " , 
+            "  -css             Change State of Service                                                                " , 
+            "  -sds             Stop Disabled Service                                                                  " , 
+            "   " ,
+            " --AT YOUR OWN RISK Switches--                                                                            " , 
+            "  -secp            Skips Edition Check by Setting Edition as Pro                                          " , 
+            "  -sech            Skips Edition Check by Setting Edition as Home                                         " , 
+            "  -sbc             Skips Build Check                                                                      " , 
+            "   " ,
+            " --Dev Switches--                                                                                         " ,
+            "  -devl            Makes a log file with various Diagnostic information, Nothing is Changed               " , 
+            "  -diag            Shows diagnostic information, Stops -auto                                              " , 
+            "  -diagf           Forced diagnostic information, Script does nothing else                                " , 
+            "   " ,
+            " --Help--                                                                                                 " ,
+            "  -help            Shows list of switches, then exits script.. alt -h                                     " , 
+            "  -copy            Shows Copyright/License Information, then exits script                                 "
+        }
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Return-ViperBombGUI #______________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        [ CmdLetBinding () ] Param (
+
+            [ Parameter ( Mandatory , ParameterSetName = 'GUI' ) ][ Switch ] $Main ,
+            [ Parameter ( Mandatory , ParameterSetName = 'Pop' ) ][ Switch ] $Alert )
 
     $GWF  = Resolve-HybridDSC -Graphics
 
-    $Xaml = @"
-    <Window 
-                           xmlns = 'http://schemas.microsoft.com/winfx/2006/xaml/presentation'
-                         xmlns:x = 'http://schemas.microsoft.com/winfx/2006/xaml'
-                           Title = 'Secure Digits Plus LLC | Hybrid @ ViperBomb Service Configuration Utility'
-                          Height = '540'
-                           Width = '720'
-                            Icon = '$( $GWF.Icon )'
-                         Topmost = 'True'
-                     BorderBrush = 'Black'
-                      ResizeMode = 'NoResize'
-             HorizontalAlignment = 'Center'
-           WindowStartupLocation = 'CenterScreen'>
-        <Window.Resources>
-            <Style x:Key         = 'SeparatorStyle1' 
-                   TargetType    = '{x:Type Separator}'>
-                <Setter Property = 'SnapsToDevicePixels' 
-                        Value    = 'True'/>
-                <Setter Property = 'Margin' 
-                        Value    = '0,0,0,0'/>
-                <Setter Property = 'Template'>
-                    <Setter.Value>
-                        <ControlTemplate TargetType     = '{x:Type Separator}'>
-                            <Border Height              = '24' 
-                                    SnapsToDevicePixels = 'True' 
-                                    Background          = '#FF4D4D4D' 
-                                    BorderBrush         = 'Azure' 
-                                    BorderThickness     = '1,1,1,1' 
-                                    CornerRadius        = '5,5,5,5'/>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style TargetType    = '{x:Type ToolTip}'>
-                <Setter Property = 'Background' 
-                        Value    = '#FFFFFFBF'/>
-            </Style>
-        </Window.Resources>
-        <Window.Effect>
-            <DropShadowEffect/>
-        </Window.Effect>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height        = '24'/>
-                <RowDefinition Height        = '*'/>
-                <RowDefinition Height        = '48'/>
-            </Grid.RowDefinitions>
-            <Menu Grid.Row                   = '0' 
-                  IsMainMenu                 = 'True' 
-                  Padding                    = '5' 
-                  FontFamily                 = 'Lucida Console'>
-                <MenuItem     Header         = 'Configuration'  
-                              BorderBrush    = 'Gainsboro'>
-                    <MenuItem Name           = 'Menu_Config_0' 
-                              Header         = 'Maximum'/>
-                    <MenuItem Name           = 'Menu_Config_1' 
-                              Header         = 'Minimum'/>
-                    <MenuItem Name           = 'Menu_Config_2' 
-                              Header         = 'Default'/>
-                    <MenuItem Name           = 'Menu_Config_3' 
-                              Header         = 'Safe'/>
-                    <MenuItem Name           = 'Menu_Config_4' 
-                              Header         = 'Tweaked'/>
-                    <MenuItem Name           = 'Menu_Config_5' 
-                              Header         = 'Custom'/>
-                </MenuItem>
-                <MenuItem     Header         = 'Info'>
-                    <MenuItem Name           = 'Menu_Info_0'
-                              Header         = 'Feedback'/>
-                    <MenuItem Name           = 'Menu_Info_1'
-                              Header         = 'FAQ'/>
-                    <MenuItem Name           = 'Menu_Info_2'   
-                              Header         = 'About'/>
-                    <MenuItem Name           = 'Menu_Info_3'   
-                              Header         = 'Copyright'/>
-                    <MenuItem Header         = 'MadBomb122'>
-                        <MenuItem Name       = 'Menu_MB_0'
-                                  Header     = 'Donate to MadBomb122'/>
-                        <MenuItem Name       = 'Menu_MB_1'
-                                  Header     = 'GitHub'/>
+    If ( $Main )
+    {
+        $Xaml = @"
+        <Window 
+                               xmlns = 'http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+                             xmlns:x = 'http://schemas.microsoft.com/winfx/2006/xaml'
+                               Title = 'Secure Digits Plus LLC | Hybrid @ ViperBomb Service Configuration Utility'
+                              Height = '540'
+                               Width = '720'
+                                Icon = '$( $GWF.Icon )'
+                             Topmost = 'True'
+                         BorderBrush = 'Black'
+                          ResizeMode = 'NoResize'
+                 HorizontalAlignment = 'Center'
+               WindowStartupLocation = 'CenterScreen'>
+            <Window.Resources>
+                <Style x:Key         = 'SeparatorStyle1' 
+                       TargetType    = '{x:Type Separator}'>
+                    <Setter Property = 'SnapsToDevicePixels' 
+                            Value    = 'True'/>
+                    <Setter Property = 'Margin' 
+                            Value    = '0,0,0,0'/>
+                    <Setter Property = 'Template'>
+                        <Setter.Value>
+                            <ControlTemplate TargetType     = '{x:Type Separator}'>
+                                <Border Height              = '24' 
+                                        SnapsToDevicePixels = 'True' 
+                                        Background          = '#FF4D4D4D' 
+                                        BorderBrush         = 'Azure' 
+                                        BorderThickness     = '1,1,1,1' 
+                                        CornerRadius        = '5,5,5,5'/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType    = '{x:Type ToolTip}'>
+                    <Setter Property = 'Background' 
+                            Value    = '#FFFFFFBF'/>
+                </Style>
+            </Window.Resources>
+            <Window.Effect>
+                <DropShadowEffect/>
+            </Window.Effect>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height        = '24'/>
+                    <RowDefinition Height        = '*'/>
+                    <RowDefinition Height        = '48'/>
+                </Grid.RowDefinitions>
+                <Menu Grid.Row                   = '0' 
+                      IsMainMenu                 = 'True' 
+                      Padding                    = '5' 
+                      FontFamily                 = 'Lucida Console'>
+                    <MenuItem     Header         = 'Configuration'  
+                                  BorderBrush    = 'Gainsboro'>
+                        <MenuItem Name           = 'Menu_Config_0' 
+                                  Header         = 'Maximum'/>
+                        <MenuItem Name           = 'Menu_Config_1' 
+                                  Header         = 'Minimum'/>
+                        <MenuItem Name           = 'Menu_Config_2' 
+                                  Header         = 'Default'/>
+                        <MenuItem Name           = 'Menu_Config_3' 
+                                  Header         = 'Safe'/>
+                        <MenuItem Name           = 'Menu_Config_4' 
+                                  Header         = 'Tweaked'/>
+                        <MenuItem Name           = 'Menu_Config_5' 
+                                  Header         = 'Custom'/>
                     </MenuItem>
-                    <MenuItem     Header     = 'BlackViper'>
-                        <MenuItem Name       = 'Menu_BV_0'     
-                                  Header     = 'BlackVipers Website'/>
+                    <MenuItem     Header         = 'Info'>
+                        <MenuItem Name           = 'Menu_Info_0'
+                                  Header         = 'Feedback'/>
+                        <MenuItem Name           = 'Menu_Info_1'
+                                  Header         = 'FAQ'/>
+                        <MenuItem Name           = 'Menu_Info_2'   
+                                  Header         = 'About'/>
+                        <MenuItem Name           = 'Menu_Info_3'   
+                                  Header         = 'Copyright'/>
+                        <MenuItem Header         = 'MadBomb122'>
+                            <MenuItem Name       = 'Menu_MB_0'
+                                      Header     = 'Donate to MadBomb122'/>
+                            <MenuItem Name       = 'Menu_MB_1'
+                                      Header     = 'GitHub'/>
+                        </MenuItem>
+                        <MenuItem     Name       = 'Menu_BV_0'     
+                                      Header     = 'BlackVipers Website'/>
+                        <MenuItem     Name       = 'Menu_SD_0'
+                                      Header     = 'Secure Digits Plus LLC'/>
                     </MenuItem>
-                    <MenuItem     Name       = 'Menu_SD_0'
-                                  Header     = 'Secure Digits Plus LLC'/>
-                </MenuItem>
-            </Menu>
-            <Grid Grid.Row                   = '1'>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width  = '*'/>
-                </Grid.ColumnDefinitions>
-                <TabControl BorderBrush      = 'Gainsboro' 
-                            Grid.Row         = '1' 
-                            Name             = 'TabControl'>
-                    <TabControl.Resources>
-                        <Style TargetType    = 'TabItem'>
-                            <Setter Property = 'Template'>
-                                <Setter.Value>
-                                    <ControlTemplate TargetType                   = 'TabItem'>
-                                        <Border Name                              = 'Border' 
-                                                BorderThickness                   = '1,1,1,0' 
-                                                BorderBrush                       = 'Gainsboro' 
-                                                CornerRadius                      = '4,4,0,0' 
-                                                Margin                            = '2,0'>
-                                            <ContentPresenter x:Name              = 'ContentSite' 
-                                                              VerticalAlignment   = 'Center' 
-                                                              HorizontalAlignment = 'Center' 
-                                                              ContentSource       = 'Header' 
-                                                              Margin              = '10,2'/>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property      = 'IsSelected' 
-                                                     Value         = 'True'>
-                                                <Setter TargetName = 'Border' 
-                                                        Property   = 'Background' 
-                                                        Value      = 'LightSkyBlue'/>
-                                            </Trigger>
-                                            <Trigger Property      = 'IsSelected' 
-                                                     Value         = 'False'>
-                                                <Setter TargetName = 'Border' 
-                                                        Property   = 'Background' 
-                                                        Value      = 'GhostWhite'/>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </TabControl.Resources>
-                    <TabItem Name   = 'Service_Dialog_Tab' 
-                             Header = 'Service Dialog'>
+                </Menu>
+                <Grid Grid.Row                   = '1'>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width  = '*'/>
+                    </Grid.ColumnDefinitions>
+                    <TabControl BorderBrush      = 'Gainsboro' 
+                                Grid.Row         = '1' 
+                                Name             = 'TabControl'>
+                        <TabControl.Resources>
+                            <Style TargetType    = 'TabItem'>
+                                <Setter Property = 'Template'>
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType                   = 'TabItem'>
+                                            <Border Name                              = 'Border' 
+                                                    BorderThickness                   = '1,1,1,0' 
+                                                    BorderBrush                       = 'Gainsboro' 
+                                                    CornerRadius                      = '4,4,0,0' 
+                                                    Margin                            = '2,0'>
+                                                <ContentPresenter x:Name              = 'ContentSite' 
+                                                                  VerticalAlignment   = 'Center' 
+                                                                  HorizontalAlignment = 'Center' 
+                                                                  ContentSource       = 'Header' 
+                                                                  Margin              = '10,2'/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property      = 'IsSelected' 
+                                                         Value         = 'True'>
+                                                    <Setter TargetName = 'Border' 
+                                                            Property   = 'Background' 
+                                                            Value      = 'LightSkyBlue'/>
+                                                </Trigger>
+                                                <Trigger Property      = 'IsSelected' 
+                                                         Value         = 'False'>
+                                                    <Setter TargetName = 'Border' 
+                                                            Property   = 'Background' 
+                                                            Value      = 'GhostWhite'/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </TabControl.Resources>
+                        <TabItem Name   = 'Service_Dialog_Tab' 
+                                 Header = 'Service Dialog'>
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height = '25'/>
+                                <RowDefinition Height = '30'/>
                                 <RowDefinition Height = '30'/>
                                 <RowDefinition Height =  '*'/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row       = '0' 
-                                       Margin         = '5' 
-                                       TextAlignment  = 'Center'>Service State:
-							    <Run   Background     = '#66FF66' 
-                                       Text           = 'Compliant'/> /
-                                <Run   Background     = '#FFFF66' 
-                                       Text           = 'Unspecified'/> /
-                                <Run   Background     = '#FF6666' 
-                                       Text           = 'Non Compliant'/>
+                            <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width = '*'/>
+                                <ColumnDefinition Width = '*'/>
+                            </Grid.ColumnDefinitions>
+                                <Button   Grid.Column = '0' Margin ='5' Name = 'Service_Dialog_Load'   Content           = 'Load Services'/>
+                                <TextBlock Grid.Column       = '1' 
+                                               Margin         = '5' 
+                                               TextAlignment  = 'Center'>Service State:
+							            <Run   Background     = '#66FF66' 
+                                               Text           = 'Compliant'/> /
+                                        <Run   Background     = '#FFFF66' 
+                                               Text           = 'Unspecified'/> /
+                                        <Run   Background     = '#FF6666' 
+                                               Text           = 'Non Compliant'/>
                             </TextBlock>
+                            </Grid>
                             <Grid Grid.Row            = '1'>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width = '*'/>
                                     <ColumnDefinition Width = '*'/>
-                                    <ColumnDefinition Width = '*'/>
                                 </Grid.ColumnDefinitions>
-                                <Button   Grid.Column = '0' Margin ='5' Name = 'Service_Dialog_Load'   Content           = 'Load Services'/>
-                                <TextBox  Grid.Column = '1' Margin ='5' Name = 'Service_Dialog_Search' TextWrapping      = 'Wrap'>Search</TextBox>
-                                <ComboBox Grid.Column = '2' Margin ='5' Name = 'Service_Dialog_Select' VerticalAlignment = 'Center'>
+                                <TextBox  Grid.Column = '0' Margin ='5' Name = 'Service_Dialog_Search' TextWrapping      = 'Wrap'>Search</TextBox>
+                                <ComboBox Grid.Column = '1' Margin ='5' Name = 'Service_Dialog_Select' VerticalAlignment = 'Center'>
                                     <ComboBoxItem Content = 'Checked'/>
                                     <ComboBoxItem Content = 'Common Name' IsSelected='True'/>
                                     <ComboBoxItem Content = 'Service Name'/>
                                     <ComboBoxItem Content = 'Current Setting'/>
                                 </ComboBox>
                             </Grid>
-                            <DataGrid Grid.Row            = '2'
-                                      Grid.Column         = '0'
-                                      Name                = 'Service_Dialog_Grid'
-                                      FrozenColumnCount   = '2' 
-                                      AutoGenerateColumns = 'False' 
-                                      AlternationCount    = '2' 
-                                      HeadersVisibility   = 'Column' 
-                                      CanUserResizeRows   = 'False' 
-                                      CanUserAddRows      = 'False' 
-                                      IsTabStop           = 'True' 
-                                      IsTextSearchEnabled = 'True' 
-                                      SelectionMode       = 'Extended'>
-                                <DataGrid.RowStyle>
-                                    <Style TargetType     = '{x:Type DataGridRow}'>
-                                        <Style.Triggers>
-                                            <Trigger Property    = 'AlternationIndex'
-                                                     Value       = '0'>
-                                                <Setter Property = 'Background'
-                                                        Value    = 'White'/>
-                                            </Trigger>
-                                            <Trigger Property    = 'AlternationIndex'
-                                                     Value       = '1'>
-                                                <Setter Property = 'Background'
-                                                        Value    = '#FFD8D8D8'/>
-                                            </Trigger>
-                                            <Trigger Property    = 'IsMouseOver'
-                                                     Value       = 'True'>
-                                                <Setter Property = 'ToolTip'>
-                                                    <Setter.Value>
-                                                        <TextBlock Text         = '{Binding Service_Description}'
-                                                                   TextWrapping = 'Wrap'
-                                                                   Width        = '400'
-                                                                   Background   = '#FFFFFFBF'
-                                                                   Foreground   = 'Black'/>
-                                                    </Setter.Value>
-                                                </Setter>
-                                                <Setter Property                = 'ToolTipService.ShowDuration'
-                                                        Value                   = '360000000'/>
-                                            </Trigger>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding          = '{Binding Service_Toggle}'
-                                                               Value            = 'True'/>
-                                                    <Condition Binding          = '{Binding Matches}' 
-                                                               Value            = 'False'/>
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property                = 'Background' 
-                                                        Value                   = '#F08080'/>
-                                            </MultiDataTrigger>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding          = '{Binding Service_Toggle}'
-                                                               Value            = 'False'/>
-                                                    <Condition Binding          = '{Binding Matches}' 
-                                                               Value            = 'False'/>
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property                = 'Background' 
-                                                        Value                   = '#FFFFFF64'/>
-                                            </MultiDataTrigger>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding          = '{Binding Service_Toggle}'
-                                                               Value            = 'True'/>
-                                                    <Condition Binding          = '{Binding Matches}'
-                                                               Value            = 'True'/>
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property                = 'Background'
-                                                        Value                   = 'LightGreen'/>
-                                            </MultiDataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </DataGrid.RowStyle>
-                                <DataGrid.Columns>
-                                    <DataGridTemplateColumn SortMemberPath      = 'Service_Toggle' 
-                                                            CanUserSort         = 'True'>
-                                        <DataGridTemplateColumn.Header>
-                                            <CheckBox       Name                = 'Service_Profile' 
-                                                            IsEnabled           = 'False'/>
-                                        </DataGridTemplateColumn.Header>
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <CheckBox IsChecked             = '{Binding Service_Toggle ,
-                                                                                            Mode                  = TwoWay,
-                                                                                            UpdateSourceTrigger   = PropertyChanged,
-                                                                                            NotifyOnTargetUpdated = True}' 
-                                                          IsEnabled             = '{Binding ElementName           = Custom_Profile, 
-                                                                                            Path                  = IsChecked}'/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTextColumn Header                  = 'Display Name' 
-                                                        Width                   = '120'
-                                                        Binding                 = '{Binding Service_DisplayName}'
-                                                        CanUserSort             = 'True'
-                                                        IsReadOnly              = 'True'/>
-                                    <DataGridTextColumn Header                  = 'Name'
-                                                        Width                   = '120'
-                                                        Binding                 = '{Binding Service_Name}'
-                                                        IsReadOnly              = 'True'/>
-                                    <DataGridTextColumn Header                  = 'Current Setting'
-                                                        Width                   = '100'
-                                                        Binding                 = '{Binding Service_Type}'
-                                                        IsReadOnly              = 'True'/>
-                                    <DataGridTemplateColumn Header              = 'Profile'
-                                                            Width               = '100'
-                                                            SortMemberPath      = 'Service_Profile'
-                                                            CanUserSort         = 'True'>
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <ComboBox ItemsSource           = '{Binding Service_Type_List}'
-                                                          Text                  = '{Binding Path                 = Service_Profile,
-                                                                                            Mode                 = TwoWay,
-                                                                                            UpdateSourceTrigger  = PropertyChanged}'
-                                                          IsEnabled             = '{Binding ElementName          = Custom_Profile,
-                                                                                            Path                 = IsChecked}'/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Header              = 'State' 
-                                                            Width               = '80' 
-                                                            SortMemberPath      = 'Service_State' 
-                                                            CanUserSort         = 'True'>
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <ComboBox ItemsSource           = '{Binding Service_State_List}'
-                                                          Text                  = '{Binding Path                 = Service_State,
-                                                                                            Mode                 = TwoWay,
-                                                                                            UpdateSourceTrigger  = PropertyChanged}'
-                                                          IsEnabled             = '{Binding ElementName          = Custom_Profile,
-                                                                                            Path                 = IsChecked}'/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTextColumn Header                  = 'Description'
-                                                        Width                   = '120'
-                                                        Binding                 = '{Binding Service_Description}'
-                                                        CanUserSort             = 'True'
-                                                        IsReadOnly              = 'True'/>
-                                    <DataGridTextColumn Header                  = 'Path'
-                                                        Width                   = '120'
-                                                        Binding                 = '{Binding Service_Path}'
-                                                        CanUserSort             = 'True'
-                                                        IsReadOnly              = 'True'/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </Grid>
-                    </TabItem>
-                    <TabItem                            Name                    = 'Preferences_Tab'
-                                                        Header                  = 'Preferences'>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width = '*'/>
-                                <ColumnDefinition Width = '*'/>
-                                <ColumnDefinition Width = '*'/>
-                            </Grid.ColumnDefinitions>
+                                <DataGrid Grid.Row            = '2'
+                                          Grid.Column         = '0'
+                                          Name                = 'Service_Dialog_Grid'
+                                          FrozenColumnCount   = '2' 
+                                          AutoGenerateColumns = 'False' 
+                                          AlternationCount    = '2' 
+                                          HeadersVisibility   = 'Column' 
+                                          CanUserResizeRows   = 'False' 
+                                          CanUserAddRows      = 'False' 
+                                          IsTabStop           = 'True' 
+                                          IsTextSearchEnabled = 'True' 
+                                          SelectionMode       = 'Extended'>
+                                    <DataGrid.RowStyle>
+                                        <Style TargetType     = '{x:Type DataGridRow}'>
+                                            <Style.Triggers>
+                                                <Trigger Property    = 'AlternationIndex'
+                                                         Value       = '0'>
+                                                    <Setter Property = 'Background'
+                                                            Value    = 'White'/>
+                                                </Trigger>
+                                                <Trigger Property    = 'AlternationIndex'
+                                                         Value       = '1'>
+                                                    <Setter Property = 'Background'
+                                                            Value    = '#FFD8D8D8'/>
+                                                </Trigger>
+                                                <Trigger Property    = 'IsMouseOver'
+                                                         Value       = 'True'>
+                                                    <Setter Property = 'ToolTip'>
+                                                        <Setter.Value>
+                                                            <TextBlock Text         = '{Binding Service_Description}'
+                                                                       TextWrapping = 'Wrap'
+                                                                       Width        = '400'
+                                                                       Background   = '#FFFFFFBF'
+                                                                       Foreground   = 'Black'/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter Property                = 'ToolTipService.ShowDuration'
+                                                            Value                   = '360000000'/>
+                                                </Trigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding          = '{Binding Service_Toggle}'
+                                                                   Value            = 'True'/>
+                                                        <Condition Binding          = '{Binding Matches}' 
+                                                                   Value            = 'False'/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property                = 'Background' 
+                                                            Value                   = '#F08080'/>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding          = '{Binding Service_Toggle}'
+                                                                   Value            = 'False'/>
+                                                        <Condition Binding          = '{Binding Matches}' 
+                                                                   Value            = 'False'/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property                = 'Background' 
+                                                            Value                   = '#FFFFFF64'/>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding          = '{Binding Service_Toggle}'
+                                                                   Value            = 'True'/>
+                                                        <Condition Binding          = '{Binding Matches}'
+                                                                   Value            = 'True'/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property                = 'Background'
+                                                            Value                   = 'LightGreen'/>
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.RowStyle>
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn SortMemberPath      = 'Service_Toggle' 
+                                                                CanUserSort         = 'True'>
+                                            <DataGridTemplateColumn.Header>
+                                                <CheckBox       Name                = 'Service_Profile' 
+                                                                IsEnabled           = 'False'/>
+                                            </DataGridTemplateColumn.Header>
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox IsChecked             = '{Binding Service_Toggle ,
+                                                                                                Mode                  = TwoWay,
+                                                                                                UpdateSourceTrigger   = PropertyChanged,
+                                                                                                NotifyOnTargetUpdated = True}' 
+                                                              IsEnabled             = '{Binding ElementName           = Custom_Profile, 
+                                                                                                Path                  = IsChecked}'/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Header                  = 'Display Name' 
+                                                            Width                   = '120'
+                                                            Binding                 = '{Binding Service_DisplayName}'
+                                                            CanUserSort             = 'True'
+                                                            IsReadOnly              = 'True'/>
+                                        <DataGridTextColumn Header                  = 'Name'
+                                                            Width                   = '120'
+                                                            Binding                 = '{Binding Service_Name}'
+                                                            IsReadOnly              = 'True'/>
+                                        <DataGridTextColumn Header                  = 'Current Setting'
+                                                            Width                   = '100'
+                                                            Binding                 = '{Binding Service_Type}'
+                                                            IsReadOnly              = 'True'/>
+                                        <DataGridTemplateColumn Header              = 'Profile'
+                                                                Width               = '100'
+                                                                SortMemberPath      = 'Service_Profile'
+                                                                CanUserSort         = 'True'>
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox ItemsSource           = '{Binding Service_Type_List}'
+                                                              Text                  = '{Binding Path                 = Service_Profile,
+                                                                                                Mode                 = TwoWay,
+                                                                                                UpdateSourceTrigger  = PropertyChanged}'
+                                                              IsEnabled             = '{Binding ElementName          = Custom_Profile,
+                                                                                                Path                 = IsChecked}'/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header              = 'State' 
+                                                                Width               = '80' 
+                                                                SortMemberPath      = 'Service_State' 
+                                                                CanUserSort         = 'True'>
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox ItemsSource           = '{Binding Service_State_List}'
+                                                              Text                  = '{Binding Path                 = Service_State,
+                                                                                                Mode                 = TwoWay,
+                                                                                                UpdateSourceTrigger  = PropertyChanged}'
+                                                              IsEnabled             = '{Binding ElementName          = Custom_Profile,
+                                                                                                Path                 = IsChecked}'/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Header                  = 'Description'
+                                                            Width                   = '120'
+                                                            Binding                 = '{Binding Service_Description}'
+                                                            CanUserSort             = 'True'
+                                                            IsReadOnly              = 'True'/>
+                                        <DataGridTextColumn Header                  = 'Path'
+                                                            Width                   = '120'
+                                                            Binding                 = '{Binding Service_Path}'
+                                                            CanUserSort             = 'True'
+                                                            IsReadOnly              = 'True'/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </TabItem>
+                        <TabItem                            Name                    = 'Preferences_Tab'
+                                                            Header                  = 'Preferences'>
                             <Grid>
-                                <Grid Grid.Column       = '0'>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width = '*'/>
+                                    <ColumnDefinition Width = '*'/>
+                                    <ColumnDefinition Width = '*'/>
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid Grid.Column       = '0'>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height = '120'/>
+                                            <RowDefinition Height = '150'/>
+                                            <RowDefinition Height = '150'/>
+                                        </Grid.RowDefinitions>
+                                        <GroupBox Grid.Row = '0' Header = 'Display Options' Margin = '5' >
+                                            <Grid >
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height = '30'/>
+                                                    <RowDefinition Height = '30'/>
+                                                    <RowDefinition Height = '30'/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width = '25'/>
+                                                    <ColumnDefinition Width = '*'/>
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'Pref_Disp_0'/>
+                                                <TextBlock Grid.Row = '0' Grid.Column = '1' Margin = '5' >Show Active Services</TextBlock>
+                                                <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'Pref_Disp_1'/>
+                                                <TextBlock Grid.Row = '1' Grid.Column = '1' Margin = '5' >Show Inactive Services</TextBlock>
+                                                <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'Pref_Disp_2'/>
+                                                <TextBlock Grid.Row = '2' Grid.Column = '1' Margin = '5' >Show Skipped Services</TextBlock>
+                                            </Grid>
+                                        </GroupBox>
+                                        <GroupBox Grid.Row = '1' Header = 'Miscellaneous' Margin = '5'>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height = '30'/>
+                                                    <RowDefinition Height = '30'/>
+                                                    <RowDefinition Height = '30'/>
+                                                    <RowDefinition Height = '30'/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width = '25'/>
+                                                    <ColumnDefinition Width = '*'/>
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_0'/>
+                                                <TextBlock Grid.Row = '0' Grid.Column = '1' Margin = '5' >Simulate Changes [ Dry Run ]</TextBlock>
+                                                <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_1'/>
+                                                <TextBlock Grid.Row = '1' Grid.Column = '1' Margin = '5' >Skip All Xbox Services</TextBlock>
+                                                <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_2'/>
+                                                <TextBlock Grid.Row = '2' Grid.Column = '1' Margin = '5' >Allow Change of Service State</TextBlock>
+                                                <CheckBox  Grid.Row = '3' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_3'/>
+                                                <TextBlock Grid.Row = '3' Grid.Column = '1' Margin = '5' >Stop Disabled Services</TextBlock>
+                                            </Grid>
+                                        </GroupBox>
+                                        <GroupBox Grid.Row='2' Header = 'Development' Margin='5'>
+                                            <Grid >
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height = '30'/>
+                                                    <RowDefinition Height = '30'/>
+                                                    <RowDefinition Height = '30'/>
+                                                    <RowDefinition Height = '30'/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width = '25'/>
+                                                    <ColumnDefinition Width = '*'/>
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_0' />
+                                                <TextBlock Grid.Row = '0' Grid.Column = '1' Margin = '5' >Diagnostic Output [ On Error ]</TextBlock>
+                                                <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_1' />
+                                                <TextBlock Grid.Row = '1' Grid.Column = '1' Margin = '5' >Enable Development Logging</TextBlock>
+                                                <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_2' />
+                                                <TextBlock Grid.Row = '2' Grid.Column = '1' Margin = '5' >Show Console Window</TextBlock>
+                                                <CheckBox  Grid.Row = '3' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_3' />
+                                                <TextBlock Grid.Row = '3' Grid.Column = '1' Margin = '5' >Show Diagnostic</TextBlock>
+                                            </Grid>
+                                        </GroupBox>
+                                    </Grid>
+                                </Grid>
+                                <Grid Grid.Column='1'>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height = '120'/>
                                         <RowDefinition Height = '150'/>
                                         <RowDefinition Height = '150'/>
                                     </Grid.RowDefinitions>
-                                    <GroupBox Grid.Row = '0' Header = 'Display Options' Margin = '5' >
-                                        <Grid >
+                                    <GroupBox Grid.Row = '0' Header = 'Bypass / Checks [ Risky Options ]' Margin = '5'>
+                                        <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height = '30'/>
                                                 <RowDefinition Height = '30'/>
@@ -554,15 +857,22 @@
                                                 <ColumnDefinition Width = '25'/>
                                                 <ColumnDefinition Width = '*'/>
                                             </Grid.ColumnDefinitions>
-                                            <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'Pref_Disp_0'/>
-                                            <TextBlock Grid.Row = '0' Grid.Column = '1' Margin = '5' >Show Active Services</TextBlock>
-                                            <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'Pref_Disp_1'/>
-                                            <TextBlock Grid.Row = '1' Grid.Column = '1' Margin = '5' >Show Inactive Services</TextBlock>
-                                            <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'Pref_Disp_2'/>
-                                            <TextBlock Grid.Row = '2' Grid.Column = '1' Margin = '5' >Show Skipped Services</TextBlock>
+                                            <CheckBox   Grid.Row = '0' Margin = '5' Name = 'Pref_Bypass_Laptop'/>
+                                            <TextBlock  Grid.Row = '0' Margin = '5' Grid.Column = '1' >
+                                                Enable Laptop Tweaks
+                                            </TextBlock>
+                                            <CheckBox   Grid.Row = '1' Margin = '5' Name = 'Pref_Bypass_Build'/>
+                                            <TextBlock  Grid.Row = '1' Margin = '5' Grid.Column = '1' >
+                                                Skip Build/Version Check
+                                            </TextBlock>
+                                            <ComboBox   Grid.Row = '2' Margin = '5' Grid.ColumnSpan = '2' Name = 'Pref_Bypass_Drop'>
+                                                <ComboBoxItem Content = 'Override Edition Check' IsSelected = 'True'/>
+                                                <ComboBoxItem Content = 'Windows 10 Home'/>
+                                                <ComboBoxItem Content = 'Windows 10 Pro'/>
+                                            </ComboBox>
                                         </Grid>
                                     </GroupBox>
-                                    <GroupBox Grid.Row = '1' Header = 'Miscellaneous' Margin = '5'>
+                                    <GroupBox Grid.Row = '1' Header = 'Logging' Margin = '5'>
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height = '30'/>
@@ -570,178 +880,142 @@
                                                 <RowDefinition Height = '30'/>
                                                 <RowDefinition Height = '30'/>
                                             </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width = '25'/>
-                                                <ColumnDefinition Width = '*'/>
-                                            </Grid.ColumnDefinitions>
-                                            <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_0'/>
-                                            <TextBlock Grid.Row = '0' Grid.Column = '1' Margin = '5' >Simulate Changes [ Dry Run ]</TextBlock>
-                                            <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_1'/>
-                                            <TextBlock Grid.Row = '1' Grid.Column = '1' Margin = '5' >Skip All Xbox Services</TextBlock>
-                                            <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_2'/>
-                                            <TextBlock Grid.Row = '2' Grid.Column = '1' Margin = '5' >Allow Change of Service State</TextBlock>
-                                            <CheckBox  Grid.Row = '3' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_3'/>
-                                            <TextBlock Grid.Row = '3' Grid.Column = '1' Margin = '5' >Stop Disabled Services</TextBlock>
+                                            <Button  Grid.Row = '0' Margin = '5' Name = 'Pref_Log_Service_Browse'>Generate Service Log</Button>
+                                            <TextBox Grid.Row = '1' Margin = '5' Name = 'Pref_Log_Service_Path' TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
+                                            <Button  Grid.Row = '2' Margin = '5' Name = 'Pref_Log_Script_Browse' >Generate Script Log</Button>
+                                            <TextBox Grid.Row = '3' Margin = '5' Name = 'Pref_Log_Script_Path'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
                                         </Grid>
                                     </GroupBox>
-                                    <GroupBox Grid.Row='2' Header = 'Development' Margin='5'>
-                                        <Grid >
+                                    <GroupBox Grid.Row='2' Header='Backup' Margin='5'>
+                                        <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height = '30'/>
-                                                <RowDefinition Height = '30'/>
-                                                <RowDefinition Height = '30'/>
-                                                <RowDefinition Height = '30'/>
+                                                <RowDefinition Height ='30'/>
+                                                <RowDefinition Height ='30'/>
+                                                <RowDefinition Height ='30'/>
+                                                <RowDefinition Height ='30'/>
                                             </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width = '25'/>
-                                                <ColumnDefinition Width = '*'/>
-                                            </Grid.ColumnDefinitions>
-                                            <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_0' />
-                                            <TextBlock Grid.Row = '0' Grid.Column = '1' Margin = '5' >Diagnostic Output [ On Error ]</TextBlock>
-                                            <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_1' />
-                                            <TextBlock Grid.Row = '1' Grid.Column = '1' Margin = '5' >Enable Development Logging</TextBlock>
-                                            <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_2' />
-                                            <TextBlock Grid.Row = '2' Grid.Column = '1' Margin = '5' >Show Console Window</TextBlock>
-                                            <CheckBox  Grid.Row = '3' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_3' />
-                                            <TextBlock Grid.Row = '3' Grid.Column = '1' Margin = '5' >Show Diagnostic</TextBlock>
+                                            <Button  Grid.Row = '0' Margin = '5' Name = 'Pref_Backup_Reg_Browse'>Export (.reg) File</Button>
+                                            <TextBox Grid.Row = '1' Margin = '5' Name = 'Pref_Backup_Reg_Path'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
+                                            <Button  Grid.Row = '2' Margin = '5' Name = 'Pref_Backup_CSV_Browse'>Export (.csv) File</Button>
+                                            <TextBox Grid.Row = '3' Margin = '5' Name = 'Pref_Backup_CSV_Path'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
+                                        </Grid>
+                                    </GroupBox>
+                                </Grid>
+                                <Grid Grid.Column='2'>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height = '90'/>
+                                        <RowDefinition Height = '90'/>
+                                    </Grid.RowDefinitions>
+                                    <GroupBox Grid.Row = '0' Header = 'Service Configuration' Margin = '5'>
+                                        <Grid Grid.Row = '0'>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height = '25'/>
+                                                <RowDefinition Height = '35'/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row = '0' Margin = '5' Name = 'Pref_Config_Version' >Sparks v1.0</TextBlock>
+                                            <ComboBox  Grid.Row = '1' Margin = '5' Name = 'Pref_Config_Profile' Height ='24'>
+                                                <ComboBoxItem Content = 'Black Viper (Sparks v1.0)' IsSelected =  'True' />
+                                                <ComboBoxItem Content = 'DevOPS (Not yet available)' IsEnabled = 'False'/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </GroupBox>
+                                    <GroupBox Grid.Row = '1' Header = 'User Interface' Margin = '5'>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height = '25'/>
+                                                <RowDefinition Height = '35'/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row = '0' Margin = '5' Name = 'Pref_Module_Version' >MadBomb122 v1.0</TextBlock>
+                                            <ComboBox  Grid.Row = '1' Margin = '5' Name = 'Pref_Module_Profile' Height = '24' >
+                                                <ComboBoxItem Content = 'DevOPS (MC/SDP v1.0)' IsSelected =  'True' />
+                                                <ComboBoxItem Content = 'Legacy (MadBomb122 v1.0)'  IsEnabled  = 'False'  />
+                                            </ComboBox>
                                         </Grid>
                                     </GroupBox>
                                 </Grid>
                             </Grid>
-                            <Grid Grid.Column='1'>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height = '120'/>
-                                    <RowDefinition Height = '150'/>
-                                    <RowDefinition Height = '150'/>
-                                </Grid.RowDefinitions>
-                                <GroupBox Grid.Row = '0' Header = 'Bypass / Checks [ Risky Options ]' Margin = '5'>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height = '30'/>
-                                            <RowDefinition Height = '30'/>
-                                            <RowDefinition Height = '30'/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width = '25'/>
-                                            <ColumnDefinition Width = '*'/>
-                                        </Grid.ColumnDefinitions>
-                                        <CheckBox   Grid.Row = '0' Margin = '5' Name = 'Pref_Bypass_Laptop'/>
-                                        <TextBlock  Grid.Row = '0' Margin = '5' Grid.Column = '1' >
-                                            Enable Laptop Tweaks
-                                        </TextBlock>
-                                        <CheckBox   Grid.Row = '1' Margin = '5' Name = 'Pref_Bypass_Build'/>
-                                        <TextBlock  Grid.Row = '1' Margin = '5' Grid.Column = '1' >
-                                            Skip Build/Version Check
-                                        </TextBlock>
-                                        <ComboBox   Grid.Row = '2' Margin = '5' Grid.ColumnSpan = '2' Name = 'Pref_Bypass_Drop'>
-                                            <ComboBoxItem Content = 'Override Edition Check' IsSelected = 'True'/>
-                                            <ComboBoxItem Content = 'Windows 10 Home'/>
-                                            <ComboBoxItem Content = 'Windows 10 Pro'/>
-                                        </ComboBox>
-                                    </Grid>
-                                </GroupBox>
-                                <GroupBox Grid.Row = '1' Header = 'Logging' Margin = '5'>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height = '30'/>
-                                            <RowDefinition Height = '30'/>
-                                            <RowDefinition Height = '30'/>
-                                            <RowDefinition Height = '30'/>
-                                        </Grid.RowDefinitions>
-                                        <Button  Grid.Row = '0' Margin = '5' Name = 'Pref_Log_Service_Browse'>Generate Service Log</Button>
-                                        <TextBox Grid.Row = '1' Margin = '5' Name = 'Pref_Log_Service_Path' TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
-                                        <Button  Grid.Row = '2' Margin = '5' Name = 'Pref_Log_Script_Browse' >Generate Script Log</Button>
-                                        <TextBox Grid.Row = '3' Margin = '5' Name = 'Pref_Log_Script_Path'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
-                                    </Grid>
-                                </GroupBox>
-                                <GroupBox Grid.Row='2' Header='Backup' Margin='5'>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height ='30'/>
-                                            <RowDefinition Height ='30'/>
-                                            <RowDefinition Height ='30'/>
-                                            <RowDefinition Height ='30'/>
-                                        </Grid.RowDefinitions>
-                                        <Button  Grid.Row = '0' Margin = '5' Name = 'Pref_Backup_Reg_Browse'>Export (.reg) File</Button>
-                                        <TextBox Grid.Row = '1' Margin = '5' Name = 'Pref_Backup_Reg_Path'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
-                                        <Button  Grid.Row = '2' Margin = '5' Name = 'Pref_Backup_CSV_Browse'>Export (.csv) File</Button>
-                                        <TextBox Grid.Row = '3' Margin = '5' Name = 'Pref_Backup_CSV_Path'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
-                                    </Grid>
-                                </GroupBox>
+                        </TabItem>
+                        <TabItem Name = 'Console_Tab' Header = 'Console'>
+                            <Grid Background = '#FFE5E5E5'>
+                                <ScrollViewer VerticalScrollBarVisibility = 'Visible'>
+                                    <TextBlock Name = 'Console_Output' TextTrimming = 'CharacterEllipsis' Background = 'White' FontFamily = 'Lucida Console'/>
+                                </ScrollViewer>
                             </Grid>
-                            <Grid Grid.Column='2'>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height = '90'/>
-                                    <RowDefinition Height = '90'/>
-                                </Grid.RowDefinitions>
-                                <GroupBox Grid.Row = '0' Header = 'Service Configuration' Margin = '5'>
-                                    <Grid Grid.Row = '0'>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height = '25'/>
-                                            <RowDefinition Height = '35'/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row = '0' Margin = '5' Name = 'Pref_Config_Version' >Sparks v1.0</TextBlock>
-                                        <ComboBox  Grid.Row = '1' Margin = '5' Name = 'Pref_Config_Profile' Height ='24'>
-                                            <ComboBoxItem Content = 'Black Viper (Sparks v1.0)' IsSelected =  'True' />
-                                            <ComboBoxItem Content = 'DevOPS (Not yet available)' IsEnabled = 'False'/>
-                                        </ComboBox>
-                                    </Grid>
-                                </GroupBox>
-                                <GroupBox Grid.Row = '1' Header = 'User Interface' Margin = '5'>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height = '25'/>
-                                            <RowDefinition Height = '35'/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row = '0' Margin = '5' Name = 'Pref_Module_Version' >MadBomb v1.0</TextBlock>
-                                        <ComboBox  Grid.Row = '1' Margin = '5' Name = 'Pref_Module_Profile' Height = '24' >
-                                            <ComboBoxItem Content = 'DevOPS (MC/SDP v1.0)' IsSelected =  'True' />
-                                            <ComboBoxItem Content = 'Legacy (Levy v1.0)'  IsEnabled  = 'False'  />
-                                        </ComboBox>
-                                    </Grid>
-                                </GroupBox>
+                        </TabItem>
+                        <TabItem Name = 'Diagnostic_Tab' Header = 'Diagnostic' Visibility = 'Visible'>
+                            <Grid Background = '#FFE5E5E5'>
+                                <ScrollViewer VerticalScrollBarVisibility = 'Visible'>
+                                    <TextBlock Name = 'Diagnostic_Output' TextTrimming = 'CharacterEllipsis' Background = 'White' FontFamily = 'Lucida Console'/>
+                                </ScrollViewer>
                             </Grid>
-                        </Grid>
-                    </TabItem>
-                    <TabItem Name = 'Console_Tab' Header = 'Console'>
-                        <Grid Background = '#FFE5E5E5'>
-                            <ScrollViewer VerticalScrollBarVisibility = 'Visible'>
-                                <TextBlock Name = 'Console_Output' TextTrimming = 'CharacterEllipsis' Background = 'White' FontFamily = 'Lucida Console'/>
-                            </ScrollViewer>
-                        </Grid>
-                    </TabItem>
-                    <TabItem Name = 'Diagnostic_Tab' Header = 'Diagnostic' Visibility = 'Visible'>
-                        <Grid Background = '#FFE5E5E5'>
-                            <ScrollViewer VerticalScrollBarVisibility = 'Visible'>
-                                <TextBlock Name = 'Diagnostic_Output' TextTrimming = 'CharacterEllipsis' Background = 'White' FontFamily = 'Lucida Console'/>
-                            </ScrollViewer>
-                        </Grid>
-                    </TabItem>
-                </TabControl>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+                <Grid Grid.Row = '2'>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width = '*'/>
+                        <ColumnDefinition Width = '*'/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column = '0' Name =  'Start' Content = 'Start'  FontWeight = 'Bold' Margin = '10'/>
+                    <Button Grid.Column = '1' Name = 'Cancel' Content = 'Cancel' FontWeight = 'Bold' Margin = '10'/>
+                </Grid>
             </Grid>
-            <Grid Grid.Row = '2'>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width = '*'/>
-                    <ColumnDefinition Width = '*'/>
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column = '0' Name =  'Start' Content = 'Start'  FontWeight = 'Bold' Margin = '10'/>
-                <Button Grid.Column = '1' Name = 'Cancel' Content = 'Cancel' FontWeight = 'Bold' Margin = '10'/>
-            </Grid>
-        </Grid>
-    </Window>
+        </Window>
 "@
 
-    $Named = @( @( 0..5 | % { "Config_$_" } ; 0..3 | % { "Info_$_" } ; "MB_0" , "MB_1" , "BV_0" , "SD_0" ) | % { "Menu_$_" } ; "TabControl" ; 
+        $Named = @( @( 0..5 | % { "Config_$_" } ; 0..3 | % { "Info_$_" } ; "MB_0" , "MB_1" , "BV_0" , "SD_0" ) | % { "Menu_$_" } ; "TabControl" ; 
 
-             "Tab" , "Load" , "Search" , "Select" , "Grid" | % { "Service_Dialog_$_" } ; "Service_Profile" , "Preferences_Tab" ; 
+                 "Tab" , "Load" , "Search" , "Select" , "Grid" | % { "Service_Dialog_$_" } ; "Service_Profile" , "Preferences_Tab" ; 
   
-             @( 0..2 | % { "Disp_$_" } ; 0..3 | % { "Misc_$_" } ; 0..3 | % { "Devel_$_" } ; "Laptop" , "Build" , "Drop" | % { "Bypass_$_" } ;
+                 @( 0..2 | % { "Disp_$_" } ; 0..3 | % { "Misc_$_" } ; 0..3 | % { "Devel_$_" } ; "Laptop" , "Build" , "Drop" | % { "Bypass_$_" } ;
 
-            "Log_Service" , "Log_Script" , "Backup_Reg" , "Backup_CSV" | % { "$_`_Browse" , "$_`_Path" } ; "Config" , "Module" | % { 
+                "Log_Service" , "Log_Script" , "Backup_Reg" , "Backup_CSV" | % { "$_`_Browse" , "$_`_Path" } ; "Config" , "Module" | % { 
         
-            "$_`_Version" , "$_`_Profile" } ) | % { "Pref_$_" } ; "Console" , "Diagnostic" | % { "$_`_Tab" , "$_`_Output" } ; "Start" , "Cancel" )
+                "$_`_Version" , "$_`_Profile" } ) | % { "Pref_$_" } ; "Console" , "Diagnostic" | % { "$_`_Tab" , "$_`_Output" } ; "Start" , "Cancel" )
 
-    $GUI   = Convert-XAMLToWindow -Xaml $Xaml -NE $Named -Passthru
+        $GUI   = Convert-XAMLToWindow -Xaml $Xaml -NE $Named -Passthru
+    }
+
+    If ( $Alert )
+    {
+        $XAML = @"
+        <Window xmlns        = "http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+            xmlns:x          = "http://schemas.microsoft.com/winfx/2006/xaml"
+            Title            = "Notice" 
+            Height           = "225" 
+            Width            = "300" 
+            BorderBrush      = "Black" 
+            Background       = "White" 
+            WindowStyle      = "ToolWindow">
+            <Grid Background     = "#FFE5E5E5">
+                <GroupBox Header = "Caution" Margin="5">
+                    <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height = "3*"/>
+                    <RowDefinition Height = "25" />
+                    <RowDefinition Height = "50" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row = "0" Margin = "5" Name = "Tbox" TextWrapping = "Wrap"/>
+                <CheckBox  Grid.Row = "1" Margin = "5" Name = "Cbox" Content = "CheckBox" HorizontalAlignment = "Left" />
+                        <Grid Grid.Row = "2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width = "*"/>
+                                <ColumnDefinition Width = "*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column = "0" Margin ="10" Name = "Yes" Content = "Yes"  />
+                            <Button Grid.Column = "1" Margin ="10" Name = "No"  Content = "No"  />
+                        </Grid>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Window>
+"@
+
+        $Named = "Tbox" , "Cbox" , "Yes" , "No"
+
+        $GUI   = Convert-XAMLToWindow -Xaml $Xaml -NE $Named -Passthru
+
+    }
 
     [ PSCustomObject ]@{ 
 
@@ -828,41 +1102,6 @@
             Gui   = $X[2]
             Var   = $X[3]
         }                                                                           #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Resolve-ScriptVars # Script Variable Collection ___________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-
-    # Operating System Delimiter
-
-    [ Environment ]::OSVersion.Version.Major | % { 
-        
-        If ( $_ -ne 10 )
-        {
-            Write-Theme -Action "Exception [!]" "Only Windows 10 Client is currently supported" 12 4 15
-            Read-Host "Press Enter to Exit"
-            Exit
-        }
-    }
-
-    # Script Operation Mode
-
-    $Release_Type = Resolve-Script -Version | % { $_.Release } 
-    
-    $Release_Type | % { 
-        
-        If ( $_ -eq "Stable" )
-        {
-            $ErrorActionPreference = 'SilentlyContinue'
-        }
-
-        Else
-        {
-            $Release_Type          = 'Testing'
-        }
-    }
-                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
@@ -953,7 +1192,8 @@
             [ Parameter ( ParameterSetName =  "System" ) ] [ Switch ] $System  ,
             [ Parameter ( ParameterSetName =      "OS" ) ] [ Switch ] $MSInfo  ,
             [ Parameter ( ParameterSetName = "Edition" ) ] [ Switch ] $Edition ,
-            [ Parameter ( ParameterSetName =     "SKU" ) ] [ Switch ] $SKU     )
+            [ Parameter ( ParameterSetName =     "SKU" ) ] [ Switch ] $SKU     ,
+            [ Parameter ( ParameterSetName =    "Type" ) ] [ Switch ] $Type    )
 
         $OS , $CS           = "Operating" , "Computer" | % { GCIM Win32_$_`System }
 
@@ -1056,12 +1296,18 @@
                 {
                     Return [ PSCustomObject ]@{ 
                     
-                        ID  = $_[0]
-                        SKU = $_[1]
+                        ID   = $_[0]
+                        SKU  = $_[1]
                     }
                 }
             }
         }
+
+        If ( $Type )
+        {
+            @( "" , "Desktop" , "Mobile/Laptop" , "Workstation" , "Server" , "Server" , "Appliance" , "Server" , "Maximum" )[$CS.PCSystemType]
+        }
+
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
@@ -1069,6 +1315,18 @@
     Function Resolve-ScriptVars # Script Variable Collection ___________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         
+        # Operating System Delimiter
+
+        [ Environment ]::OSVersion.Version.Major | % { 
+        
+            If ( $_ -ne 10 )
+            {
+                Write-Theme -Action "Exception [!]" "Only Windows 10 Client is currently supported" 12 4 15
+                Read-Host "Press Enter to Exit"
+                Exit
+            }
+        }
+
         Resolve-Script -Path | % { "$( $_.Parent )\Services" } | % {
         
             [ PSCustomObject ]@{
@@ -1085,6 +1343,7 @@
                     MSInfo         = Resolve-Windows -MSInfo
                     Edition        = Resolve-Windows -Edition
                     SKU            = Resolve-Windows -SKU
+                    Type           = Resolve-Windows -Type
                 }
 
                 Service            = [ PSCustomObject ]@{
@@ -1097,6 +1356,11 @@
                     NetTCP         = "Msmq" , "Pipe" , "Tcp" | % { "Net$_`Activator" }
                     Filter         = 'CheckboxChecked' , 'CName' , 'ServiceName' , 'CurrType' , 'BVType' , 'SrvState' , 'SrvDesc' , 'SrvPath' , 'RowColor'
                     Devel          = 'ScriptLog' , 'Diagnostic' , 'LogBeforeAfter' , 'DryRun' , 'ShowNonInstalled' , 'ShowAlreadySet' | % { "WPF_$_`_CB" }
+                    Skip           = @( "BcastDVRUserService" , "DevicePickerUserSvc" , "DevicesFlowUserSvc" , "PimIndexMaintenanceSvc" , "PrintWorkflowUserSvc" , 
+                                     "UnistoreSvc" , "UserDataSvc" , "WpnUserService" | % { "$_`_?????" } ; 'AppXSVC' , 'BrokerInfrastructure' , 'ClipSVC' , 
+                                     'CoreMessagingRegistrar' , 'DcomLaunch' , 'EntAppSvc' , 'gpsvc' , 'LSM' , 'MpsSvc' , 'msiserver' , 'NgcCtnrSvc' , 'NgcSvc' , 
+                                     'RpcEptMapper' , 'RpcSs' , 'Schedule' , 'SecurityHealthService' , 'sppsvc' , 'StateRepository' , 'SystemEventsBroker' ,
+	                                 'tiledatamodelsvc' , 'WdNisSvc' , 'WinDefend' )
                 }
 
                 Defaults           = [ PSCustomObject ]@{
@@ -1110,7 +1374,7 @@
                     Log            = 0
                     Config         = 0
                     Script         = 0
-                    Laptop         = Resolve-Windows -System | % { $_.PCSystemType }
+                    Laptop         = Resolve-Windows -Type
                     Errors         = 0
                     GUI            = 0
                 }
@@ -1121,11 +1385,22 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Get-ServiceProfile #_______________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        
+        $Collect                    = [ PSCustomObject ]@{
+        
+            Scoped                  = @( )
+            NonScoped               = @( )
+            Skipped                 = @( )
+            Full                    = @( )
+        }
+        
+        $Switch                     = 'Skip' , 'Disabled' , 'Manual' , 'Auto' , 'Auto (Delayed)'
+        
         $Config                     = ( Get-Service *_* | ? ServiceType -eq 224 )[0].Name.Split( '_' )[-1]
 
         $Services                   = Get-CurrentServices
 
-        $Switch                     = 'Skip' , 'Disabled' , 'Manual' , 'Auto' , 'Auto (Delayed)'
+        $Skipped                    = Resolve-ScriptVars | % { $_.Service.Skip } | % { $_.Replace( '?????' , $Config ) }
 
         $Import                     = Resolve-ScriptVars | % { $_.FileBase } | % { IPCSV $_.Service } | % { 
 
@@ -1144,12 +1419,6 @@
                 "DT:T-"             = $Switch[$_."DT:T-"]
             }
         }
-
-        $Collect                    = [ PSCustomObject ]@{ 
-        
-            Scoped                  = @( )
-            NonScoped               = @( ) 
-        }
         
         $Import                     | % {
 
@@ -1164,29 +1433,150 @@
             }
         }
 
-        Return $Collect
-
+        [ PSCustomObject ]@{ 
+        
+            Scoped    = $Collect.Scoped                                             
+            NonScoped = $Collect.NonScoped
+            Skipped   = $Skipped
+            Full      = $Services
+        }
+            
+                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Get-SettingProfile #_______________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        Resolve-ScriptVars | % { Import-CLIXML $_.FileBase.Settings }               #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____       
 }
 
-Function Get-SettingProfile
+Function Start-DiagnosticCheck
 {
-    Resolve-ScriptVars | % { Import-CLIXML $_.FileBase.Settings }
+    $Script               = Resolve-Script -Version
 
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+    Resolve-ScriptVars    | % { 
+    
+        $Defaults         = $_.Defaults
+        $Environment      = $_.Environment
+        $Filebase         = $_.FileBase
+        $Service          = $_.Service 
+    }
+
+    $Section      = "[ Script Information ]" , "[ System Information ]" , "[ Initialization ]" , "[ Display Settings ]" , 
+        "[ Miscellaneous Settings ]" , "[ Development Settings ]" , "[ Bypass/Force Settings ]" , "[ Logging Settings ]" , "[ Backup Settings ]" , "[ Version Control ]"
+
+    $Subtable     = 0..9
+
+    $Splat        = @{ 
+            
+            Items     = "Script Version" , "Release Type" , "Service File" , "Minimum Version" , "Maximum Version"
+            Values    = $Script.Version , $Script.Release , $Filebase.Service , "1507 ( Threshold 1 )" , "1909 ( 19H2 ) "
+        }
+
+        $Subtable[0]  = New-SubTable @Splat
+		
+
+        $Splat        = @{ 
+
+            Items     = "Operating System" , "Edition / SKU" , "Build" , "Version" , "Chassis Type"
+            Values    = $Environment | % { "$( $_.MSInfo.Caption ) [$( $_.MSInfo.OSArchitecture )]" , $_.SKU.SKU , $_.Edition.Build , $_.Edition.Version , $_.Type }
+        }
+
+        $Subtable[1]  = New-SubTable @Splat
+
+        $Splat        = @{
+
+            Items     = "Argument List" , "Terms of Service" 
+            Values    = $Control | % { $_.PassedArgs , $_.TermsOfService }
+        }
+
+        $Subtable[2]  = New-SubTable @Splat
+
+        $Splat        = @{
+
+            Items     = "Active" , "Inactive" , "Skipped" | % { "Show $_ SVC" }
+            Values    = $Control | % { $_.DisplayActive , $_.DisplayInactive , $_.DisplaySkipped }
+        }
+        
+        $Subtable[3]  = New-SubTable @Splat
+        
+        $Splat        = @{ 
+        
+            Items     = "Simulate Changes" , "Xbox Services" , "Change * SVC State" , "Stop * Disabled SVC"
+            Values    = $Control | % { $_.MiscSimulate , $_.MiscXbox , $_.MiscChange ,$_.MiscStopDisabled }
+        }
+
+        $Subtable[4]  = New-SubTable @Splat
+
+        $Splat        = @{ 
+
+            Items     = "Diagnostic Errors" , "Devel Log" , "Enable Console" , "Report Diagnostic"
+            Values    = $Control | % { $_.DevelDiagErrors , $_.DevelLog , $_.DevelConsole , $_.DevelDiagReport }
+        }
+
+        $Subtable[5]  = New-Subtable @Splat
+
+        $Splat        = @{ 
+
+            Items     = "Build" , "Edition" , "Laptop" | % { "Bypass $_" }
+            Values    = $Control | % { $_.BypassBuild , $_.BypassEdition , $_.BypassLaptop }
+        }
+
+        $Subtable[6]  = New-SubTable @Splat
+
+        $Splat        = @{
+
+            Items     = "Service" , "Service File" , "Script" , "Script File" | % { "Log $_" }
+            Values    = $Control | % { $_.LoggingService , $_.LoggingServiceFile , $_.LoggingScript , $_.LoggingScriptFile }
+        }
+
+        $Subtable[7]  = New-SubTable @Splat
+
+        $Splat        = @{ 
+
+            Items     = "Registry" , "(.reg) File" , "Template" , "(.csv) File" | % { "Backup $_" }
+            Values    = $Control | % { $_.BackupRegistry , $_.BackupRegistryPath , $_.BackupTemplate , $_.BackupTemplatePath }
+        }
+
+        $Subtable[8]  = New-SubTable @Splat
+
+        $Splat        = @{
+
+            Items     = "Service Config" , "Service Profile" , "Script Config" , "Script Profile"
+            Values    = $Control | % { $_.ServiceConfig , $_.ServiceProfile , $_.ScriptConfig , $_.ScriptProfile }
+        }
+
+        $Subtable[9] = New-Subtable @Splat
+
+        $Table        = New-Table -Title "Diagnostic/Startup Panel" -Depth 10 -ID ( 0..9 | % { $Section[$_] } ) -Table ( 0..9 | % { $Subtable[$_] } )
+        
+        Write-Theme -Table $Table -Prompt "Press Enter to Continue, CTRL+C to Exit"
+
+	}
+
+Function Load-MadBombRevisedGUI
+{
+
+    Return-ViperBombGUI -Main | % { $Xaml = $_.Xaml ; $GUI = $_.GUI ; $Named = $_.Named }
+
+    Show-WPFWindow -GUI $GUI
+}
+
+#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function StartScript #______________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         
-        Resolve-Script -Copyright
+        Write-Theme -Array ( Resolve-Script -Copyright ) -Title "Terms of Service" -Prompt "Press Enter to Accept/Continue"
         
-        
-        
+        Write-Theme -Action "Loading [~]" "Service Status & Defaults"
+
         $Service  = Get-ServiceProfile
 
         $Setting  = Get-SettingProfile
 
-        Resolve-ScriptVars | % { 
+        Resolve-ScriptVars | % {
         
             $FileBase    = $_.FileBase
             $Defaults    = $_.Defaults
@@ -1194,61 +1584,30 @@ Function Get-SettingProfile
             $Toggle      = $_.Service 
         }
 
-	If ( $PassedArg.Length -gt 0 ) 
-    { 
-        GetArgs
-    }
+	    If ( $PassedArg.Length -gt 0 ) 
+        { 
+            "Initialize-ScriptMode $PassedArg"
+        }
 
-    $Services = Get-CurrentServices 
-    $Services | Select Name , StartType , Status
-	$Script:AllService = $CurrServices | Select Name , StartType , Status
+    	$Collection = $Service.Skipped | ? { $_ -in $Service.Full.Name }
 
-	[ System.Collections.ArrayList ] $Skip_Services =
-	"BcastDVRUserService_$ServiceEnd"    ,
-	"DevicePickerUserSvc_$ServiceEnd"    ,
-	"DevicesFlowUserSvc_$ServiceEnd"     ,
-	"PimIndexMaintenanceSvc_$ServiceEnd" ,
-	"PrintWorkflowUserSvc_$ServiceEnd"   ,
-	"UnistoreSvc_$ServiceEnd"            ,
-	"UserDataSvc_$ServiceEnd"            ,
-	"WpnUserService_$ServiceEnd"         ,
-	'AppXSVC'                            ,
-	'BrokerInfrastructure'               ,
-	'ClipSVC'                            ,
-	'CoreMessagingRegistrar'             ,
-	'DcomLaunch'                         ,
-	'EntAppSvc'                          ,
-	'gpsvc'                              ,
-	'LSM'                                ,
-	'MpsSvc'                             ,
-	'msiserver'                          ,
-	'NgcCtnrSvc'                         ,
-	'NgcSvc'                             ,
-	'RpcEptMapper'                       ,
-	'RpcSs'                              ,
-	'Schedule'                           ,
-	'SecurityHealthService'              ,
-	'sppsvc'                             ,
-	'StateRepository'                    ,
-	'SystemEventsBroker'                 ,
-	'tiledatamodelsvc'                   ,
-	'WdNisSvc'                           ,
-	'WinDefend'
+        Resolve-Windows -Edition | % { 
+        
+            If ( $_.Version -gt 1703 )
+            {
+                $Collection += 'xbgm'
+            }
+            
+            If ( $_.Version -gt 1803 )
+            {
+                $Collection += "UsoSvc"
+            }
+        }
 
-	If ( $Win10Ver -ge 1703 )
-    { 
-        [ Void ] $Skip_Services.Add( 'xbgm' )
-    }
-
-	If ( $Win10Ver -ge 1803 )
-    { 
-        [ Void ] $Skip_Services.Add( 'UsoSvc' ) 
-    }
-
-	If ( $Diagnostic -In 1 , 2 )
-    { 
-        $Script:Automated = 0 
-    }
+    	If ( $Diagnostic -In 1 , 2 )
+        { 
+            $Script:Automated = 0 
+        }
 
 	If ( $Diagnostic -eq 2 )
     {
@@ -1310,7 +1669,7 @@ Function Get-SettingProfile
         {
 			TOS
 		}
-	} 
+	}
 
     ElseIf ( $Automated -eq 1 )
     {
@@ -6013,7 +6372,7 @@ Function StartScript
 
 	If ( $Win10Ver -ge 1803 )
     { 
-        [ Void ] $Skip_Services.Add( 'UsoSvc' ) 
+        [ Void ] $Skip_Services.Add( 'UsoSvc' )
     }
 
 	If ( $Diagnostic -In 1 , 2)
@@ -6125,116 +6484,6 @@ Function StartScript
 	}
 }
 
-##########
-# Misc Functions -End
-##########
-#--------------------------------------------------------------------------
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!                                         !!
-# !!           SAFE TO EDIT VALUES           !!
-# !!                                         !!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-# Edit values (Option) to your Choice
-
-# Function = Option
-# List of Options
-
-$AcceptToS = 0
-# 0 = See ToS
-# Anything Else = Accept ToS
-
-$EditionCheck = 0
-# 0 = Check if Home or Pro Edition
-# 'Pro' = Set Edition as Pro (Needs 's)
-# 'Home' = Set Edition as Home (Needs 's)
-
-$BuildCheck = 0
-# 0 = Check Build (Creator's Update Minimum)
-# 1 = Skips this check
-
-$DryRun = 0
-# 0 = Runs script normally
-# 1 = Runs script but shows what will be changed
-
-$ShowAlreadySet = 1
-# 0 = Don't Show Already set Services
-# 1 = Show Already set Services
-
-$ShowNonInstalled = 0
-# 0 = Don't Show Services not present
-# 1 = Show Services not present
-
-$ShowSkipped = 0
-# 0 = Don't Show Skipped Services
-# 1 = Show Skipped Services
-
-$XboxService = 0
-# 0 = Change Xbox Services
-# 1 = Skip Change Xbox Services
-
-$StopDisabled = 0
-# 0 = Dont change running status
-# 1 = Stop services that are disabled
-
-$ChangeState = 0
-# 0 = Dont Change State of service to specified/loaded
-# 1 = Change State of service to specified/loaded
-
-#----- Log/Backup Items -----
-$ScriptLog = 0
-# 0 = Don't make a log file
-# 1 = Make a log file
-# Will be script's directory named `Script.log` (default)
-
-$LogName = "Script.log"
-# Name of log file
-
-$LogBeforeAfter = 0
-# 0 = Don't make a file of all the services before and after the script
-# 1 = Make a file of all the services before and after the script
-# Will be script's directory named '(ComputerName)-Services-Before.log' and '(ComputerName)-Services-Services-After.log'
-
-$BackupServiceConfig = 0
-# 0 = Don't backup Your Current Service Configuration before services are changes
-# 1 = Backup Your Current Service Configuration before services are changes (Configure type below)
-
-$BackupServiceType = 1
-# 0 = '.reg' file that you can change w/o using script
-# 1 = '.csv' file type that can be imported into script
-# 2 = both the above types
-# Will be in script's directory named '(ComputerName)-Service-Backup.(File Type)'
-
-#--- Update Related Items ---
-$ScriptVerCheck = 0
-# 0 = Skip Check for update of Script File
-# 1 = Check for update of Script File
-# Note: If found will Auto download and run
-
-$ServiceVerCheck = 0
-# 0 = Skip Check for update of Service File
-# 1 = Check for update of Service File
-# Note: If found will Auto download and current settings will be used
-
-$InternetCheck = 0
-# 0 = Checks if you have Internet
-# 1 = Bypass check if your pings are blocked
-# Use if Pings are Blocked or can't ping GitHub.com
-
-#---------- Dev Item --------
-$Diagnostic = 0
-# 0 = Doesn't show Shows diagnostic information
-# 1 = Shows diagnostic information
-
-$DevLog = 0
-# 0 = Doesn't make a Dev Log
-# 1 = Makes a log files
-# Devlog Contains -> Service Change, Before & After for Services, and Diagnostic Info --Runs as Dryrun
-
-$ShowConsole = 0
-# 0 = Hides console window (Only on stable release)
-# 1 = Shows console window -Forced in Testing release
-
-#--------------------------------------------------------------------------
-# Do not change
-StartScript
+IPMO Hybrid-DSC -Force
+#StartScript
