@@ -1,3 +1,19 @@
+# Secure Digits Plus: Fighting Entropy
+Hybrid-DSC is a modification for a multitude of things that is listed in the sections below. 
+
+# Installation:
+Download the (2) files in the \Install folder, make sure they're together in the same folder, and then 'run the ps1 file'.
+It will do the rest.
+
+# Usage:
+I still need to come up with some comment based help for what this project does, but that's not on the agenda at this time.
+If you are able to read the Hybrid-DSC.ps1 file, then you may be able to see what it does just by reading the code. That is all I can do to provide details at this time. 
+
+# ToDo[1]: Getting MadBomb's Services fully functional...
+I have been cooperating with Mr. MadBomb122 himself... he's an awesome son of a bitch by the way... but yeah. He made this really cool kick ass thing that manages services for Windows. His version only supports Windows 10 Home and Pro... I'm looking to expand what it can do so that it provides Group Policy and Service Configurations for domains, enterprises, as well as servers and virualized environments.... while keeping my sanity. Not easy.
+
+# -------------------------------------------------------- #
+
 # PSD-Remaster
 Enhancements for customizing and automating the PSD-Master Project found at 'FriendsOfMDT' and...
 
