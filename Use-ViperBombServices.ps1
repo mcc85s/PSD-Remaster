@@ -87,7 +87,7 @@
 
         ------------------------------------------------------------------------------#>
 
-    $Control = [ PSCustomObject ]@{ 
+    $Control = [ PSCustomObject ]@{
 
         PassedArgs          = $( If ( ! $Args ) { "N/A" } Else { $Args } )
 
@@ -291,10 +291,10 @@
             # 1 = Make a log file
             # Will be script's directory named `Script.log` (default)
 
-        ServiceConfig        = "Default"
+        ServiceConfig        = "Black Viper (Sparks v1.0)"
         ServiceProfile       = "Default"
 
-        ScriptConfig         = "Default"
+        ScriptConfig         = "DevOPS (MD/SDP v1.0)"
         ScriptProfile        = "Default"
 
     }
@@ -315,7 +315,7 @@
         {
             $I = "https://GitHub.com/madbomb122/BlackViperScript" | % { $_ ; "$_/master".Replace( '//' , '//raw.' ) }
             
-            Return [ PSCustomObject ]@{ 
+            [ PSCustomObject ]@{ 
     
                 Version        = '6.2.0' 
                 Date           = 'Nov-13-2019'
@@ -332,7 +332,7 @@
         {
             ( $PSCommandPath , $PSISE.CurrentFile.FullPath )[ $PSISE -ne $Null ] | % {
             
-                Return [ PSCustomObject ]@{ 
+                [ PSCustomObject ]@{ 
             
                     Parent = Split-Path $_ -Parent
                     Leaf   = Split-Path $_ -Leaf 
@@ -439,8 +439,8 @@
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         [ CmdLetBinding () ] Param (
 
-            [ Parameter ( Mandatory , ParameterSetName = 'GUI' ) ][ Switch ] $Main ,
-            [ Parameter ( Mandatory , ParameterSetName = 'Pop' ) ][ Switch ] $Alert )
+            [ Parameter ( Mandatory , ParameterSetName =   'Main' ) ][ Switch ] $Main  ,
+            [ Parameter ( Mandatory , ParameterSetName = 'Alaert' ) ][ Switch ] $Alert )
 
     $GWF  = Resolve-HybridDSC -Graphics
 
@@ -912,10 +912,10 @@
                                                 <RowDefinition Height = '25'/>
                                                 <RowDefinition Height = '35'/>
                                             </Grid.RowDefinitions>
-                                            <TextBlock Grid.Row = '0' Margin = '5' Name = 'Pref_Config_Version' >Sparks v1.0</TextBlock>
+                                            <TextBlock Grid.Row = '0' Margin = '5' Name = 'Pref_Config_Version' >Black Viper (Sparks v1.0)</TextBlock>
                                             <ComboBox  Grid.Row = '1' Margin = '5' Name = 'Pref_Config_Profile' Height ='24'>
-                                                <ComboBoxItem Content = 'Black Viper (Sparks v1.0)' IsSelected =  'True' />
-                                                <ComboBoxItem Content = 'DevOPS (Not yet available)' IsEnabled = 'False'/>
+                                                <ComboBoxItem Content = 'Black Viper (Sparks v1.0)' IsSelected = 'True'/>
+                                                <ComboBoxItem Content = 'DevOPS (MC/SDP v1.0)' IsEnabled = 'False'/>
                                             </ComboBox>
                                         </Grid>
                                     </GroupBox>
@@ -925,10 +925,10 @@
                                                 <RowDefinition Height = '25'/>
                                                 <RowDefinition Height = '35'/>
                                             </Grid.RowDefinitions>
-                                            <TextBlock Grid.Row = '0' Margin = '5' Name = 'Pref_Module_Version' >MadBomb122 v1.0</TextBlock>
+                                            <TextBlock Grid.Row = '0' Margin = '5' Name = 'Pref_Module_Version' >DevOPS (MC/SDP v1.0)</TextBlock>
                                             <ComboBox  Grid.Row = '1' Margin = '5' Name = 'Pref_Module_Profile' Height = '24' >
-                                                <ComboBoxItem Content = 'DevOPS (MC/SDP v1.0)' IsSelected =  'True' />
-                                                <ComboBoxItem Content = 'Legacy (MadBomb122 v1.0)'  IsEnabled  = 'False'  />
+                                                <ComboBoxItem Content = 'DevOPS (MC/SDP v1.0)' IsSelected =  'True'/>
+                                                <ComboBoxItem Content = 'MadBomb (MadBomb122 v1.0)' IsEnabled  = 'False' />
                                             </ComboBox>
                                         </Grid>
                                     </GroupBox>
@@ -979,7 +979,7 @@
     If ( $Alert )
     {
         $XAML = @"
-        <Window xmlns        = "http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        <Window xmlns        = "http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x          = "http://schemas.microsoft.com/winfx/2006/xaml"
             Title            = "Notice" 
             Height           = "225" 
@@ -1167,8 +1167,8 @@
         
                 $Splat           = @{ 
 
-                    Items        = 0..4 | % {       $Names[$_] }
-                    Values       = 0..4 | % { $X.$( $Names[$_] )    }
+                    Items        = 0..4 | % {       $Names[$_]   }
+                    Values       = 0..4 | % { $X.$( $Names[$_] ) }
 
                 }
 
@@ -1199,12 +1199,12 @@
 
         If ( $System )
         {
-            Return $CS
+            $CS
         }
 
         If ( $MSInfo )
         {
-            Return $OS
+            $OS
         }
 
         If ( $Edition )
@@ -1294,7 +1294,7 @@
 
                 If ( $_[0] -eq $OS.OperatingSystemSKU )
                 {
-                    Return [ PSCustomObject ]@{ 
+                    [ PSCustomObject ]@{ 
                     
                         ID   = $_[0]
                         SKU  = $_[1]
@@ -1305,7 +1305,11 @@
 
         If ( $Type )
         {
-            @( "" , "Desktop" , "Mobile/Laptop" , "Workstation" , "Server" , "Server" , "Appliance" , "Server" , "Maximum" )[$CS.PCSystemType]
+            [ PSCustomObject ]@{
+
+                ID      = $CS.PCSystemType
+                Chassis = @( "" , "Desktop" , "Mobile/Laptop" , "Workstation" , "Server" , "Server" , "Appliance" , "Server" , "Maximum" )[ $CS.PCSystemType ]
+            }
         }
 
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
@@ -1317,7 +1321,7 @@
         
         # Operating System Delimiter
 
-        [ Environment ]::OSVersion.Version.Major | % { 
+        [ Environment ]::OSVersion.Version.Major | % {
         
             If ( $_ -ne 10 )
             {
@@ -1334,7 +1338,7 @@
                 FileBase           = [ PSCustomObject ]@{
  
                     Settings       = "$_\BVSetting.xml"
-                    Service        = "$_\BlackViper.csv"
+                    Service        = "$_\$( $Control.ServiceConfig ).csv"
                 }
 
                 Environment        = [ PSCustomObject ]@{ 
@@ -1385,24 +1389,20 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Get-ServiceProfile #_______________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        
-        $Collect                    = [ PSCustomObject ]@{
-        
-            Scoped                  = @( )
-            NonScoped               = @( )
-            Skipped                 = @( )
-            Full                    = @( )
-        }
-        
+
         $Switch                     = 'Skip' , 'Disabled' , 'Manual' , 'Auto' , 'Auto (Delayed)'
         
         $Config                     = ( Get-Service *_* | ? ServiceType -eq 224 )[0].Name.Split( '_' )[-1]
 
-        $Services                   = Get-CurrentServices
-
-        $Skipped                    = Resolve-ScriptVars | % { $_.Service.Skip } | % { $_.Replace( '?????' , $Config ) }
-
-        $Import                     = Resolve-ScriptVars | % { $_.FileBase } | % { IPCSV $_.Service } | % { 
+        $Collect                    = [ PSCustomObject ]@{
+        
+            Scoped                  = @( )
+            NonScoped               = @( )
+            Skipped                 = Resolve-ScriptVars  | % { $_.Service.Skip } | % { $_.Replace( '?????' , $Config ) } | Sort
+            Full                    = Get-CurrentServices | Sort Name
+        }
+        
+        Resolve-ScriptVars          | % { $_.FileBase } | % { IPCSV $_.Service } | % { 
 
             [ PSCustomObject ]@{ 
 
@@ -1418,29 +1418,21 @@
                 "DT:T+"             = $Switch[$_."DT:T+"]
                 "DT:T-"             = $Switch[$_."DT:T-"]
             }
-        }
-        
-        $Import                     | % {
 
-            If ( $_.Service -in $Services.Name )
+        } | Sort Service | % {
+
+            If ( $_.Service -in $Collect.Full.Name )
             {
                 $Collect.Scoped    += $_
             }
 
-            If ( $_.Service -notin $Services.Name ) 
+            Else 
             { 
                 $Collect.NonScoped += $_ 
             }
         }
 
-        [ PSCustomObject ]@{ 
-        
-            Scoped    = $Collect.Scoped                                             
-            NonScoped = $Collect.NonScoped
-            Skipped   = $Skipped
-            Full      = $Services
-        }
-            
+        $Collect
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
@@ -1448,127 +1440,316 @@
     Function Get-SettingProfile #_______________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         Resolve-ScriptVars | % { Import-CLIXML $_.FileBase.Settings }               #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____       
-}
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Start-DiagnosticCheck #____________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        $Script               = Resolve-Script -Version
 
-Function Start-DiagnosticCheck
-{
-    $Script               = Resolve-Script -Version
-
-    Resolve-ScriptVars    | % { 
+        Resolve-ScriptVars    | % {
     
-        $Defaults         = $_.Defaults
-        $Environment      = $_.Environment
-        $Filebase         = $_.FileBase
-        $Service          = $_.Service 
-    }
+            $Defaults         = $_.Defaults
+            $Environment      = $_.Environment
+            $Filebase         = $_.FileBase
+            $Service          = $_.Service
+        }
 
-    $Section      = "[ Script Information ]" , "[ System Information ]" , "[ Initialization ]" , "[ Display Settings ]" , 
-        "[ Miscellaneous Settings ]" , "[ Development Settings ]" , "[ Bypass/Force Settings ]" , "[ Logging Settings ]" , "[ Backup Settings ]" , "[ Version Control ]"
+        $Section              = @(  "Script" , "System" | % { "$_ Information" } ; "Initialization" ; "Display" , "Miscellaneous" , 
+                                    "Development" , "Bypass/Force" , "Logging" , "Backup" | % { "$_ Settings" } ; "Version Control" ) | % { "[ $_ ]" }
 
-    $Subtable     = 0..9
+        $Subtable             = 0..9
 
-    $Splat        = @{ 
+        $Splat                = @{ 
             
-            Items     = "Script Version" , "Release Type" , "Service File" , "Minimum Version" , "Maximum Version"
-            Values    = $Script.Version , $Script.Release , $Filebase.Service , "1507 ( Threshold 1 )" , "1909 ( 19H2 ) "
+            Items             = "Script Version" , "Release Type" , "Service File" , "Minimum Version" , "Maximum Version"
+            Values            = $Script.Version , $Script.Release , $Filebase.Service , "1507 ( Threshold 1 )" , "1909 ( 19H2 ) "
         }
 
-        $Subtable[0]  = New-SubTable @Splat
-		
+        $Subtable[0]          = New-SubTable @Splat
 
-        $Splat        = @{ 
+        $Splat                = @{ 
 
-            Items     = "Operating System" , "Edition / SKU" , "Build" , "Version" , "Chassis Type"
-            Values    = $Environment | % { "$( $_.MSInfo.Caption ) [$( $_.MSInfo.OSArchitecture )]" , $_.SKU.SKU , $_.Edition.Build , $_.Edition.Version , $_.Type }
+            Items             = "Operating System" , "Edition / SKU" , "Build" , "Version" , "Chassis Type"
+            Values            = $Environment | % { "$( $_.MSInfo.Caption ) [$( $_.MSInfo.OSArchitecture )]" , $_.SKU.SKU , $_.Edition.Build , $_.Edition.Version , $_.Type.Chassis }
         }
 
-        $Subtable[1]  = New-SubTable @Splat
+        $Subtable[1]          = New-SubTable @Splat
 
-        $Splat        = @{
+        $Splat                = @{
 
-            Items     = "Argument List" , "Terms of Service" 
-            Values    = $Control | % { $_.PassedArgs , $_.TermsOfService }
+            Items             = "Argument List" , "Terms of Service" 
+            Values            = $Control | % { $_.PassedArgs , $_.TermsOfService }
         }
 
-        $Subtable[2]  = New-SubTable @Splat
+        $Subtable[2]          = New-SubTable @Splat
 
-        $Splat        = @{
+        $Splat                = @{
 
-            Items     = "Active" , "Inactive" , "Skipped" | % { "Show $_ SVC" }
-            Values    = $Control | % { $_.DisplayActive , $_.DisplayInactive , $_.DisplaySkipped }
+            Items             = "Active" , "Inactive" , "Skipped" | % { "Show $_ SVC" }
+            Values            = $Control | % { $_.DisplayActive , $_.DisplayInactive , $_.DisplaySkipped }
         }
         
-        $Subtable[3]  = New-SubTable @Splat
+        $Subtable[3]          = New-SubTable @Splat
         
-        $Splat        = @{ 
+        $Splat                = @{ 
         
-            Items     = "Simulate Changes" , "Xbox Services" , "Change * SVC State" , "Stop * Disabled SVC"
-            Values    = $Control | % { $_.MiscSimulate , $_.MiscXbox , $_.MiscChange ,$_.MiscStopDisabled }
+            Items             = "Simulate Changes" , "Xbox Services" , "Change * SVC State" , "Stop * Disabled SVC"
+            Values            = $Control | % { $_.MiscSimulate , $_.MiscXbox , $_.MiscChange ,$_.MiscStopDisabled }
         }
 
-        $Subtable[4]  = New-SubTable @Splat
+        $Subtable[4]          = New-SubTable @Splat
 
-        $Splat        = @{ 
+        $Splat                = @{ 
 
-            Items     = "Diagnostic Errors" , "Devel Log" , "Enable Console" , "Report Diagnostic"
-            Values    = $Control | % { $_.DevelDiagErrors , $_.DevelLog , $_.DevelConsole , $_.DevelDiagReport }
+            Items             = "Diagnostic Errors" , "Devel Log" , "Enable Console" , "Report Diagnostic"
+            Values            = $Control | % { $_.DevelDiagErrors , $_.DevelLog , $_.DevelConsole , $_.DevelDiagReport }
         }
 
-        $Subtable[5]  = New-Subtable @Splat
+        $Subtable[5]          = New-Subtable @Splat
 
-        $Splat        = @{ 
+        $Splat                = @{ 
 
-            Items     = "Build" , "Edition" , "Laptop" | % { "Bypass $_" }
-            Values    = $Control | % { $_.BypassBuild , $_.BypassEdition , $_.BypassLaptop }
+            Items             = "Build" , "Edition" , "Laptop" | % { "Bypass $_" }
+            Values            = $Control | % { $_.BypassBuild , $_.BypassEdition , $_.BypassLaptop }
         }
 
-        $Subtable[6]  = New-SubTable @Splat
+        $Subtable[6]          = New-SubTable @Splat
 
-        $Splat        = @{
+        $Splat                = @{
 
-            Items     = "Service" , "Service File" , "Script" , "Script File" | % { "Log $_" }
-            Values    = $Control | % { $_.LoggingService , $_.LoggingServiceFile , $_.LoggingScript , $_.LoggingScriptFile }
+            Items             = "Service" , "Script" | % { "Log $_" , "Log $_ File" }
+            Values            = $Control | % { $_.LoggingService , $_.LoggingServiceFile , $_.LoggingScript , $_.LoggingScriptFile }
         }
 
-        $Subtable[7]  = New-SubTable @Splat
+        $Subtable[7]          = New-SubTable @Splat
 
-        $Splat        = @{ 
+        $Splat                = @{ 
 
-            Items     = "Registry" , "(.reg) File" , "Template" , "(.csv) File" | % { "Backup $_" }
-            Values    = $Control | % { $_.BackupRegistry , $_.BackupRegistryPath , $_.BackupTemplate , $_.BackupTemplatePath }
+            Items             = "Registry" , "(.reg) File" , "Template" , "(.csv) File" | % { "Backup $_" }
+            Values            = $Control | % { $_.BackupRegistry , $_.BackupRegistryPath , $_.BackupTemplate , $_.BackupTemplatePath }
         }
 
-        $Subtable[8]  = New-SubTable @Splat
+        $Subtable[8]          = New-SubTable @Splat
 
-        $Splat        = @{
+        $Splat                = @{
 
-            Items     = "Service Config" , "Service Profile" , "Script Config" , "Script Profile"
-            Values    = $Control | % { $_.ServiceConfig , $_.ServiceProfile , $_.ScriptConfig , $_.ScriptProfile }
+            Items             = "Service" ,"Script" | % { "$_ Config" , "$_ Profile" }
+            Values            = $Control | % { $_.ServiceConfig , $_.ServiceProfile , $_.ScriptConfig , $_.ScriptProfile }
         }
 
-        $Subtable[9] = New-Subtable @Splat
+        $Subtable[9]          = New-Subtable @Splat
 
-        $Table        = New-Table -Title "Diagnostic/Startup Panel" -Depth 10 -ID ( 0..9 | % { $Section[$_] } ) -Table ( 0..9 | % { $Subtable[$_] } )
+        $Table                = New-Table -Title "Diagnostic/Startup Panel" -Depth 10 -ID $Section -Table $Subtable
         
         Write-Theme -Table $Table -Prompt "Press Enter to Continue, CTRL+C to Exit"
 
-	}
+	                                                                                #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Select-ServiceProfile #____________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        [ CmdLetBinding () ] Param (
 
-Function Load-MadBombRevisedGUI
-{
+            [ Parameter ( ValueFromPipeline ) ] [ PSCustomObject ] $Config = ( Get-ServiceProfile ) ,
+            [ ValidateSet ( "10H:D+" , "10H:D-" , "10P:D+" , "10P:D-" , "DT:S+" , "DT:S-" , "LT:S+" , " LT:S-" , "DT:T+" , "DT:T-" ) ]
+            [ Parameter ( Mandatory ) ]         [         String ] $Subset )
 
-    Return-ViperBombGUI -Main | % { $Xaml = $_.Xaml ; $GUI = $_.GUI ; $Named = $_.Named }
+            $Output  = @( )
 
-    Show-WPFWindow -GUI $GUI
-}
+            ForEach ( $i in 0..( $Config.Full.Count - 1 ) )
+            {
+                $Return    = [ PSCustomObject ]@{
 
-#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+                    DisplayName = $Config.Full.DisplayName[$I]
+                    Name        = $Config.Full.Name[$I]
+                    Status      = $Config.Full.Status[$I]
+                    Profile     = "N/A"
+                    StartType   = $Config.Full.StartType[$I]
+                }
+               
+                If ( $Return.Name -in $Config.Scoped.Service )
+                {
+                    $Return.Profile = $Config.Scoped.$Subset[ ( 0..( $Config.Scoped.Service.Count - 1 ) | ? { $Config.Scoped.Service[$_] -eq $Return.Name } ) ]
+                }
+
+                If ( $Return.Name -in $Config.NonScoped.Service )
+                {
+                    $Return.Profile = $Config.NonScoped.$Subset[ ( 0..( $Config.NonScoped.Service.Count - 1 ) | ? { $Config.NonScoped.Service[$_] -eq $Return.Name } ) ]
+                }
+
+                $Output += $Return
+            }
+
+            $Output
+	                                                                                #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
+#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
+#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Load-MadBombRevisedGUI #___________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
+    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        $Services = Get-ServiceProfile
+
+        Return-ViperBombGUI -Main | % { 
+        
+            $Xaml                 = $_.Xaml
+            $GUI                  = $_.GUI
+            $Named                = $_.Named
+        }
+
+        $GUI.Pref_Config_Profile.Text 
+
+        $GUI | % { 
+        
+            If ( $_.Menu_Config_0.Add_Click ) <# Maximum                              #>
+            {
+                Select-ServiceProfile -Config $Services -Subset 
+            }
+
+            If ( $_.Menu_Config_1.Add_Click ) <# Minimum                              #>
+            {
+                
+            }
+
+            If ( $_.Menu_Config_2.Add_Click ) <# Default                              #>
+            {
+
+            }
+
+            If ( $_.Menu_Config_3.Add_Click ) <# Safe                                 #>
+            {
+
+            }
+
+            If ( $_.Menu_Config_4.Add_Click ) <# Tweaked                              #>
+            {
+
+            }
+
+            If ( $_.Menu_Config_5.Add_Click ) <# Custom                               #>
+            {
+
+            }
+
+            If ( $_.Menu_Info_0.Add_Click )   <# Feedback                             #>
+            {
+
+            }
+
+            If ( $_.Menu_Info_1.Add_Click )   <# FAQ                                  #>
+            {
+
+            }
+
+            If ( $_.Menu_Info_2.Add_Click )   <# About                                #>
+            {
+
+            }
+
+            If ( $_.Menu_Info_3.Add_Click )   <# Copyright                            #>
+            {
+
+            }
+
+            If ( $_.Menu_MB_0.Add_Click )     <# Donate to MadBomb122                 #>
+            {
+
+            }
+
+            If ( $_.Menu_MB_1.Add_Click )     <# MadBomb122's GitHub                  #>
+            {
+                Resolve-Script -Version | % { Start $_.Site }
+            }
+
+            If ( $_.Menu_BV_0.Add_Click )     <# BlackViper's Website                 #>
+            {
+                Start "http://www.blackviper.com/"
+            }
+
+            If ( $_.Menu_SD_0.Add_Click )     <# Secure Digits Plus: Fighting Entropy #>
+            {
+                Start "https://securedigitsplus.com"
+            }
+
+            If ( $_.Service_Dialog_Load.Add_Click )
+            {
+                
+            }
+            $_.Service_Dialog_Search
+            $_.Service_Dialog_Select
+            $_.Service_Dialog_Grid
+            $_.Service_Profile
+            $_.Preferences_Tab
+            $_.Pref_Disp_0
+            $_.Pref_Disp_1
+            $_.Pref_Disp_2
+            $_.Pref_Misc_0
+            $_.Pref_Misc_1
+            $_.Pref_Misc_2
+            $_.Pref_Misc_3
+            $_.Pref_Devel_0
+            $_.Pref_Devel_1
+            $_.Pref_Devel_2
+            $_.Pref_Devel_3
+            $_.Pref_Bypass_Laptop
+            $_.Pref_Bypass_Build
+            $_.Pref_Bypass_Drop
+            $_.Pref_Log_Service_Browse
+            $_.Pref_Log_Service_Path
+            $_.Pref_Log_Script_Browse
+            $_.Pref_Log_Script_Path
+            $_.Pref_Backup_Reg_Browse
+            $_.Pref_Backup_Reg_Path
+            $_.Pref_Backup_CSV_Browse
+            $_.Pref_Backup_CSV_Path
+            $_.Pref_Config_Version
+            $_.Pref_Config_Profile
+            $_.Pref_Module_Version
+            $_.Pref_Module_Profile
+            $_.Console_Tab
+            $_.Console_Output
+            $_.Diagnostic_Tab
+            $_.Diagnostic_Output
+            $_.Start
+            $_.Cancel
+        }
+
+        Show-WPFWindow -GUI $GUI                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function StartScript #______________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        
-        Write-Theme -Array ( Resolve-Script -Copyright ) -Title "Terms of Service" -Prompt "Press Enter to Accept/Continue"
+        [ CmdLetBinding () ] Param (
+
+            [ Parameter ( Mandatory ) ] [ PSCustomObject ] $Global )
+
+        Write-Theme -Array ( Resolve-Script -Copyright ) -Title "Terms of Service" -Prompt "Press Enter to Accept" | % { 
+
+            If ( $_ -eq $True )
+            {
+                Write-Theme -Action "Accepted [+]" "Terms of Service was accepted" 11 11 15
+                $Global = $Control
+                $Global.TermsOfService = 1
+            }
+
+            If ( $_ -eq $False )
+            {
+                Write-Theme -Action "Exception [!]" "User failed to accept Terms of Service" 12 4 15
+                Break
+            }
+        }
+
+        $Control.PassedArgs | % { 
+
+            If ( $_ -ne "N/A" )
+            {
+                Write-Theme -Action "Loading [~]" "Switch $_" 
+                
+                $PassedArgs = IEX "Initialize-ScriptMode $_"
+            }
+        }
         
         Write-Theme -Action "Loading [~]" "Service Status & Defaults"
 
@@ -1584,7 +1765,7 @@ Function Load-MadBombRevisedGUI
             $Toggle      = $_.Service 
         }
 
-	    If ( $PassedArg.Length -gt 0 ) 
+	    If ( $PassedArg.Length -gt 0 )
         { 
             "Initialize-ScriptMode $PassedArg"
         }
@@ -1605,16 +1786,16 @@ Function Load-MadBombRevisedGUI
         }
 
     	If ( $Diagnostic -In 1 , 2 )
-        { 
+        {
             $Script:Automated = 0 
         }
 
-	If ( $Diagnostic -eq 2 )
-    {
-		Clear-Host
-		DiagnosticCheck 1
-		Exit
-	} 
+	    If ( $Diagnostic -eq 2 )
+        {
+		    Clear-Host
+		    DiagnosticCheck 1
+		    Exit
+	    } 
 
     ElseIf ( $BV_ArgUsed -eq 1 )
     {
@@ -2231,6 +2412,7 @@ Function HideShowCustomSrvStuff
 	$WPF_CustomNote      | % { $_.Visibility = $Vis }
 	$WPF_LoadFileTxtBox  | % { $_.Visibility = $Vis }
 	$WPF_btnOpenFile     | % { $_.Visibility = $Vis }
+}
 
 Function SetServiceVersion 
 {
@@ -4841,6 +5023,7 @@ Function ServiceSet ( [ String ] $BVService , [ String ] $BVSet , [ Bool ] $BVNe
             Log   = 1 
             GUI   = $GuiSwitch 
         } 
+    }
         
         DisplayOut @Splat
 
@@ -4882,19 +5065,19 @@ Function ServiceSet ( [ String ] $BVService , [ String ] $BVSet , [ Bool ] $BVNe
 
             DisplayOut @Splat
 
-		If ( $ChangeState -eq 1 )
-        {
-            $Splat    = @{
+		    If ( $ChangeState -eq 1 )
+            {
+                $Splat    = @{
             
-                Text  = ' Running: ' , $BVRunning
-                Color = 14 , 15
-                Log   = 1
-                GUI   = $GuiSwitch 
-            } 
+                    Text  = ' Running: ' , $BVRunning
+                    Color = 14 , 15
+                    Log   = 1
+                    GUI   = $GuiSwitch 
+                } 
             
-            DisplayOut @Splat
-
-	} 
+                DisplayOut @Splat
+            }
+    	} 
 
     Else 
     {
@@ -6486,4 +6669,4 @@ Function StartScript
 
 
 IPMO Hybrid-DSC -Force
-#StartScript
+#StartScript -Global $Control
