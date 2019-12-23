@@ -1,29 +1,29 @@
 <#___ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____ -- ____  
-//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\   ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯   //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//  [ Secure Digits Plus LLC | Hybrid | Desired State Controller ]  \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯       _____________________________________________________        ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯        __/¯¯\__[ Dynamically Engineered Digital Security ]__/¯¯\__         ¯¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\  _________________________ ________________ ___________________________________  //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-\\__//¯¯\\__//¯¯\\__//¯¯\\__// | Application Development | Virtualization | Network and Hardware Magistration | \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\  ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯  //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-\\__//¯¯\\__//¯¯\\__//¯¯\\__//   https://www.securedigitsplus.com | Server-Client | Seedling-Spawning Script    \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\___¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ___//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
-\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\   [ Provisional Author : Michael C Cook Sr. | "The Buck Stops Here" ]    //¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__// 
-//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//   ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\ 
+//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\ 
+\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__// 
+//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\   Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯   //Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\ 
+\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//  [ Secure Digits Plus LLC | Hybrid | Desired State Controller ]  \\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__// 
+//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯       _____________________________________________________        Â¯Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\ 
+\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯        __/Â¯Â¯\__[ Dynamically Engineered Digital Security ]__/Â¯Â¯\__         Â¯Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__// 
+//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\  _________________________ ________________ ___________________________________  //Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\ 
+\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__// | Application Development | Virtualization | Network and Hardware Magistration | \\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__// 
+//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\  Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯ Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯ Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯  //Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\ 
+\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//   https://www.securedigitsplus.com | Server-Client | Seedling-Spawning Script    \\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__// 
+//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\___Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯   Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯   Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯ ___//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\ 
+\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\   [ Provisional Author : Michael C Cook Sr. | "The Buck Stops Here" ]    //Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__// 
+//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//   ____    ____    ____    ____    ____    ____    ____    ____    ____   \\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\ 
 \\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__/====\__/----\__// 
-//¯¯    
+//Â¯Â¯    
 \\  [ Use-ViperBombServices ] @: Services & Group Policy Template Generator [ Extensively Modified version of "MadBomb122" & Charles Spark's scripts ]
 //   ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____    ____      
 \\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\__/---\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//==\\___  
-//¯¯\\___________________________________________________________________________________¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯¯ ¯¯ ¯¯¯¯ -- ¯¯¯\\ 
-\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\\___ __ ____ -- ____ __ ____ -- ____ __ ____ -- ____ __ ___// 
- ¯¯¯\\__[ Initial Script Prerequisite Declarations ]____________________________________//¯¯\----/¯¯\\==//¯¯\----/¯¯\\==//¯¯\----/¯¯\\==//¯¯\----/¯¯¯  
-     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯    ¯¯¯¯      
+//Â¯Â¯\\___________________________________________________________________________________Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯\\ 
+\\__//Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯\\___ __ ____ -- ____ __ ____ -- ____ __ ____ -- ____ __ ___// 
+ Â¯Â¯Â¯\\__[ Initial Script Prerequisite Declarations ]____________________________________//Â¯Â¯\----/Â¯Â¯\\==//Â¯Â¯\----/Â¯Â¯\\==//Â¯Â¯\----/Â¯Â¯\\==//Â¯Â¯\----/Â¯Â¯Â¯  
+     Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯      
 
       Foreword: This script has been extensively modified/completely revamped, however I still make every effort to credit the original authors.
-      ¯¯¯¯¯¯¯¯                       ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯          ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+      Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯                       Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯          Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
                 Revisions include, the 'code-behind' PowerShell script, as well as the XAML GUI.
 
                 MadBomb122 has a real name and in respect to him, I have chosen to leave that information outside of this script.
@@ -34,20 +34,20 @@
                 you can find some of those technical details/documents here -> @ https://github.com/nsacyber/Windows-Secure-Host-Baseline
                 
               - MCC / SDP
-                ¯¯¯¯¯¯¯¯¯
+                Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
     _________________________
     [ Original Script & GUI ]
-    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+    Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
          Author: Madbomb122
         Website: https://GitHub.com/Madbomb122/BlackViperScript/
     _________________________
     [ Service Configuration ]
-    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+    Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
          Author: Charles "Black Viper" Sparks
         Website: http://www.BlackViper.com/
     _________________________
     [_ Comment Based Help __]
-    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+    Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
         <#--------------------------------------------------------------------------------
 
         .Prerequisite to run script
@@ -92,69 +92,69 @@
         PassedArgs          = $( If ( ! $Args ) { "N/A" } Else { $Args } )
 
         <#  Switch          Description of Switch
-            ¯¯¯¯¯¯          ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            Â¯Â¯Â¯Â¯Â¯Â¯          Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
             Basic Switches
-            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
             -atos           Accepts ToS
             -auto           Implies -atos...Runs the script to be Automated.. Closes on - User Input, Errors, or End of Script
 
             Service Configuration Switches
-            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
             -default        Runs the script with Services to Default Configuration
             -safe           Runs the script with Services to Black Viper's Safe Configuration
             -tweaked        Runs the script with Services to Black Viper's Tweaked Configuration
             -lcsc File.csv  Loads Custom Service Configuration, File.csv = Name of your backup/custom file
 
             Service Choice Switches
-            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
             -all            Every windows services will change
             -min            Just the services different from the default to safe/tweaked list
             -sxb            Skips changes to all XBox Services
 
             Update Switches
-            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
             -usc            Checks for Update to Script file before running
             -use            Checks for Update to Service file before running
             -sic            Skips Internet Check, if you can't ping GitHub.com for some reason
 
             Log Switches
-            ¯¯¯¯¯¯¯¯¯¯¯¯
+            Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
             -log            Makes a log file using default name Script.log
             -log File.log   Makes a log file named File.log
             -baf            Log File of Services Configuration Before and After the script
 
             Backup Service Configuration
-            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
             -bscc           Backup Current Service Configuration, Csv File
             -bscr           Backup Current Service Configuration, Reg File
             -bscb           Backup Current Service Configuration, Csv and Reg File
 
             Display Switches
-            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
             -sas            Show Already Set Services
             -snis           Show Not Installed Services
             -sss            Show Skipped Services
 
             Misc Switches
-            ¯¯¯¯¯¯¯¯¯¯¯¯¯
+            Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
             -dry            Runs the Script and Shows what services will be changed
             -css            Change State of Service
             -sds            Stop Disabled Service
 
             AT YOUR OWN RISK Switches
-            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
             -secp           Skips Edition Check by Setting Edition as Pro
             -sech           Skips Edition Check by Setting Edition as Home
             -sbc            Skips Build Check
 
             Dev Switches
-            ¯¯¯¯¯¯¯¯¯¯¯¯
+            Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
             -devl           Makes a log file with various Diagnostic information, Nothing is Changed
             -diag           Shows diagnostic information, Stops -auto
             -diagf          Forced diagnostic information, Script does nothing else
 
             Help
-            ¯¯¯¯
+            Â¯Â¯Â¯Â¯
             -help           Shows list of switches, then exits script.. alt -h
             -copy           Shows Copyright/License Information, then exits script #>
 
@@ -274,7 +274,7 @@
             # 0 = Does not back up the current service/registry settings
             # 1 = Enables path to backup current service registry
 
-        BackupRegistryPath   = "Backup.reg"
+        BackupRegistryFile   = "Backup.reg"
 
             # Path to Current Service Registry Output
 
@@ -283,7 +283,7 @@
             # 0 = Does not back up the current service/template settings
             # 1 = Enables path to backup current service template
 
-        BackupTemplatePath   = "Backup.csv"
+        BackupTemplateFile   = "Backup.csv"
 
             # Path to Current Service Template Output
         
@@ -299,11 +299,11 @@
 
     }
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-# ____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Resolve-Script # Provides Global Script Definitions _______________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+# ____                                                                            __//Â¯Â¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//Â¯Â¯\\___  
+#//Â¯Â¯\\__________________________________________________________________________/Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯\\ 
+#\\__//Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Resolve-Script # Provides Global Script Definitions _______________________//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯  
+    {#/Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯      
         [ CmdLetBinding () ] Param (
 
             [ Parameter ( ParameterSetName =   "Version" ) ] [ Switch ] $Version   ,
@@ -432,11 +432,11 @@
             "  -copy            Shows Copyright/License Information, then exits script                                 "
         }
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Return-ViperBombGUI #______________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+}#____                                                                            __//Â¯Â¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//Â¯Â¯\\___  
+#//Â¯Â¯\\__________________________________________________________________________/Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯\\ 
+#\\__//Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Return-ViperBombGUI #______________________________________________________//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯  
+    {#/Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯      
         [ CmdLetBinding () ] Param (
 
             [ Parameter ( Mandatory , ParameterSetName =   'Main' ) ][ Switch ] $Main  ,
@@ -493,44 +493,59 @@
                     <RowDefinition Height        = '*'/>
                     <RowDefinition Height        = '48'/>
                 </Grid.RowDefinitions>
-                <Menu Grid.Row                   = '0' 
-                      IsMainMenu                 = 'True' 
-                      Padding                    = '5' 
+                <Menu Grid.Row                   = '0'
+                      IsMainMenu                 = 'True'
+                      Padding                    = '5'
                       FontFamily                 = 'Lucida Console'>
-                    <MenuItem     Header         = 'Configuration'  
-                                  BorderBrush    = 'Gainsboro'>
-                        <MenuItem Name           = 'Menu_Config_0' 
-                                  Header         = 'Maximum'/>
-                        <MenuItem Name           = 'Menu_Config_1' 
-                                  Header         = 'Minimum'/>
-                        <MenuItem Name           = 'Menu_Config_2' 
-                                  Header         = 'Default'/>
-                        <MenuItem Name           = 'Menu_Config_3' 
-                                  Header         = 'Safe'/>
-                        <MenuItem Name           = 'Menu_Config_4' 
-                                  Header         = 'Tweaked'/>
-                        <MenuItem Name           = 'Menu_Config_5' 
-                                  Header         = 'Custom'/>
+                    <MenuItem     Header         = 'Configuration'>
+                        <MenuItem Header         = 'Home'>
+                            <MenuItem Name       = 'Menu_Config_Home_Default_Max'
+                                      Header     = 'Default Maximum'/>
+                            <MenuItem Name       = 'Menu_Config_Home_Default_Min'
+                                      Header     = 'Default Minimum'/>
+                        </MenuItem>
+                        <MenuItem Header         = 'Pro'>
+                            <MenuItem Name       = 'Menu_Config_Pro_Default_Max' 
+                                      Header     = 'Default Maximum'/>
+                            <MenuItem Name       = 'Menu_Config_Pro_Default_Min' 
+                                      Header     = 'Default Minimum'/>
+                        </MenuItem>
+                        <MenuItem     Header     = 'Desktop'>
+                            <MenuItem Name       = 'Menu_Config_Desktop_Safe_Max' 
+                                      Header     = 'Safe Maximum'/>
+                            <MenuItem Name       = 'Menu_Config_Desktop_Safe_Min' 
+                                      Header     = 'Safe Minimum'/>
+                            <MenuItem Name       = 'Menu_Config_Desktop_Tweaked_Max' 
+                                      Header     = 'Tweaked Maximum'/>
+                            <MenuItem Name       = 'Menu_Config_Desktop_Tweaked_Min' 
+                                      Header     = 'Tweaked Minimum'/>
+                        </MenuItem>
+                        <MenuItem     Header     = 'Laptop'>
+                            <MenuItem Name       = 'Menu_Config_Laptop_Safe_Max' 
+                                      Header     = 'Safe Maximum'/>
+                            <MenuItem Name       = 'Menu_Config_Laptop_Safe_Min' 
+                                      Header     = 'Safe Minimum'/>
+                        </MenuItem>
                     </MenuItem>
                     <MenuItem     Header         = 'Info'>
-                        <MenuItem Name           = 'Menu_Info_0'
+                        <MenuItem Name           = 'Menu_Info_Feedback'
                                   Header         = 'Feedback'/>
-                        <MenuItem Name           = 'Menu_Info_1'
+                        <MenuItem Name           = 'Menu_Info_FAQ'
                                   Header         = 'FAQ'/>
-                        <MenuItem Name           = 'Menu_Info_2'   
+                        <MenuItem Name           = 'Menu_Info_About'
                                   Header         = 'About'/>
-                        <MenuItem Name           = 'Menu_Info_3'   
+                        <MenuItem Name           = 'Menu_Info_Copyright'
                                   Header         = 'Copyright'/>
                         <MenuItem Header         = 'MadBomb122'>
-                            <MenuItem Name       = 'Menu_MB_0'
+                            <MenuItem Name       = 'Menu_Info_MadBomb_Donate'
                                       Header     = 'Donate to MadBomb122'/>
-                            <MenuItem Name       = 'Menu_MB_1'
-                                      Header     = 'GitHub'/>
+                            <MenuItem Name       = 'Menu_Info_MadBomb_GitHub'
+                                      Header     = 'Original GUI/Script Source -> GitHub'/>
                         </MenuItem>
-                        <MenuItem     Name       = 'Menu_BV_0'     
-                                      Header     = 'BlackVipers Website'/>
-                        <MenuItem     Name       = 'Menu_SD_0'
-                                      Header     = 'Secure Digits Plus LLC'/>
+                        <MenuItem     Name       = 'Menu_Info_BlackViper'
+                                      Header     = 'BlackViper Service Configuration Website'/>
+                        <MenuItem     Name       = 'Menu_Info_Secure_Digits_Plus'
+                                      Header     = 'Secure Digits Plus: Fighting Entropy'/>
                     </MenuItem>
                 </Menu>
                 <Grid Grid.Row                   = '1'>
@@ -786,11 +801,11 @@
                                                     <ColumnDefinition Width = '25'/>
                                                     <ColumnDefinition Width = '*'/>
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'Pref_Disp_0'/>
+                                                <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'DisplayActive'/>
                                                 <TextBlock Grid.Row = '0' Grid.Column = '1' Margin = '5' >Show Active Services</TextBlock>
-                                                <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'Pref_Disp_1'/>
+                                                <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'DisplayInactive'/>
                                                 <TextBlock Grid.Row = '1' Grid.Column = '1' Margin = '5' >Show Inactive Services</TextBlock>
-                                                <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'Pref_Disp_2'/>
+                                                <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'DisplaySkipped'/>
                                                 <TextBlock Grid.Row = '2' Grid.Column = '1' Margin = '5' >Show Skipped Services</TextBlock>
                                             </Grid>
                                         </GroupBox>
@@ -806,13 +821,13 @@
                                                     <ColumnDefinition Width = '25'/>
                                                     <ColumnDefinition Width = '*'/>
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_0'/>
+                                                <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'MiscSimulate'/>
                                                 <TextBlock Grid.Row = '0' Grid.Column = '1' Margin = '5' >Simulate Changes [ Dry Run ]</TextBlock>
-                                                <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_1'/>
+                                                <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'MiscXbox'/>
                                                 <TextBlock Grid.Row = '1' Grid.Column = '1' Margin = '5' >Skip All Xbox Services</TextBlock>
-                                                <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_2'/>
+                                                <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'MiscChange'/>
                                                 <TextBlock Grid.Row = '2' Grid.Column = '1' Margin = '5' >Allow Change of Service State</TextBlock>
-                                                <CheckBox  Grid.Row = '3' Grid.Column = '0' Margin = '5' Name = 'Pref_Misc_3'/>
+                                                <CheckBox  Grid.Row = '3' Grid.Column = '0' Margin = '5' Name = 'MiscStopDisabled'/>
                                                 <TextBlock Grid.Row = '3' Grid.Column = '1' Margin = '5' >Stop Disabled Services</TextBlock>
                                             </Grid>
                                         </GroupBox>
@@ -828,13 +843,13 @@
                                                     <ColumnDefinition Width = '25'/>
                                                     <ColumnDefinition Width = '*'/>
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_0' />
+                                                <CheckBox  Grid.Row = '0' Grid.Column = '0' Margin = '5' Name = 'DevelDiagErrors' />
                                                 <TextBlock Grid.Row = '0' Grid.Column = '1' Margin = '5' >Diagnostic Output [ On Error ]</TextBlock>
-                                                <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_1' />
+                                                <CheckBox  Grid.Row = '1' Grid.Column = '0' Margin = '5' Name = 'DevelLog' />
                                                 <TextBlock Grid.Row = '1' Grid.Column = '1' Margin = '5' >Enable Development Logging</TextBlock>
-                                                <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_2' />
+                                                <CheckBox  Grid.Row = '2' Grid.Column = '0' Margin = '5' Name = 'DevelConsole' />
                                                 <TextBlock Grid.Row = '2' Grid.Column = '1' Margin = '5' >Show Console Window</TextBlock>
-                                                <CheckBox  Grid.Row = '3' Grid.Column = '0' Margin = '5' Name = 'Pref_Devel_3' />
+                                                <CheckBox  Grid.Row = '3' Grid.Column = '0' Margin = '5' Name = 'DevelDiagReport' />
                                                 <TextBlock Grid.Row = '3' Grid.Column = '1' Margin = '5' >Show Diagnostic</TextBlock>
                                             </Grid>
                                         </GroupBox>
@@ -857,19 +872,19 @@
                                                 <ColumnDefinition Width = '25'/>
                                                 <ColumnDefinition Width = '*'/>
                                             </Grid.ColumnDefinitions>
-                                            <CheckBox   Grid.Row = '0' Margin = '5' Name = 'Pref_Bypass_Laptop'/>
+                                            <CheckBox   Grid.Row = '0' Margin = '5' Name = 'BypassBuild'/>
                                             <TextBlock  Grid.Row = '0' Margin = '5' Grid.Column = '1' >
-                                                Enable Laptop Tweaks
-                                            </TextBlock>
-                                            <CheckBox   Grid.Row = '1' Margin = '5' Name = 'Pref_Bypass_Build'/>
-                                            <TextBlock  Grid.Row = '1' Margin = '5' Grid.Column = '1' >
                                                 Skip Build/Version Check
                                             </TextBlock>
-                                            <ComboBox   Grid.Row = '2' Margin = '5' Grid.ColumnSpan = '2' Name = 'Pref_Bypass_Drop'>
+                                            <ComboBox   Grid.Row = '1' Margin = '5' Grid.ColumnSpan = '2' Name = 'BypassEdition'>
                                                 <ComboBoxItem Content = 'Override Edition Check' IsSelected = 'True'/>
                                                 <ComboBoxItem Content = 'Windows 10 Home'/>
                                                 <ComboBoxItem Content = 'Windows 10 Pro'/>
                                             </ComboBox>
+                                            <CheckBox   Grid.Row = '2' Margin = '5' Name = 'BypassLaptop'/>
+                                            <TextBlock  Grid.Row = '2' Margin = '5' Grid.Column = '1' >
+                                                Enable Laptop Tweaks
+                                            </TextBlock>
                                         </Grid>
                                     </GroupBox>
                                     <GroupBox Grid.Row = '1' Header = 'Logging' Margin = '5'>
@@ -880,10 +895,10 @@
                                                 <RowDefinition Height = '30'/>
                                                 <RowDefinition Height = '30'/>
                                             </Grid.RowDefinitions>
-                                            <Button  Grid.Row = '0' Margin = '5' Name = 'Pref_Log_Service_Browse'>Generate Service Log</Button>
-                                            <TextBox Grid.Row = '1' Margin = '5' Name = 'Pref_Log_Service_Path' TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
-                                            <Button  Grid.Row = '2' Margin = '5' Name = 'Pref_Log_Script_Browse' >Generate Script Log</Button>
-                                            <TextBox Grid.Row = '3' Margin = '5' Name = 'Pref_Log_Script_Path'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
+                                            <Button  Grid.Row = '0' Margin = '5' Name = 'LoggingService'>Generate Service Log</Button>
+                                            <TextBox Grid.Row = '1' Margin = '5' Name = 'LoggingServiceFile' TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
+                                            <Button  Grid.Row = '2' Margin = '5' Name = 'LoggingScript' >Generate Script Log</Button>
+                                            <TextBox Grid.Row = '3' Margin = '5' Name = 'LoggingScriptFile'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
                                         </Grid>
                                     </GroupBox>
                                     <GroupBox Grid.Row='2' Header='Backup' Margin='5'>
@@ -894,10 +909,10 @@
                                                 <RowDefinition Height ='30'/>
                                                 <RowDefinition Height ='30'/>
                                             </Grid.RowDefinitions>
-                                            <Button  Grid.Row = '0' Margin = '5' Name = 'Pref_Backup_Reg_Browse'>Export (.reg) File</Button>
-                                            <TextBox Grid.Row = '1' Margin = '5' Name = 'Pref_Backup_Reg_Path'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
-                                            <Button  Grid.Row = '2' Margin = '5' Name = 'Pref_Backup_CSV_Browse'>Export (.csv) File</Button>
-                                            <TextBox Grid.Row = '3' Margin = '5' Name = 'Pref_Backup_CSV_Path'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
+                                            <Button  Grid.Row = '0' Margin = '5' Name = 'BackupRegistry'>Export (.reg) File</Button>
+                                            <TextBox Grid.Row = '1' Margin = '5' Name = 'BackupRegistryFile'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
+                                            <Button  Grid.Row = '2' Margin = '5' Name = 'BackupTemplate'>Export (.csv) File</Button>
+                                            <TextBox Grid.Row = '3' Margin = '5' Name = 'BackupTemplateFile'  TextAlignment = 'Center' IsEnabled = 'False'>&lt;Click above to use this feature&gt;</TextBox>
                                         </Grid>
                                     </GroupBox>
                                 </Grid>
@@ -912,8 +927,8 @@
                                                 <RowDefinition Height = '25'/>
                                                 <RowDefinition Height = '35'/>
                                             </Grid.RowDefinitions>
-                                            <TextBlock Grid.Row = '0' Margin = '5' Name = 'Pref_Config_Version' >Black Viper (Sparks v1.0)</TextBlock>
-                                            <ComboBox  Grid.Row = '1' Margin = '5' Name = 'Pref_Config_Profile' Height ='24'>
+                                            <TextBlock Grid.Row = '0' Margin = '5' Name = 'ServiceConfig' >Black Viper (Sparks v1.0)</TextBlock>
+                                            <ComboBox  Grid.Row = '1' Margin = '5' Name = 'ServiceProfile' Height ='24'>
                                                 <ComboBoxItem Content = 'Black Viper (Sparks v1.0)' IsSelected = 'True'/>
                                                 <ComboBoxItem Content = 'DevOPS (MC/SDP v1.0)' IsEnabled = 'False'/>
                                             </ComboBox>
@@ -925,8 +940,8 @@
                                                 <RowDefinition Height = '25'/>
                                                 <RowDefinition Height = '35'/>
                                             </Grid.RowDefinitions>
-                                            <TextBlock Grid.Row = '0' Margin = '5' Name = 'Pref_Module_Version' >DevOPS (MC/SDP v1.0)</TextBlock>
-                                            <ComboBox  Grid.Row = '1' Margin = '5' Name = 'Pref_Module_Profile' Height = '24' >
+                                            <TextBlock Grid.Row = '0' Margin = '5' Name = 'ScriptConfig' >DevOPS (MC/SDP v1.0)</TextBlock>
+                                            <ComboBox  Grid.Row = '1' Margin = '5' Name = 'ScriptProfile' Height = '24' >
                                                 <ComboBoxItem Content = 'DevOPS (MC/SDP v1.0)' IsSelected =  'True'/>
                                                 <ComboBoxItem Content = 'MadBomb (MadBomb122 v1.0)' IsEnabled  = 'False' />
                                             </ComboBox>
@@ -963,15 +978,13 @@
         </Window>
 "@
 
-        $Named = @( @( 0..5 | % { "Config_$_" } ; 0..3 | % { "Info_$_" } ; "MB_0" , "MB_1" , "BV_0" , "SD_0" ) | % { "Menu_$_" } ; "TabControl" ; 
-
-                 "Tab" , "Load" , "Search" , "Select" , "Grid" | % { "Service_Dialog_$_" } ; "Service_Profile" , "Preferences_Tab" ; 
-  
-                 @( 0..2 | % { "Disp_$_" } ; 0..3 | % { "Misc_$_" } ; 0..3 | % { "Devel_$_" } ; "Laptop" , "Build" , "Drop" | % { "Bypass_$_" } ;
-
-                "Log_Service" , "Log_Script" , "Backup_Reg" , "Backup_CSV" | % { "$_`_Browse" , "$_`_Path" } ; "Config" , "Module" | % { 
-        
-                "$_`_Version" , "$_`_Profile" } ) | % { "Pref_$_" } ; "Console" , "Diagnostic" | % { "$_`_Tab" , "$_`_Output" } ; "Start" , "Cancel" )
+        $Named = @( @( 'Home' , 'Pro' | % { "$_`_Default" } ; "Safe" , "Tweaked" | % { "Desktop_$_" } ; "Laptop_Safe" ) | % { "$_`_Max" , "$_`_Min" } | % { "Menu_Config_$_" } ;
+                    @( 'Feedback' , 'FAQ' , 'About' , 'Copyright' ; @( 'Donate' , 'GitHub' | % { "MadBomb_$_" } ) ; 'BlackViper' , "Secure_Digits_Plus" ) | % { "Menu_Info_$_" } ;
+                    "TabControl" ; "Tab" , "Load" , "Search" , "Select" , "Grid" | % { "Service_Dialog_$_" } ; "Service_Profile" , "Preferences_Tab" ; 
+                    "Active" , "Inactive" , "Skipped"               | % { "Display$_" } ; "Simulate" , "Xbox" , "Change" , "StopDisabled" | % { "Misc$_"    } ;
+                    "DiagErrors" , "Log" , "Console" , "DiagReport" | % { "Devel$_"   } ; "Build" , "Edition" , "Laptop"                  | % { "Bypass$_"  } ;
+                    "Service" , "Script" | % { $_ , "$_`File" }     | % { "Logging$_" } ; "Registry" , "Template" | % { $_ , "$_`File" }  | % { "Backup$_"  } ;
+                    "Service" , "Script"                            | % { "$_`Config" , "$_`Profile" } ; "Console" , "Diagnostic" | % { "$_`_Tab" , "$_`_Output" } ; "Start" , "Cancel" )
 
         $GUI   = Convert-XAMLToWindow -Xaml $Xaml -NE $Named -Passthru
     }
@@ -1024,11 +1037,11 @@
         GUI   = $GUI
     }
 
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Initialize-ScriptMode # Script Variable Collection ________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+}#____                                                                            __//Â¯Â¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//Â¯Â¯\\___  
+#//Â¯Â¯\\__________________________________________________________________________/Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯\\ 
+#\\__//Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Initialize-ScriptMode # Script Variable Collection ________________________//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯  
+    {#/Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯      
         [ CmdLetBinding () ] Param (
 
             [ Parameter ( ParameterSetName =     'All' ) ] [ Switch ] $All     , 
@@ -1102,11 +1115,11 @@
             Gui   = $X[2]
             Var   = $X[3]
         }                                                                           #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Initialize-Script # Script Variable Collection ____________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+}#____                                                                            __//Â¯Â¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//Â¯Â¯\\___  
+#//Â¯Â¯\\__________________________________________________________________________/Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯\\ 
+#\\__//Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Initialize-Script # Script Variable Collection ____________________________//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯  
+    {#/Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯      
         $PassedArg             = $args # <-- Replace $Args w/ 'Initialize-ScriptMode -$Switch'
 
         IEX "Using Namespace System.Security.Principal"
@@ -1129,11 +1142,11 @@
 
             Write-Theme -Action "Access [+]" "Granted" 11 11 15
         }                                                                           #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____     
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Get-CurrentServices # Retrieves/Displays Current Services _________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+}#____                                                                            __//Â¯Â¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//Â¯Â¯\\___  
+#//Â¯Â¯\\__________________________________________________________________________/Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯\\ 
+#\\__//Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Get-CurrentServices # Retrieves/Displays Current Services _________________//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯  
+    {#/Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯      
         [ CmdLetBinding () ] Param (
 
             [ Parameter ( ParameterSetName = "Theme" ) ] [ Switch ] $Display )
@@ -1177,16 +1190,20 @@
 
             $Table = New-Table -Depth $Range.Count -Title "Current Services" -ID $Section -Table $SubTable
     
-            Write-Theme -Table $Table -Prompt "Press Enter to Continue"
+            Write-Theme -Table $Table -Prompt "Press Enter to Continue" 
+
+            $Return
         }
 
-        Return $Return
-                                                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Resolve-Windows # CIM / Edition Collection Table __________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        If ( !$Display )
+        {
+            $Return
+        }                                                                           #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
+}#____                                                                            __//Â¯Â¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//Â¯Â¯\\___  
+#//Â¯Â¯\\__________________________________________________________________________/Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯\\ 
+#\\__//Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Resolve-Windows # CIM / Edition Collection Table __________________________//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯  
+    {#/Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯      
         [ CmdLetBinding ( ) ] Param (
 
             [ Parameter ( ParameterSetName =  "System" ) ] [ Switch ] $System  ,
@@ -1263,30 +1280,63 @@
             (  23 , "Storage Enterprise Server Edition" ) ,
             (  24 , "Server For Small Business Edition" ) ,
             (  25 , "Small Business Server Premium Edition" ) ,
-            (  26 , "TBD" ) ,
-            (  27 , "Windows Enterprise" ) ,
-            (  28 , "Windows Ultimate" ) ,
+            (  26 , "Home Premium N" ) ,
+            (  27 , "Enterprise N" ) ,
+            (  28 , "Ultimate N" ) ,
             (  29 , "Web Server Core" ) ,
+            (  30 , "Windows Essential Business Server Management Server" ) ,
+            (  31 , "Windows Essential Business Server Security Server" ) ,
+            (  32 , "Windows Essential Business Server Messaging Server" ) ,
             (  33 , "Server Foundation" ) ,
             (  34 , "Windows Home Server" ) ,
-            (  36 , "Windows Server Standard No Hyper-V Full" ) ,
-            (  37 , "Windows Server Datacenter No Hyper-V Full" ) ,
-            (  38 , "Windows Server Enterprise No Hyper-V Full" ) ,
-            (  39 , "Windows Server Datacenter No Hyper-V Core" ) ,
-            (  40 , "Windows Server Standard No Hyper-V Core" ) ,
-            (  41 , "Windows Server Enterprise No Hyper-V Core" ) ,
+            (  35 , "Windows Server 2008 without Hyper-V for Windows Essential Server Solutions" ) ,
+            (  36 , "Server Standard No Hyper-V Full" ) ,
+            (  37 , "Server Datacenter No Hyper-V Full" ) ,
+            (  38 , "Server Enterprise No Hyper-V Full" ) ,
+            (  39 , "Server Datacenter No Hyper-V Core" ) ,
+            (  40 , "Server Standard No Hyper-V Core" ) ,
+            (  41 , "Server Enterprise No Hyper-V Core" ) ,
             (  42 , "Microsoft Hyper-V Server" ) ,
             (  43 , "Storage Server Express Core" ) ,
             (  44 , "Storage Server Standard Core" ) ,
             (  45 , "Server Workgroup Core" ) ,
             (  46 , "Storage Server Enterprise Core" ) ,
+            (  47 , "Starter N" ) ,
+            (  48 , "Professional" ) ,
+            (  49 , "Professional N" ) ,
             (  50 , "Windows Small Business Server 2011 Essentials" ) ,
+            (  51 , "Server For SB Solutions" ) , 
+            (  52 , "Server Solutions Premium" ) ,
+            (  53 , "Server Solutions Premium Core" ) ,
+            (  54 , "Server For SB Solutions EM" ) ,
+            (  55 , "Server For SB Solutions EM" ) ,
+            (  56 , "Windows MultiPoint Server" ) ,
+            (  59 , "Windows Essential Server Solution Management" ) ,
+            (  60 , "Windows Essential Server Solution Additional" ) , 
+            (  61 , "Windows Essential Server Solution Management SVC" ) ,
+            (  62 , "Windows Essential Server Solution Additional SVC" ) ,
             (  63 , "Small Business Server Premium Core" ) ,
-            (  64 , "Windows Server Hyper Core V" ) ,
+            (  64 , "Server Hyper Core V" ) ,
+            (  66 , "Starter E" ) , 
+            (  67 , "Home Basic E" ) , 
+            (  68 , "Home Premium E" ) , 
+            (  69 , "Professional E" ) , 
+            (  70 , "Enterprise E" ) , 
+            (  71 , "Ultimate E" ) , 
+            (  72 , "Server Enterprise (Evaluation)" ) , 
+            (  76 , "Windows Multipoint Server Standard" ) , 
+            (  77 , "Windows Multipoint Server Premium" ) , 
+            (  79 , "Server Standard (Evaluation)" ) , 
+            (  80 , "Server Datacenter (Evaluation)" ) , 
+            (  84 , "Enterprise N (Evaluation)" ) , 
             (  87 , "Windows Thin PC" ) ,
             (  89 , "Windows Embedded Industry" ) ,
+            (  95 , "Storage Server Workgroup (Evaluation)" ) , 
+            (  96 , "Storage Server Standard (Evaluation)" ) , 
             (  97 , "Windows RT" ) ,
-            ( 101 , "Windows Home" ) ,
+            (  98 , "Windows 8 China" ) , 
+            (  99 , "Windows 8 Single Language" ) , 
+            ( 101 , "Windows 8" ) ,
             ( 103 , "Windows Professional with Media Center" ) ,
             ( 104 , "Windows Mobile" ) ,
             ( 118 , "Windows Embedded Handheld" ) ,
@@ -1294,7 +1344,7 @@
 
                 If ( $_[0] -eq $OS.OperatingSystemSKU )
                 {
-                    [ PSCustomObject ]@{ 
+                    Return [ PSCustomObject ]@{ 
                     
                         ID   = $_[0]
                         SKU  = $_[1]
@@ -1305,7 +1355,7 @@
 
         If ( $Type )
         {
-            [ PSCustomObject ]@{
+            Return [ PSCustomObject ]@{
 
                 ID      = $CS.PCSystemType
                 Chassis = @( "" , "Desktop" , "Mobile/Laptop" , "Workstation" , "Server" , "Server" , "Appliance" , "Server" , "Maximum" )[ $CS.PCSystemType ]
@@ -1313,11 +1363,11 @@
         }
 
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Resolve-ScriptVars # Script Variable Collection ___________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+}#____                                                                            __//Â¯Â¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//Â¯Â¯\\___  
+#//Â¯Â¯\\__________________________________________________________________________/Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯\\ 
+#\\__//Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Resolve-ScriptVars # Script Variable Collection ___________________________//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯  
+    {#/Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯      
         
         # Operating System Delimiter
 
@@ -1378,17 +1428,17 @@
                     Log            = 0
                     Config         = 0
                     Script         = 0
-                    Laptop         = Resolve-Windows -Type
+                    Laptop         = Resolve-Windows -Type | % { $_.Chassis }
                     Errors         = 0
                     GUI            = 0
                 }
             }
         }                                                                           #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Get-ServiceProfile #_______________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+}#____                                                                            __//Â¯Â¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//Â¯Â¯\\___  
+#//Â¯Â¯\\__________________________________________________________________________/Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯\\ 
+#\\__//Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Get-ServiceProfile #_______________________________________________________//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯  
+    {#/Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯      
 
         $Switch                     = 'Skip' , 'Disabled' , 'Manual' , 'Auto' , 'Auto (Delayed)'
         
@@ -1434,17 +1484,17 @@
 
         $Collect
                                                                                     #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Get-SettingProfile #_______________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+}#____                                                                            __//Â¯Â¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//Â¯Â¯\\___  
+#//Â¯Â¯\\__________________________________________________________________________/Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯\\ 
+#\\__//Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Get-SettingProfile #_______________________________________________________//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯  
+    {#/Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯      
         Resolve-ScriptVars | % { Import-CLIXML $_.FileBase.Settings }               #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____       
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Start-DiagnosticCheck #____________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+}#____                                                                            __//Â¯Â¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//Â¯Â¯\\___  
+#//Â¯Â¯\\__________________________________________________________________________/Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯\\ 
+#\\__//Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Start-DiagnosticCheck #____________________________________________________//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯  
+    {#/Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯      
         $Script               = Resolve-Script -Version
 
         Resolve-ScriptVars    | % {
@@ -1545,11 +1595,11 @@
         Write-Theme -Table $Table -Prompt "Press Enter to Continue, CTRL+C to Exit"
 
 	                                                                                #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Select-ServiceProfile #____________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+}#____                                                                            __//Â¯Â¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//Â¯Â¯\\___  
+#//Â¯Â¯\\__________________________________________________________________________/Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯\\ 
+#\\__//Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Select-ServiceProfile #____________________________________________________//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯  
+    {#/Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯      
         [ CmdLetBinding () ] Param (
 
             [ Parameter ( ValueFromPipeline ) ] [ PSCustomObject ] $Config = ( Get-ServiceProfile ) ,
@@ -1584,12 +1634,12 @@
 
             $Output
 	                                                                                #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Load-MadBombRevisedGUI #___________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        $Services = Get-ServiceProfile
+}#____                                                                            __//Â¯Â¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//Â¯Â¯\\___  
+#//Â¯Â¯\\__________________________________________________________________________/Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯\\ 
+#\\__//Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function Load-MadBombRevisedGUI #___________________________________________________//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯  
+    {#/Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯      
+        $Services   = Get-ServiceProfile
 
         Return-ViperBombGUI -Main | % { 
         
@@ -1598,129 +1648,54 @@
             $Named                = $_.Named
         }
 
-        $GUI.Pref_Config_Profile.Text 
-
-        $GUI | % { 
+        $GUI.Menu_Config_Home_Default_Max    | % { 
         
-            If ( $_.Menu_Config_0.Add_Click ) <# Maximum                              #>
-            {
-                Select-ServiceProfile -Config $Services -Subset 
-            }
-
-            If ( $_.Menu_Config_1.Add_Click ) <# Minimum                              #>
-            {
-                
-            }
-
-            If ( $_.Menu_Config_2.Add_Click ) <# Default                              #>
-            {
-
-            }
-
-            If ( $_.Menu_Config_3.Add_Click ) <# Safe                                 #>
-            {
-
-            }
-
-            If ( $_.Menu_Config_4.Add_Click ) <# Tweaked                              #>
-            {
-
-            }
-
-            If ( $_.Menu_Config_5.Add_Click ) <# Custom                               #>
-            {
-
-            }
-
-            If ( $_.Menu_Info_0.Add_Click )   <# Feedback                             #>
-            {
-
-            }
-
-            If ( $_.Menu_Info_1.Add_Click )   <# FAQ                                  #>
-            {
-
-            }
-
-            If ( $_.Menu_Info_2.Add_Click )   <# About                                #>
-            {
-
-            }
-
-            If ( $_.Menu_Info_3.Add_Click )   <# Copyright                            #>
-            {
-
-            }
-
-            If ( $_.Menu_MB_0.Add_Click )     <# Donate to MadBomb122                 #>
-            {
-
-            }
-
-            If ( $_.Menu_MB_1.Add_Click )     <# MadBomb122's GitHub                  #>
-            {
-                Resolve-Script -Version | % { Start $_.Site }
-            }
-
-            If ( $_.Menu_BV_0.Add_Click )     <# BlackViper's Website                 #>
-            {
-                Start "http://www.blackviper.com/"
-            }
-
-            If ( $_.Menu_SD_0.Add_Click )     <# Secure Digits Plus: Fighting Entropy #>
-            {
-                Start "https://securedigitsplus.com"
-            }
-
-            If ( $_.Service_Dialog_Load.Add_Click )
-            {
-                
-            }
-            $_.Service_Dialog_Search
-            $_.Service_Dialog_Select
-            $_.Service_Dialog_Grid
-            $_.Service_Profile
-            $_.Preferences_Tab
-            $_.Pref_Disp_0
-            $_.Pref_Disp_1
-            $_.Pref_Disp_2
-            $_.Pref_Misc_0
-            $_.Pref_Misc_1
-            $_.Pref_Misc_2
-            $_.Pref_Misc_3
-            $_.Pref_Devel_0
-            $_.Pref_Devel_1
-            $_.Pref_Devel_2
-            $_.Pref_Devel_3
-            $_.Pref_Bypass_Laptop
-            $_.Pref_Bypass_Build
-            $_.Pref_Bypass_Drop
-            $_.Pref_Log_Service_Browse
-            $_.Pref_Log_Service_Path
-            $_.Pref_Log_Script_Browse
-            $_.Pref_Log_Script_Path
-            $_.Pref_Backup_Reg_Browse
-            $_.Pref_Backup_Reg_Path
-            $_.Pref_Backup_CSV_Browse
-            $_.Pref_Backup_CSV_Path
-            $_.Pref_Config_Version
-            $_.Pref_Config_Profile
-            $_.Pref_Module_Version
-            $_.Pref_Module_Profile
-            $_.Console_Tab
-            $_.Console_Output
-            $_.Diagnostic_Tab
-            $_.Diagnostic_Output
-            $_.Start
-            $_.Cancel
+            $_.Add_Click({ $Current = Select-ServiceProfile -Config $Services -Subset 10H:D+ })
         }
 
+        $GUI.Menu_Config_Home_Default_Min    | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset 10H:D+ }) }
+        $GUI.Menu_Config_Pro_Default_Max     | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset 10P:D+ }) }
+        $GUI.Menu_Config_Pro_Default_Min     | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset 10P:D+ }) }
+        $GUI.Menu_Config_Desktop_Safe_Max    | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset DT:S+  }) }
+        $GUI.Menu_Config_Desktop_Safe_Min    | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset DT:S+  }) }
+        $GUI.Menu_Config_Desktop_Tweaked_Max | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset DT:T+  }) }
+        $GUI.Menu_Config_Desktop_Tweaked_Min | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset DT:T+  }) }
+        $GUI.Menu_Config_Laptop_Safe_Max     | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset LT:S+  }) }
+        $GUI.Menu_Config_Laptop_Safe_Min     | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset LT:S-  }) }
+
+
+
+        $GUI.Menu_Info.Feedback              | % { $_.Add_Click({ Start "https://GitHub.com/madbomb122/BlackViperScript/issues" }) }
+        $GUI.Menu_Info.FAQ                   | % { $_.Add_Click({ Resolve-Script -Version | % { Start $_.Site } }) }
+        $GUI.Menu_Info.About                 | % { $_.Add_Click({ 
+        
+            $Splat = @{ Title   = "ViperBomb Service Configuration Utility"
+                        Message = "This program allows deployment of service congiruation templates based on:" ,
+                                  "- Black Viper's Service Configuration Profile" , 
+                                  "- Custom Service Configuration Profile [If properly formatted]" ,
+                                  "- A backup of your Service Configuration Profile made by this program." -join "`n" }
+            Show-Message @Splat })
+        }
+
+        $GUI.Menu_Copyright                  | % { $_.Add_Click({ 
+        
+            $Splat = @{ Title   = "Copyright Information"
+                        Message = @( Resolve-Script -Copyright ) -join "`n" }
+
+            Show-Message @Splat })
+        }
+
+        $GUI.Menu_Info_Madbomb_Donate        | % { $_.Add_Click({ Start "https://www.amazon.com/gp/registry/wishlist/YBAYWBJES5DE" }) }
+        $GUI.Menu_Info_Madbomb_GitHub        | % { $_.Add_Click({ Start "https://GitHub.com/madbomb122/BlackViperScript"           }) }
+        $GUI.Menu_Info_BlackViper            | % { $_.Add_Click({ Start "http://www.blackviper.com" }) }
+        $GUI.Menu_Secure_Digits_Plus         | % { $_.Add_Click({ Show-Message -Message "Currently Desktop only" ; Start "https://securedigitsplus.com" }) }
+
         Show-WPFWindow -GUI $GUI                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function StartScript #______________________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+}#____                                                                            __//Â¯Â¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//Â¯Â¯\\___  
+#//Â¯Â¯\\__________________________________________________________________________/Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯Â¯ Â¯Â¯ Â¯Â¯Â¯\\ 
+#\\__//Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
+    Function StartScript #______________________________________________________________//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯\\__//Â¯Â¯Â¯  
+    {#/Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯ -- Â¯Â¯Â¯Â¯    Â¯Â¯Â¯Â¯      
         [ CmdLetBinding () ] Param (
 
             [ Parameter ( Mandatory ) ] [ PSCustomObject ] $Global )
