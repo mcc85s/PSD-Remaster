@@ -321,6 +321,8 @@
                 Date           = 'Nov-13-2019'
                 Release        = "Stable"
                 Site           = $I[0]
+                Feedback       = "$( $I[0] )\issues"
+                FAQ            = "$( $I[0] )#faq" 
                 URLBase        = $I[1]
                 URLVersion     = "$( $I[1] )/Version/Version.CSV"
                 URLService     = "$( $I[1] )/BlackViper.CSV"
@@ -1358,7 +1360,7 @@
             Return [ PSCustomObject ]@{
 
                 ID      = $CS.PCSystemType
-                Chassis = @( "" , "Desktop" , "Mobile/Laptop" , "Workstation" , "Server" , "Server" , "Appliance" , "Server" , "Maximum" )[ $CS.PCSystemType ]
+                Chassis = @( "N/A" , "Desktop" , "Mobile/Laptop" , "Workstation" , "Server" , "Server" , "Appliance" , "Server" , "Maximum" )[ $CS.PCSystemType ]
             }
         }
 
@@ -1439,47 +1441,45 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Get-ServiceProfile #_______________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-
-        $Switch                     = 'Skip' , 'Disabled' , 'Manual' , 'Auto' , 'Auto (Delayed)'
         
         $Config                     = ( Get-Service *_* | ? ServiceType -eq 224 )[0].Name.Split( '_' )[-1]
 
         $Collect                    = [ PSCustomObject ]@{
-        
-            Scoped                  = @( )
-            NonScoped               = @( )
+
             Skipped                 = Resolve-ScriptVars  | % { $_.Service.Skip } | % { $_.Replace( '?????' , $Config ) } | Sort
             Full                    = Get-CurrentServices | Sort Name
         }
-        
-        Resolve-ScriptVars          | % { $_.FileBase } | % { IPCSV $_.Service } | % { 
 
-            [ PSCustomObject ]@{ 
+        $List                       = Resolve-ScriptVars  | % { $_.FileBase } | % { IPCSV $_.Service }
 
-                Service             = $_.Service.Replace( '?????' , "$Config"  )
-                "10H:D+"            = $Switch[$_."10H:D+"]
-                "10H:D-"            = $Switch[$_."10H:D-"]
-                "10P:D+"            = $Switch[$_."10P:D+"]
-                "10P:D-"            = $Switch[$_."10P:D-"]
-                "DT:S+"             = $Switch[$_."DT:S+"]
-                "DT:S-"             = $Switch[$_."DT:S-"]
-                "LT:S+"             = $Switch[$_."LT:S+"]
-                "LT:S-"             = $Switch[$_."LT:S-"]
-                "DT:T+"             = $Switch[$_."DT:T+"]
-                "DT:T-"             = $Switch[$_."DT:T-"]
-            }
+        @( "H" , "P" | % { "10$_`:D" } ; "S" , "T" | % { "DT:$_" } ; "LT:S" ) | % { "$_+" , "$_-" } | % { 
 
-        } | Sort Service | % {
+            $Collect | Add-Member -MemberType NoteProperty -Name $_ -Value @{ Scoped = @( ) ; NonScoped = @( ) }
 
-            If ( $_.Service -in $Collect.Full.Name )
+            ForEach ( $i in 0..( $List.Count - 1 ) )
             {
-                $Collect.Scoped    += $_
-            }
+                $K = [ PSCustomObject ]@{ 
+                
+                    Service = $List[$I].Service.Replace( '?????' , $Config )
+                    Setting = @( 'Skip' , 'Disabled' , 'Manual' , 'Auto' , 'Auto (Delayed)' )[$List[$I].$J]
+                }
 
-            Else 
-            { 
-                $Collect.NonScoped += $_ 
+                If ( $K.Service -in $Collect.Full.Name )
+                {
+                    $Collect.$_.Scoped += $K
+                }
+
+                Else
+                {
+                    $Collect.$_.NonScoped += $K
+                }
             }
+        }
+
+        @( "H" , "P" | % { "10$_`:D" } ; "S" , "T" | % { "DT:$_" } ; "LT:S" ) | % { "$_+" , "$_-" } | % { 
+
+            $Collect.$_.Scoped    = $Collect.$_.Scoped    | Sort Service
+            $Collect.$_.NonScoped = $Collect.$_.NonScoped | Sort Service
         }
 
         $Collect
@@ -1489,7 +1489,7 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Get-SettingProfile #_______________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        Resolve-ScriptVars | % { Import-CLIXML $_.FileBase.Settings }               #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____       
+        Resolve-ScriptVars | % { Import-CLIXML $_.FileBase.Settings }               #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
@@ -1593,46 +1593,6 @@
         $Table                = New-Table -Title "Diagnostic/Startup Panel" -Depth 10 -ID $Section -Table $Subtable
         
         Write-Theme -Table $Table -Prompt "Press Enter to Continue, CTRL+C to Exit"
-
-	                                                                                #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
-}#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
-#//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
-#\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
-    Function Select-ServiceProfile #____________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
-    {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
-        [ CmdLetBinding () ] Param (
-
-            [ Parameter ( ValueFromPipeline ) ] [ PSCustomObject ] $Config = ( Get-ServiceProfile ) ,
-            [ ValidateSet ( "10H:D+" , "10H:D-" , "10P:D+" , "10P:D-" , "DT:S+" , "DT:S-" , "LT:S+" , " LT:S-" , "DT:T+" , "DT:T-" ) ]
-            [ Parameter ( Mandatory ) ]         [         String ] $Subset )
-
-            $Output  = @( )
-
-            ForEach ( $i in 0..( $Config.Full.Count - 1 ) )
-            {
-                $Return    = [ PSCustomObject ]@{
-
-                    DisplayName = $Config.Full.DisplayName[$I]
-                    Name        = $Config.Full.Name[$I]
-                    Status      = $Config.Full.Status[$I]
-                    Profile     = "N/A"
-                    StartType   = $Config.Full.StartType[$I]
-                }
-               
-                If ( $Return.Name -in $Config.Scoped.Service )
-                {
-                    $Return.Profile = $Config.Scoped.$Subset[ ( 0..( $Config.Scoped.Service.Count - 1 ) | ? { $Config.Scoped.Service[$_] -eq $Return.Name } ) ]
-                }
-
-                If ( $Return.Name -in $Config.NonScoped.Service )
-                {
-                    $Return.Profile = $Config.NonScoped.$Subset[ ( 0..( $Config.NonScoped.Service.Count - 1 ) | ? { $Config.NonScoped.Service[$_] -eq $Return.Name } ) ]
-                }
-
-                $Output += $Return
-            }
-
-            $Output
 	                                                                                #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
@@ -1640,6 +1600,7 @@
     Function Load-MadBombRevisedGUI #___________________________________________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
         $Services   = Get-ServiceProfile
+        $Script     = Resolve-Script -Version
 
         Return-ViperBombGUI -Main | % { 
         
@@ -1648,47 +1609,53 @@
             $Named                = $_.Named
         }
 
-        $GUI.Menu_Config_Home_Default_Max    | % { 
+        $GUI.Menu_Config_Home_Default_Max    | % { $_.Add_Click({ $Services."10H:D+"     }) }
+        $GUI.Menu_Config_Home_Default_Min    | % { $_.Add_Click({ $Services."10H:D+"     }) }
+        $GUI.Menu_Config_Pro_Default_Max     | % { $_.Add_Click({ $Services."10P:D+"     }) }
+        $GUI.Menu_Config_Pro_Default_Min     | % { $_.Add_Click({ $Services."10P:D+"     }) }
+        $GUI.Menu_Config_Desktop_Safe_Max    | % { $_.Add_Click({ $Services."DT:S+"      }) }
+        $GUI.Menu_Config_Desktop_Safe_Min    | % { $_.Add_Click({ $Services."DT:S+"      }) }
+        $GUI.Menu_Config_Desktop_Tweaked_Max | % { $_.Add_Click({ $Services."DT:T+"      }) }
+        $GUI.Menu_Config_Desktop_Tweaked_Min | % { $_.Add_Click({ $Services."DT:T+"      }) }
+        $GUI.Menu_Config_Laptop_Safe_Max     | % { $_.Add_Click({ $Services."LT:S+"      }) }
+        $GUI.Menu_Config_Laptop_Safe_Min     | % { $_.Add_Click({ $Services."LT:S-"      }) }
+        $GUI.Menu_Info_Feedback              | % { $_.Add_Click({ Start $Script.Feedback }) }
+        $GUI.Menu_Info_FAQ                   | % { $_.Add_Click({ Start $Script.FAQ      }) }
+        $GUI.Menu_Info_About                 | % { $_.Add_Click({ 
         
-            $_.Add_Click({ $Current = Select-ServiceProfile -Config $Services -Subset 10H:D+ })
-        }
+            Show-Message -Title "ViperBomb Service Configuration Utility" -Message (
+            
+                    "This program allows deployment of Service Configuration Profiles based on:" ,
+                    "  " , 
+                    "- BlackViper (Sparks v1.0) [Default]" , 
+                    "- Custom Service Configuration Profile [Properly Formatted]" ,
+                    "- Backup Service Configuration Profile [Made via this tool]" -join "`n" )
+        }) }
 
-        $GUI.Menu_Config_Home_Default_Min    | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset 10H:D+ }) }
-        $GUI.Menu_Config_Pro_Default_Max     | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset 10P:D+ }) }
-        $GUI.Menu_Config_Pro_Default_Min     | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset 10P:D+ }) }
-        $GUI.Menu_Config_Desktop_Safe_Max    | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset DT:S+  }) }
-        $GUI.Menu_Config_Desktop_Safe_Min    | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset DT:S+  }) }
-        $GUI.Menu_Config_Desktop_Tweaked_Max | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset DT:T+  }) }
-        $GUI.Menu_Config_Desktop_Tweaked_Min | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset DT:T+  }) }
-        $GUI.Menu_Config_Laptop_Safe_Max     | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset LT:S+  }) }
-        $GUI.Menu_Config_Laptop_Safe_Min     | % { $_.Add_Click({ Select-ServiceProfile -Config $Services -Subset LT:S-  }) }
-
-
-
-        $GUI.Menu_Info.Feedback              | % { $_.Add_Click({ Start "https://GitHub.com/madbomb122/BlackViperScript/issues" }) }
-        $GUI.Menu_Info.FAQ                   | % { $_.Add_Click({ Resolve-Script -Version | % { Start $_.Site } }) }
-        $GUI.Menu_Info.About                 | % { $_.Add_Click({ 
-        
-            $Splat = @{ Title   = "ViperBomb Service Configuration Utility"
-                        Message = "This program allows deployment of service congiruation templates based on:" ,
-                                  "- Black Viper's Service Configuration Profile" , 
-                                  "- Custom Service Configuration Profile [If properly formatted]" ,
-                                  "- A backup of your Service Configuration Profile made by this program." -join "`n" }
-            Show-Message @Splat })
-        }
-
-        $GUI.Menu_Copyright                  | % { $_.Add_Click({ 
-        
-            $Splat = @{ Title   = "Copyright Information"
-                        Message = @( Resolve-Script -Copyright ) -join "`n" }
-
-            Show-Message @Splat })
-        }
-
+        $GUI.Menu_Info_Copyright             | % { $_.Add_Click({ Show-Message -Title "Copyright Information" -Message ( ( Resolve-Script -Copyright ) -join "`n" ) }) }
         $GUI.Menu_Info_Madbomb_Donate        | % { $_.Add_Click({ Start "https://www.amazon.com/gp/registry/wishlist/YBAYWBJES5DE" }) }
         $GUI.Menu_Info_Madbomb_GitHub        | % { $_.Add_Click({ Start "https://GitHub.com/madbomb122/BlackViperScript"           }) }
         $GUI.Menu_Info_BlackViper            | % { $_.Add_Click({ Start "http://www.blackviper.com" }) }
-        $GUI.Menu_Secure_Digits_Plus         | % { $_.Add_Click({ Show-Message -Message "Currently Desktop only" ; Start "https://securedigitsplus.com" }) }
+        $GUI.Menu_Info_Secure_Digits_Plus    | % { $_.Add_Click({ Show-Message -Message "Currently Desktop only" ; Start "https://securedigitsplus.com" }) }
+
+        $GUI.LoggingService                  | % { $_.Add_Click({ 
+        
+            $GUI.LoggingServiceFile.IsEnabled = $True
+
+                New-Object System.Windows.Forms.SaveFileDialog | % { 
+
+                    $_.InitialDirectory = Resolve-Script -Path | % { $_.Parent }
+                    $_.Filter           = 'Log File (*.log)| *.log'
+                    $_.ShowDialog()
+                    $GUI.LoggingServiceFile.Text = $_.FileName
+                }
+            })
+        }
+
+            
+        
+
+        $GUI.Cancel                          | % { $_.Add_Click({ $GUI.DialogResult = $False }) }
 
         Show-WPFWindow -GUI $GUI                                                    #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
