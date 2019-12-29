@@ -1,3 +1,4 @@
+
     $ErrorActionPreference     = 'Stop'
 
     Function Set-Program
@@ -177,7 +178,7 @@
                             Prompt = "Press Enter to Continue"
                         }
 
-                        Write-Theme @Spl
+                        Write-Theme @Splat
                     }
                 }
             }
