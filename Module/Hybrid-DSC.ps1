@@ -487,11 +487,13 @@
                     ST       = @( "Dynamically Engineered Digital Security" , "Application Development - Virtualization" , "Network & Hardware Magistration" , "What America Once Stood For" | % { "[ $_ ]" } ;
                                   "$Pi A Heightened Sense Of Security $Pi" ; "H Y B R I D" , "B Y" , "S E C U R E - D I G I T S - P L U S - L L C" )
                 }
- 
+
+                0..120 | % { IEX "`$B$_ = '_' * $_ ; `$T$_ = '¯' * $_ ; `$S$_ = ' ' * $_" }
+                
                 $LL0 = "\$S10" ; $LL1 = "/$S10" ; $LR0 = "$S10/" ; $LR1 = "$S10\" ; $N5 = "$( "     *" * 5 )      "
                 $N6  = "  *   " * 6 ; 0..1 | % { IEX "`$F$_ = '$( $F[$_] )'" } ; 1..0 | % { IEX "`$R$_ = '$( $F[$_] )'" }
                     
-                0..120 | % { IEX "`$B$_ = '_' * $_ ; `$T$_ = '¯' * $_ ; `$S$_ = ' ' * $_" }
+                
 
                 $Title        = $FX.Title | % { If ( $_.Length -gt 83 ) { "$( $_.Substring( 0 , 78 ) )..." } Else { $_ } } | % { "[ $_ ]" }
 
