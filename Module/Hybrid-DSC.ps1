@@ -276,13 +276,15 @@
             $Count = 0..( $Depth - 1 ) 
         }
         
-        $C = $Null ; $Count | % {
+        $C         = $Null
+        
+        $Count     | % {
 
             If ( $Depth -gt 1 )
             {   
                 If ( $C -ne $Null ) 
                 { 
-                    $C = $C + 1 
+                    $C ++ 
                 } 
                 
                 If ( $C -eq $Null ) 
@@ -296,8 +298,14 @@
 
             If ( $Depth -eq 1 )
             {   
-                $C = 0 ; $Index = $ID ; $Section = $Table 
+                $C       = 0
+                $Index   = $ID
+                $Section = $Table 
             }
+
+            $String = [ Ordered ]@{ }
+
+            $NX = @( 0..9 | % { "{0:d1}" } ; 10..99 | % { "{0:d2}" } ; 100..999 | % { "{0:d3}" } ; 1000..9999 | % { "{0:d4}" } )[ $Depth ]
 
             $Object | Add-Member -MemberType NoteProperty -Name "ID:$C" -Value $Index
 
@@ -364,24 +372,13 @@
 
         Begin
         {
-            If ( $Edge   -eq $Null ) { $Edge   = 11 }
-            If ( $Center -eq $Null ) { $Center = 12 }
-            If ( $Font   -eq $Null ) { $Font   = 15 }
-            If ( $Back   -eq $Null ) { $Back   =  0 }
-            
-            $GX   = $Edge , $Center , $Font , $Back , 15 , 12 , 9 , 0 , 10
-            $S    = " // " , " \\ "
-            $F    = "/¯¯\" , "\__/"
-            $L    = $S[1..0]
-            $R    = $S
-            $M    = "¯" , "_" , " " , "-" ; 0..3 | % { IEX "`$M$_ = 0..120 | % { '$( $M[$_] )' * `$_ }" }
-
-            #$Echo = [ PSCustomObject ]@{ ST = @{ <# Object #> } ; FG = @{ <# Foreground #> } ; BG = @{ <#Background #> } }
+            $GX = $Edge , $Center , $Font , $Back , 15 , 12 , 9 , 0 , 10 ; $S = " // " , " \\ " ; $F = "/¯¯\" , "\__/" ; $PI = "($( [ Char ] 960 ))" ;
+            $L  = $S[1..0] ; $R = $S ; $M = 0..3 | % { IEX "`$M$_ = 0..120 | % { @( '¯' , '_' , ' ' , '-' )[$_] * `$_ }" }
         }
 
         Process
         {
-            If ( $Function ) <# -Function Switch Object Table #>
+            If ( $Function )
             {
                 $FA = $Function ; $FL = $FA.Length ; $Return = 0..4
                 
@@ -404,7 +401,7 @@
                 
                 $Return[1] | % { 
                     
-                    $_.ST  = @( " /" , $F[0] , "\$( $M1[70] )/" ; $F  * 4 ; $F[0] , "\ " )
+                    $_.ST  = @( " /" , $F[0] , "\$( $M1[70] )/" ; $F * 4 ; $F[0] , "\ " )
                     $_.FG  = @( 0 , 1 ) * 6 + 0
                 }
 
@@ -431,8 +428,25 @@
             {                
                 $Return = 0..4
                 
-                $T  = $( If ( $Type.Length -gt 18 ) { "$( $Type[ 0..17 ] -join '' )..." } Else { "$( $M2[ ( 21 - $Type.Length ) ] )$Type" } )
-                $IN = $( If ( $Info.Length -gt 66 ) { "$( $Info[ 0..65 ] -join '' )..." } Else { "$Info$( $M2[ ( 69 - $Info.Length ) ])"  } )
+                If ( $Type.Length -gt 18 ) 
+                { 
+                    $T = "$( $Type[ 0..17 ] -join '' )..." 
+                } 
+                
+                Else 
+                { 
+                    $T = "$( $M2[ ( 21 - $Type.Length ) ] )$Type" 
+                }
+                
+                If ( $Info.Length -gt 66 ) 
+                { 
+                    $IN = "$( $Info[ 0..65 ] -join '' )..." 
+                } 
+                
+                Else 
+                { 
+                    $IN = "$Info$( $M2[ ( 69 - $Info.Length ) ])"  
+                }
 
                 0..4 | % {
 
@@ -454,97 +468,311 @@
                     }
                 }
 
-                $ST = @{ 0 = "  ____    $( $M1[100] )      "
-                         1 = @( " /" ; $F ; "/$( $M0[98])\" , "\___  " )
-                         2 = @( " \" , $F[1] , "/¯¯¯ " , " $T : $In " , "___/" , $F[0] , "\ " )
-                         3 = @( "  ¯¯¯\" , "\$( $M1[98] )/" ; $F[ 0 , 1 ] ; "/ " )
-                         4 = "      $( $M0[100] )    ¯¯¯¯  " }
-                
-                0..4 | % { $Return[$_].ST = $ST[$_] } 
+                $Return[0].ST = "  ____    $( $M1[100] )      "
+                $Return[1].ST = @( " /" ; $F ; "/$( $M0[98] )\" , "\___  " )
+                $Return[2].ST = @( " \" , $F[1] , "/¯¯¯ " , " $T : $In " , "___/" , $F[0] , "\ " )
+                $Return[3].ST = @( "  ¯¯¯\" , "\$( $M1[98] )/" ; $F[ 0 , 1 ] ; "/ " )
+                $Return[4].ST = "      $( $M0[100] )    ¯¯¯¯  "
+
             }
 
             If ( $Free )
-            {
-                $Return = 0..33
+            { 
+
+                $FX          = [ PSCustomObject ]@{ 
+
+                    Title    = "Beginning the fight against Technological Tyranny and Cyber Criminal Activities"
+                    Sign     = "$( Get-Date -UFormat "%m/%d/%Y" | % { $_.ToCharArray() } )" , "M I C H A E L  C  C O O K  S R" -join '  |  '
+                    E0       = "[=]" ; E1 = "\__/" ; E2 = "| |" ; B = ( "[=]" , "\_/" )[ 0 , 1 , 0 ] -join ''
+                    ST       = @( "Dynamically Engineered Digital Security" , "Application Development - Virtualization" , "Network & Hardware Magistration" , "What America Once Stood For" | % { "[ $_ ]" } ;
+                                  "$Pi A Heightened Sense Of Security $Pi" ; "H Y B R I D" , "B Y" , "S E C U R E - D I G I T S - P L U S - L L C" )
+                }
  
-                $Flag = @{ # Variable Prep
-                
-                    D = ( "m" , "d" , "Y" | % { Get-Date -UFormat "%$_" } | % { "$( $_.ToCharArray() )" } ) -join ' / '
-                    A = " //¯" , " \\" , " //" , " \\_"
-                    E = "[=]" , "\_/" , "| |"
-                    B = ( "[=]" , "\_/" )[ 0 , 1 , 0 ] -join ''
-                    S = "Beginning the fight against Technological Tyranny and Cyber Criminal Activities" , "Dynamically Engineered Digital Security" , 
-                    "Application Development - Virtualization" , "Network & Hardware Magistration" , "What America Once Stood For", 
-                    "($( [ Char ]960 )) A Heightened Sense Of Security ($( [ Char ]960 ))" , "HYBRID" , "BY" , "SECURE-DIGITS-PLUS-LLC" , "MICHAEL C COOK SR" 
-                }
-                
-                $STR   = $Flag | % { $_.S[0..5] | % { "[ $_ ]" } ; $_.S[6..9] | % { $_.ToCharArray() -join ' ' } } ; 
-                $Sig   = $Flag.D + '  |  ' + $STR[9].Replace( "  " , " " )
-                $ST0   = "   \" , "\__/" , "/   "
-                $ST1   = "   /" , "/¯¯\" , "\   "
-                $STR0  = @( $ST1 ; " \" , "\$( "  *   " * 6 )]" )
-                $STR1  = @( $ST0 ; " /" , "/$( "     *" * 5 )      ]" )
-
-                $Math  = [ PSCustomObject ]@{
-                        
-                    FG = @{ 0 = 0 ; 1 = 2 ; 2 = 5 ; 3 = 4 ; 4 = @( 4 ) * 4 ; 5 = 4 , 4 , 5 , 4 ; 6 = 4 , 4 , 5 , 7 , 5 , 4 ; 7 = 4 , 5 , 4 ; 8 = 4 , 5 , 8 , 5 , 4 ; 9 = 4 , 8 , 4 }
-                    BG = @{ 0 = 7 ; 1 = @( 7 ) * 7 ; 2 = 6 , 5 ; 3 = 6 , 4 ; 4 = 6 , 4 , 4 , 4 ; 5 = 4 ; 6 = 4 , 7 , 4 ; 7 = 5 , 7 , 5 ; 8 = @( 7 ) * 9 }
-
-                }
+                $LL0 = "\$S10" ; $LL1 = "/$S10" ; $LR0 = "$S10/" ; $LR1 = "$S10\" ; $N5 = "$( "     *" * 5 )      "
+                $N6  = "  *   " * 6 ; 0..1 | % { IEX "`$F$_ = '$( $F[$_] )'" } ; 1..0 | % { IEX "`$R$_ = '$( $F[$_] )'" }
                     
-                $Map   = [ PSCustomObject ]@{
-                        
-                    FG = @( 0 , 1 , 2 , 3 ; @( 4 , 4 , 5 , 6 ) * 3 ; 4 , 4 , 7 ; @( 8 ) * 11 ; 9 , 2 , 1 , 0 )
-                    BG = @( 0 , 1 , 1 , 1 ; @( 2 , 2 , 3 , 4 ) * 3 ; 2 , 2 , 5 , 6 , 7 , 7 ; @( 6 , 6 , 7 , 7 ) * 2 ; 8 , 1 , 1 , 0 )
+                0..120 | % { IEX "`$B$_ = '_' * $_ ; `$T$_ = '¯' * $_ ; `$S$_ = ' ' * $_" }
 
+                $Title        = $FX.Title | % { If ( $_.Length -gt 83 ) { "$( $_.Substring( 0 , 78 ) )..." } Else { $_ } } | % { "[ $_ ]" }
+
+                $Rec          = $Title | % { 92 - $_.Length | % { $_ ; $_ % 2 ; ( $_ - ( $_ % 2 ) ) / 2 } }
+
+                $NI           = $M1[$Rec[2]] , $M1[$Rec[1]] , $Title , $M1[$Rec[2]] -join ''
+    
+                $Return       = 0..38 | % { [ PSCustomObject ]@{ ST = "" ; FG = "" ; BG = "" } }
+            
+                $Return[0]    | % { 
+    
+                    $_.ST     = "  $B4" , $S4 , $B100 , $S6
+                    $_.FG     = 0 , 0 , 0 , 0
+                    $_.BG     = 3 , 3 , 3 , 3
+                }
+            
+                $Return[1]    | % {
+            
+                    $_.ST     = " /" , $F0 , $F1 , "/$T98\" , "\___  "
+                    $_.FG     = 0 , 1 , 0 , 1 , 0
+                    $_.BG     = @( 3 ) * 5
                 }
 
-                $ST = @{ 0 = "    ____    $( $M1[92] )    ____    "
-                         1 = @( "   /" , "/¯¯\" , "\" , "==[$( $M0[92] )]==" , "/" , "/¯¯\" , "\   " )
-                         2 = @( $ST0 ; "     $( $STR[0] )    " ; $ST0 )
-                         3 = @( $ST1 ; "  $( $M1[88] )  " ; $ST1 )
-                         4 = @( $ST0 ; " /" , "/¯$( $M0[35] )]" , "[$( $M0[47] )¯\" , "\ " ; $ST0 ) ; 
-                         5 = @( $STR0 ; "[$( $M1[47] )_/" , "/ " ; $ST1 )
-                         6 = @( $STR1 ; "[$( $M0[47] )¯\" , "\ " ; $ST0 ) ; 
-                         7 = @( $STR0 ; "[__" , $STR[1] , "___/" , "/ " ; $ST1 )
-                         8 = @( $STR1 ; "[$( $M0[47] )¯\" , "\ " ; $ST0 ) ; 
-                         9 = @( $STR0 ; "[$( $M1[47] )_/" , "/ " ; $ST1 )
-                        10 = @( $STR1 ; "[$( $M0[47] )¯\" , "\ " ; $ST0 ) ; 
-                        11 = @( $STR0 ; "[_" , $STR[2] , "___/" , "/ " ; $ST1 )
-                        12 = @( $STR1 ; "[$( $M0[47] )¯\" , "\ " ; $ST0 ) ; 
-                        13 = @( $STR0 ; "[$( $M1[47] )_/" , "/ " ; $ST1 )
-                        14 = @( $STR1 ; "[$( $M0[47] )¯\" , "\ " ; $ST0 ) ; 
-                        15 = @( $STR0 ; "[______" , $STR[3] , "_______/" , "/ " ; $ST1 )
-                        16 = @( $ST0  ; " /" , "/  $( $STR[4] )   ]" , "[$( $M0[47] )¯\" , "\ " ; $ST0 )
-                        17 = @( $ST1  ; " \" , "\$( $M1[36] )]" , "[$( $M1[47] )_/" , "/ " ; $ST1 )
-                        18 = @( $ST0  ; " /" , "/$( $M0[86] )\" , "\ " ; $ST0 )
-                        19 = @( $ST1  ; " \" , "\$( $M1[32] )" , "$( $Flag.B )\__/$( $Flag.B )" , "$( $M1[32] )/" , "/ " ; $ST1 )
-                        20 = @( $ST0  ; " /" , "/$( $M0[32] )" , "$( $Flag.E[2] )  $( $M1[11] )   $( $Flag.E[2] )" , "$( $M0[32] )\" , "\ " ; $ST0 )
-                        21 = @( $ST1  ; " \" , "\$( $M1[32] )" , "$( $Flag.E[0] )_ $( $STR[6] ) __$( $Flag.E[0] )" , "$( $M1[32] )/" , "/ " ; $ST1 )
-                        22 = @( $ST0  ; " /" , "/$( $M0[32] )" , "$( $Flag.E[2] + $M0[16] + $Flag.E[2] )" , "$( $M0[32] )\" , "\ " ; $ST0 )
-                        23 = @( $ST1  ; " \" , "\_$( $M1[16])" , "$( $Flag.B * 2 )      $( $STR[7] )       $( $Flag.B * 2 )" , "$( $M1[16] )_/" , "/ " ; $ST1 )
-                        24 = @( $ST0  ; " /" , "/$( $M0[17] )" , "$( $Flag.E[2] + $M0[15] )      $( $M0[3] )       $( $M0[15] + $Flag.E[2] )" , "$( $M0[17] )\" , "\ " ; $ST0 )
-                        25 = @( $ST1  ; " \" , "\$( $M1[17] )" , "$( $Flag.E[0] )  $( $STR[8] ) $( $Flag.E[0] )" , "$( $M1[17] )/" , "/ " ; $ST1 )
-                        26 = @( $ST0  ; " /" , "/$( $M0[17] )" , "$( $Flag.E[1] )  $( $M0[43] ) $( $Flag.E[1] )" , "$( $M0[17] )\" , "\ " ; $ST0 )
-                        27 = @( $ST1  ; " \" , "\$( $M1[11] )" , "$( $Flag.B * 3 + $Flag.E[0] )\__/$( $Flag.E[0] + $Flag.B * 3 )" , "$( $M1[11] )/" , "/ " ; $ST1 )
-                        28 = @( $ST0  ; " /" , "/$( $M0[11] )" , "$( $Flag.E[0] + $M0[58] + $Flag.E[0] )" , "$( $M0[11] )\" , "\ " ; $ST0 )
-                        29 = @( $ST1  ; " \" , "\$( $M1[11] )" , "$( $Flag.E[0] )  $SIG  $( $Flag.E[0] )" , "$( $M1[11] )/" , "/ " ; $ST1 )
-                        30 = @( $ST0  ; "  $( $M0[12] )" , "¯¯   $( $M0[19] )     $( $M0[30] )   ¯¯" , "$( $M0[12] )  " ; $ST0 )
-                        31 = @( $ST1  ; "$( $M2[25] + $STR[5] + $M2[25] )" ; $ST1 ) ; 
-                        32 = "   \" , "\__/" , "/" , "==[$( $M1[92] )]==" , "\" , "\__/" , "/   "
-                        33 = "    ¯¯¯¯    $( $M0[92] )    ¯¯¯¯    " 
+                $Return[2]    | % { 
+            
+                    $_.ST     = " \" , $F1 , "/¯¯¯" , "  $NI  " , "___/" , $F0 , "\ "
+                    $_.FG     = 0 , 1 , 1 , 2 , 1 , 1 , 0
+                    $_.BG     = @( 3 ) * 7
                 }
 
-                ForEach ( $I in 0..33 )
-                {
-                    $Return[$I] = [ PSCustomObject ]@{ ST = "" ; FG = "" ; BG = "" }
+                $Return[3]    | % {
+                
+                    $_.ST     = " /" , $F0 , "\$B98/" , $F0 , $F1 , "/ "
+                    $_.FG     = 0 , 0 , 1 , 0 , 1 , 0
+                    $_.BG     = @( 3 ) * 6
+                }
 
-                    $X = $Math.FG[ ( $Map.FG[ $I ] ) ]
-                    $Y = $Math.BG[ ( $Map.BG[ $I ] ) ]
+                $Return[4]    | % {
+                            
+                    $_.ST     = " \" , "\   " , "$T100" , "    ¯¯\(  "
+                    $_.FG     = 0 , 0 , 0 , 0
+                    $_.BG     = @( 3 ) * 4
+                }
 
-                    $Return[$I].FG = $( If ( $I -in 1..32 ) { 0 , 1 , 0 ; $X ; 0 , 1 , 0 }         Else { $X } )
-                    $Return[$I].BG = $( If ( $I -in 4..29 ) { 7 , 7 , 7 , 7 ; $Y ; 7 , 7 , 7 , 7 } Else { $Y } )
-                    $Return[$I].ST = $ST[$I]
+                $Return[5]    | % { 
+                            
+                    $_.ST     = " /" , "/$S11" , $B88 , "$S11\" , "\ "
+                    $_.FG     = 0 , 0 , 4 , 0 , 0
+                    $_.BG     = @( 3 ) * 5
+                }
+
+                $Return[6]    | % {  
+                            
+                    $_.ST     = " \" , $LL0 , "//$T36]" , "[$T48\\" , $LR0 , "/ "
+                    $_.FG     = 0 , 0 , 4 , 4 , 0 , 0
+                    $_.BG     = 7 , 7 , 6 , 5 , 7 , 7
+                }
+
+                $Return[7]    | % { 
+                            
+                    $_.ST     = " /" , $LL1 , "\\$N6]" , "[$B48//" , $LR1 , "\ "
+                    $_.FG     =  0 , 0 , 4 , 4 , 0 , 0
+                    $_.BG     =  7 , 7 , 6 , 5 , 7 , 7
+                }
+
+                $Return[8]    | % {
+
+                    $_.ST     = " \" , $LL0 , "//$N5]" , "[$T48\\" , $LR0 , "/ "
+                    $_.FG     = 0 , 0 , 4 , 5 , 0 , 0
+                    $_.BG     = 7 , 7 , 6 , 4 , 7 , 7
+                }
+
+                $Return[9]    | % {
+
+                    $_.ST     = " /" , $LL1 , "\\$N6]" , "[___"   , $FX.ST[0]  , "__//" , $LR1 , "\ "
+                    $_.FG     = 0 , 0 , 4 , 5 , 5 , 5 , 0 , 0
+                    $_.BG     = 7 , 7 , 6 , 4 , 4 , 4 , 7 , 7
+                }
+
+                $Return[10]   | % {
+
+                    $_.ST     = " \" , $LL0 , "//$N5]" , "[$T48\\" , $LR0 , "/ "
+                    $_.FG     = 0 , 0 , 4 , 4 , 0 , 0
+                    $_.BG     = 7 , 7 , 6 , 5 , 7 , 7 
+                }
+
+                $Return[11]   | % {
+
+                    $_.ST     = " /" , $LL1 , "\\$N6]" , "[$B48//" , $LR1 , "\ "
+                    $_.FG     = 0 , 0 , 4 , 4 , 0 , 0
+                    $_.BG     = 7 , 7 , 6 , 5 , 7 , 7 
+                }
+
+                $Return[12]   | % {
+
+                    $_.ST     = " \" , $LL0 , "//$N5]" , "[$T48\\" , $LR0 , "/ "
+                    $_.FG     = 0 , 0 , 4 , 5 , 0 , 0
+                    $_.BG     = 7 , 7 , 6 , 4 , 7 , 7 
+                }
+
+                $Return[13]   | % { 
+
+                    $_.ST     = " /" , $LL1 , "\\$N6]" , "[__"    , $FX.ST[1] , "__//" , $LR1 , "\ "
+                    $_.FG     = 0 , 0 , 4 , 5 , 5 , 5 , 0 , 0
+                    $_.BG     = 7 , 7 , 6 , 4 , 4 , 4 , 7 , 7 
+                }
+
+                $Return[14]   | % {
+
+                    $_.ST     = " \" , $LL0 , "//$N5]" , "[$T48\\" , $LR0 , "/ "
+                    $_.FG     =  0 , 0 , 4 , 4 , 0 , 0
+                    $_.BG     =  7 , 7 , 6 , 5 , 7 , 7
+                }
+
+                $Return[15]   | % {
+
+                    $_.ST     = " /" , $LL1 , "\\$N6]" , "[$B48//" , $LR1 , "\ "
+                    $_.FG     =  0 , 0 , 4 , 4 , 0 , 0
+                    $_.BG     =  7 , 7 , 6 , 5 , 7 , 7 
+                }
+
+                $Return[16]   | % {
+
+                    $_.ST     = " \" , $LL0 , "//$N5]" , "[$T48\\" , $LR0 , "/ "
+                    $_.FG     =  0 , 0 , 4 , 5 , 0 , 0
+                    $_.BG     =  7 , 7 , 6 , 4 , 7 , 7 
+                }
+
+                $Return[17]       | % {
+
+                    $_.ST     = " /" , $LL1 , "\\$N6]" , "[$B7"   , $FX.ST[2] , "$B6//" , $LR1 , "\ "
+                    $_.FG     =  0 , 0 , 4 , 5 , 5 , 5 , 0 , 0
+                    $_.BG     =  7 , 7 , 6 , 4 , 4 , 4 , 7 , 7 
+                }
+
+                $Return[18]   | % {
+
+                    $_.ST     = " \" , $LL0 , "//  " , $FX.ST[3] , "   ]" , "[$T48\\" , $LR0 , "/ "
+                    $_.FG     =  0 , 0 , 4 , 4 , 4 , 4 , 0 , 0
+                    $_.BG     =  7 , 7 , 6 , 6 , 6 , 5 , 7 , 7
+                }
+
+                $Return[19]   | % {
+
+                    $_.ST     = " /" , $LL1 , "\\$B36]" , "[$B48//" , $LR1 , "\ "
+                    $_.FG     =  0 , 0 , 4 , 4 , 0 , 0
+                    $_.BG     =  7 , 7 , 6 , 5 , 7 , 7
+                }
+
+                $Return[20]       | % {
+
+                    $_.ST     = " \" , $LL0 , "//$T86\\" , $LR0 , "/ "
+                    $_.FG     =  0 , 0 , 5 , 0 , 0
+                    $_.BG     =  7 , 7 , 4 , 7 , 7
+                }
+            
+                $Return[21]   | % {
+
+                    $_.ST     = " /" , $LL1 , "\\$B32"  , $FX.B , "\__/" , $FX.B  , "$B32//" , $LR1 , "\ "
+                    $_.FG     =  0 , 0 , 5 , 8 , 8 , 8 , 5 , 0 , 0
+                    $_.BG     =  7 , 7 , 4 , 7 , 7 , 7 , 4 , 7 , 7 
+                }
+
+                $Return[22]   | % {
+
+                    $_.ST     = " \" , $LL0 , "//$T32"  , "| |$T16| |" , "$T32\\" , $LR0 , "/ "
+                    $_.FG     =  0 , 0 , 4 , 8 , 4 , 0 , 0
+                    $_.BG     =  7 , 7 , 5 , 7 , 5 , 7 , 7
+                }
+
+                $Return[23]   | % {
+
+                    $_.ST     = " /" , $LL1 , "\\$B32"  , "[=]" , $S2 , $FX.ST[5] , $S3 , "[=]" , "$B32//" , $LR1 , "\ "
+                    $_.FG     =  0 , 0 , 4 , 8 , 8 , 8 , 8 , 8 , 4 , 0 , 0
+                    $_.BG     =  7 , 7 , 5 , 7 , 7 , 7 , 7 , 7 , 5 , 7 , 7 
+                }
+
+                $Return[24]   | % {
+
+                    $_.ST     = " \" , $LL0 , "//$T32"  , "| |" , $T16 , "| |" , "$T32\\" , $LR0 , "/ "
+                    $_.FG     =  0 , 0 , 5 , 8 , 8 , 8 , 5 , 0 , 0
+                    $_.BG     =  7 , 7 , 4 , 7 , 7 , 7 , 4 , 7 , 7
+                }
+
+                $Return[25]   | % {
+
+                    $_.ST     = " /" , $LL1 , "\\$B17"  , ( $FX.B * 2 ) , $S6 , $FX.ST[6] , $S7 , ( $FX.B * 2 ) , "$B17//" , $LR1 , "\ "
+                    $_.FG     =  0 , 0 , 5 , 8 , 8 , 8 , 8 , 8 , 5 , 0 , 0
+                    $_.BG     =  7 , 7 , 4 , 7 , 7 , 7 , 7 , 7 , 4 , 7 , 7 
+                }
+    
+                $Return[26]   | % {
+
+                    $_.ST     = " \" , $LL0 , "//$T17"  , "| |" , $T15 , $S6 , $T3 , $S7 , $T15 , "| |" , "$T17\\" , $LR0 , "/ "
+                    $_.FG     =  0 , 0 , 4 , 8 , 8 , 8 , 8 , 8 , 8 , 8 , 4 , 0 , 0
+                    $_.BG     =  7 , 7 , 5 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 5 , 7 , 7
+                }
+
+                $Return[27]   | % { 
+
+                    $_.ST     = " /" , $LL1 , "\\$B17"  , "[=]" , $S1 , $FX.ST[7] , $S2 , "[=]" , "$B17//" , $LR1 , "\ "
+                    $_.FG     =  0 , 0 , 4 , 8 , 8 , 8 , 8 , 8 , 4 , 0 , 0
+                    $_.BG     =  7 , 7 , 5 , 7 , 7 , 7 , 7 , 7 , 5 , 7 , 7
+                }
+
+                $Return[28]   | % {
+
+                    $_.ST     = " \" , $LL0 , "//$T17"  , "\_/" , $S1 , $T43 , $S2 , "\_/" ,  "$T17\\" , $LR0 , "/ "
+                    $_.FG     =  0 , 0 , 5 , 8 , 8 , 8 , 8 , 8 , 5 , 0 , 0
+                    $_.BG     =  7 , 7 , 4 , 7 , 7 , 7 , 7 , 7 , 4 , 7 , 7
+                }
+
+                $Return[29]   | % {
+
+                    $_.ST     = " /" , $LL1 , "\\$B11"  , ( $FX.B * 3 ) , "[=]" , "\__/" , "[=]", ( $FX.B * 3 ) , "$B11//" , $LR1 , "\ "
+                    $_.FG     =  0 , 0 , 5 , 8 , 8 , 8 , 8 , 8 , 5 , 0 , 0
+                    $_.BG     =  7 , 7 , 4 , 7 , 7 , 7 , 7 , 7 , 4 , 7 , 7
+                }
+
+                $Return[30]   | % {
+
+                    $_.ST     = " \" , $LL0 , "//$T11"  , "[=]" , $T58 , "[=]" , "$T11\\" ,  $LR0 , "/ "
+                    $_.FG     =  0 , 0 , 4 , 8 , 8 , 8 , 4 , 0 , 0
+                    $_.BG     =  7 , 7 , 5 , 7 , 7 , 7 , 5 , 7 , 7
+                }
+
+                $Return[31]   | % {
+
+                    $_.ST     = " /" , $LL1 , "\\$B11"  , "[=]", $S2 , $FX.Sign , $S2 , "[=]" , "$B11//" , $LR1 , "\ "
+                    $_.FG     =  0 , 0 , 4 , 8 , 8 , 8 , 8 , 8 , 4 , 0 , 0
+                    $_.BG     =  7 , 7 , 5 , 7 , 7 , 7 , 7 , 7 , 5 , 7 , 7
+                }
+
+                $Return[32]   | % {
+                           
+                    $_.ST     = " \" , "\$S11" , "$T13" , "¯¯  $T19     $T30  ¯¯" , "$T13" , "$S11/" , "/ "
+                    $_.FG     =  0 , 0 , 4 , 8 , 4 , 0 , 0
+                    $_.BG     =  7 , 7 , 7 , 7 , 7 , 7 , 7 
+                }
+
+                $Return[33]   | % {
+
+                    $_.ST     = " /" , "/$S110\" , "\ "
+                    $_.FG     = 0 , 0 , 0
+                    $_.BG     = @( 3 ) * 3
+                }
+
+                $Return[34]   | % { 
+                           
+                    $_.ST     = " \" , "\___" + $S72 + @( 0..3 | % { "____" , "    " } ) + "___// "
+                    $_.FG     = 0 , 0 , 0 , 0, 0, 0, 0, 0, 0 ,0 ,0 ,0, 0 , 0
+                    $_.BG     = 7 , 7 , 7 , 7 , 7 ,7 ,7 ,7 ,7 ,7 ,7 , 7 , 7
+                }
+
+                $Return[35]   | % { 
+                           
+                    $_.ST     = " /" , $F0 , "\$B70/" + @( $F[ 0,1,0,1,0,1,0,1,0 ] ) + "\ "
+                    $_.FG     = 0 , 5 , 0 , 5 , 0 , 5 , 0 , 5 , 0 , 5 , 0 , 5 , 0
+                    $_.BG     = 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7
+                }
+
+                $Return[36]   | % { 
+                           
+                    $_.ST     = " \" , $F1 , "/$T70\" + @( $F[ 1 , 0 ] ) * 4 + $F[1] , "/ "
+                    $_.FG     = 0 , 5 , 5 , 5 , 5 , 5 , 5 , 5 , 5 , 5 , 5 , 5 , 0
+                    $_.BG     = 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7
+                }
+
+                $Return[37]   | % {
+                           
+                    $_.ST     = "  ¯¯¯\" , "\__[ " , $FX.ST[4] , " ]$B26/" + $F * 4 + "/¯¯¯  "
+                    $_.FG     = 0 , 5 , 2 , 5 , 0 , 5 , 0 , 5 , 0 , 5 , 0 , 5 , 0
+                    $_.BG     = 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7 , 7
+                }
+
+                $Return[38]   | % {
+
+                    $_.ST     = "      $T72$( "    ¯¯¯¯" * 4 )      "
+                    $_.FG     = 0
+                    $_.BG     = 7
+        
                 }
             }
 
@@ -631,7 +859,7 @@
                 }
             }
 
-                        If ( $Array )
+            If ( $Array )
             {
                 $Top                     = 5
                 $Bottom                  = @( 6 , 5 )[ $Array.Count % 2 ]
@@ -751,7 +979,7 @@
 
                 $Return[$Z]              | % { 
 
-                    $_.ST                = @( " \" , $F[1] , "/$( $M0[70] )\" ; @( $F[ 1 , 0 ] ) * 4 ; $F[1] , "/ " )
+                    $_.ST                = @( " \" , $F[1] , "/$( $M0[70] )\" ; @( $F[ 1 , 0 ] ) * 4 ; $F[1] , "/ " ) -join ''
                     $_.FG                = @( 0 ; @( 1 ) * 11 ; 0 )
                     $_.BG                = @( 3 ) * 13
                 }
@@ -2609,12 +2837,7 @@
         {
             Write-Theme -Function "Host # $( $IP[$I] )"
 
-            $DNS                        = Resolve-DnsName -Name $IP[$I] -EA 0 | % { $_.Namehost }
-                
-            If ( $DNS -eq $Null ) 
-            { 
-                $DNS                    = "*No Hostname*" 
-            }
+            $DNS = $( Resolve-DnsName -Name $IP[$I] -EA 0 | % { $_.Namehost | % { If ( $_ -ne $Null ) { $_ } Else { "*No Hostname*" } } } )
 
             $X                          = @( )
 
@@ -5546,20 +5769,54 @@
 #\\__//¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯        ____    ____ __ ____ __ ____ __ ____ __ ____ __ ____    ___// 
     Function Unlock-Script # Allows for elevation ( Not Finished ) _____________________//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯\\__//¯¯¯  
     {#/¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯ -- ¯¯¯¯    ¯¯¯¯      
+        [ CmdLetBinding () ] Param (
+
+            [ ValidateScript ({ Test-Path $_ })] 
+
+            [ Parameter ( Mandatory ) ] [ String ] $FilePath     ,
+            [ Parameter ( Mandatory ) ] [ String ] $ArgumentList )
+
+        
         $CS = GCIM Win32_OperatingSystem
 
-        IEX "Using Namespace System.Security.Principal"
+        "Security.Principal.Windows" | % { IEX "( [ $_`Principal ] [ $_`Identity ]::GetCurrent() ).IsInRole( 'Administrator' )" }
 
-        "Windows" | % { IEX "( [ $_`Principal ] [ $_`Identity ]::GetCurrent() ).IsInRole( 'Administrator' )" } | % {
+        !$? | % { 
         
-            If ( ( ( $_ -eq $False ) -and ( $CS | % { [ Int ]$_.BuildNumber -gt 6000 } ) ) -or ( $_ -eq $True ) )
-            {
-                SAPS PowerShell -Verb RunAs -Args "-File `"$PSCommandPath` $( $MyInvocation.UnboundArguments )"
+            GCIM Win32_OperatingSystem | % { 
+        
+                If ( [ Int ]$_.BuildNumber -gt 6000 )
+                {
+                    Set-ExecutionPolicy ByPass -Scope Process -Force
+                }
 
-                Set-ExecutionPolicy ByPass -Scope Process -Force
+                Else
+                {
+                    Read-Host "[!] Access Failed. Press Enter to Exit"
+                    Break
+                }
             }
+        }
 
-            Else { Read-Host "[!] Access Failed. Press Enter to Exit" ; Exit }
+        $? | % { 
+            
+            $Process                          = New-Object System.Diagnostics.Process
+            $Process                          | % { 
+
+                $_.StartInfo                  = New-Object System.Diagnostics.ProcessStartInfo( $FilePath , $ArgumentList )
+                $_.StartInfo                  | % { 
+    
+                    $_.RedirectStandardOutput = $True
+                    $_.UseShellExecute        = $False
+                    $_.WindowStyle            = [ System.Diagnostics.ProcessWindowStyle ]::Hidden
+                }
+    
+                $_.Start()                    | Out-Null
+                $_.BeginOutputReadLine()
+                $_.WaitForExit()
+                $exitCode                     = $_.ExitCode
+                $_.Dispose()
+            }
         }                                                                           #____ -- ____    ____ -- ____    ____ -- ____    ____ -- ____      
 }#____                                                                            __//¯¯\\__//==\\__/----\__//==\\__/----\__//==\\__/----\__//¯¯\\___  
 #//¯¯\\__________________________________________________________________________/¯¯¯    ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯¯ ¯¯ ¯¯¯\\ 
