@@ -205,68 +205,65 @@
 
         # Gets Files
 
-        If ( $Flag.MUI -ne 1 ) 
-        {
-            $Item = Set-Program -ReaderMUI
-            Get-Program @Item | % { $Flag.MUI = $_.FilePath }
-        }
-
-        If ( $Flag.MSP -ne 1 ) 
-        { 
-            $Item = Set-Program -ReaderMSP
-            Get-Program @Item | % { $Flag.MSP = $_.FilePath }
-        }
-
-        # Sets Parameters
-
-        If ( $Params.DesktopIcon -eq 0 )
-        {
-            Write-Theme -Action "Disabled [-]" "Desktop Icon [ Default ]"
-            $Options += " DISABLEDDESKTOPSHORTCUT=1"
-        }
-
-        If ( $Params.DesktopIcon -eq 1 )
-        { 
-            Write-Theme -Action " Enabled [+]" "Desktop Icon" -C 11 
-        }
-
-        If ( $Params.NoUpdates   -eq 0 ) 
-        {
-            Write-Theme -Action "Disabled [-]" "No Updates [ Default ]"
-        }
-
-        If ( $Params.NoUpdates   -eq 1 )
-        {
-            Write-Theme -Action " Enabled [+]" "No Updates" -C 11
-
-            $Root    = "HKLM:\SOFTWARE\Policies"
-
-            "Adobe\Acrobat Reader\DC\FeatureLockDown".Split( '\' ) | % { 
-
-                If ( ! ( Test-Path "$Root\$_" ) )
-                {
-                    New-Item -Path $Root -Name $_
-                }
-
-                $Root = "$Root\$_"
-            }
+        $Flag.MUI -ne 1       | % {
         
-            New-ItemProperty -Path $Root -Name 'bUpdater' -PropertyType DWORD -Value 0 -Force
+            $Item             = Set-Program -ReaderMUI
+            
+            Get-Program @Item | % { 
+            
+                $Flag.MUI     = $_.FilePath 
+            }
+        }
+
+        $Flag.MSP -ne 1       | % { 
+            
+            $Item             = Set-Program -ReaderMSP
+            
+            Get-Program @Item | % { 
+            
+                $Flag.MSP     = $_.FilePath 
+            }
+        }
+
+        $Params | % { 
+        
+            $_.DesktopIcon -eq 0 | % { Write-Theme -Action "Disabled [-]" "Desktop Icon [ Default ]" ; $Options += " DISABLEDDESKTOPSHORTCUT=1" }
+            $_.DesktopIcon -eq 1 | % { Write-Theme -Action " Enabled [+]" "Desktop Icon" -C 11 }
+
+            $_.NoUpdates   -eq 0 | % { Write-Theme -Action "Disabled [-]" "No Updates [ Default ]" }
+            $_.NoUpdates   -eq 1 | % { 
+            
+                Write-Theme -Action " Enabled [+]" "No Updates" -C 11
+
+                $Root            = "HKLM:\SOFTWARE\Policies"
+
+                "Adobe\Acrobat Reader\DC\FeatureLockDown".Split( '\' ) | ? { 
+            
+                    ! ( Test-Path "$Root\$_" ) | % { New-Item -Path $Root -Name $_ }
+
+                    $Root        = "$Root\$_"
+                }
+            
+                $Splat           = @{ 
+            
+                    Path         = $Root
+                    Name         = 'bUpdater'
+                    PropertyType = "DWORD"
+                    Value        = 0
+                    Force        = $True 
+            
+                }
+            
+                New-ItemProperty @Splat
+            }
         }
 
         If ( $Flag.MUI -ne 0 )
         {
-            If ( $Params.EnableUpdateService -eq 0 ) 
-            {
-                Write-Theme -Action "Disabled [+]" "Adobe Auto-Update Service [ Default ]"
-
-                $Options += ' DISABLE_ARM_SERVICE_INSTALL=1'
-            }
+            $Params | % { 
             
-            If ( $Params.EnableUpdateService -eq 1 )
-            {
-                Write-Theme -Action " Enabled [+]" "Auto-Update Service." -C 11
-            }
+                $_.EnableUpdateService -eq 0 | % { Write-Theme -Action "Disabled [+]" "Adobe Auto-Update Service [ Default ]" ; $Options += ' DISABLE_ARM_SERVICE_INSTALL=1' }
+                $_.EnableUpdateService -eq 1 | % { Write-Theme -Action " Enabled [+]" "Auto-Update Service." -C 11 }
             
             "AdobeARMservice" | % { 
 
@@ -278,41 +275,25 @@
             }
         }
     
-        $UpdateMode = [ PSCustomObject ]@{
+        $Update = [ PSCustomObject ]@{
 
             Index   = "Manual" , "Auto" , "Scheduled" , "Notifications" , "N/A"
             Mode    = @{ 0 = 0 , 0 , 4 ; 1 = 0 , 0 , 4 ; 2 = 1 , 0 , 4 ; 3 = 1 , 1 , 2 ; 4 = 1 , 1 , 3 }
         }
 
-        $UpdateMode | % { Write-Theme -Action "Update Mode [~]" ( '[ Update ]: {0} [ Install ]: {1} [ Options ]: {2}' -f $_.Index[ $_.Mode[ $Params.UpdateMode ] ] ) }
+        $Update | % { Write-Theme -Action "Update Mode [~]" ( '[ Update ]: {0} [ Install ]: {1} [ Options ]: {2}' -f $_.Index[ $_.Mode[ $Params.UpdateMode ] ] ) }
 
         If ( $Flag.MUI -ne 0 )
         {
-            $Root    = "HKLM:"
+            $DR   = "HKLM:"
 
-            'SOFTWARE\Adobe\Adobe ARM\1.0\ARM'.Split( '\' ) | % { 
+            $Root    = $DR
 
-                If ( ! ( Test-Path "$Root\$_" ) )
-                {
-                    New-Item -Path $Root -Name $_
-                }
-
-                $Root = "$Root\$_"
-            }
+            "SOFTWARE\Adobe\Adobe ARM\1.0\ARM".Split( '\' ) | % { If ( ! ( Test-Path "$Root\$_" ) ) { New-Item -Path $Root -Name $_ } ; $Root = "$Root\$_" }
         
-            If ( ! ( GP $Root ) )
-            {
-                New-ItemProperty $Root -Name "iCheckReader" -Value $Params.UpdateMode -Force
-            }
+            GP $Root | ? { $_.iCheckReader -eq $Null } | % { New-ItemProperty $Root -Name "iCheckReader" -Value $Params.UpdateMode -Force } ; $Root = $DR
 
-            $Root    = "HKLM:"
-
-            "SOFTWARE\Wow6432Node\Adobe\Adobe ARM\Legacy\Reader\$( $Key.PSChildName )" | % { 
-      
-                If ( ! ( Test-Path "$Root\$_" ) )
-                {
-                    New-Item -Path $Root -Name $_
-                }
+            "SOFTWARE\Wow6432Node\Adobe\Adobe ARM\Legacy\Reader\$( $Key.PSChildName )" | % { If ( ! ( Test-Path "$Root\$_" ) ) { New-Item -Path $Root -Name $_ }
 
                 $Root = "$Root\$_" 
             }
